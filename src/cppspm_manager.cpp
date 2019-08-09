@@ -181,7 +181,7 @@ bool Manager::load() {
 
 void Manager::printFiles() {
     for (auto it = m_vFiles.begin(); it != m_vFiles.end(); ++it) {
-        std::cout << it->getSha1() << " " << it->getName() << std::endl;
+        std::cout << it->getSha1() << " " << it->getFrom() << " -> " << it->getTo() << std::endl;
     }
 }
 
@@ -194,7 +194,7 @@ bool Manager::addFile(const std::string &sFile) {
     }
 
     for (auto it = m_vFiles.begin(); it != m_vFiles.end(); ++it) {
-        if (it->getName() == sFile) {
+        if (it->getFrom() == sFile) {
             std::cout << "Error: File '" << sFile << "' already exists." << std::endl;
             return false;
         }
@@ -209,7 +209,7 @@ bool Manager::addFile(const std::string &sFile) {
 
 bool Manager::deleteFile(const std::string &sFile) {
     for (auto it = m_vFiles.begin(); it != m_vFiles.end(); ++it) {
-        if (it->getName() == sFile) {
+        if (it->getFrom() == sFile) {
             m_vFiles.erase(it);
             return true;
         }

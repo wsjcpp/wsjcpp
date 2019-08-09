@@ -22,20 +22,24 @@
     "description": "C++ Source Package manager",
     "files": [
         {
-            "name": "fallen.h",
-            "sha1": "aea16df7dbb5539ed79024a895f744546afaa7dd"
+            "from": "src/cppspm_manager.cpp",
+            "sha1": "",
+            "to": "cppspm_manager.cpp"
         },
         {
-            "name": "src/cppspm_manager.cpp",
-            "sha1": ""
+            "from": "src/cppspm_server.cpp",
+            "sha1": "",
+            "to": "cppspm_server.cpp"
         },
         {
-            "name": "src/cppspm_manager.h",
-            "sha1": ""
+            "from": "src/cppspm_server.h",
+            "sha1": "",
+            "to": "cppspm_server.h"
         },
         {
-            "name": "src/cppspm_server.cpp",
-            "sha1": ""
+            "from": "src/cppspm_manager.h",
+            "sha1": "",
+            "to": "cppspm_manager.h"
         }
     ],
     "keywords": [

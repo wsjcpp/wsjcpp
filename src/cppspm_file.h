@@ -14,13 +14,15 @@ class File {
     public:
         File();
         File(const std::string &sFile);
-        std::string getName();
+        std::string getFrom();
+        std::string getTo();
         std::string getSha1();
         nlohmann::json toJson();
         void fromJson(const nlohmann::json &jsonFile);
 
     private:
-        std::string m_sName;
+        std::string m_sFrom;
+        std::string m_sTo;
         std::string m_sSha1;
         nlohmann::json m_jsonFile;
 
