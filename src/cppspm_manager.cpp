@@ -343,5 +343,28 @@ void Manager::printDependencies(std::string sIntent) {
     }
 }
 
+// ---------------------------------------------------------------------
+
+void Manager::verify() {
+    std::vector<std::string> m_vVerified;
+
+    // HERE verify current package
+    
+    for (auto it = m_vDependencies.begin(); it != m_vDependencies.end(); ++it) {
+        if (m_bHolded) {
+            CppSPM::Manager m(m_sParentDir + "/" + it->getName(), m_sParentDir, true);
+            if (m.load()) {
+                m.verify();
+            }
+        } else {
+            CppSPM::Manager m(m_sDirWithSources + "/" + it->getName(), m_sDirWithSources, true);
+            if (m.load()) {
+                m.verify();
+            }
+        }
+        
+    }
+}
+
 
 } // namespace CppSPM

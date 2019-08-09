@@ -26,6 +26,7 @@ class Manager {
         bool deleteServer(const std::string &sServer);
         bool updateDependencies();
         void printDependencies(std::string sIntent = "");
+        void verify();
 
     private:
         std::string m_sDir;

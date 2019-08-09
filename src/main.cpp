@@ -17,7 +17,7 @@ int main(int argc, char* argv[]) {
     helpArgs.setAppVersion(appVersion);
 
     helpArgs.addHelp("new", "n", FallenParseArgType::PARAMETER, "New a source package %DIRECTORY%");
-    helpArgs.addHelp("update-deps", "ud", FallenParseArgType::SINGLE_OPTION, "Update dependencies and src.cppspm/CMakeList.txt");
+    // helpArgs.addHelp("update-deps", "ud", FallenParseArgType::SINGLE_OPTION, "Update dependencies and src.cppspm/CMakeList.txt");
     helpArgs.addHelp("dependencies", "d", FallenParseArgType::SINGLE_OPTION, "Show dependencies like a tree");
     // helpArgs.addHelp("search", "s", FallenParseArgType::PARAMETER, "Search a source package by name or keywords");
     // helpArgs.addHelp("update", "u", FallenParseArgType::PARAMETER, "Install a source package like 'some_package:0.0.1'");
@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
     helpArgs.addHelp("add-server", "as", FallenParseArgType::PARAMETER, "Add server to source package");
     helpArgs.addHelp("delete-server", "ds", FallenParseArgType::PARAMETER, "Delete server from source package");
 
-    // helpArgs.addHelp("verify", "vf", FallenParseArgType::PARAMETER, "Verify files / sums / format / configs etc..");
+    helpArgs.addHelp("verify", "vf", FallenParseArgType::SINGLE_OPTION, "Verify files / sums / format / configs etc..");
     // helpArgs.addHelp("publish", "p", FallenParseArgType::PARAMETER, "Publish your package to server");
     
     if (helpArgs.handleDefault()) {
@@ -119,7 +119,11 @@ int main(int argc, char* argv[]) {
         }
         return 0;
     } else if (helpArgs.has("verify")) {
-        std::string sDir = helpArgs.option("verify");
+        CppSPM::Manager pkg(".");
+        if (!pkg.load()) {
+            return -1;
+        }
+        pkg.verify();
         return 0;
     } else {
         helpArgs.printHelp();
