@@ -1,0 +1,31 @@
+{
+    "name": "Logging",
+    "version": "0.0.1",
+    "description": "",
+    "servers": [{
+        "address": "sea-kg.com"
+    }],
+    "authors": [{
+        "name": "Evgenii Sopov"
+    }],
+    "repositories": [{
+        "url": "https://github.com/sea-kg/cpp-log"
+    }],
+    "files": [{
+        "from": "log.h",
+        "to": "log.h",
+        "sha1": "aea16df7dbb5539ed79024a895f744546afaa7dd"
+    },{
+        "from": "log.cpp",
+        "to": "log.cpp",
+        "sha1": "3560484d9593ee5c7a0d7360e8b05c5bdafd3f6d"
+    }],
+    "dependencies": [
+        {
+            "from": "sea-kg.com",
+            "name": "fallen",
+            "type": "cppspm-server",
+            "version": "0.0.1"
+        }
+    ]
+}

@@ -17,7 +17,8 @@ int main(int argc, char* argv[]) {
     helpArgs.setAppVersion(appVersion);
 
     helpArgs.addHelp("new", "n", FallenParseArgType::PARAMETER, "New a source package %DIRECTORY%");
-    // helpArgs.addHelp("deps", "d", FallenParseArgType::SINGLE_OPTION, "Show dependencies like a tree");
+    helpArgs.addHelp("update-deps", "ud", FallenParseArgType::SINGLE_OPTION, "Update dependencies and src.cppspm/CMakeList.txt");
+    helpArgs.addHelp("dependencies", "d", FallenParseArgType::SINGLE_OPTION, "Show dependencies like a tree");
     // helpArgs.addHelp("search", "s", FallenParseArgType::PARAMETER, "Search a source package by name or keywords");
     // helpArgs.addHelp("update", "u", FallenParseArgType::PARAMETER, "Install a source package like 'some_package:0.0.1'");
     // helpArgs.addHelp("install", "i", FallenParseArgType::PARAMETER, "Install a source package like 'some_package:0.0.1'");
@@ -48,6 +49,20 @@ int main(int argc, char* argv[]) {
             return -1;
         }
         pkg.save();
+        return 0;
+    } else if (helpArgs.has("update-deps")) {
+        CppSPM::Manager pkg(".");
+        if (!pkg.load()) {
+            return -1;
+        }
+        pkg.updateDependencies();
+        return 0;
+    } else if (helpArgs.has("dependencies")) {
+        CppSPM::Manager pkg(".");
+        if (!pkg.load()) {
+            return -1;
+        }
+        pkg.printDependencies();
         return 0;
     } else if (helpArgs.has("files")) {
         CppSPM::Manager pkg(".");

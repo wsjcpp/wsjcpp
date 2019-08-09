@@ -1,10 +1,10 @@
 {
     "name": "fallen_parse_args",
     "version": "0.0.1",
-    "description": "JSON for Modern C++",
-    "server": {
+    "description": "Helpfull class for parse application args",
+    "servers": [{
         "address": "sea-kg.com"
-    },
+    }],
     "authors": [{
         "name": "Evgenii Sopov"
     }],
@@ -12,10 +12,12 @@
         "url": "https://github.com/sea-kg/cpp-fallen-parse-args"
     }],
     "files": [{
-        "name": "fallen_parse_args.h",
+        "from": "fallen_parse_args.h",
+        "to": "fallen_parse_args.h",
         "sha1": "aea16df7dbb5539ed79024a895f744546afaa7dd"
     },{
-        "name": "fallen_parse_args.cpp",
+        "from": "fallen_parse_args.cpp",
+        "to": "fallen_parse_args.cpp",
         "sha1": "3560484d9593ee5c7a0d7360e8b05c5bdafd3f6d"
     }],
     "dependencies": []

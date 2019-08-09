@@ -9,6 +9,10 @@ namespace CppSPM {
 class Dependence {
     public:
         Dependence();
+        std::string getType();
+        std::string getFrom();
+        std::string getName();
+        std::string getVersion();
         nlohmann::json toJson();
         void fromJson(const nlohmann::json &jsonDependence);
 

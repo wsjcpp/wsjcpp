@@ -10,7 +10,20 @@ namespace CppSPM {
 Manager::Manager(const std::string &sDir) {
     m_sDir = sDir;
     m_sDirWithSources = m_sDir + "/src.cppspm";
+    m_sCppSPMJsonFilename = "cppspm.json";
     m_nCppspmVersion = 1;
+    m_bHolded = false;
+}
+
+// ---------------------------------------------------------------------
+
+Manager::Manager(const std::string &sDir, const std::string &sParentDir, bool bHolded) {
+    m_sDir = sDir;
+    m_sDirWithSources = m_sDir + "/src.cppspm";
+    m_sCppSPMJsonFilename = "cppspm.hold.json";
+    m_nCppspmVersion = 1;
+    m_bHolded = true;
+    m_sParentDir = sParentDir;
 }
 
 // ---------------------------------------------------------------------
@@ -71,8 +84,11 @@ bool Manager::init() {
 
 // ---------------------------------------------------------------------
 
-void Manager::save() {
-
+bool Manager::save() {
+    if (m_bHolded) {
+        std::cout << "ERROR: cppspm is holded" << std::endl;
+        return false;
+    }
     if (!Fallen::dirExists(m_sDirWithSources)) {
         Fallen::makeDir(m_sDirWithSources);
     }
@@ -113,16 +129,29 @@ void Manager::save() {
     }
     m_jsonPackageInfo["files"] = jsonFiles;
 
+    nlohmann::json jsonRepositories = nlohmann::json::array();
+    for (int i = 0; i < m_vRepositories.size(); i++) {
+        jsonRepositories.push_back(m_vRepositories[i].toJson());
+    }
+    m_jsonPackageInfo["repositories"] = jsonRepositories;
+
     int indent = 4;
-    std::ofstream cppspmJson(m_sDir + "/cppspm.json");
+    std::ofstream cppspmJson(m_sDir + "/" + m_sCppSPMJsonFilename);
     cppspmJson << std::setw(4) << m_jsonPackageInfo << std::endl;
+    return true;
 }
 
 // ---------------------------------------------------------------------
 
 bool Manager::load() {
+    std::string sJsonFilename = m_sDir + "/" + m_sCppSPMJsonFilename;
 
-    std::ifstream ifs(m_sDir + "/cppspm.json");
+    if (!Fallen::fileExists(sJsonFilename)) {
+        std::cout << "ERROR: '" << sJsonFilename << "' did not found" << std::endl;
+        return false;
+    }
+
+    std::ifstream ifs(sJsonFilename);
     m_jsonPackageInfo = nlohmann::json::parse(ifs);
 
     for (auto it = m_jsonPackageInfo.begin(); it != m_jsonPackageInfo.end(); ++it) {
@@ -140,8 +169,10 @@ bool Manager::load() {
                 m_vKeywords.push_back(keyword);
             }
         } else if (sKey == "cppspm_version") {
-            // m_sName = it.value();
-            // TODO check 
+            int nCppSPMVersion = it.value();
+            if (nCppSPMVersion > m_nCppspmVersion) {
+                std::cout << "WARN: Please update your 'cppspm' to " << nCppSPMVersion << std::endl;
+            }
         } else if (sKey == "authors") {
             nlohmann::json jsonAuthors = it.value();
             for (auto it2 = jsonAuthors.begin(); it2 != jsonAuthors.end(); ++it2) {
@@ -170,6 +201,13 @@ bool Manager::load() {
                 dependence.fromJson(it5.value());
                 m_vDependencies.push_back(dependence);
             }
+        } else if (sKey == "repositories") {
+            nlohmann::json jsonRepositories = it.value();
+            for (auto it6 = jsonRepositories.begin(); it6 != jsonRepositories.end(); ++it6) {
+                CppSPM::Repository repo;
+                repo.fromJson(it6.value());
+                m_vRepositories.push_back(repo);
+            }
         } else {
            std::cout << "IGNORED:  " << sKey << std::endl; 
         }
@@ -188,8 +226,13 @@ void Manager::printFiles() {
 // ---------------------------------------------------------------------
 
 bool Manager::addFile(const std::string &sFile) {
+    if (m_bHolded) {
+        std::cout << "ERROR: cppspm is holded" << std::endl;
+        return false;
+    }
+
     if (!Fallen::fileExists(sFile)) {
-        std::cout << "Error: cppspm.json already exists." << std::endl;
+        std::cout << "Error: '" << sFile << "' already exists." << std::endl;
         return false;
     }
 
@@ -208,6 +251,11 @@ bool Manager::addFile(const std::string &sFile) {
 // ---------------------------------------------------------------------
 
 bool Manager::deleteFile(const std::string &sFile) {
+    if (m_bHolded) {
+        std::cout << "ERROR: cppspm is holded" << std::endl;
+        return false;
+    }
+
     for (auto it = m_vFiles.begin(); it != m_vFiles.end(); ++it) {
         if (it->getFrom() == sFile) {
             m_vFiles.erase(it);
@@ -229,6 +277,11 @@ void Manager::printServers() {
 // ---------------------------------------------------------------------
 
 bool Manager::addServer(const std::string &sServer) {
+    if (m_bHolded) {
+        std::cout << "ERROR: cppspm is holded" << std::endl;
+        return false;
+    }
+
     for (auto it = m_vServers.begin(); it != m_vServers.end(); ++it) {
         if (it->getAddress() == sServer) {
             std::cout << "Error: Server '" << sServer << "' already defined." << std::endl;
@@ -244,6 +297,11 @@ bool Manager::addServer(const std::string &sServer) {
 // ---------------------------------------------------------------------
 
 bool Manager::deleteServer(const std::string &sServer) {
+    if (m_bHolded) {
+        std::cout << "ERROR: cppspm is holded" << std::endl;
+        return false;
+    }
+
     for (auto it = m_vServers.begin(); it != m_vServers.end(); ++it) {
         if (it->getAddress() == sServer) {
             m_vServers.erase(it);
@@ -253,5 +311,37 @@ bool Manager::deleteServer(const std::string &sServer) {
     std::cout << "Error: Server '" << sServer << "' did not found." << std::endl;
     return false;
 }
+
+// ---------------------------------------------------------------------
+
+bool Manager::updateDependencies() {
+    if (m_bHolded) {
+        std::cout << "ERROR: cppspm is holded" << std::endl;
+        return false;
+    }
+    return true;
+}
+
+// ---------------------------------------------------------------------
+
+void Manager::printDependencies(std::string sIntent) {
+    std::string sNexIntent = sIntent + "  \\--";
+    for (auto it = m_vDependencies.begin(); it != m_vDependencies.end(); ++it) {
+        std::cout << sIntent << " * " << it->getName() << ":" << it->getVersion() << "    (" << it->getType() << ":" << it->getFrom() << ")" << std::endl;
+        if (m_bHolded) {
+            CppSPM::Manager m(m_sParentDir + "/" + it->getName(), m_sParentDir, true);
+            if (m.load()) {
+                m.printDependencies(sNexIntent);
+            }
+        } else {
+            CppSPM::Manager m(m_sDirWithSources + "/" + it->getName(), m_sDirWithSources, true);
+            if (m.load()) {
+                m.printDependencies(sNexIntent);
+            }
+        }
+        
+    }
+}
+
 
 } // namespace CppSPM

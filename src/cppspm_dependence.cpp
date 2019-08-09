@@ -4,13 +4,33 @@
 namespace CppSPM {
 
 Dependence::Dependence() {
-    /* {
-            "type": "cppspm",
-            "server": "sea-kg.com",
-            "name": "fallen-parse-args",
-            "version": "0.0.1"
-    }*/
 }
+
+// ---------------------------------------------------------------------
+
+std::string Dependence::getType() {
+    return m_sType;
+}
+
+// ---------------------------------------------------------------------
+
+std::string Dependence::getFrom() {
+    return m_sFrom;
+}
+
+// ---------------------------------------------------------------------
+
+std::string Dependence::getName() {
+    return m_sName;
+}
+
+// ---------------------------------------------------------------------
+
+std::string Dependence::getVersion() {
+    return m_sVersion;
+}
+
+// ---------------------------------------------------------------------
 
 nlohmann::json Dependence::toJson() {
     m_jsonDependece["type"] = m_sType;
@@ -19,6 +39,8 @@ nlohmann::json Dependence::toJson() {
     m_jsonDependece["version"] = m_sVersion;
     return m_jsonDependece;
 }
+
+// ---------------------------------------------------------------------
 
 void Dependence::fromJson(const nlohmann::json &jsonDependece) {
     m_jsonDependece = jsonDependece;

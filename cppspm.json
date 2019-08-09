@@ -8,7 +8,19 @@
     "dependencies": [
         {
             "from": "sea-kg.com",
-            "name": "fallen-parse-args",
+            "name": "fallen_parse_args",
+            "type": "cppspm-server",
+            "version": "0.0.1"
+        },
+        {
+            "from": "sea-kg.com",
+            "name": "fallen",
+            "type": "cppspm-server",
+            "version": "0.0.1"
+        },
+        {
+            "from": "sea-kg.com",
+            "name": "log",
             "type": "cppspm-server",
             "version": "0.0.1"
         },
