@@ -1,0 +1,53 @@
+{
+    "authors": [
+        {
+            "name": "Evgenii Sopov"
+        }
+    ],
+    "cppspm_version": 1,
+    "dependencies": [
+        {
+            "from": "sea-kg.com",
+            "name": "fallen-parse-args",
+            "type": "cppspm-server",
+            "version": "0.0.1"
+        },
+        {
+            "from": "https://github.com/sea-kg/nlohmann_json/archive/v3.7.0.zip",
+            "name": "sea-kg/nlohmann_json",
+            "type": "github",
+            "version": "v3.7.0"
+        }
+    ],
+    "description": "C++ Source Package manager",
+    "files": [
+        {
+            "name": "fallen.h",
+            "sha1": "aea16df7dbb5539ed79024a895f744546afaa7dd"
+        },
+        {
+            "name": "src/cppspm_manager.cpp",
+            "sha1": ""
+        },
+        {
+            "name": "src/cppspm_manager.h",
+            "sha1": ""
+        },
+        {
+            "name": "src/cppspm_server.cpp",
+            "sha1": ""
+        }
+    ],
+    "keywords": [
+        "c++",
+        "",
+        "sources"
+    ],
+    "name": "cppspm",
+    "servers": [
+        {
+            "address": "sea-kg.com"
+        }
+    ],
+    "version": "0.0.1"
+}

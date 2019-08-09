@@ -1,3 +1,7 @@
+cppspm
+tmp/*
+.vscode/*
+
 # Prerequisites
 *.d
 

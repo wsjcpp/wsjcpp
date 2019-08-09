@@ -1,0 +1,28 @@
+{
+    "name": "nlohmann_json",
+    "version": "3.1.2",
+    "description": "JSON for Modern C++",
+    "server": {
+        "address": "sea-kg.com"
+    },
+    "authors": [{
+        "name": "Niels Lohmann"
+    }],
+    "repositories": [{
+        "url": "https://github.com/nlohmann/json",
+        "type": "original"
+    }, {
+        "url": "https://github.com/sea-kg/nlohmann_json",
+        "type": "fork"
+    }],
+    "files": [{
+        "name": "json.hpp",
+        "type": "sourcecode",
+        "sha1": "e5591fcf6d842996d37ae515acbced6c335808fe"
+    }, {
+        "name": "LICENSE.MIT",
+        "type": "file",
+        "sha1": "f8e37621491266e2b75468219fe7161ce0de6d13"
+    }],
+    "dependencies": []
+}

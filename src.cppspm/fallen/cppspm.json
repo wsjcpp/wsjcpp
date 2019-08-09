@@ -1,0 +1,22 @@
+{
+    "name": "fallen",
+    "version": "0.0.1",
+    "description": "Helpfull library",
+    "server": {
+        "address": "sea-kg.com"
+    },
+    "authors": [{
+        "name": "Evgenii Sopov"
+    }],
+    "repositories": [{
+        "url": "https://github.com/sea-kg/cpp-fallen"
+    }],
+    "files": [{
+        "name": "fallen.h",
+        "sha1": "aea16df7dbb5539ed79024a895f744546afaa7dd"
+    }, {
+        "name": "fallen.cpp",
+        "sha1": "3560484d9593ee5c7a0d7360e8b05c5bdafd3f6d"
+    }],
+    "dependencies": []
+}
