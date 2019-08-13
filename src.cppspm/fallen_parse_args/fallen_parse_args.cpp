@@ -196,10 +196,10 @@ bool FallenParseArgs::checkArgs(std::string &sArgsErrors) {
 bool FallenParseArgs::handleDefault() {
     if (this->has("help")) {
         this->printHelp();
-        return 0;
+        return true;
     } else if (this->has("version")) {
         std::cout << m_sAppName << "-" << m_sAppVersion << "\n";
-        return 0;
+        return true;
     }
     return false;
 }

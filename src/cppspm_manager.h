@@ -27,8 +27,11 @@ class Manager {
         bool updateDependencies();
         void printDependencies(std::string sIntent = "");
         void verify();
+        bool installFromGithub(const std::string &packageName);
 
     private:
+        std::string packageNameToUFolder(const std::string &sFilename);
+
         std::string m_sDir;
         bool m_bHolded;
         std::string m_sParentDir;

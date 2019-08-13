@@ -9,6 +9,7 @@ C++ Source Package Manager
 
 (Ubuntu/Debian)
 
+Compile and install (just a copy cppspm to /usr/bin/)
 ```
 $ ./build_simple.sh
 $ ./install.sh
@@ -21,6 +22,11 @@ $ cd your_package
 $ cppspm new .
 ```
 
+For distribute files:
+
+```
+$ cppspm add-file src/your_source_file.cpp
+```
 
 ## Run local server
 

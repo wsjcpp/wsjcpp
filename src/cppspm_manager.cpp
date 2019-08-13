@@ -366,5 +366,49 @@ void Manager::verify() {
     }
 }
 
+// ---------------------------------------------------------------------
+
+bool Manager::installFromGithub(const std::string &githubPackage) {
+    if (m_bHolded) { // readonly
+        return false;
+    }
+    
+    std::istringstream f(githubPackage);
+    std::string packageName = "";
+    std::string s;
+    if (getline(f, s, ':')) {
+        packageName = s;
+    }
+    std::string packageVersion = githubPackage.substr(packageName.size());
+        
+
+    CppSPM::Dependence d;
+    nlohmann::json jsonDependence;
+    jsonDependence["type"] = "github";
+    jsonDependence["version"] = packageVersion;
+    jsonDependence["name"] = packageName;
+    jsonDependence["from"] = "https://github.com/" + packageName + "/archive/" + packageVersion + ".zip";
+    jsonDependence["ufolder"] = "github_" + this->packageNameToUFolder(packageName);
+    d.fromJson(jsonDependence);
+
+    // TODO download and check package
+    m_vDependencies.push_back(d);
+
+    return true;
+}
+
+// ---------------------------------------------------------------------
+
+std::string Manager::packageNameToUFolder(const std::string &sFilename) {
+    std::string ret = sFilename;
+    std::string illegalChars = "\\/:?\"<>|";
+    std::string::iterator it;
+    for (it = ret.begin(); it < ret.end() ; ++it) {
+        if (illegalChars.find(*it) != std::string::npos) {
+            *it = '_';
+        }
+    }
+    return ret;
+}
 
 } // namespace CppSPM
