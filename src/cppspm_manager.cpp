@@ -382,6 +382,7 @@ bool Manager::installFromGithub(const std::string &githubPackage) {
     }
     std::string packageVersion = githubPackage.substr(packageName.size()+1);
     std::string url = "https://github.com/" + packageName + "/archive/" + packageVersion + ".zip";
+    // std::string url = "https://github.com/" + packageName + "/zip/" + packageVersion;
     std::string ufolder = "github_" + this->packageNameToUFolder(packageName);
 
     CppSPM::Dependence d;
@@ -392,7 +393,9 @@ bool Manager::installFromGithub(const std::string &githubPackage) {
     jsonDependence["from"] = url;
     jsonDependence["ufolder"] = ufolder;
     
-    std::string cacheDir = m_sDir + "/.cppspmcache";
+    // https://raw.githubusercontent.com/sea-kg/nlohmann_json/master/cppspm.json
+
+    std::string cacheDir = m_sDir + "/.cppspm-cache";
     if (!Fallen::dirExists(cacheDir)) {
         Fallen::makeDir(cacheDir);
     }
@@ -401,7 +404,7 @@ bool Manager::installFromGithub(const std::string &githubPackage) {
     if (Fallen::fileExists(zipFile)) {
         // TODO remove file    
     }
-    DownloadDependence::downloadZip(url, zipFile);
+    DownloadDependence::downloadZipFromGithub(url, zipFile);
 
     // TODO download and check package
 

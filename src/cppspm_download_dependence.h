@@ -7,7 +7,7 @@ namespace CppSPM {
 
 class DownloadDependence {
     public:
-        static bool downloadZip(const std::string &sUrl, const std::string &zipFile);
+        static bool downloadZipFromGithub(const std::string &sUrl, const std::string &zipFile);
 };
 
 } // namespace CppSPM
