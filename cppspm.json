@@ -31,34 +31,6 @@
             "ufolder": "github_sea_kg_nlohmann_json",
             "version": "v3.7.0"
         },
-        {
-            "from": "https://github.com/sea-kg/nlohmann_json/archive/:v3.7.0.zip",
-            "name": "sea-kg/nlohmann_json",
-            "type": "github",
-            "ufolder": "github_",
-            "version": ":v3.7.0"
-        },
-        {
-            "from": "https://github.com/sea-kg/nlohmann_json/archive/:v3.7.0.zip",
-            "name": "sea-kg/nlohmann_json",
-            "type": "github",
-            "ufolder": "github_",
-            "version": ":v3.7.0"
-        },
-        {
-            "from": "https://github.com/sea-kg/nlohmann_json/archive/:v3.7.0.zip",
-            "name": "sea-kg/nlohmann_json",
-            "type": "github",
-            "ufolder": "github_",
-            "version": ":v3.7.0"
-        },
-        {
-            "from": "https://github.com/sea-kg/nlohmann_json/archive/:v3.7.0.zip",
-            "name": "sea-kg/nlohmann_json",
-            "type": "github",
-            "ufolder": "github_sea-kg_nlohmann_json",
-            "version": ":v3.7.0"
-        }
     ],
     "description": "C++ Source Package manager",
     "files": [

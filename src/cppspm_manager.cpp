@@ -1,4 +1,5 @@
 #include "cppspm_manager.h"
+#include "cppspm_download_dependence.h"
 #include <iostream>
 #include <fallen.h>
 #include <sstream>
@@ -379,19 +380,32 @@ bool Manager::installFromGithub(const std::string &githubPackage) {
     if (getline(f, s, ':')) {
         packageName = s;
     }
-    std::string packageVersion = githubPackage.substr(packageName.size());
-        
+    std::string packageVersion = githubPackage.substr(packageName.size()+1);
+    std::string url = "https://github.com/" + packageName + "/archive/" + packageVersion + ".zip";
+    std::string ufolder = "github_" + this->packageNameToUFolder(packageName);
 
     CppSPM::Dependence d;
     nlohmann::json jsonDependence;
     jsonDependence["type"] = "github";
     jsonDependence["version"] = packageVersion;
     jsonDependence["name"] = packageName;
-    jsonDependence["from"] = "https://github.com/" + packageName + "/archive/" + packageVersion + ".zip";
-    jsonDependence["ufolder"] = "github_" + this->packageNameToUFolder(packageName);
-    d.fromJson(jsonDependence);
+    jsonDependence["from"] = url;
+    jsonDependence["ufolder"] = ufolder;
+    
+    std::string cacheDir = m_sDir + "/.cppspmcache";
+    if (!Fallen::dirExists(cacheDir)) {
+        Fallen::makeDir(cacheDir);
+    }
+
+    std::string zipFile = cacheDir + "/" + ufolder + ".zip";
+    if (Fallen::fileExists(zipFile)) {
+        // TODO remove file    
+    }
+    DownloadDependence::downloadZip(url, zipFile);
 
     // TODO download and check package
+
+    d.fromJson(jsonDependence);
     m_vDependencies.push_back(d);
 
     return true;

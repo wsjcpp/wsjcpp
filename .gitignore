@@ -1,6 +1,7 @@
 cppspm
 tmp/*
 .vscode/*
+.cppspmcache
 
 # Prerequisites
 *.d
