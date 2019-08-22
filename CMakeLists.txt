@@ -4,7 +4,7 @@ project(cppspm)
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/src.cppspm/CMakeLists.txt)
 
-set(CMAKE_AUTOMOC ON)
+# set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD 11)
 set(EXECUTABLE_OUTPUT_PATH ${cppspm_SOURCE_DIR})
 

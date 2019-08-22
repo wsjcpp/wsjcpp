@@ -3,7 +3,7 @@
 add_definitions(-DCPPSPM_VERSION="0.0.1")
 add_definitions(-DCPPSPM_NAME="cppspm")
 
-set(CMAKE_AUTOMOC ON)
+# set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD 11)
 
 set (CPPSPM_LIBRARIES "")
