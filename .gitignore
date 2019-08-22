@@ -2,6 +2,7 @@ cppspm
 tmp/*
 .vscode/*
 .cppspm-cache
+.DS_Store
 
 # Prerequisites
 *.d

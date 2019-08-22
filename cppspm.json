@@ -25,62 +25,6 @@
             "version": "0.0.1"
         },
         {
-            "from": "https://github.com/sea-kg/nlohmann_json/archive/v3.7.0.zip",
-            "name": "sea-kg/nlohmann_json",
-            "type": "github",
-            "ufolder": "github_sea_kg_nlohmann_json",
-            "version": "v3.7.0"
-        },
-        {
-            "from": "https://github.com/sea-kg/nlohmann_json/archive/master.zip",
-            "name": "sea-kg/nlohmann_json",
-            "type": "github",
-            "ufolder": "github_sea-kg_nlohmann_json",
-            "version": "master"
-        },
-        {
-            "from": "https://github.com/sea-kg/nlohmann_json/archive/v3.7.0.zip",
-            "name": "sea-kg/nlohmann_json",
-            "type": "github",
-            "ufolder": "github_sea-kg_nlohmann_json",
-            "version": "v3.7.0"
-        },
-        {
-            "from": "https://github.com/sea-kg/nlohmann_json/archive/master.zip",
-            "name": "sea-kg/nlohmann_json",
-            "type": "github",
-            "ufolder": "github_sea-kg_nlohmann_json",
-            "version": "master"
-        },
-        {
-            "from": "https://github.com/sea-kg/nlohmann_json/archive/master.zip",
-            "name": "sea-kg/nlohmann_json",
-            "type": "github",
-            "ufolder": "github_sea-kg_nlohmann_json",
-            "version": "master"
-        },
-        {
-            "from": "https://github.com/sea-kg/nlohmann_json/zip/master",
-            "name": "sea-kg/nlohmann_json",
-            "type": "github",
-            "ufolder": "github_sea-kg_nlohmann_json",
-            "version": "master"
-        },
-        {
-            "from": "https://github.com/sea-kg/nlohmann_json/zip/v3.4.7",
-            "name": "sea-kg/nlohmann_json",
-            "type": "github",
-            "ufolder": "github_sea-kg_nlohmann_json",
-            "version": "v3.4.7"
-        },
-        {
-            "from": "https://github.com/sea-kg/nlohmann_json/archive/v3.4.7.zip",
-            "name": "sea-kg/nlohmann_json",
-            "type": "github",
-            "ufolder": "github_sea-kg_nlohmann_json",
-            "version": "v3.4.7"
-        },
-        {
             "from": "https://github.com/sea-kg/nlohmann_json/archive/master.zip",
             "name": "sea-kg/nlohmann_json",
             "type": "github",
