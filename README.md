@@ -11,6 +11,7 @@ C++ Source Package Manager
 Requirements:
 ```
 $ brew install libzip
+$ ./build_simple.sh
 ```
 
 
@@ -18,6 +19,7 @@ $ brew install libzip
 
 Compile and install (just a copy cppspm to /usr/bin/)
 ```
+$ sudo apt install libzip-dev 
 $ ./build_simple.sh
 $ ./install.sh
 ```

@@ -30,6 +30,13 @@
             "type": "github",
             "ufolder": "github_sea-kg_nlohmann_json",
             "version": "master"
+        },
+        {
+            "from": "https://github.com/sea-kg/nlohmann_json/archive/master.zip",
+            "name": "sea-kg/nlohmann_json",
+            "type": "github",
+            "ufolder": "github_sea-kg_nlohmann_json",
+            "version": "master"
         }
     ],
     "description": "C++ Source Package manager",

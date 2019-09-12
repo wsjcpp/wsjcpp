@@ -39,13 +39,12 @@ if(MACOSX)  # TODO redesign
   set(LIBZIP_LIBRARIES "/usr/local/Cellar/libzip/1.5.2/lib/libzip.dylib")
   list (APPEND CPPSPM_LIBRARIES ${LIBZIP_LIBRARIES})
 else(MACOSX)
-  find_package(LIBZIP REQUIRED)
-  if(LIBZIP_FOUND)
-      list (APPEND CPPSPM_INCLUDE_DIRS ${LIBZIP_INCLUDE_DIRS})
-      list (APPEND CPPSPM_LIBRARIES ${LIBZIP_LIBRARIES})
-  else(LIBZIP_FOUND)
-    MESSAGE(FATAL_ERROR "Could not find the libzip library and development files.")
-  endif( LIBZIP_FOUND )
+  
+  set(LIBZIP_INCLUDE_DIRS "/usr/include/")
+  list (APPEND CPPSPM_INCLUDE_DIRS ${LIBZIP_INCLUDE_DIRS})
+  set(LIBZIP_LIBRARIES "/usr/lib/x86_64-linux-gnu/libzip.so")
+  list (APPEND CPPSPM_LIBRARIES ${LIBZIP_LIBRARIES})
+  
 endif(MACOSX)
 
 # ZLIB
