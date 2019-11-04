@@ -9,12 +9,10 @@
 #include "wsjcpp_file.h"
 #include "wsjcpp_repository.h"
 
-namespace CppSPM {
-
-class Manager {
+class WSJCppPackageManager {
     public:
-        Manager(const std::string &sDir);
-        Manager(const std::string &sDir, const std::string &sParentDir, bool bHolded);
+        WSJCppPackageManager(const std::string &sDir);
+        WSJCppPackageManager(const std::string &sDir, const std::string &sParentDir, bool bHolded);
         bool init();
         bool load();
         bool save();
@@ -50,7 +48,5 @@ class Manager {
         
         nlohmann::json m_jsonPackageInfo;
 };
-
-} // namespace CppSPM
 
 #endif // CPPSPM_MANAGER_H

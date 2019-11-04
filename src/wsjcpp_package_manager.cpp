@@ -1,4 +1,4 @@
-#include "wsjcpp_manager.h"
+#include "wsjcpp_package_manager.h"
 #include "wsjcpp_download_dependence.h"
 #include <iostream>
 #include <fallen.h>
@@ -6,9 +6,7 @@
 #include <fstream>
 #include <iomanip>
 
-namespace CppSPM {
-
-Manager::Manager(const std::string &sDir) {
+WSJCppPackageManager::WSJCppPackageManager(const std::string &sDir) {
     m_sDir = sDir;
     m_sDirWithSources = m_sDir + "/src.cppspm";
     m_sCppSPMJsonFilename = "cppspm.json";
@@ -18,7 +16,7 @@ Manager::Manager(const std::string &sDir) {
 
 // ---------------------------------------------------------------------
 
-Manager::Manager(const std::string &sDir, const std::string &sParentDir, bool bHolded) {
+WSJCppPackageManager::WSJCppPackageManager(const std::string &sDir, const std::string &sParentDir, bool bHolded) {
     m_sDir = sDir;
     m_sDirWithSources = m_sDir + "/src.cppspm";
     m_sCppSPMJsonFilename = "cppspm.hold.json";
@@ -29,7 +27,7 @@ Manager::Manager(const std::string &sDir, const std::string &sParentDir, bool bH
 
 // ---------------------------------------------------------------------
 
-bool Manager::init() {
+bool WSJCppPackageManager::init() {
 
     if (!Fallen::dirExists(m_sDir)) {
         std::cout << "Directory '" << m_sDir << "' did not exists... create the dir ? (y/n)" << std::endl;
@@ -57,7 +55,7 @@ bool Manager::init() {
     std::cout << "Author's Name: ";
     std::getline(std::cin, sNameOfAuthor);
 
-    Author author(sNameOfAuthor);
+    CppSPM::Author author(sNameOfAuthor);
     m_vAuthors.push_back(author);
     
     for (int i = 0; i < 10; i++) {
@@ -77,7 +75,7 @@ bool Manager::init() {
     if (sServerAddress == "") {
         sServerAddress = sDefaultServerAddress;
     }
-    Server server(sServerAddress);
+    CppSPM::Server server(sServerAddress);
     m_vServers.push_back(server);
 
     return true;
@@ -85,7 +83,7 @@ bool Manager::init() {
 
 // ---------------------------------------------------------------------
 
-bool Manager::save() {
+bool WSJCppPackageManager::save() {
     if (m_bHolded) {
         std::cout << "ERROR: cppspm is holded" << std::endl;
         return false;
@@ -144,7 +142,7 @@ bool Manager::save() {
 
 // ---------------------------------------------------------------------
 
-bool Manager::load() {
+bool WSJCppPackageManager::load() {
     std::string sJsonFilename = m_sDir + "/" + m_sCppSPMJsonFilename;
 
     if (!Fallen::fileExists(sJsonFilename)) {
@@ -218,7 +216,7 @@ bool Manager::load() {
 
 // ---------------------------------------------------------------------
 
-void Manager::printFiles() {
+void WSJCppPackageManager::printFiles() {
     for (auto it = m_vFiles.begin(); it != m_vFiles.end(); ++it) {
         std::cout << it->getSha1() << " " << it->getFrom() << " -> " << it->getTo() << std::endl;
     }
@@ -226,7 +224,7 @@ void Manager::printFiles() {
 
 // ---------------------------------------------------------------------
 
-bool Manager::addFile(const std::string &sFile) {
+bool WSJCppPackageManager::addFile(const std::string &sFile) {
     if (m_bHolded) {
         std::cout << "ERROR: cppspm is holded" << std::endl;
         return false;
@@ -251,7 +249,7 @@ bool Manager::addFile(const std::string &sFile) {
 
 // ---------------------------------------------------------------------
 
-bool Manager::deleteFile(const std::string &sFile) {
+bool WSJCppPackageManager::deleteFile(const std::string &sFile) {
     if (m_bHolded) {
         std::cout << "ERROR: cppspm is holded" << std::endl;
         return false;
@@ -269,7 +267,7 @@ bool Manager::deleteFile(const std::string &sFile) {
 
 // ---------------------------------------------------------------------
 
-void Manager::printServers() {
+void WSJCppPackageManager::printServers() {
     for (auto it = m_vServers.begin(); it != m_vServers.end(); ++it) {
         std::cout << it->getAddress() << std::endl;
     }
@@ -277,7 +275,7 @@ void Manager::printServers() {
 
 // ---------------------------------------------------------------------
 
-bool Manager::addServer(const std::string &sServer) {
+bool WSJCppPackageManager::addServer(const std::string &sServer) {
     if (m_bHolded) {
         std::cout << "ERROR: cppspm is holded" << std::endl;
         return false;
@@ -297,7 +295,7 @@ bool Manager::addServer(const std::string &sServer) {
 
 // ---------------------------------------------------------------------
 
-bool Manager::deleteServer(const std::string &sServer) {
+bool WSJCppPackageManager::deleteServer(const std::string &sServer) {
     if (m_bHolded) {
         std::cout << "ERROR: cppspm is holded" << std::endl;
         return false;
@@ -315,7 +313,7 @@ bool Manager::deleteServer(const std::string &sServer) {
 
 // ---------------------------------------------------------------------
 
-bool Manager::updateDependencies() {
+bool WSJCppPackageManager::updateDependencies() {
     if (m_bHolded) {
         std::cout << "ERROR: cppspm is holded" << std::endl;
         return false;
@@ -325,17 +323,17 @@ bool Manager::updateDependencies() {
 
 // ---------------------------------------------------------------------
 
-void Manager::printDependencies(std::string sIntent) {
+void WSJCppPackageManager::printDependencies(std::string sIntent) {
     std::string sNexIntent = sIntent + "  \\--";
     for (auto it = m_vDependencies.begin(); it != m_vDependencies.end(); ++it) {
         std::cout << sIntent << " * " << it->getName() << ":" << it->getVersion() << "    (" << it->getType() << ":" << it->getFrom() << ")" << std::endl;
         if (m_bHolded) {
-            CppSPM::Manager m(m_sParentDir + "/" + it->getName(), m_sParentDir, true);
+            WSJCppPackageManager m(m_sParentDir + "/" + it->getName(), m_sParentDir, true);
             if (m.load()) {
                 m.printDependencies(sNexIntent);
             }
         } else {
-            CppSPM::Manager m(m_sDirWithSources + "/" + it->getName(), m_sDirWithSources, true);
+            WSJCppPackageManager m(m_sDirWithSources + "/" + it->getName(), m_sDirWithSources, true);
             if (m.load()) {
                 m.printDependencies(sNexIntent);
             }
@@ -346,19 +344,19 @@ void Manager::printDependencies(std::string sIntent) {
 
 // ---------------------------------------------------------------------
 
-void Manager::verify() {
+void WSJCppPackageManager::verify() {
     std::vector<std::string> m_vVerified;
 
     // HERE verify current package
     
     for (auto it = m_vDependencies.begin(); it != m_vDependencies.end(); ++it) {
         if (m_bHolded) {
-            CppSPM::Manager m(m_sParentDir + "/" + it->getName(), m_sParentDir, true);
+            WSJCppPackageManager m(m_sParentDir + "/" + it->getName(), m_sParentDir, true);
             if (m.load()) {
                 m.verify();
             }
         } else {
-            CppSPM::Manager m(m_sDirWithSources + "/" + it->getName(), m_sDirWithSources, true);
+            WSJCppPackageManager m(m_sDirWithSources + "/" + it->getName(), m_sDirWithSources, true);
             if (m.load()) {
                 m.verify();
             }
@@ -369,7 +367,7 @@ void Manager::verify() {
 
 // ---------------------------------------------------------------------
 
-bool Manager::installFromGithub(const std::string &githubPackage) {
+bool WSJCppPackageManager::installFromGithub(const std::string &githubPackage) {
     if (m_bHolded) { // readonly
         return false;
     }
@@ -404,7 +402,7 @@ bool Manager::installFromGithub(const std::string &githubPackage) {
     if (Fallen::fileExists(zipFile)) {
         // TODO remove file    
     }
-    DownloadDependence::downloadZipFromGithub(url, zipFile);
+    CppSPM::DownloadDependence::downloadZipFromGithub(url, zipFile);
 
     // TODO download and check package
 
@@ -416,7 +414,7 @@ bool Manager::installFromGithub(const std::string &githubPackage) {
 
 // ---------------------------------------------------------------------
 
-std::string Manager::packageNameToUFolder(const std::string &sFilename) {
+std::string WSJCppPackageManager::packageNameToUFolder(const std::string &sFilename) {
     std::string ret = sFilename;
     std::string illegalChars = "\\/:?\"<>|";
     std::string::iterator it;
@@ -427,5 +425,3 @@ std::string Manager::packageNameToUFolder(const std::string &sFilename) {
     }
     return ret;
 }
-
-} // namespace CppSPM

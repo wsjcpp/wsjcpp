@@ -28,8 +28,8 @@ list (APPEND WSJCPP_SOURCES "src/wsjcpp_file.h")
 list (APPEND WSJCPP_SOURCES "src/wsjcpp_file.cpp")
 list (APPEND WSJCPP_SOURCES "src/wsjcpp_repository.h")
 list (APPEND WSJCPP_SOURCES "src/wsjcpp_repository.cpp")
-list (APPEND WSJCPP_SOURCES "src/wsjcpp_manager.cpp")
-list (APPEND WSJCPP_SOURCES "src/wsjcpp_manager.h")
+list (APPEND WSJCPP_SOURCES "src/wsjcpp_package_manager.cpp")
+list (APPEND WSJCPP_SOURCES "src/wsjcpp_package_manager.h")
 list (APPEND WSJCPP_SOURCES "src/main.cpp")
 
 # LIBZIP

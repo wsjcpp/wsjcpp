@@ -1,7 +1,7 @@
-cppspm
+wsjcpp
 tmp/*
 .vscode/*
-.cppspm-cache
+.wsjcpp-cache
 .DS_Store
 
 # Prerequisites

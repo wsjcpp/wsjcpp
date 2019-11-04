@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <fallen.h>
 #include <fallen_parse_args.h>
-#include "wsjcpp_manager.h" 
+#include "wsjcpp_package_manager.h" 
 
 // ---------------------------------------------------------------------
 
@@ -46,35 +46,35 @@ int main(int argc, char* argv[]) {
             std::cout << "Error: cppspm.json already exists." << std::endl;
             return -1;
         }
-        CppSPM::Manager pkg(sDirectory);
+        WSJCppPackageManager pkg(sDirectory);
         if (!pkg.init()) {
             return -1;
         }
         pkg.save();
         return 0;
     } /* else if (helpArgs.has("update-deps")) {
-        CppSPM::Manager pkg(".");
+        WSJCppPackageManager pkg(".");
         if (!pkg.load()) {
             return -1;
         }
         pkg.updateDependencies();
         return 0;
     } */ else if (helpArgs.has("dependencies")) {
-        CppSPM::Manager pkg(".");
+        WSJCppPackageManager pkg(".");
         if (!pkg.load()) {
             return -1;
         }
         pkg.printDependencies();
         return 0;
     } else if (helpArgs.has("files")) {
-        CppSPM::Manager pkg(".");
+        WSJCppPackageManager pkg(".");
         if (!pkg.load()) {
             return -1;
         }
         pkg.printFiles();
         return 0;
     }  else if (helpArgs.has("add-source-file")) {
-        CppSPM::Manager pkg(".");
+        WSJCppPackageManager pkg(".");
         std::string sFile = helpArgs.option("add-source-file");
         if (!pkg.load()) {
             return -1;
@@ -84,7 +84,7 @@ int main(int argc, char* argv[]) {
         }
         return 0;
     } else if (helpArgs.has("delete-source-file")) {
-        CppSPM::Manager pkg(".");
+        WSJCppPackageManager pkg(".");
         std::string sFile = helpArgs.option("delete-source-file");
         if (!pkg.load()) {
             return -1;
@@ -94,14 +94,14 @@ int main(int argc, char* argv[]) {
         }
         return 0;
     }  else if (helpArgs.has("servers")) {
-        CppSPM::Manager pkg(".");
+        WSJCppPackageManager pkg(".");
         if (!pkg.load()) {
             return -1;
         }
         pkg.printServers();
         return 0;
     }  else if (helpArgs.has("add-remote-server")) {
-        CppSPM::Manager pkg(".");
+        WSJCppPackageManager pkg(".");
         std::string sServer = helpArgs.option("add-remote-server");
         if (!pkg.load()) {
             return -1;
@@ -111,7 +111,7 @@ int main(int argc, char* argv[]) {
         }
         return 0;
     } else if (helpArgs.has("delete-remote-server")) {
-        CppSPM::Manager pkg(".");
+        WSJCppPackageManager pkg(".");
         std::string sServer = helpArgs.option("delete-remote-server");
         if (!pkg.load()) {
             return -1;
@@ -121,14 +121,14 @@ int main(int argc, char* argv[]) {
         }
         return 0;
     } else if (helpArgs.has("verify")) {
-        CppSPM::Manager pkg(".");
+        WSJCppPackageManager pkg(".");
         if (!pkg.load()) {
             return -1;
         }
         pkg.verify();
         return 0;
     } else if (helpArgs.has("install-from-github")) {
-        CppSPM::Manager pkg(".");
+        WSJCppPackageManager pkg(".");
         if (!pkg.load()) {
             return -1;
         }
