@@ -1,7 +1,8 @@
 {
     "authors": [
         {
-            "name": "Evgenii Sopov"
+            "name": "Evgenii Sopov",
+            "email": "mrseakg@gmail.com"
         }
     ],
     "wsjcpp_version": 1,
@@ -67,11 +68,11 @@
         "",
         "sources"
     ],
-    "name": "cppspm",
+    "name": "wsjcpp",
     "repositories": [],
     "servers": [
         {
-            "address": "sea-kg.com"
+            "address": "https://sea-kg.com/wsjcpp/"
         }
     ],
     "version": "0.0.1"
