@@ -1,5 +1,5 @@
-#ifndef CPPSPM_AUTHOR_H
-#define CPPSPM_AUTHOR_H
+#ifndef WSJCPP_AUTHOR_H
+#define WSJCPP_AUTHOR_H
 
 #include <string>
 #include <json.hpp>
@@ -19,4 +19,4 @@ class Author {
 
 } // namespace CppSPM
 
-#endif // CPPSPM_AUTHOR_H
+#endif // WSJCPP_AUTHOR_H

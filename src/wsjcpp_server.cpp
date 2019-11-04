@@ -1,4 +1,4 @@
-#include "cppspm_server.h"
+#include "wsjcpp_server.h"
 #include <iostream>
 
 namespace CppSPM {

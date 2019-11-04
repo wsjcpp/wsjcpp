@@ -1,4 +1,4 @@
-#include "cppspm_download_dependence.h"
+#include "wsjcpp_download_dependence.h"
 #include <iostream>
 #include <stdio.h> 
 #include <stdlib.h> 

@@ -1,5 +1,5 @@
-#include "cppspm_manager.h"
-#include "cppspm_download_dependence.h"
+#include "wsjcpp_manager.h"
+#include "wsjcpp_download_dependence.h"
 #include <iostream>
 #include <fallen.h>
 #include <sstream>

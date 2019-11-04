@@ -3,11 +3,11 @@
 
 #include <string>
 #include <json.hpp>
-#include "cppspm_author.h"
-#include "cppspm_server.h"
-#include "cppspm_dependence.h"
-#include "cppspm_file.h"
-#include "cppspm_repository.h"
+#include "wsjcpp_author.h"
+#include "wsjcpp_server.h"
+#include "wsjcpp_dependence.h"
+#include "wsjcpp_file.h"
+#include "wsjcpp_repository.h"
 
 namespace CppSPM {
 

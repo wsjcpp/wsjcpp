@@ -3,14 +3,14 @@
 #include <algorithm>
 #include <fallen.h>
 #include <fallen_parse_args.h>
-#include "cppspm_manager.h" 
+#include "wsjcpp_manager.h" 
 
 // ---------------------------------------------------------------------
 
 int main(int argc, char* argv[]) {
     std::string TAG = "MAIN";
-    std::string appName = std::string(CPPSPM_NAME);
-    std::string appVersion = std::string(CPPSPM_VERSION);
+    std::string appName = std::string(WSJCPP_NAME);
+    std::string appVersion = std::string(WSJCPP_VERSION);
 
     FallenParseArgs helpArgs(argc, argv);
     helpArgs.setAppName(appName);

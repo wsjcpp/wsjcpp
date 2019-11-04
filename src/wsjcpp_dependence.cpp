@@ -1,4 +1,4 @@
-#include "cppspm_dependence.h"
+#include "wsjcpp_dependence.h"
 #include <iostream>
 
 namespace CppSPM {

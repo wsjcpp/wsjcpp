@@ -1,4 +1,4 @@
-#include "cppspm_author.h"
+#include "wsjcpp_author.h"
 #include <iostream>
 
 namespace CppSPM {

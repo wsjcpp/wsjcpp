@@ -1,69 +1,73 @@
-# cppspm
+# wsjcpp
 
 (in process)
 
-C++ Source Package Manager
+WebSocket JSON && C++ (and a little http) Also it's 'Source Package Manager For C++'
 
-## Build && Develop
+## Build and Install
 
-### Mac OS
-
-Requirements:
-```
-$ brew install libzip
-$ ./build_simple.sh
-```
-
-
-### Ubuntu/Debian
-
-Compile and install (just a copy cppspm to /usr/bin/)
-```
-$ sudo apt install libzip-dev 
-$ ./build_simple.sh
-$ ./install.sh
-```
+* [Build && Install: Mac OS](https://github.com/sea-kg/wsjcpp/blob/master/docs/BUILD-AND-INSTALL-MACOS.md)
+* [Build && Install: Ubuntu/Debian](https://github.com/sea-kg/wsjcpp/blob/master/docs/BUILD-AND-INSTALL-UBUNTU.md)
 
 ## Init new package
 
 ```
 $ cd your_package
-$ cppspm new .
+$ wsjcpp new .
 ```
 
-For distribute files:
+Will be prepared file: CMakeLists.txt
+
+For distribute your files:
 
 ```
-$ cppspm add-file src/your_source_file.cpp
+$ wsjcpp files add src/your_source_file.cpp
 ```
 
-## Run local server
-
-```
-$ cppspm --port 3001 --datadir ./data start-server
-```
-
-## Install requirements
+## How to install packages
 
 From github:
 
 ```
-$ cppspm install https://github.com/sea-kg/nlohmann_json:v3.7.0
+$ wsjcpp install 'https://github.com/sea-kg/nlohmann_json:v3.7.0'
 ```
 
 From bitbucket:
 ```
-$ cppspm install https://bitbucket.org/sea-kg/nlohmann_json:v3.7.0
+$ wsjcpp install https://bitbucket.org/sea-kg/nlohmann_json:v3.7.0
 ```
 
 Via link:
 ```
-$ cppspm install https://sea-kg.com/cppspm/somepkg-v1.0.0.zip
-$ cppspm install http://sea-kg.com/cppspm/somepkg-v1.0.0.zip
+$ wsjcpp install https://sea-kg.com/wsjcpp/pkg-example/v1.0.0
+$ wsjcpp install http://sea-kg.com/wsjcpp/pkg-example/v1.0.0
 ```
 
-from cppspm servers:
+From local folder:
 ```
-$ cppspm install cppspm/somepkg-v1.0.0.zip
+$ wsjcpp install file:///usr/share/pkg-example-v1.0.0
 ```
 
+## How to look what installed
+
+```
+$ wsjcpp deps list
+```
+
+## How to uninstall packages
+
+```
+$ wsjcpp uninstall 'sea-kg/nlohmann_json'
+```
+
+## Infomation about package 
+
+```
+$ wsjcpp info 'sea-kg/nlohmann_json'
+```
+
+About current package:
+
+```
+$ wsjcpp info
+```
