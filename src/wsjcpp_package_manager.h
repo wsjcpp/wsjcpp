@@ -8,6 +8,8 @@
 #include "wsjcpp_file.h"
 #include "wsjcpp_repository.h"
 
+// ---------------------------------------------------------------------
+
 class WSJCppPackageManagerAuthor {
     public:
         WSJCppPackageManagerAuthor();
@@ -19,6 +21,7 @@ class WSJCppPackageManagerAuthor {
         nlohmann::json m_jsonAuthor;
 };
 
+// ---------------------------------------------------------------------
 
 class WSJCppPackageManager {
     public:
@@ -37,6 +40,7 @@ class WSJCppPackageManager {
         void printDependencies(std::string sIntent = "");
         void verify();
         bool installFromGithub(const std::string &packageName);
+        void printInfo();
 
     private:
         std::string packageNameToUFolder(const std::string &sFilename);
@@ -44,8 +48,8 @@ class WSJCppPackageManager {
         std::string m_sDir;
         bool m_bHolded;
         std::string m_sParentDir;
-        std::string m_sCppSPMJsonFilename;
-        int m_nCppspmVersion;
+        std::string m_sWSJCppJsonFilename;
+        int m_nWSJCppVersion;
         std::string m_sDirWithSources;
         std::string m_sName;
         std::string m_sVersion;

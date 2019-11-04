@@ -32,9 +32,9 @@ void WSJCppPackageManagerAuthor::fromJson(const nlohmann::json &jsonAuthor) {
 
 WSJCppPackageManager::WSJCppPackageManager(const std::string &sDir) {
     m_sDir = sDir;
-    m_sDirWithSources = m_sDir + "/src.cppspm";
-    m_sCppSPMJsonFilename = "cppspm.json";
-    m_nCppspmVersion = 1;
+    m_sDirWithSources = m_sDir + "/src.wsjcpp";
+    m_sWSJCppJsonFilename = "wsjcpp.json";
+    m_nWSJCppVersion = 1;
     m_bHolded = false;
 }
 
@@ -42,9 +42,9 @@ WSJCppPackageManager::WSJCppPackageManager(const std::string &sDir) {
 
 WSJCppPackageManager::WSJCppPackageManager(const std::string &sDir, const std::string &sParentDir, bool bHolded) {
     m_sDir = sDir;
-    m_sDirWithSources = m_sDir + "/src.cppspm";
-    m_sCppSPMJsonFilename = "cppspm.hold.json";
-    m_nCppspmVersion = 1;
+    m_sDirWithSources = m_sDir + "/src.wsjcpp";
+    m_sWSJCppJsonFilename = "wsjcpp.hold.json";
+    m_nWSJCppVersion = 1;
     m_bHolded = true;
     m_sParentDir = sParentDir;
 }
@@ -121,7 +121,7 @@ bool WSJCppPackageManager::save() {
         Fallen::writeFile(sGitkeepFile, "");
     }
 
-    m_jsonPackageInfo["cppspm_version"] = m_nCppspmVersion;
+    m_jsonPackageInfo["wsjcpp_version"] = m_nWSJCppVersion;
     m_jsonPackageInfo["name"] = m_sName;
     m_jsonPackageInfo["version"] = m_sVersion;
     m_jsonPackageInfo["description"] = m_sDescription;
@@ -159,7 +159,7 @@ bool WSJCppPackageManager::save() {
     m_jsonPackageInfo["repositories"] = jsonRepositories;
 
     int indent = 4;
-    std::ofstream cppspmJson(m_sDir + "/" + m_sCppSPMJsonFilename);
+    std::ofstream cppspmJson(m_sDir + "/" + m_sWSJCppJsonFilename);
     cppspmJson << std::setw(4) << m_jsonPackageInfo << std::endl;
     return true;
 }
@@ -167,7 +167,7 @@ bool WSJCppPackageManager::save() {
 // ---------------------------------------------------------------------
 
 bool WSJCppPackageManager::load() {
-    std::string sJsonFilename = m_sDir + "/" + m_sCppSPMJsonFilename;
+    std::string sJsonFilename = m_sDir + "/" + m_sWSJCppJsonFilename;
 
     if (!Fallen::fileExists(sJsonFilename)) {
         std::cout << "ERROR: '" << sJsonFilename << "' did not found" << std::endl;
@@ -191,10 +191,10 @@ bool WSJCppPackageManager::load() {
                 std::string keyword = it1.value();
                 m_vKeywords.push_back(keyword);
             }
-        } else if (sKey == "cppspm_version") {
-            int nCppSPMVersion = it.value();
-            if (nCppSPMVersion > m_nCppspmVersion) {
-                std::cout << "WARN: Please update your 'cppspm' to " << nCppSPMVersion << std::endl;
+        } else if (sKey == "wsjcpp_version") {
+            int nWSJCppVersion = it.value();
+            if (nWSJCppVersion > m_nWSJCppVersion) {
+                std::cout << "WARN: Please update your 'cppspm' to " << nWSJCppVersion << std::endl;
             }
         } else if (sKey == "authors") {
             nlohmann::json jsonAuthors = it.value();
@@ -417,7 +417,7 @@ bool WSJCppPackageManager::installFromGithub(const std::string &githubPackage) {
     
     // https://raw.githubusercontent.com/sea-kg/nlohmann_json/master/cppspm.json
 
-    std::string cacheDir = m_sDir + "/.cppspm-cache";
+    std::string cacheDir = m_sDir + "/.wsjcpp-cache";
     if (!Fallen::dirExists(cacheDir)) {
         Fallen::makeDir(cacheDir);
     }
@@ -434,6 +434,34 @@ bool WSJCppPackageManager::installFromGithub(const std::string &githubPackage) {
     m_vDependencies.push_back(d);
 
     return true;
+}
+
+// ---------------------------------------------------------------------
+
+void WSJCppPackageManager::printInfo() {
+    
+    std::cout << std::endl 
+        << "===== wsjcpp info =====" << std::endl
+        << "Name: " << m_sName << std::endl
+        << "Version: " << m_sVersion << std::endl
+        << "Description: " << m_sDescription
+        << std::endl;
+    if (m_bHolded) {
+        std::cout << "Package is holded" << std::endl;
+    }
+    std::cout << "Directory: " << m_sDir << std::endl;
+    std::cout << "wsjcpp.version = " << m_nWSJCppVersion << std::endl;
+    // print keywords
+    std::cout << "Keywords: " << std::endl;
+    for (unsigned int i = 0; i < m_vKeywords.size(); i++) {
+        std::cout << " - " << m_vKeywords[i] << std::endl;
+    }
+    // TODO: print authors
+    // TODO: print files
+    // TODO: print deps
+
+    std::cout << "===== wsjcpp info =====" << std::endl
+        << std::endl;
 }
 
 // ---------------------------------------------------------------------

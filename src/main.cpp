@@ -7,10 +7,32 @@
 
 // ---------------------------------------------------------------------
 
+
+// ---------------------------------------------------------------------
+
 int main(int argc, char* argv[]) {
     std::string TAG = "MAIN";
     std::string appName = std::string(WSJCPP_NAME);
     std::string appVersion = std::string(WSJCPP_VERSION);
+    std::vector<std::string> vArgs;
+
+    for (int i = 0; i < argc; i++) {
+        vArgs.push_back(std::string(argv[i]));
+    }
+
+    if (vArgs.size() == 2 && vArgs[1] == "help") {
+        // 
+    }
+
+    if (vArgs.size() == 3 && vArgs[1] == "info") {
+        WSJCppPackageManager pkg(vArgs[2]);
+        if (!pkg.load()) {
+            return -1;
+        }
+        pkg.printInfo();
+        return 0;
+    }
+
 
     FallenParseArgs helpArgs(argc, argv);
     helpArgs.setAppName(appName);
@@ -40,10 +62,10 @@ int main(int argc, char* argv[]) {
     if (helpArgs.handleDefault()) {
         return 0;
     } else if (helpArgs.has("new")) {
-        std::string sCppSPMJson = "cppspm.json";
+        std::string sCppSPMJson = "wsjcpp.json";
         std::string sDirectory = helpArgs.option("new");
         if (Fallen::fileExists(sCppSPMJson)) {
-            std::cout << "Error: cppspm.json already exists." << std::endl;
+            std::cout << "Error: wsjcpp.json already exists." << std::endl;
             return -1;
         }
         WSJCppPackageManager pkg(sDirectory);
