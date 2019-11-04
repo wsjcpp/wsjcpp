@@ -6,6 +6,30 @@
 #include <fstream>
 #include <iomanip>
 
+WSJCppPackageManagerAuthor::WSJCppPackageManagerAuthor() {
+}
+
+WSJCppPackageManagerAuthor::WSJCppPackageManagerAuthor(const std::string &sName) {
+    m_sName = sName;
+}
+
+nlohmann::json WSJCppPackageManagerAuthor::toJson() {
+    m_jsonAuthor["name"] = m_sName;
+    return m_jsonAuthor;
+}
+
+void WSJCppPackageManagerAuthor::fromJson(const nlohmann::json &jsonAuthor) {
+    m_jsonAuthor = jsonAuthor;
+    for (auto it = jsonAuthor.begin(); it != jsonAuthor.end(); ++it) {
+        std::string sKey = it.key();
+        if (sKey == "name") {
+            m_sName = it.value();
+        } else {
+           std::cout << "IGNORED in authors:  " << sKey << std::endl; 
+        }
+    }
+}
+
 WSJCppPackageManager::WSJCppPackageManager(const std::string &sDir) {
     m_sDir = sDir;
     m_sDirWithSources = m_sDir + "/src.cppspm";
@@ -55,7 +79,7 @@ bool WSJCppPackageManager::init() {
     std::cout << "Author's Name: ";
     std::getline(std::cin, sNameOfAuthor);
 
-    CppSPM::Author author(sNameOfAuthor);
+    WSJCppPackageManagerAuthor author(sNameOfAuthor);
     m_vAuthors.push_back(author);
     
     for (int i = 0; i < 10; i++) {
@@ -175,7 +199,7 @@ bool WSJCppPackageManager::load() {
         } else if (sKey == "authors") {
             nlohmann::json jsonAuthors = it.value();
             for (auto it2 = jsonAuthors.begin(); it2 != jsonAuthors.end(); ++it2) {
-                CppSPM::Author author;
+                WSJCppPackageManagerAuthor author;
                 author.fromJson(it2.value());
                 m_vAuthors.push_back(author);
             }

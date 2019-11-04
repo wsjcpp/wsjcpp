@@ -16,8 +16,6 @@ set(EXECUTABLE_OUTPUT_PATH ${wsjcpp_SOURCE_DIR})
 # include header dirs
 list (APPEND WSJCPP_INCLUDE_DIRS "src")
 
-list (APPEND WSJCPP_SOURCES "src/wsjcpp_author.h")
-list (APPEND WSJCPP_SOURCES "src/wsjcpp_author.cpp")
 list (APPEND WSJCPP_SOURCES "src/wsjcpp_server.h")
 list (APPEND WSJCPP_SOURCES "src/wsjcpp_server.cpp")
 list (APPEND WSJCPP_SOURCES "src/wsjcpp_dependence.h")

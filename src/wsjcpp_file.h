@@ -3,7 +3,6 @@
 
 #include <string>
 #include <json.hpp>
-#include "wsjcpp_author.h"
 #include "wsjcpp_server.h"
 #include "wsjcpp_dependence.h"
 #include "wsjcpp_file.h"

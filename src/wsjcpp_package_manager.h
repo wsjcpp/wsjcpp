@@ -1,13 +1,24 @@
-#ifndef CPPSPM_MANAGER_H
-#define CPPSPM_MANAGER_H
+#ifndef WSJCPP_PACKAGE_MANAGER_H
+#define WSJCPP_PACKAGE_MANAGER_H
 
 #include <string>
 #include <json.hpp>
-#include "wsjcpp_author.h"
 #include "wsjcpp_server.h"
 #include "wsjcpp_dependence.h"
 #include "wsjcpp_file.h"
 #include "wsjcpp_repository.h"
+
+class WSJCppPackageManagerAuthor {
+    public:
+        WSJCppPackageManagerAuthor();
+        WSJCppPackageManagerAuthor(const std::string &sName);
+        nlohmann::json toJson();
+        void fromJson(const nlohmann::json &jsonAuthor);
+    private:
+        std::string m_sName;
+        nlohmann::json m_jsonAuthor;
+};
+
 
 class WSJCppPackageManager {
     public:
@@ -40,7 +51,7 @@ class WSJCppPackageManager {
         std::string m_sVersion;
         std::string m_sDescription;
         std::vector<std::string> m_vKeywords;
-        std::vector<CppSPM::Author> m_vAuthors;
+        std::vector<WSJCppPackageManagerAuthor> m_vAuthors;
         std::vector<CppSPM::Server> m_vServers;
         std::vector<CppSPM::Dependence> m_vDependencies;
         std::vector<CppSPM::File> m_vFiles;
@@ -49,4 +60,4 @@ class WSJCppPackageManager {
         nlohmann::json m_jsonPackageInfo;
 };
 
-#endif // CPPSPM_MANAGER_H
+#endif // WSJCPP_PACKAGE_MANAGER_H
