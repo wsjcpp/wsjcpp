@@ -1,22 +1,107 @@
 #include "wsjcpp_package_manager.h"
-#include "wsjcpp_download_dependence.h"
+#include "wsjcpp_packager_download_dependence.h"
 #include <iostream>
 #include <fallen.h>
 #include <sstream>
 #include <fstream>
 #include <iomanip>
 
+
+// ---------------------------------------------------------------------
+
+WSJCppPackageManagerFile::WSJCppPackageManagerFile() {
+}
+
+// ---------------------------------------------------------------------
+
+WSJCppPackageManagerFile::WSJCppPackageManagerFile(const std::string &sFile) {
+    m_sFrom = sFile;
+}
+
+// ---------------------------------------------------------------------
+
+std::string WSJCppPackageManagerFile::getFrom() {
+    return m_sFrom;
+}
+
+// ---------------------------------------------------------------------
+
+std::string WSJCppPackageManagerFile::getTo() {
+    return m_sFrom;
+}
+
+// ---------------------------------------------------------------------
+
+std::string WSJCppPackageManagerFile::getSha1() {
+    return m_sSha1;
+}
+
+// ---------------------------------------------------------------------
+
+nlohmann::json WSJCppPackageManagerFile::toJson() {
+    m_jsonFile["from"] = m_sFrom;
+    m_jsonFile["to"] = m_sTo;
+    m_jsonFile["sha1"] = m_sSha1;
+    return m_jsonFile;
+}
+
+// ---------------------------------------------------------------------
+
+void WSJCppPackageManagerFile::fromJson(const nlohmann::json &jsonFile) {
+    m_jsonFile = jsonFile;
+    for (auto it = jsonFile.begin(); it != jsonFile.end(); ++it) {
+        std::string sKey = it.key();
+        if (sKey == "from") {
+            m_sFrom = it.value();
+        } else if (sKey == "to") {
+            m_sTo = it.value();
+        } else if (sKey == "sha1") {
+            m_sSha1 = it.value();
+        } else {
+           std::cout << "IGNORED in file:  " << sKey << std::endl; 
+        }
+    }
+}
+
+// ---------------------------------------------------------------------
+
 WSJCppPackageManagerAuthor::WSJCppPackageManagerAuthor() {
 }
 
-WSJCppPackageManagerAuthor::WSJCppPackageManagerAuthor(const std::string &sName) {
+// ---------------------------------------------------------------------
+
+WSJCppPackageManagerAuthor::WSJCppPackageManagerAuthor(const std::string &sName, const std::string &sEmail) {
     m_sName = sName;
+    m_sEmail = sEmail;
 }
+
+// ---------------------------------------------------------------------
+
+std::string WSJCppPackageManagerAuthor::getName() {
+    return m_sName;
+}
+
+// ---------------------------------------------------------------------
+
+std::string WSJCppPackageManagerAuthor::getEmail() {
+    return m_sEmail;
+}
+
+// ---------------------------------------------------------------------
+
+std::string WSJCppPackageManagerAuthor::getFullAuthor() {
+    return m_sName + " <" + m_sEmail + ">";
+}
+
+// ---------------------------------------------------------------------
 
 nlohmann::json WSJCppPackageManagerAuthor::toJson() {
     m_jsonAuthor["name"] = m_sName;
+    m_jsonAuthor["email"] = m_sEmail;
     return m_jsonAuthor;
 }
+
+// ---------------------------------------------------------------------
 
 void WSJCppPackageManagerAuthor::fromJson(const nlohmann::json &jsonAuthor) {
     m_jsonAuthor = jsonAuthor;
@@ -24,15 +109,167 @@ void WSJCppPackageManagerAuthor::fromJson(const nlohmann::json &jsonAuthor) {
         std::string sKey = it.key();
         if (sKey == "name") {
             m_sName = it.value();
+        } else if (sKey == "email") {
+            m_sEmail = it.value();
         } else {
-           std::cout << "IGNORED in authors:  " << sKey << std::endl; 
+           std::cout << "IGNORED_AUTHORS in authors:  " << sKey << std::endl; 
         }
     }
 }
 
+// ---------------------------------------------------------------------
+// WSJCppPackageManagerServer - server info class
+
+WSJCppPackageManagerServer::WSJCppPackageManagerServer() {
+
+}
+
+// ---------------------------------------------------------------------
+
+WSJCppPackageManagerServer::WSJCppPackageManagerServer(const std::string &sAddress) {
+    m_sAddress = sAddress;
+}
+
+// ---------------------------------------------------------------------
+
+std::string WSJCppPackageManagerServer::getAddress() {
+    return m_sAddress;
+}
+
+// ---------------------------------------------------------------------
+
+nlohmann::json WSJCppPackageManagerServer::toJson() {
+    m_jsonServer["address"] = m_sAddress;
+    return m_jsonServer;
+}
+
+// ---------------------------------------------------------------------
+
+void WSJCppPackageManagerServer::fromJson(const nlohmann::json &jsonServer) {
+    m_jsonServer = jsonServer;
+    for (auto it = jsonServer.begin(); it != jsonServer.end(); ++it) {
+        std::string sKey = it.key();
+        if (sKey == "address") {
+            m_sAddress = it.value();
+        } else {
+           std::cout << "IGNORED in server:  " << sKey << std::endl; 
+        }
+    }
+}
+
+// ---------------------------------------------------------------------
+// WSJCppPackageManagerRepository - repository struct
+
+WSJCppPackageManagerRepository::WSJCppPackageManagerRepository() {
+}
+
+// ---------------------------------------------------------------------
+
+std::string WSJCppPackageManagerRepository::getUrl() {
+    return m_sUrl;
+}
+
+// ---------------------------------------------------------------------
+
+nlohmann::json WSJCppPackageManagerRepository::toJson() {
+    m_jsonRepository["url"] = m_sUrl;
+    return m_jsonRepository;
+}
+
+// ---------------------------------------------------------------------
+
+void WSJCppPackageManagerRepository::fromJson(const nlohmann::json &jsonRepository) {
+    m_jsonRepository = jsonRepository;
+    for (auto it = jsonRepository.begin(); it != jsonRepository.end(); ++it) {
+        std::string sKey = it.key();
+        if (sKey == "url") {
+            m_sUrl = it.value();
+        } else {
+           std::cout << "IGNORED in repository:  " << sKey << std::endl; 
+        }
+    }
+}
+
+// ---------------------------------------------------------------------
+// WSJCppPackageManager - main class
+
+WSJCppPackageManagerDependence::WSJCppPackageManagerDependence() {
+}
+
+// ---------------------------------------------------------------------
+
+std::string WSJCppPackageManagerDependence::getInstalledDir() {
+    return m_sInstalledDir;
+}
+
+// ---------------------------------------------------------------------
+
+std::string WSJCppPackageManagerDependence::getType() {
+    return m_sType;
+}
+
+// ---------------------------------------------------------------------
+
+std::string WSJCppPackageManagerDependence::getFrom() {
+    return m_sFrom;
+}
+
+// ---------------------------------------------------------------------
+
+std::string WSJCppPackageManagerDependence::getName() {
+    return m_sName;
+}
+
+// ---------------------------------------------------------------------
+
+std::string WSJCppPackageManagerDependence::getVersion() {
+    return m_sVersion;
+}
+
+// ---------------------------------------------------------------------
+
+nlohmann::json WSJCppPackageManagerDependence::toJson() {
+    m_jsonDependece["type"] = m_sType;
+    m_jsonDependece["from"] = m_sFrom;
+    m_jsonDependece["name"] = m_sName;
+    m_jsonDependece["version"] = m_sVersion;
+    return m_jsonDependece;
+}
+
+// ---------------------------------------------------------------------
+
+void WSJCppPackageManagerDependence::fromJson(const nlohmann::json &jsonDependece) {
+    m_jsonDependece = jsonDependece;
+    for (auto it = jsonDependece.begin(); it != jsonDependece.end(); ++it) {
+        std::string sKey = it.key();
+        if (sKey == "type") {
+            m_sType = it.value();
+        } else if (sKey == "from") {
+            m_sFrom = it.value();
+        } else if (sKey == "name") {
+            m_sName = it.value();
+        } else if (sKey == "version") {
+            m_sVersion = it.value();
+        } else if (sKey == "installed_dir") {
+            m_sInstalledDir = it.value();
+        } else {
+           std::cout << "IGNORED in dependence:  " << sKey << std::endl; 
+        }
+    }
+}
+
+// ---------------------------------------------------------------------
+// WSJCppPackageManager - main class
+
 WSJCppPackageManager::WSJCppPackageManager(const std::string &sDir) {
+    TAG = "WSJCppPackageManager";
     m_sDir = sDir;
     m_sDirWithSources = m_sDir + "/src.wsjcpp";
+    m_sGithubPrefix = "https://github.com/";
+    m_sBitbucketPrefix = "https://bitbucket.com/";
+    m_sFilePrefix = "file:///";
+    m_sHttpPrefix = "http://";
+    m_sHttpsPrefix = "https://";
     m_sWSJCppJsonFilename = "wsjcpp.json";
     m_nWSJCppVersion = 1;
     m_bHolded = false;
@@ -40,11 +277,10 @@ WSJCppPackageManager::WSJCppPackageManager(const std::string &sDir) {
 
 // ---------------------------------------------------------------------
 
-WSJCppPackageManager::WSJCppPackageManager(const std::string &sDir, const std::string &sParentDir, bool bHolded) {
-    m_sDir = sDir;
+WSJCppPackageManager::WSJCppPackageManager(const std::string &sDir, const std::string &sParentDir, bool bHolded) 
+: WSJCppPackageManager(sDir) {
     m_sDirWithSources = m_sDir + "/src.wsjcpp";
     m_sWSJCppJsonFilename = "wsjcpp.hold.json";
-    m_nWSJCppVersion = 1;
     m_bHolded = true;
     m_sParentDir = sParentDir;
 }
@@ -75,11 +311,15 @@ bool WSJCppPackageManager::init() {
     std::cout << "Description: ";
     std::getline(std::cin, m_sDescription);
     
-    std::string sNameOfAuthor = "";
+    std::string sAuthorName = "";
     std::cout << "Author's Name: ";
-    std::getline(std::cin, sNameOfAuthor);
+    std::getline(std::cin, sAuthorName);
 
-    WSJCppPackageManagerAuthor author(sNameOfAuthor);
+    std::string sAuthorEmail = "";
+    std::cout << "Author's Email: ";
+    std::getline(std::cin, sAuthorEmail);
+
+    WSJCppPackageManagerAuthor author(sAuthorName, sAuthorEmail);
     m_vAuthors.push_back(author);
     
     for (int i = 0; i < 10; i++) {
@@ -99,7 +339,7 @@ bool WSJCppPackageManager::init() {
     if (sServerAddress == "") {
         sServerAddress = sDefaultServerAddress;
     }
-    CppSPM::Server server(sServerAddress);
+    WSJCppPackageManagerServer server(sServerAddress);
     m_vServers.push_back(server);
 
     return true;
@@ -109,7 +349,7 @@ bool WSJCppPackageManager::init() {
 
 bool WSJCppPackageManager::save() {
     if (m_bHolded) {
-        std::cout << "ERROR: cppspm is holded" << std::endl;
+        std::cout << "ERROR: wsjcpp is holded" << std::endl;
         return false;
     }
     if (!Fallen::dirExists(m_sDirWithSources)) {
@@ -144,7 +384,7 @@ bool WSJCppPackageManager::save() {
     for (int i = 0; i < m_vDependencies.size(); i++) {
         jsonDependencies.push_back(m_vDependencies[i].toJson());
     }
-    m_jsonPackageInfo["dependencies"] = jsonDependencies;
+    m_jsonPackageInfo["deps"] = jsonDependencies;
 
     nlohmann::json jsonFiles = nlohmann::json::array();
     for (int i = 0; i < m_vFiles.size(); i++) {
@@ -206,28 +446,28 @@ bool WSJCppPackageManager::load() {
         } else if (sKey == "files") {
             nlohmann::json jsonFiles = it.value();
             for (auto it3 = jsonFiles.begin(); it3 != jsonFiles.end(); ++it3) {
-                CppSPM::File file;
+                WSJCppPackageManagerFile file;
                 file.fromJson(it3.value());
                 m_vFiles.push_back(file);
             }
         } else if (sKey == "servers") {
             nlohmann::json jsonServers = it.value();
             for (auto it4 = jsonServers.begin(); it4 != jsonServers.end(); ++it4) {
-                CppSPM::Server server;
+                WSJCppPackageManagerServer server;
                 server.fromJson(it4.value());
                 m_vServers.push_back(server);
             }
-        } else if (sKey == "dependencies") {
+        } else if (sKey == "deps") {
             nlohmann::json jsonDependencies = it.value();
             for (auto it5 = jsonDependencies.begin(); it5 != jsonDependencies.end(); ++it5) {
-                CppSPM::Dependence dependence;
+                WSJCppPackageManagerDependence dependence;
                 dependence.fromJson(it5.value());
                 m_vDependencies.push_back(dependence);
             }
-        } else if (sKey == "repositories") {
+        } else if (sKey == "reps") {
             nlohmann::json jsonRepositories = it.value();
             for (auto it6 = jsonRepositories.begin(); it6 != jsonRepositories.end(); ++it6) {
-                CppSPM::Repository repo;
+                WSJCppPackageManagerRepository repo;
                 repo.fromJson(it6.value());
                 m_vRepositories.push_back(repo);
             }
@@ -266,7 +506,7 @@ bool WSJCppPackageManager::addFile(const std::string &sFile) {
         }
     }
 
-    CppSPM::File file(sFile);
+    WSJCppPackageManagerFile file(sFile);
     m_vFiles.push_back(file);
     return true;
 }
@@ -312,7 +552,7 @@ bool WSJCppPackageManager::addServer(const std::string &sServer) {
         }
     }
 
-    CppSPM::Server server(sServer);
+    WSJCppPackageManagerServer server(sServer);
     m_vServers.push_back(server);
     return true;
 }
@@ -391,23 +631,52 @@ void WSJCppPackageManager::verify() {
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::installFromGithub(const std::string &githubPackage) {
+bool WSJCppPackageManager::install(const std::string &sPackage) {
+    if (m_bHolded) {
+        std::cout << "ERROR: Could not install package when holded" << std::endl;
+        return false;
+    }
+    if (sPackage.compare(0, m_sGithubPrefix.size(), m_sGithubPrefix) == 0) {
+        return installFromGithub(sPackage);
+    } else if (sPackage.compare(0, m_sBitbucketPrefix.size(), m_sBitbucketPrefix) == 0) {
+        // TODO
+    } else if (sPackage.compare(0, m_sFilePrefix.size(), m_sFilePrefix) == 0) {
+        // TODO
+    } else if (
+        sPackage.compare(0, m_sHttpPrefix.size(), m_sHttpPrefix) == 0
+        || sPackage.compare(0, m_sHttpsPrefix.size(), m_sHttpsPrefix) == 0
+    ) {
+        // TODO
+    }
+
+    return false;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManager::installFromGithub(const std::string &sPackage) {
+    
     if (m_bHolded) { // readonly
         return false;
     }
     
-    std::istringstream f(githubPackage);
+    std::cout << "Installing package from https://github.com/ ..." << std::endl;
+    std::cout << "m_sGithubPrefix: " << m_sGithubPrefix << std::endl;
+
+    std::string sPackageGithubPath = sPackage.substr(m_sGithubPrefix.size());
+    std::cout << "sPackageGithubPath: " << sPackageGithubPath << std::endl;
+    std::istringstream f(sPackageGithubPath);
     std::string packageName = "";
     std::string s;
     if (getline(f, s, ':')) {
         packageName = s;
     }
-    std::string packageVersion = githubPackage.substr(packageName.size()+1);
+    std::string packageVersion = sPackageGithubPath.substr(packageName.size()+1);
     std::string url = "https://github.com/" + packageName + "/archive/" + packageVersion + ".zip";
     // std::string url = "https://github.com/" + packageName + "/zip/" + packageVersion;
     std::string ufolder = "github_" + this->packageNameToUFolder(packageName);
 
-    CppSPM::Dependence d;
+    WSJCppPackageManagerDependence d;
     nlohmann::json jsonDependence;
     jsonDependence["type"] = "github";
     jsonDependence["version"] = packageVersion;
@@ -441,7 +710,7 @@ bool WSJCppPackageManager::installFromGithub(const std::string &githubPackage) {
 void WSJCppPackageManager::printInfo() {
     
     std::cout << std::endl 
-        << "===== wsjcpp info =====" << std::endl
+        << "===== begin: wsjcpp info =====" << std::endl
         << "Name: " << m_sName << std::endl
         << "Version: " << m_sVersion << std::endl
         << "Description: " << m_sDescription
@@ -456,12 +725,120 @@ void WSJCppPackageManager::printInfo() {
     for (unsigned int i = 0; i < m_vKeywords.size(); i++) {
         std::cout << " - " << m_vKeywords[i] << std::endl;
     }
+    if (m_vFiles.size() > 0) {
+        std::cout << std::endl << "Files: " << std::endl;
+        for (unsigned int i = 0; i < m_vFiles.size(); i++) {
+            WSJCppPackageManagerFile file = m_vFiles[i];
+            std::cout << " - " << file.getFrom() << " -> " << file.getTo() << " [sha1:" << file.getSha1() << "]" << std::endl;
+        }
+    }
+    
     // TODO: print authors
     // TODO: print files
     // TODO: print deps
 
-    std::cout << "===== wsjcpp info =====" << std::endl
+    std::cout << "===== end: wsjcpp info =====" << std::endl
         << std::endl;
+}
+
+// ---------------------------------------------------------------------
+
+void WSJCppPackageManager::printPackages() {
+    std::cout << "Packages: " << std::endl;
+    for (auto it = m_vDependencies.begin(); it != m_vDependencies.end(); ++it) {
+        std::cout << " - " << it->getName() << ":" << it->getVersion() << "    (" << it->getType() << ":" << it->getFrom() << ")" << std::endl;
+    }
+    std::cout << std::endl;
+}
+
+// ---------------------------------------------------------------------
+
+void WSJCppPackageManager::printAuthors() {
+    std::cout << "Authors (" << m_sName << ":" << m_sVersion << "): " << std::endl;
+    for (int i = 0; i < m_vAuthors.size(); i++) {
+        WSJCppPackageManagerAuthor author = m_vAuthors[i];
+        std::cout << " - " << author.getFullAuthor() << std::endl;
+    }
+    std::cout << std::endl;
+}
+
+// ---------------------------------------------------------------------
+
+void WSJCppPackageManager::printAuthorsTree() {
+    std::string sAuthors = "";
+    for (int i = 0; i < m_vAuthors.size(); i++) {
+        if (sAuthors.size() > 0) {
+            sAuthors += ", ";
+        }
+        sAuthors += m_vAuthors[i].getFullAuthor();
+    }
+    std::cout << "Authors (" << m_sName << ":" << m_sVersion << "): " << sAuthors << std::endl;
+
+    // TODO
+    recursive_printAuthorsTree(m_vDependencies);
+}
+
+// ---------------------------------------------------------------------
+
+void WSJCppPackageManager::recursive_printAuthorsTree(std::vector<WSJCppPackageManagerDependence> &vDependencies) {
+    for (int i = 0; i < vDependencies.size(); i++) {
+        WSJCppPackageManagerDependence dep = vDependencies[i];
+        std::string sInstalledDir = dep.getInstalledDir(); 
+
+        if (Fallen::dirExists(dep.getInstalledDir())) {
+            WSJCppPackageManager subpkg(sInstalledDir, m_sDir, true);
+            Log::info(TAG, "Loading package '" + sInstalledDir + "'");
+            if (subpkg.load()) {
+                subpkg.printAuthorsTree();
+            } else {
+                Log::err(TAG, "Could not load package.");
+            }
+        } else {
+            Log::err(TAG, "Not found installed dir: '" + sInstalledDir + "' for package: " + dep.getName() + ":" + dep.getVersion());
+        }
+    }
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManager::addAuthor(const std::string &sName, const std::string &sEmail) {
+    bool bFoundAuthor = false;
+    std::string sFullAuthor = sName + " <" + sEmail + ">";
+    for (int i = 0; i < m_vAuthors.size(); i++) {
+        WSJCppPackageManagerAuthor author = m_vAuthors[i];
+        if (author.getFullAuthor() == sFullAuthor) {
+            bFoundAuthor = true;
+        }
+    }
+    if (bFoundAuthor) {
+        Log::err(TAG, "Author already exists");
+        return false;
+    }
+
+    WSJCppPackageManagerAuthor newAuthor(sName, sEmail);
+    m_vAuthors.push_back(newAuthor);
+    return true;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManager::removeAuthor(const std::string &sFullAuthor) {
+    std::vector<WSJCppPackageManagerAuthor> vNewAuthors;
+    for (int i = 0; i < m_vAuthors.size(); i++) {
+        WSJCppPackageManagerAuthor author = m_vAuthors[i];
+        if (author.getFullAuthor() != sFullAuthor) {
+            vNewAuthors.push_back(author);
+        }
+    }
+    if (vNewAuthors.size() != m_vAuthors.size()) {
+        m_vAuthors.clear();
+        for (int i = 0; i < vNewAuthors.size(); i++) {
+            m_vAuthors.push_back(vNewAuthors[i]);
+        }
+        return true;
+    }
+    Log::err(TAG, "Not found this author");
+    return false;
 }
 
 // ---------------------------------------------------------------------

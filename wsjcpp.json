@@ -1,43 +1,44 @@
 {
     "authors": [
         {
-            "name": "Evgenii Sopov",
-            "email": "mrseakg@gmail.com"
+            "email": "mrseakg@gmail.com",
+            "name": "Evgenii Sopov"
         }
     ],
-    "wsjcpp_version": 1,
     "deps": [
         {
-            "from": "sea-kg.com",
-            "name": "fallen_parse_args",
-            "type": "cppspm-server",
-            "version": "0.0.1"
+            "installed_dir": "src.wsjcpp/sea_kg_wsjcpp_parse_args_master",
+            "from": "",
+            "name": "wsjcpp-parse-args",
+            "version": "master"
         },
         {
+            "installed_dir": "src.wsjcpp/fallen",
             "from": "sea-kg.com",
             "name": "fallen",
             "type": "cppspm-server",
             "version": "0.0.1"
         },
         {
+            "installed_dir": "src.wsjcpp/log",
             "from": "sea-kg.com",
             "name": "log",
             "type": "cppspm-server",
             "version": "0.0.1"
         },
         {
+            "installed_dir": "src.wsjcpp/sea_kg_nlohmann_json_master",
             "from": "https://github.com/sea-kg/nlohmann_json/archive/master.zip",
             "name": "sea-kg/nlohmann_json",
-            "type": "github",
-            "ufolder": "github_sea-kg_nlohmann_json",
             "version": "master"
         },
         {
-            "from": "https://github.com/sea-kg/nlohmann_json/archive/master.zip",
+            "installed_dir": "src.wsjcpp/sea_kg_nlohmann_json_master",
+            "from": "https://github.com/sea-kg/nlohmann_json/archive/v3.7.0.zip",
             "name": "sea-kg/nlohmann_json",
             "type": "github",
             "ufolder": "github_sea-kg_nlohmann_json",
-            "version": "master"
+            "version": "v3.7.0"
         }
     ],
     "description": "C++ Source Package manager",
@@ -65,14 +66,15 @@
     ],
     "keywords": [
         "c++",
-        "wsjcpp"
+        "sources"
     ],
-    "name": "wsjcpp",
-    "repositories": [],
+    "name": "sea-kg/wsjcpp",
+    "reps": [],
     "servers": [
         {
-            "address": "https://sea-kg.com/wsjcpp/"
+            "address": "sea-kg.com"
         }
     ],
-    "version": "0.0.1"
+    "version": "0.0.1",
+    "wsjcpp_version": 1
 }
