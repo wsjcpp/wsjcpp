@@ -1,0 +1,38 @@
+
+wsjcpp: 1.0.0
+cmake_cxx_standard: 11
+cmake_minimum_required: 3.0
+
+name: wsjcpp/wsjcpp-core
+version: 0.0.1
+description: Basic Utils for wsjcpp
+issues: https://github.com/wsjcpp/wsjcpp-core/issues
+repositories:
+  - "https://github.com/wsjcpp/wsjcpp-core"
+keywords:
+  - c++
+  - wsjcpp
+
+authors:
+  - name: Evgenii Sopov
+    email: mrseakg@gmail.com
+
+requirements:
+  libs:
+    - pthread
+
+distribution:
+  sources:
+    - from: src/wsjcpp_core.cpp
+      to: wsjcpp_core.cpp
+      sha1: ""
+    - from: src/wsjcpp_core.h
+      to: wsjcpp_core.h
+      sha1: ""
+
+unit-tests:
+  folder: unit-tests # default
+  files:
+    - unit-tests/src/main.cpp
+    - unit-tests/src/unit_tests.h
+    - unit-tests/src/unit_tests.cpp

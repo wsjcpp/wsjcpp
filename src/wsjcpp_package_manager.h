@@ -3,6 +3,7 @@
 
 #include <string>
 #include <json.hpp>
+#include <wsjcpp_yaml.h>
 
 // ---------------------------------------------------------------------
 
@@ -103,8 +104,8 @@ class WSJCppPackageManager {
         bool load();
         bool save();
         void printFiles();
-        bool addFile(const std::string &sFile);
-        bool deleteFile(const std::string &sFile);
+        bool addFile(const std::string &sFromFile, const std::string &sToFile);
+        bool removeFile(const std::string &sFromFile);
         void printServers();
         bool addServer(const std::string &sServer);
         bool deleteServer(const std::string &sServer);
@@ -134,7 +135,7 @@ class WSJCppPackageManager {
         std::string m_sDir;
         bool m_bHolded;
         std::string m_sParentDir;
-        std::string m_sWSJCppJsonFilename;
+        std::string m_sYamlFilename;
         int m_nWSJCppVersion;
         std::string m_sDirWithSources;
         std::string m_sName;
@@ -144,10 +145,11 @@ class WSJCppPackageManager {
         std::vector<WSJCppPackageManagerAuthor> m_vAuthors;
         std::vector<WSJCppPackageManagerServer> m_vServers;
         std::vector<WSJCppPackageManagerDependence> m_vDependencies;
-        std::vector<WSJCppPackageManagerFile> m_vFiles;
+        std::vector<WSJCppPackageManagerFile> m_vDistributionFiles;
         std::vector<WSJCppPackageManagerRepository> m_vRepositories;
         
         nlohmann::json m_jsonPackageInfo;
+        WSJCppYAML m_yamlPackageInfo;
 };
 
 #endif // WSJCPP_PACKAGE_MANAGER_H

@@ -2,5 +2,5 @@
 
 rm -rf tmp
 rm -rf Makefile
-rm -f cppspm
+rm -f wsjcpp
 

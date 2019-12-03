@@ -1,7 +1,7 @@
 #include "wsjcpp_package_manager.h"
 #include "wsjcpp_packager_download_dependence.h"
 #include <iostream>
-#include <fallen.h>
+#include <wsjcpp_core.h>
 #include <sstream>
 #include <fstream>
 #include <iomanip>
@@ -266,11 +266,12 @@ WSJCppPackageManager::WSJCppPackageManager(const std::string &sDir) {
     m_sDir = sDir;
     m_sDirWithSources = m_sDir + "/src.wsjcpp";
     m_sGithubPrefix = "https://github.com/";
+    // TODO m_sGithubPrefix = "git@";  // try clone project to cache directory
     m_sBitbucketPrefix = "https://bitbucket.com/";
-    m_sFilePrefix = "file:///";
-    m_sHttpPrefix = "http://";
+    m_sFilePrefix = "file:///"; // from file system
+    m_sHttpPrefix = "http://"; // from some http://
     m_sHttpsPrefix = "https://";
-    m_sWSJCppJsonFilename = "wsjcpp.json";
+    m_sYamlFilename = "wsjcpp.yml";
     m_nWSJCppVersion = 1;
     m_bHolded = false;
 }
@@ -280,7 +281,7 @@ WSJCppPackageManager::WSJCppPackageManager(const std::string &sDir) {
 WSJCppPackageManager::WSJCppPackageManager(const std::string &sDir, const std::string &sParentDir, bool bHolded) 
 : WSJCppPackageManager(sDir) {
     m_sDirWithSources = m_sDir + "/src.wsjcpp";
-    m_sWSJCppJsonFilename = "wsjcpp.hold.json";
+    m_sYamlFilename = "wsjcpp.hold.yml";
     m_bHolded = true;
     m_sParentDir = sParentDir;
 }
@@ -289,15 +290,15 @@ WSJCppPackageManager::WSJCppPackageManager(const std::string &sDir, const std::s
 
 bool WSJCppPackageManager::init() {
 
-    if (!Fallen::dirExists(m_sDir)) {
+    if (!WSJCppCore::dirExists(m_sDir)) {
         std::cout << "Directory '" << m_sDir << "' did not exists... create the dir ? (y/n)" << std::endl;
         std::string sYN;
         std::cin >> sYN;
         if (sYN == "y" || sYN == "Y") {
-            Fallen::makeDir(m_sDir);
+            WSJCppCore::makeDir(m_sDir);
         }
 
-        if (!Fallen::dirExists(m_sDir)) {
+        if (!WSJCppCore::dirExists(m_sDir)) {
             std::cout << "ERROR: Directory '" << m_sDir << "' did not exists." << std::endl;
             return false;
         }
@@ -352,13 +353,13 @@ bool WSJCppPackageManager::save() {
         std::cout << "ERROR: wsjcpp is holded" << std::endl;
         return false;
     }
-    if (!Fallen::dirExists(m_sDirWithSources)) {
-        Fallen::makeDir(m_sDirWithSources);
+    if (!WSJCppCore::dirExists(m_sDirWithSources)) {
+        WSJCppCore::makeDir(m_sDirWithSources);
     }
 
     std::string sGitkeepFile = m_sDirWithSources + "/.gitkeep";
-    if (!Fallen::fileExists(sGitkeepFile)) {
-        Fallen::writeFile(sGitkeepFile, "");
+    if (!WSJCppCore::fileExists(sGitkeepFile)) {
+        WSJCppCore::writeFile(sGitkeepFile, "");
     }
 
     m_jsonPackageInfo["wsjcpp_version"] = m_nWSJCppVersion;
@@ -384,13 +385,13 @@ bool WSJCppPackageManager::save() {
     for (int i = 0; i < m_vDependencies.size(); i++) {
         jsonDependencies.push_back(m_vDependencies[i].toJson());
     }
-    m_jsonPackageInfo["deps"] = jsonDependencies;
+    m_jsonPackageInfo["dependencies"] = jsonDependencies;
 
     nlohmann::json jsonFiles = nlohmann::json::array();
-    for (int i = 0; i < m_vFiles.size(); i++) {
-        jsonFiles.push_back(m_vFiles[i].toJson());
+    for (int i = 0; i < m_vDistributionFiles.size(); i++) {
+        jsonFiles.push_back(m_vDistributionFiles[i].toJson());
     }
-    m_jsonPackageInfo["files"] = jsonFiles;
+    m_jsonPackageInfo["distribution-files"] = jsonFiles;
 
     nlohmann::json jsonRepositories = nlohmann::json::array();
     for (int i = 0; i < m_vRepositories.size(); i++) {
@@ -399,7 +400,7 @@ bool WSJCppPackageManager::save() {
     m_jsonPackageInfo["repositories"] = jsonRepositories;
 
     int indent = 4;
-    std::ofstream cppspmJson(m_sDir + "/" + m_sWSJCppJsonFilename);
+    std::ofstream cppspmJson(m_sDir + "/" + m_sYamlFilename);
     cppspmJson << std::setw(4) << m_jsonPackageInfo << std::endl;
     return true;
 }
@@ -407,14 +408,20 @@ bool WSJCppPackageManager::save() {
 // ---------------------------------------------------------------------
 
 bool WSJCppPackageManager::load() {
-    std::string sJsonFilename = m_sDir + "/" + m_sWSJCppJsonFilename;
+    std::string sYamlFilename = m_sDir + "/" + m_sYamlFilename;
 
-    if (!Fallen::fileExists(sJsonFilename)) {
-        std::cout << "ERROR: '" << sJsonFilename << "' did not found" << std::endl;
+    if (!WSJCppCore::fileExists(sYamlFilename)) {
+        std::cout << "ERROR: '" << sYamlFilename << "' did not found" << std::endl;
+        return false;
+    }
+    
+    if (!m_yamlPackageInfo.loadFromFile(sYamlFilename)) {
         return false;
     }
 
-    std::ifstream ifs(sJsonFilename);
+    // m_yamlPackageInfo
+
+    std::ifstream ifs(sYamlFilename);
     m_jsonPackageInfo = nlohmann::json::parse(ifs);
 
     for (auto it = m_jsonPackageInfo.begin(); it != m_jsonPackageInfo.end(); ++it) {
@@ -443,12 +450,12 @@ bool WSJCppPackageManager::load() {
                 author.fromJson(it2.value());
                 m_vAuthors.push_back(author);
             }
-        } else if (sKey == "files") {
+        } else if (sKey == "distribution-files") {
             nlohmann::json jsonFiles = it.value();
             for (auto it3 = jsonFiles.begin(); it3 != jsonFiles.end(); ++it3) {
                 WSJCppPackageManagerFile file;
                 file.fromJson(it3.value());
-                m_vFiles.push_back(file);
+                m_vDistributionFiles.push_back(file);
             }
         } else if (sKey == "servers") {
             nlohmann::json jsonServers = it.value();
@@ -457,14 +464,14 @@ bool WSJCppPackageManager::load() {
                 server.fromJson(it4.value());
                 m_vServers.push_back(server);
             }
-        } else if (sKey == "deps") {
+        } else if (sKey == "dependencies") {
             nlohmann::json jsonDependencies = it.value();
             for (auto it5 = jsonDependencies.begin(); it5 != jsonDependencies.end(); ++it5) {
                 WSJCppPackageManagerDependence dependence;
                 dependence.fromJson(it5.value());
                 m_vDependencies.push_back(dependence);
             }
-        } else if (sKey == "reps") {
+        } else if (sKey == "repositories") {
             nlohmann::json jsonRepositories = it.value();
             for (auto it6 = jsonRepositories.begin(); it6 != jsonRepositories.end(); ++it6) {
                 WSJCppPackageManagerRepository repo;
@@ -481,51 +488,51 @@ bool WSJCppPackageManager::load() {
 // ---------------------------------------------------------------------
 
 void WSJCppPackageManager::printFiles() {
-    for (auto it = m_vFiles.begin(); it != m_vFiles.end(); ++it) {
+    for (auto it = m_vDistributionFiles.begin(); it != m_vDistributionFiles.end(); ++it) {
         std::cout << it->getSha1() << " " << it->getFrom() << " -> " << it->getTo() << std::endl;
     }
 }
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::addFile(const std::string &sFile) {
+bool WSJCppPackageManager::addFile(const std::string &sFromFile, const std::string &sToFile) {
     if (m_bHolded) {
-        std::cout << "ERROR: cppspm is holded" << std::endl;
+        WSJCppLog::err(TAG, "wsjcpp is holded");
         return false;
     }
 
-    if (!Fallen::fileExists(sFile)) {
-        std::cout << "Error: '" << sFile << "' already exists." << std::endl;
+    if (!WSJCppCore::fileExists(sFromFile)) {
+        WSJCppLog::err(TAG, "'" + sFromFile + "' file does not exists");
         return false;
     }
 
-    for (auto it = m_vFiles.begin(); it != m_vFiles.end(); ++it) {
-        if (it->getFrom() == sFile) {
-            std::cout << "Error: File '" << sFile << "' already exists." << std::endl;
+    for (auto it = m_vDistributionFiles.begin(); it != m_vDistributionFiles.end(); ++it) {
+        if (it->getFrom() == sFromFile) {
+            WSJCppLog::err(TAG, "This package already contained file '" + sFromFile + "'");
             return false;
         }
     }
 
-    WSJCppPackageManagerFile file(sFile);
-    m_vFiles.push_back(file);
+    WSJCppPackageManagerFile file(sFromFile);
+    m_vDistributionFiles.push_back(file);
     return true;
 }
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::deleteFile(const std::string &sFile) {
+bool WSJCppPackageManager::removeFile(const std::string &sFromFile) {
     if (m_bHolded) {
-        std::cout << "ERROR: cppspm is holded" << std::endl;
+        WSJCppLog::err(TAG, "wsjcpp is holded");
         return false;
     }
 
-    for (auto it = m_vFiles.begin(); it != m_vFiles.end(); ++it) {
-        if (it->getFrom() == sFile) {
-            m_vFiles.erase(it);
+    for (auto it = m_vDistributionFiles.begin(); it != m_vDistributionFiles.end(); ++it) {
+        if (it->getFrom() == sFromFile) {
+            m_vDistributionFiles.erase(it);
             return true;
         }
     }
-    std::cout << "Error: File '" << sFile << "' did not found." << std::endl;
+    WSJCppLog::err(TAG, "Distribution file '" + sFromFile + "' cound not found in this package");
     return false;
 }
 
@@ -659,7 +666,7 @@ bool WSJCppPackageManager::installFromGithub(const std::string &sPackage) {
     if (m_bHolded) { // readonly
         return false;
     }
-    
+
     std::cout << "Installing package from https://github.com/ ..." << std::endl;
     std::cout << "m_sGithubPrefix: " << m_sGithubPrefix << std::endl;
 
@@ -672,9 +679,14 @@ bool WSJCppPackageManager::installFromGithub(const std::string &sPackage) {
         packageName = s;
     }
     std::string packageVersion = sPackageGithubPath.substr(packageName.size()+1);
+    std::string sWsjcppUrl = "https://raw.githubusercontent.com/" + packageName + "/" + packageVersion + "/wsjcpp.json";
+    std::cout << "sWsjcppUrl: " << sWsjcppUrl << std::endl;
+
     std::string url = "https://github.com/" + packageName + "/archive/" + packageVersion + ".zip";
     // std::string url = "https://github.com/" + packageName + "/zip/" + packageVersion;
     std::string ufolder = "github_" + this->packageNameToUFolder(packageName);
+
+    // https://raw.githubusercontent.com/sea-kg/nlohmann_json/v3.7.0/cppspm.json
 
     WSJCppPackageManagerDependence d;
     nlohmann::json jsonDependence;
@@ -687,12 +699,12 @@ bool WSJCppPackageManager::installFromGithub(const std::string &sPackage) {
     // https://raw.githubusercontent.com/sea-kg/nlohmann_json/master/cppspm.json
 
     std::string cacheDir = m_sDir + "/.wsjcpp-cache";
-    if (!Fallen::dirExists(cacheDir)) {
-        Fallen::makeDir(cacheDir);
+    if (!WSJCppCore::dirExists(cacheDir)) {
+        WSJCppCore::makeDir(cacheDir);
     }
 
     std::string zipFile = cacheDir + "/" + ufolder + ".zip";
-    if (Fallen::fileExists(zipFile)) {
+    if (WSJCppCore::fileExists(zipFile)) {
         // TODO remove file    
     }
     CppSPM::DownloadDependence::downloadZipFromGithub(url, zipFile);
@@ -725,16 +737,15 @@ void WSJCppPackageManager::printInfo() {
     for (unsigned int i = 0; i < m_vKeywords.size(); i++) {
         std::cout << " - " << m_vKeywords[i] << std::endl;
     }
-    if (m_vFiles.size() > 0) {
-        std::cout << std::endl << "Files: " << std::endl;
-        for (unsigned int i = 0; i < m_vFiles.size(); i++) {
-            WSJCppPackageManagerFile file = m_vFiles[i];
+    if (m_vDistributionFiles.size() > 0) {
+        std::cout << std::endl << "Distribution-Files: " << std::endl;
+        for (unsigned int i = 0; i < m_vDistributionFiles.size(); i++) {
+            WSJCppPackageManagerFile file = m_vDistributionFiles[i];
             std::cout << " - " << file.getFrom() << " -> " << file.getTo() << " [sha1:" << file.getSha1() << "]" << std::endl;
         }
     }
     
     // TODO: print authors
-    // TODO: print files
     // TODO: print deps
 
     std::cout << "===== end: wsjcpp info =====" << std::endl
@@ -785,16 +796,16 @@ void WSJCppPackageManager::recursive_printAuthorsTree(std::vector<WSJCppPackageM
         WSJCppPackageManagerDependence dep = vDependencies[i];
         std::string sInstalledDir = dep.getInstalledDir(); 
 
-        if (Fallen::dirExists(dep.getInstalledDir())) {
+        if (WSJCppCore::dirExists(dep.getInstalledDir())) {
             WSJCppPackageManager subpkg(sInstalledDir, m_sDir, true);
-            Log::info(TAG, "Loading package '" + sInstalledDir + "'");
+            WSJCppLog::info(TAG, "Loading package '" + sInstalledDir + "'");
             if (subpkg.load()) {
                 subpkg.printAuthorsTree();
             } else {
-                Log::err(TAG, "Could not load package.");
+                WSJCppLog::err(TAG, "Could not load package.");
             }
         } else {
-            Log::err(TAG, "Not found installed dir: '" + sInstalledDir + "' for package: " + dep.getName() + ":" + dep.getVersion());
+            WSJCppLog::err(TAG, "Not found installed dir: '" + sInstalledDir + "' for package: " + dep.getName() + ":" + dep.getVersion());
         }
     }
 }
@@ -811,7 +822,7 @@ bool WSJCppPackageManager::addAuthor(const std::string &sName, const std::string
         }
     }
     if (bFoundAuthor) {
-        Log::err(TAG, "Author already exists");
+        WSJCppLog::err(TAG, "Author already exists");
         return false;
     }
 
@@ -837,7 +848,7 @@ bool WSJCppPackageManager::removeAuthor(const std::string &sFullAuthor) {
         }
         return true;
     }
-    Log::err(TAG, "Not found this author");
+    WSJCppLog::err(TAG, "Not found this author");
     return false;
 }
 

@@ -1,0 +1,21 @@
+
+wsjcpp_version: 1
+name: wsjcpp
+version: 0.0.1
+description: C++ Source Package manager
+issues: none
+keywords:
+  - "c++"
+  - "sources"
+
+authors:
+  - name: "Evgenii Sopov"
+    email: "mrseakg@gmail.com"
+    
+distribution:
+  sources:
+    - from: "src/cppspm_manager.cpp"
+      to: "cppspm_manager.cpp"
+      sha1: ""
+    # scripts:
+

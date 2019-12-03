@@ -10,15 +10,24 @@ set (WSJCPP_LIBRARIES "")
 set (WSJCPP_INCLUDE_DIRS "")
 set (WSJCPP_SOURCES "")
 
-# fallen
-list (APPEND WSJCPP_INCLUDE_DIRS "src.wsjcpp/fallen/")
-list (APPEND WSJCPP_SOURCES "src.wsjcpp/fallen/fallen.cpp")
-list (APPEND WSJCPP_SOURCES "src.wsjcpp/fallen/fallen.h")
+# wsjcpp-core
+list (APPEND WSJCPP_INCLUDE_DIRS "src.wsjcpp/wsjcpp-core/")
+list (APPEND WSJCPP_SOURCES "src.wsjcpp/wsjcpp-core/wsjcpp_core.cpp")
+list (APPEND WSJCPP_SOURCES "src.wsjcpp/wsjcpp-core/wsjcpp_core.h")
 
-# fallen_parse_args
-list (APPEND WSJCPP_INCLUDE_DIRS "src.wsjcpp/sea_kg_wsjcpp_parse_args_master/")
-list (APPEND WSJCPP_SOURCES "src.wsjcpp/sea_kg_wsjcpp_parse_args_master/fallen_parse_args.cpp")
-list (APPEND WSJCPP_SOURCES "src.wsjcpp/sea_kg_wsjcpp_parse_args_master/fallen_parse_args.h")
+# wsjcpp-hashes
+list (APPEND WSJCPP_INCLUDE_DIRS "src.wsjcpp/wsjcpp-hashes/")
+list (APPEND WSJCPP_SOURCES "src.wsjcpp/wsjcpp-hashes/smallsha1.h")
+list (APPEND WSJCPP_SOURCES "src.wsjcpp/wsjcpp-hashes/smallsha1.cpp")
+list (APPEND WSJCPP_SOURCES "src.wsjcpp/wsjcpp-hashes/md5.h")
+list (APPEND WSJCPP_SOURCES "src.wsjcpp/wsjcpp-hashes/md5.cpp")
+list (APPEND WSJCPP_SOURCES "src.wsjcpp/wsjcpp-hashes/wsjcpp_hashes.h")
+list (APPEND WSJCPP_SOURCES "src.wsjcpp/wsjcpp-hashes/wsjcpp_hashes.cpp")
+
+# wsjcpp-yaml
+list (APPEND WSJCPP_INCLUDE_DIRS "src.wsjcpp/wsjcpp-yaml/")
+list (APPEND WSJCPP_SOURCES "src.wsjcpp/wsjcpp-yaml/wsjcpp_yaml.cpp")
+list (APPEND WSJCPP_SOURCES "src.wsjcpp/wsjcpp-yaml/wsjcpp_yaml.h")
 
 # nlohmann_json
 list (APPEND WSJCPP_INCLUDE_DIRS "src.wsjcpp/sea_kg_nlohmann_json_master/")

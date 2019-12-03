@@ -1,8 +1,7 @@
 #include <string.h>
 #include <iostream>
 #include <algorithm>
-#include <fallen.h>
-#include <fallen_parse_args.h>
+#include <wsjcpp_core.h>
 #include "wsjcpp_package_manager.h" 
 
 // ---------------------------------------------------------------------
@@ -12,7 +11,12 @@ void printHelp(std::vector<std::string> &vArgs) {
     std::cout << std::endl
     << " Usage: " << sProgramName << " <command> <params>" << std::endl << std::endl
     << " Commands: " << std::endl
-     << std::endl
+    << std::endl
+    << "\t" << "new <dir>" << std::endl
+    << "\t\t" << "Prepare new package in dir" << std::endl
+    << "\t\t" << "Will be generated build_simple / clean / wsjcpp.json / etc.. files README.md" << std::endl
+    << "\t\t" << " - example: `" << sProgramName << " new .`" << std::endl
+    << std::endl
     // "New a source package %DIRECTORY% (wsjcpp.json file)"
     << "\t" << "install <package-name>" << std::endl
     << "\t\t" << "Install a source package from any sources (will be install deps):" << std::endl
@@ -22,9 +26,8 @@ void printHelp(std::vector<std::string> &vArgs) {
     << "\t\t" << " - example 4 from http(s) `" << sProgramName << " install 'https://sea-kg.com/wsjcpp/example/latest'`" << std::endl
     << "\t\t" << " - example 5 from http(s) `" << sProgramName << " install 'https://sea-kg.com/wsjcpp/example/v3.0.0'`" << std::endl
     << std::endl
-    << "\t" << "packages" << std::endl
-    << "\t\t" << "List of installed a source packages" << std::endl
-    << "\t\t" << " - example: `" << sProgramName << " packages`" << std::endl
+    << "\t" << "requirements packages list - List of requirements a source packages " << std::endl
+    << "\t\t" << " - example: `" << sProgramName << " requirements packages`" << std::endl
     << std::endl
     << "\t" << "uninstall <package-name>" << std::endl
     << std::endl
@@ -43,20 +46,37 @@ void printHelp(std::vector<std::string> &vArgs) {
     << "\t" << "authors rm 'Full Name <Author Email>'" << std::endl
     << "\t\t" << "Remove author from curernt package" << std::endl
     << std::endl
-    << "\t" << "files list" << std::endl
-    << "\t" << "files add <from-filepath> <to-filepath>" << std::endl
-    << "\t" << "files rm <from-filepath>" << std::endl
+    << "\t" << "distribution sources list" << std::endl
+    << "\t" << "distribution sources add <from-filepath> <to-filepath>" << std::endl
+    << "\t" << "distribution sources rm <from-filepath>" << std::endl
     << std::endl
     << "\t" << "deps" << std::endl
     << "\t\t" << "Show dependencies" << std::endl
     << std::endl
-    << "\t" << "clean" << std::endl
-    << "\t\t" << "What a clean ???" << std::endl
+    << "\t" << "run <process>" << std::endl
+    << "\t" << "run clean - Do run clean.sh script" << std::endl
+    << "\t" << "run build - Do run build_simple.sh script" << std::endl
+    << "\t" << "run unit-tests - Build and run unit-tests" << std::endl
+    << std::endl
+    << "\t" << "unit-tests [params]" << std::endl
+    << "\t" << "unit-tests create <some_test_name> - Create new some_test_name" << std::endl
+    << "\t" << "unit-tests delete <some_test_name> - Delete some_test_name" << std::endl
+    << "\t" << "unit-tests list - list of unit-tests" << std::endl
+    << "\t" << "unit-tests files - files list of unit-tests" << std::endl
     << std::endl
     << "\t" << "generate" << std::endl
     << "\t" << "generate list" << std::endl
-    << "\t" << "generate <something>" << std::endl
-    << "\t\t" << "Generate some components" << std::endl
+    << "\t" << "generate <name>" << std::endl
+    << "\t\t" << "Generate some custom files/classes" << std::endl
+    << std::endl
+    << "\t" << "templates" << std::endl
+    << "\t\t" << "Templates which distribute with current source package" << std::endl
+    << "\t" << "templates list" << std::endl
+    << "\t\t" << "List of defined templates" << std::endl
+    << "\t" << "templates add <name> <script>" << std::endl
+    << "\t\t" << "Add new template to 'wsjcpp.json'" << std::endl
+    << "\t" << "templates rm <name>" << std::endl
+    << "\t\t" << "Remove template from 'wsjcpp.json'" << std::endl
     << std::endl
     // << "\t" << "docs" << std::endl
     // << "\t" << "docs make" << std::endl
@@ -71,12 +91,12 @@ int main(int argc, char* argv[]) {
     std::string appName = std::string(WSJCPP_NAME);
     std::string appVersion = std::string(WSJCPP_VERSION);
     std::string appLogPath = ".wsjcpp-logs";
-    if (!Fallen::dirExists(appLogPath)) {
-        Fallen::makeDir(appLogPath);
+    if (!WSJCppCore::dirExists(appLogPath)) {
+        WSJCppCore::makeDir(appLogPath);
     }
-    Log::setPrefixLogFile("wsjcpp");
-    Log::setLogDirectory(".wsjcpp-logs");
-    Log::info(TAG, "Hello");
+    WSJCppLog::setPrefixLogFile("wsjcpp");
+    WSJCppLog::setLogDirectory(".wsjcpp-logs");
+    WSJCppLog::info(TAG, "Hello");
     std::vector<std::string> vArgs;
 
     for (int i = 0; i < argc; i++) {
@@ -105,7 +125,7 @@ int main(int argc, char* argv[]) {
             // TODO move inside WSJCppPackageManager.init
             std::string sDirectory = vArgs[2];
             std::string sWSJCppJson = sDirectory + "/wsjcpp.json";
-            if (Fallen::fileExists(sWSJCppJson)) {
+            if (WSJCppCore::fileExists(sWSJCppJson)) {
                 std::cout << "Error: wsjcpp.json already exists." << std::endl;
                 return -1;
             }
@@ -161,13 +181,28 @@ int main(int argc, char* argv[]) {
                 return 0;
             }
             // TODO parse sub commands for fix-conflicts
-        } else if (vArgs[1] == "files") {
+        } else if (vArgs[1] == "distribution-files") {
             if (argc == 3 && vArgs[2] == "list") {
                 pkg.printFiles();
                 return 0;
             }
             
-            // TODO parse sub commands for fix-conflicts
+            if (argc == 4 && vArgs[2] == "rm") {
+                std::string fromFile = vArgs[3];
+                if (pkg.removeFile(fromFile)) {
+                    pkg.save();
+                }
+                return 0;
+            }
+
+            if (argc == 5 && vArgs[2] == "add") {
+                std::string fromFile = vArgs[3];
+                std::string toFile = vArgs[4];
+                if (pkg.addFile(fromFile, toFile)) {
+                    pkg.save();
+                }
+                return 0;
+            }
 
             printHelp(vArgs);
             return -1;
