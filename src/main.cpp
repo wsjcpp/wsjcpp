@@ -2,7 +2,8 @@
 #include <iostream>
 #include <algorithm>
 #include <wsjcpp_core.h>
-#include "wsjcpp_package_manager.h" 
+#include "wsjcpp_package_manager.h"
+#include "argument_processor_main.h"
 
 // ---------------------------------------------------------------------
 
@@ -18,15 +19,8 @@ void printHelp(std::vector<std::string> &vArgs) {
     << "\t\t" << " - example: `" << sProgramName << " new .`" << std::endl
     << std::endl
     // "New a source package %DIRECTORY% (wsjcpp.json file)"
-    << "\t" << "install <package-name>" << std::endl
-    << "\t\t" << "Install a source package from any sources (will be install deps):" << std::endl
-    << "\t\t" << " - example 1 from github source `" << sProgramName << " install 'https://github.com/sea-kg/nlohmann_json:v3.7.0'`" << std::endl
-    << "\t\t" << " - example 2 from github source `" << sProgramName << " install 'https://github.com/sea-kg/nlohmann_json:master'`" << std::endl
-    << "\t\t" << " - example 3 from local system `" << sProgramName << " install 'file:///usr/share/some_package'`" << std::endl
-    << "\t\t" << " - example 4 from http(s) `" << sProgramName << " install 'https://sea-kg.com/wsjcpp/example/latest'`" << std::endl
-    << "\t\t" << " - example 5 from http(s) `" << sProgramName << " install 'https://sea-kg.com/wsjcpp/example/v3.0.0'`" << std::endl
-    << std::endl
     << "\t" << "requirements packages list - List of requirements a source packages " << std::endl
+    << "\t" << "requirements packages install - List of requirements a source packages " << std::endl
     << "\t\t" << " - example: `" << sProgramName << " requirements packages`" << std::endl
     << std::endl
     << "\t" << "uninstall <package-name>" << std::endl
@@ -53,30 +47,10 @@ void printHelp(std::vector<std::string> &vArgs) {
     << "\t" << "deps" << std::endl
     << "\t\t" << "Show dependencies" << std::endl
     << std::endl
-    << "\t" << "run <process>" << std::endl
-    << "\t" << "run clean - Do run clean.sh script" << std::endl
-    << "\t" << "run build - Do run build_simple.sh script" << std::endl
-    << "\t" << "run unit-tests - Build and run unit-tests" << std::endl
-    << std::endl
-    << "\t" << "unit-tests [params]" << std::endl
-    << "\t" << "unit-tests create <some_test_name> - Create new some_test_name" << std::endl
-    << "\t" << "unit-tests delete <some_test_name> - Delete some_test_name" << std::endl
-    << "\t" << "unit-tests list - list of unit-tests" << std::endl
-    << "\t" << "unit-tests files - files list of unit-tests" << std::endl
-    << std::endl
     << "\t" << "generate" << std::endl
     << "\t" << "generate list" << std::endl
     << "\t" << "generate <name>" << std::endl
     << "\t\t" << "Generate some custom files/classes" << std::endl
-    << std::endl
-    << "\t" << "templates" << std::endl
-    << "\t\t" << "Templates which distribute with current source package" << std::endl
-    << "\t" << "templates list" << std::endl
-    << "\t\t" << "List of defined templates" << std::endl
-    << "\t" << "templates add <name> <script>" << std::endl
-    << "\t\t" << "Add new template to 'wsjcpp.json'" << std::endl
-    << "\t" << "templates rm <name>" << std::endl
-    << "\t\t" << "Remove template from 'wsjcpp.json'" << std::endl
     << std::endl
     // << "\t" << "docs" << std::endl
     // << "\t" << "docs make" << std::endl
@@ -86,7 +60,7 @@ void printHelp(std::vector<std::string> &vArgs) {
 
 // ---------------------------------------------------------------------
 
-int main(int argc, char* argv[]) {
+int main(int argc, const char* argv[]) {
     std::string TAG = "MAIN";
     std::string appName = std::string(WSJCPP_NAME);
     std::string appVersion = std::string(WSJCPP_VERSION);
@@ -96,12 +70,25 @@ int main(int argc, char* argv[]) {
     }
     WSJCppLog::setPrefixLogFile("wsjcpp");
     WSJCppLog::setLogDirectory(".wsjcpp-logs");
-    WSJCppLog::info(TAG, "Hello");
+
+
+    ArgumentProcessorMain *pMain = new ArgumentProcessorMain();
+    WSJCppArguments prog(argc, argv, pMain);
+    // std::cout << prog.help();
+
     std::vector<std::string> vArgs;
 
     for (int i = 0; i < argc; i++) {
         vArgs.push_back(std::string(argv[i]));
     }
+    // printHelp(vArgs);
+    int nResult = prog.exec();
+    if (nResult != 0) {
+        // print help
+        std::cout << "Try exec help" << std::endl;
+        std::cout << prog.help();
+    }
+    return nResult;
 
     if (vArgs.size() == 3 && vArgs[1] == "info") {
         WSJCppPackageManager pkg(vArgs[2]);

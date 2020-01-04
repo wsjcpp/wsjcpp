@@ -6,73 +6,158 @@
 #include <fstream>
 #include <iomanip>
 
-
 // ---------------------------------------------------------------------
+// WSJCppPackageManagerDistributionSource
 
-WSJCppPackageManagerFile::WSJCppPackageManagerFile() {
+WSJCppPackageManagerDistributionSource::WSJCppPackageManagerDistributionSource() {
+    TAG = "WSJCppPackageManagerDistributionSource";
 }
 
 // ---------------------------------------------------------------------
 
-WSJCppPackageManagerFile::WSJCppPackageManagerFile(const std::string &sFile) {
+WSJCppPackageManagerDistributionSource::WSJCppPackageManagerDistributionSource(const std::string &sFile) {
+    TAG = "WSJCppPackageManagerDistributionSource";
     m_sFrom = sFile;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManagerFile::getFrom() {
+bool WSJCppPackageManagerDistributionSource::fromYAML(WSJCppYAMLItem *pYamlDistributionSource) {
+    m_pYamlDistributionSource = pYamlDistributionSource;
+    if (!m_pYamlDistributionSource->hasElement("from")) {
+        WSJCppLog::err(TAG, "Missing required field 'from' in " + m_pYamlDistributionSource->getForLogFormat());
+        return false; 
+    } else {
+        m_sFrom = m_pYamlDistributionSource->getElement("from")->getValue();
+    }
+
+    if (!m_pYamlDistributionSource->hasElement("to")) {
+        WSJCppLog::err(TAG, "Missing required field 'to' in " + m_pYamlDistributionSource->getForLogFormat());
+        return false; 
+    } else {
+        m_sTo = m_pYamlDistributionSource->getElement("to")->getValue();
+    }
+
+    if (!m_pYamlDistributionSource->hasElement("sha1")) {
+        WSJCppLog::err(TAG, "Missing required field 'sha1' in " + m_pYamlDistributionSource->getForLogFormat());
+        return false; 
+    } else {
+        m_sSha1 = m_pYamlDistributionSource->getElement("sha1")->getValue();
+    }
+
+    return true;
+}
+
+// ---------------------------------------------------------------------
+
+WSJCppYAMLItem *WSJCppPackageManagerDistributionSource::toYAML() {
+    m_pYamlDistributionSource->getElement("from")->setValue(m_sFrom, true);
+    m_pYamlDistributionSource->getElement("to")->setValue(m_sTo, true);
+    m_pYamlDistributionSource->getElement("sha1")->setValue(m_sSha1, true);
+    return m_pYamlDistributionSource;
+}
+
+// ---------------------------------------------------------------------
+
+std::string WSJCppPackageManagerDistributionSource::getFrom() {
     return m_sFrom;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManagerFile::getTo() {
-    return m_sFrom;
+std::string WSJCppPackageManagerDistributionSource::getTo() {
+    return m_sTo;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManagerFile::getSha1() {
+std::string WSJCppPackageManagerDistributionSource::getSha1() {
     return m_sSha1;
 }
 
 // ---------------------------------------------------------------------
+// WSJCppPackageManagerDistributionScript
 
-nlohmann::json WSJCppPackageManagerFile::toJson() {
-    m_jsonFile["from"] = m_sFrom;
-    m_jsonFile["to"] = m_sTo;
-    m_jsonFile["sha1"] = m_sSha1;
-    return m_jsonFile;
+WSJCppPackageManagerDistributionScript::WSJCppPackageManagerDistributionScript() {
+    TAG = "WSJCppPackageManagerDistributionScript";
 }
 
 // ---------------------------------------------------------------------
 
-void WSJCppPackageManagerFile::fromJson(const nlohmann::json &jsonFile) {
-    m_jsonFile = jsonFile;
-    for (auto it = jsonFile.begin(); it != jsonFile.end(); ++it) {
-        std::string sKey = it.key();
-        if (sKey == "from") {
-            m_sFrom = it.value();
-        } else if (sKey == "to") {
-            m_sTo = it.value();
-        } else if (sKey == "sha1") {
-            m_sSha1 = it.value();
-        } else {
-           std::cout << "IGNORED in file:  " << sKey << std::endl; 
-        }
+WSJCppPackageManagerDistributionScript::WSJCppPackageManagerDistributionScript(const std::string &sFile) {
+    TAG = "WSJCppPackageManagerDistributionScript";
+    m_sFrom = sFile;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManagerDistributionScript::fromYAML(WSJCppYAMLItem *pYamlDistributionSource) {
+    m_pYamlDistributionScript = pYamlDistributionSource;
+    if (!m_pYamlDistributionScript->hasElement("from")) {
+        WSJCppLog::err(TAG, "Missing required field 'from' in " + m_pYamlDistributionScript->getForLogFormat());
+        return false; 
+    } else {
+        m_sFrom = m_pYamlDistributionScript->getElement("from")->getValue();
     }
+
+    if (!m_pYamlDistributionScript->hasElement("to")) {
+        WSJCppLog::err(TAG, "Missing required field 'to' in " + m_pYamlDistributionScript->getForLogFormat());
+        return false; 
+    } else {
+        m_sTo = m_pYamlDistributionScript->getElement("to")->getValue();
+    }
+
+    if (!m_pYamlDistributionScript->hasElement("sha1")) {
+        WSJCppLog::err(TAG, "Missing required field 'sha1' in " + m_pYamlDistributionScript->getForLogFormat());
+        return false; 
+    } else {
+        m_sSha1 = m_pYamlDistributionScript->getElement("sha1")->getValue();
+    }
+
+    return true;
 }
 
 // ---------------------------------------------------------------------
+
+WSJCppYAMLItem *WSJCppPackageManagerDistributionScript::toYAML() {
+    m_pYamlDistributionScript->getElement("from")->setValue(m_sFrom, true);
+    m_pYamlDistributionScript->getElement("to")->setValue(m_sTo, true);
+    m_pYamlDistributionScript->getElement("sha1")->setValue(m_sSha1, true);
+    return m_pYamlDistributionScript;
+}
+
+// ---------------------------------------------------------------------
+
+std::string WSJCppPackageManagerDistributionScript::getFrom() {
+    return m_sFrom;
+}
+
+// ---------------------------------------------------------------------
+
+std::string WSJCppPackageManagerDistributionScript::getTo() {
+    return m_sTo;
+}
+
+// ---------------------------------------------------------------------
+
+std::string WSJCppPackageManagerDistributionScript::getSha1() {
+    return m_sSha1;
+}
+
+// ---------------------------------------------------------------------
+// WSJCppPackageManagerAuthor
 
 WSJCppPackageManagerAuthor::WSJCppPackageManagerAuthor() {
+
 }
 
 // ---------------------------------------------------------------------
 
 WSJCppPackageManagerAuthor::WSJCppPackageManagerAuthor(const std::string &sName, const std::string &sEmail) {
+    TAG = "WSJCppPackageManagerAuthor";
     m_sName = sName;
     m_sEmail = sEmail;
+    m_pYamlAuthor = nullptr;
 }
 
 // ---------------------------------------------------------------------
@@ -95,39 +180,61 @@ std::string WSJCppPackageManagerAuthor::getFullAuthor() {
 
 // ---------------------------------------------------------------------
 
-nlohmann::json WSJCppPackageManagerAuthor::toJson() {
-    m_jsonAuthor["name"] = m_sName;
-    m_jsonAuthor["email"] = m_sEmail;
-    return m_jsonAuthor;
+WSJCppYAMLItem *WSJCppPackageManagerAuthor::toYAML() {
+    m_pYamlAuthor->getElement("name")->setValue(m_sName, true);
+    m_pYamlAuthor->getElement("email")->setValue(m_sEmail, true);
+    return m_pYamlAuthor;
 }
 
 // ---------------------------------------------------------------------
 
-void WSJCppPackageManagerAuthor::fromJson(const nlohmann::json &jsonAuthor) {
-    m_jsonAuthor = jsonAuthor;
-    for (auto it = jsonAuthor.begin(); it != jsonAuthor.end(); ++it) {
-        std::string sKey = it.key();
-        if (sKey == "name") {
-            m_sName = it.value();
-        } else if (sKey == "email") {
-            m_sEmail = it.value();
-        } else {
-           std::cout << "IGNORED_AUTHORS in authors:  " << sKey << std::endl; 
-        }
+bool WSJCppPackageManagerAuthor::fromYAML(WSJCppYAMLItem *pYamlAuthor) {
+    m_pYamlAuthor = pYamlAuthor;
+    if (!m_pYamlAuthor->hasElement("name")) {
+        // TODO prepare in yaml getOriginalLineForError()
+        WSJCppLog::err(TAG, "Missing required field 'name' in " + pYamlAuthor->getForLogFormat());
+        return false; 
+    } else {
+        m_sName = m_pYamlAuthor->getElement("name")->getValue();
     }
+
+    if (!m_pYamlAuthor->hasElement("email")) {
+        WSJCppLog::err(TAG, "Missing required field 'email' in " + pYamlAuthor->getForLogFormat());
+        return false; 
+    } else {
+        m_sEmail = m_pYamlAuthor->getElement("email")->getValue();
+    }
+    return true;
 }
 
 // ---------------------------------------------------------------------
 // WSJCppPackageManagerServer - server info class
 
 WSJCppPackageManagerServer::WSJCppPackageManagerServer() {
-
+    TAG = "WSJCppPackageManagerServer";
 }
 
 // ---------------------------------------------------------------------
 
 WSJCppPackageManagerServer::WSJCppPackageManagerServer(const std::string &sAddress) {
+    TAG = "WSJCppPackageManagerServer";
     m_sAddress = sAddress;
+    m_pYamlServer = nullptr;
+}
+
+// ---------------------------------------------------------------------
+
+WSJCppYAMLItem *WSJCppPackageManagerServer::toYAML() {
+    m_pYamlServer->setValue(m_sAddress, true);
+    return m_pYamlServer;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManagerServer::fromYAML(WSJCppYAMLItem *pYaml) {
+    m_pYamlServer = pYaml;
+    m_sAddress = m_pYamlServer->getValue();
+    return true;
 }
 
 // ---------------------------------------------------------------------
@@ -137,30 +244,45 @@ std::string WSJCppPackageManagerServer::getAddress() {
 }
 
 // ---------------------------------------------------------------------
-
-nlohmann::json WSJCppPackageManagerServer::toJson() {
-    m_jsonServer["address"] = m_sAddress;
-    return m_jsonServer;
-}
-
-// ---------------------------------------------------------------------
-
-void WSJCppPackageManagerServer::fromJson(const nlohmann::json &jsonServer) {
-    m_jsonServer = jsonServer;
-    for (auto it = jsonServer.begin(); it != jsonServer.end(); ++it) {
-        std::string sKey = it.key();
-        if (sKey == "address") {
-            m_sAddress = it.value();
-        } else {
-           std::cout << "IGNORED in server:  " << sKey << std::endl; 
-        }
-    }
-}
-
-// ---------------------------------------------------------------------
 // WSJCppPackageManagerRepository - repository struct
 
 WSJCppPackageManagerRepository::WSJCppPackageManagerRepository() {
+    TAG = "WSJCppPackageManagerRepository";
+}
+
+// ---------------------------------------------------------------------
+
+WSJCppYAMLItem *WSJCppPackageManagerRepository::toYAML() {
+    m_pYamlRepository->getElement("url")->setValue(m_sUrl, true);
+    m_pYamlRepository->getElement("type")->setValue(m_sType, true);
+    return m_pYamlRepository;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManagerRepository::fromYAML(WSJCppYAMLItem *pYaml) {
+    m_pYamlRepository = pYaml;
+    if (!m_pYamlRepository->hasElement("type")) {
+        WSJCppLog::err(TAG, "Missing required field 'type' in " + m_pYamlRepository->getForLogFormat());
+        return false; 
+    } else {
+        m_sType = m_pYamlRepository->getElement("type")->getValue();
+    }
+
+    if (!m_pYamlRepository->hasElement("url")) {
+        // TODO prepare in yaml getOriginalLineForError()
+        WSJCppLog::err(TAG, "Missing required field 'url' in " + m_pYamlRepository->getForLogFormat());
+        return false; 
+    } else {
+        m_sUrl = m_pYamlRepository->getElement("url")->getValue();
+    }
+    return true;
+}
+
+// ---------------------------------------------------------------------
+
+std::string WSJCppPackageManagerRepository::getType() {
+    return m_sType;
 }
 
 // ---------------------------------------------------------------------
@@ -170,48 +292,67 @@ std::string WSJCppPackageManagerRepository::getUrl() {
 }
 
 // ---------------------------------------------------------------------
-
-nlohmann::json WSJCppPackageManagerRepository::toJson() {
-    m_jsonRepository["url"] = m_sUrl;
-    return m_jsonRepository;
-}
-
-// ---------------------------------------------------------------------
-
-void WSJCppPackageManagerRepository::fromJson(const nlohmann::json &jsonRepository) {
-    m_jsonRepository = jsonRepository;
-    for (auto it = jsonRepository.begin(); it != jsonRepository.end(); ++it) {
-        std::string sKey = it.key();
-        if (sKey == "url") {
-            m_sUrl = it.value();
-        } else {
-           std::cout << "IGNORED in repository:  " << sKey << std::endl; 
-        }
-    }
-}
-
-// ---------------------------------------------------------------------
 // WSJCppPackageManager - main class
 
 WSJCppPackageManagerDependence::WSJCppPackageManagerDependence() {
+    TAG = "WSJCppPackageManagerDependence";
 }
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManagerDependence::getInstalledDir() {
-    return m_sInstalledDir;
+WSJCppYAMLItem *WSJCppPackageManagerDependence::toYAML() {
+    m_pYamlDependece->getElement("url")->setValue(m_sUrl, true);
+    m_pYamlDependece->getElement("name")->setValue(m_sName, true);
+    m_pYamlDependece->getElement("version")->setValue(m_sVersion, true);
+    m_pYamlDependece->getElement("installation-dir")->setValue(m_sInstallationDir, true);
+    return m_pYamlDependece;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManagerDependence::getType() {
-    return m_sType;
+bool WSJCppPackageManagerDependence::fromYAML(WSJCppYAMLItem *pYaml) {
+    m_pYamlDependece = pYaml;
+    if (!m_pYamlDependece->hasElement("name")) {
+        WSJCppLog::err(TAG, "Missing required field 'name' in " + m_pYamlDependece->getForLogFormat());
+        return false;
+    } else {
+        m_sName = m_pYamlDependece->getElement("name")->getValue();
+    }
+
+    if (!m_pYamlDependece->hasElement("version")) {
+        WSJCppLog::err(TAG, "Missing required field 'version' in " + m_pYamlDependece->getForLogFormat());
+        return false; 
+    } else {
+        m_sVersion = m_pYamlDependece->getElement("version")->getValue();
+    }
+
+    if (!m_pYamlDependece->hasElement("url")) {
+        WSJCppLog::err(TAG, "Missing required field 'url' in " + m_pYamlDependece->getForLogFormat());
+        return false; 
+    } else {
+        m_sUrl = m_pYamlDependece->getElement("url")->getValue();
+    }
+
+    if (!m_pYamlDependece->hasElement("installation-dir")) {
+        WSJCppLog::err(TAG, "Missing required field 'installation-dir' in " + m_pYamlDependece->getForLogFormat());
+        return false; 
+    } else {
+        m_sInstallationDir = m_pYamlDependece->getElement("installation-dir")->getValue();
+    }
+
+    return true;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManagerDependence::getFrom() {
-    return m_sFrom;
+std::string WSJCppPackageManagerDependence::getInstallationDir() {
+    return m_sInstallationDir;
+}
+
+// ---------------------------------------------------------------------
+
+std::string WSJCppPackageManagerDependence::getUrl() {
+    return m_sUrl;
 }
 
 // ---------------------------------------------------------------------
@@ -224,38 +365,6 @@ std::string WSJCppPackageManagerDependence::getName() {
 
 std::string WSJCppPackageManagerDependence::getVersion() {
     return m_sVersion;
-}
-
-// ---------------------------------------------------------------------
-
-nlohmann::json WSJCppPackageManagerDependence::toJson() {
-    m_jsonDependece["type"] = m_sType;
-    m_jsonDependece["from"] = m_sFrom;
-    m_jsonDependece["name"] = m_sName;
-    m_jsonDependece["version"] = m_sVersion;
-    return m_jsonDependece;
-}
-
-// ---------------------------------------------------------------------
-
-void WSJCppPackageManagerDependence::fromJson(const nlohmann::json &jsonDependece) {
-    m_jsonDependece = jsonDependece;
-    for (auto it = jsonDependece.begin(); it != jsonDependece.end(); ++it) {
-        std::string sKey = it.key();
-        if (sKey == "type") {
-            m_sType = it.value();
-        } else if (sKey == "from") {
-            m_sFrom = it.value();
-        } else if (sKey == "name") {
-            m_sName = it.value();
-        } else if (sKey == "version") {
-            m_sVersion = it.value();
-        } else if (sKey == "installed_dir") {
-            m_sInstalledDir = it.value();
-        } else {
-           std::cout << "IGNORED in dependence:  " << sKey << std::endl; 
-        }
-    }
 }
 
 // ---------------------------------------------------------------------
@@ -272,8 +381,10 @@ WSJCppPackageManager::WSJCppPackageManager(const std::string &sDir) {
     m_sHttpPrefix = "http://"; // from some http://
     m_sHttpsPrefix = "https://";
     m_sYamlFilename = "wsjcpp.yml";
-    m_nWSJCppVersion = 1;
+    m_sWSJCppCurrentVersion = "v0.0.1";
+    m_sWSJCppVersion = m_sWSJCppCurrentVersion;
     m_bHolded = false;
+    m_sIssues = "none";
 }
 
 // ---------------------------------------------------------------------
@@ -350,19 +461,21 @@ bool WSJCppPackageManager::init() {
 
 bool WSJCppPackageManager::save() {
     if (m_bHolded) {
-        std::cout << "ERROR: wsjcpp is holded" << std::endl;
+        WSJCppLog::throw_err(TAG, "wsjcpp is holded");
         return false;
     }
+
     if (!WSJCppCore::dirExists(m_sDirWithSources)) {
         WSJCppCore::makeDir(m_sDirWithSources);
     }
 
     std::string sGitkeepFile = m_sDirWithSources + "/.gitkeep";
     if (!WSJCppCore::fileExists(sGitkeepFile)) {
-        WSJCppCore::writeFile(sGitkeepFile, "");
+        WSJCppCore::writeFile(sGitkeepFile, ""); // TODO createEmptyFile
     }
 
-    m_jsonPackageInfo["wsjcpp_version"] = m_nWSJCppVersion;
+    /* 
+    m_jsonPackageInfo["wsjcpp_version"] = m_sWSJCppVersion;
     m_jsonPackageInfo["name"] = m_sName;
     m_jsonPackageInfo["version"] = m_sVersion;
     m_jsonPackageInfo["description"] = m_sDescription;
@@ -372,7 +485,7 @@ bool WSJCppPackageManager::save() {
     for (int i = 0; i < m_vAuthors.size(); i++) {
         jsonAuthors.push_back(m_vAuthors[i].toJson());
     }
-    m_jsonPackageInfo["authors"] = jsonAuthors;
+    // m_jsonPackageInfo["authors"] = jsonAuthors;
 
     nlohmann::json jsonServers = nlohmann::json::array();
     for (int i = 0; i < m_vServers.size(); i++) {
@@ -387,12 +500,6 @@ bool WSJCppPackageManager::save() {
     }
     m_jsonPackageInfo["dependencies"] = jsonDependencies;
 
-    nlohmann::json jsonFiles = nlohmann::json::array();
-    for (int i = 0; i < m_vDistributionFiles.size(); i++) {
-        jsonFiles.push_back(m_vDistributionFiles[i].toJson());
-    }
-    m_jsonPackageInfo["distribution-files"] = jsonFiles;
-
     nlohmann::json jsonRepositories = nlohmann::json::array();
     for (int i = 0; i < m_vRepositories.size(); i++) {
         jsonRepositories.push_back(m_vRepositories[i].toJson());
@@ -402,93 +509,99 @@ bool WSJCppPackageManager::save() {
     int indent = 4;
     std::ofstream cppspmJson(m_sDir + "/" + m_sYamlFilename);
     cppspmJson << std::setw(4) << m_jsonPackageInfo << std::endl;
+    */
     return true;
 }
 
 // ---------------------------------------------------------------------
 
 bool WSJCppPackageManager::load() {
-    std::string sYamlFilename = m_sDir + "/" + m_sYamlFilename;
+    m_sYamlFullpath = m_sDir + "/" + m_sYamlFilename;
 
-    if (!WSJCppCore::fileExists(sYamlFilename)) {
-        std::cout << "ERROR: '" << sYamlFilename << "' did not found" << std::endl;
+    if (!WSJCppCore::fileExists(m_sYamlFullpath)) {
+        std::cout << "ERROR: '" << m_sYamlFullpath << "' did not found" << std::endl;
         return false;
     }
     
-    if (!m_yamlPackageInfo.loadFromFile(sYamlFilename)) {
+    if (!m_yamlPackageInfo.loadFromFile(m_sYamlFullpath)) {
         return false;
     }
 
-    // m_yamlPackageInfo
-
-    std::ifstream ifs(sYamlFilename);
-    m_jsonPackageInfo = nlohmann::json::parse(ifs);
-
-    for (auto it = m_jsonPackageInfo.begin(); it != m_jsonPackageInfo.end(); ++it) {
-        std::string sKey = it.key();
-        if (sKey == "name") {
-            m_sName = it.value();
-        } else if (sKey == "version") {
-            m_sVersion = it.value();
+    std::vector<std::string> vKeys = m_yamlPackageInfo.getRoot()->getKeys();
+    for (int i = 0; i < vKeys.size(); i++) {
+        std::string sKey = vKeys[i];
+        // WSJCppLog::info(TAG, "Process option '" + sKey + "'");
+        if (sKey == "version") {
+            if (!readFieldVersion()) {
+                return false;
+            }
+        } else if (sKey == "cmake_version") {
+            if (!readFieldCMakeVersion()) {
+                return false;
+            }
+        } else if (sKey == "cmake_cxx_standard") {
+            if (!readFieldCMakeCxxStandard()) {
+                return false;
+            }
+        } else if (sKey == "name") {
+            if (!readFieldName()) {
+                return false;
+            }
         } else if (sKey == "description") {
-            m_sDescription = it.value();
-        } else if (sKey == "keywords") {
-            nlohmann::json jsonKeywords = it.value();
-            for (auto it1 = jsonKeywords.begin(); it1 != jsonKeywords.end(); ++it1) {
-                std::string keyword = it1.value();
-                m_vKeywords.push_back(keyword);
+            if (!readFieldDescription()) {
+                return false;
             }
         } else if (sKey == "wsjcpp_version") {
-            int nWSJCppVersion = it.value();
-            if (nWSJCppVersion > m_nWSJCppVersion) {
-                std::cout << "WARN: Please update your 'cppspm' to " << nWSJCppVersion << std::endl;
+            if (!readFieldWsjcppVersion()) {
+                return false;
+            }
+        } else if (sKey == "issues") {
+            if (!readFieldIssues()) {
+                return false;
+            }
+        } else if (sKey == "keywords") {
+            if (!readFieldKeywords()) {
+                return false;
             }
         } else if (sKey == "authors") {
-            nlohmann::json jsonAuthors = it.value();
-            for (auto it2 = jsonAuthors.begin(); it2 != jsonAuthors.end(); ++it2) {
-                WSJCppPackageManagerAuthor author;
-                author.fromJson(it2.value());
-                m_vAuthors.push_back(author);
+            if (!readFieldAuthors()) {
+                return false;
             }
-        } else if (sKey == "distribution-files") {
-            nlohmann::json jsonFiles = it.value();
-            for (auto it3 = jsonFiles.begin(); it3 != jsonFiles.end(); ++it3) {
-                WSJCppPackageManagerFile file;
-                file.fromJson(it3.value());
-                m_vDistributionFiles.push_back(file);
+        } else if (sKey == "distribution") {
+            if (!readFieldDistribution()) {
+                return false;
             }
         } else if (sKey == "servers") {
-            nlohmann::json jsonServers = it.value();
-            for (auto it4 = jsonServers.begin(); it4 != jsonServers.end(); ++it4) {
-                WSJCppPackageManagerServer server;
-                server.fromJson(it4.value());
-                m_vServers.push_back(server);
+            if (!readFieldServers()) {
+                return false;
             }
         } else if (sKey == "dependencies") {
-            nlohmann::json jsonDependencies = it.value();
-            for (auto it5 = jsonDependencies.begin(); it5 != jsonDependencies.end(); ++it5) {
-                WSJCppPackageManagerDependence dependence;
-                dependence.fromJson(it5.value());
-                m_vDependencies.push_back(dependence);
+            if (!readFieldDependencies()) {
+                return false;
             }
         } else if (sKey == "repositories") {
-            nlohmann::json jsonRepositories = it.value();
-            for (auto it6 = jsonRepositories.begin(); it6 != jsonRepositories.end(); ++it6) {
-                WSJCppPackageManagerRepository repo;
-                repo.fromJson(it6.value());
-                m_vRepositories.push_back(repo);
+            if (!readFieldRepositories()) {
+                return false;
             }
         } else {
-           std::cout << "IGNORED:  " << sKey << std::endl; 
+            WSJCppLog::warn(TAG, "Ignored option '" + sKey + "' in " + m_yamlPackageInfo.getRoot()->getForLogFormat());
         }
     }
+
+    // WSJCppLog::warn(TAG, "Loaded");
+
+    // TODO required-libraries
+    // TODO required-pkg-config
+    // TODO replace-dependencies
+    // TODO check requered fields
+
     return true;
 }
 
 // ---------------------------------------------------------------------
 
 void WSJCppPackageManager::printFiles() {
-    for (auto it = m_vDistributionFiles.begin(); it != m_vDistributionFiles.end(); ++it) {
+    for (auto it = m_vDistributionSources.begin(); it != m_vDistributionSources.end(); ++it) {
         std::cout << it->getSha1() << " " << it->getFrom() << " -> " << it->getTo() << std::endl;
     }
 }
@@ -506,15 +619,15 @@ bool WSJCppPackageManager::addFile(const std::string &sFromFile, const std::stri
         return false;
     }
 
-    for (auto it = m_vDistributionFiles.begin(); it != m_vDistributionFiles.end(); ++it) {
+    for (auto it = m_vDistributionSources.begin(); it != m_vDistributionSources.end(); ++it) {
         if (it->getFrom() == sFromFile) {
             WSJCppLog::err(TAG, "This package already contained file '" + sFromFile + "'");
             return false;
         }
     }
 
-    WSJCppPackageManagerFile file(sFromFile);
-    m_vDistributionFiles.push_back(file);
+    WSJCppPackageManagerDistributionSource source(sFromFile);
+    m_vDistributionSources.push_back(source);
     return true;
 }
 
@@ -526,13 +639,13 @@ bool WSJCppPackageManager::removeFile(const std::string &sFromFile) {
         return false;
     }
 
-    for (auto it = m_vDistributionFiles.begin(); it != m_vDistributionFiles.end(); ++it) {
+    for (auto it = m_vDistributionSources.begin(); it != m_vDistributionSources.end(); ++it) {
         if (it->getFrom() == sFromFile) {
-            m_vDistributionFiles.erase(it);
+            m_vDistributionSources.erase(it);
             return true;
         }
     }
-    WSJCppLog::err(TAG, "Distribution file '" + sFromFile + "' cound not found in this package");
+    WSJCppLog::err(TAG, "Distribution source '" + sFromFile + "' cound not found in this package");
     return false;
 }
 
@@ -548,7 +661,7 @@ void WSJCppPackageManager::printServers() {
 
 bool WSJCppPackageManager::addServer(const std::string &sServer) {
     if (m_bHolded) {
-        std::cout << "ERROR: cppspm is holded" << std::endl;
+        std::cout << "ERROR: package is holded" << std::endl;
         return false;
     }
 
@@ -597,7 +710,7 @@ bool WSJCppPackageManager::updateDependencies() {
 void WSJCppPackageManager::printDependencies(std::string sIntent) {
     std::string sNexIntent = sIntent + "  \\--";
     for (auto it = m_vDependencies.begin(); it != m_vDependencies.end(); ++it) {
-        std::cout << sIntent << " * " << it->getName() << ":" << it->getVersion() << "    (" << it->getType() << ":" << it->getFrom() << ")" << std::endl;
+        std::cout << sIntent << " * " << it->getName() << ":" << it->getVersion() << "    (" << it->getUrl() << ":" << it->getInstallationDir() << ")" << std::endl;
         if (m_bHolded) {
             WSJCppPackageManager m(m_sParentDir + "/" + it->getName(), m_sParentDir, true);
             if (m.load()) {
@@ -640,22 +753,30 @@ void WSJCppPackageManager::verify() {
 
 bool WSJCppPackageManager::install(const std::string &sPackage) {
     if (m_bHolded) {
-        std::cout << "ERROR: Could not install package when holded" << std::endl;
+        WSJCppLog::err(TAG, "Could not install package when holded");
         return false;
     }
+
     if (sPackage.compare(0, m_sGithubPrefix.size(), m_sGithubPrefix) == 0) {
         return installFromGithub(sPackage);
     } else if (sPackage.compare(0, m_sBitbucketPrefix.size(), m_sBitbucketPrefix) == 0) {
         // TODO
+        WSJCppLog::err(TAG, "Could not install package from bitbucket - not implemented yet");
+        return false;
     } else if (sPackage.compare(0, m_sFilePrefix.size(), m_sFilePrefix) == 0) {
         // TODO
+        WSJCppLog::err(TAG, "Could not install package from file - not implemented yet");
+        return false;
     } else if (
         sPackage.compare(0, m_sHttpPrefix.size(), m_sHttpPrefix) == 0
         || sPackage.compare(0, m_sHttpsPrefix.size(), m_sHttpsPrefix) == 0
     ) {
         // TODO
+        WSJCppLog::err(TAG, "Could not install package from http(s) - not implemented yet");
+        return false;
     }
 
+    WSJCppLog::err(TAG, "Could not install package from unknown source");
     return false;
 }
 
@@ -711,8 +832,8 @@ bool WSJCppPackageManager::installFromGithub(const std::string &sPackage) {
 
     // TODO download and check package
 
-    d.fromJson(jsonDependence);
-    m_vDependencies.push_back(d);
+    // d.fromJson(jsonDependence);
+    // m_vDependencies.push_back(d);
 
     return true;
 }
@@ -731,17 +852,17 @@ void WSJCppPackageManager::printInfo() {
         std::cout << "Package is holded" << std::endl;
     }
     std::cout << "Directory: " << m_sDir << std::endl;
-    std::cout << "wsjcpp.version = " << m_nWSJCppVersion << std::endl;
+    std::cout << "wsjcpp.version = " << m_sWSJCppVersion << std::endl;
     // print keywords
     std::cout << "Keywords: " << std::endl;
     for (unsigned int i = 0; i < m_vKeywords.size(); i++) {
         std::cout << " - " << m_vKeywords[i] << std::endl;
     }
-    if (m_vDistributionFiles.size() > 0) {
+    if (m_vDistributionSources.size() > 0) {
         std::cout << std::endl << "Distribution-Files: " << std::endl;
-        for (unsigned int i = 0; i < m_vDistributionFiles.size(); i++) {
-            WSJCppPackageManagerFile file = m_vDistributionFiles[i];
-            std::cout << " - " << file.getFrom() << " -> " << file.getTo() << " [sha1:" << file.getSha1() << "]" << std::endl;
+        for (unsigned int i = 0; i < m_vDistributionSources.size(); i++) {
+            WSJCppPackageManagerDistributionSource source = m_vDistributionSources[i];
+            std::cout << " - " << source.getFrom() << " -> " << source.getTo() << " [sha1:" << source.getSha1() << "]" << std::endl;
         }
     }
     
@@ -755,9 +876,9 @@ void WSJCppPackageManager::printInfo() {
 // ---------------------------------------------------------------------
 
 void WSJCppPackageManager::printPackages() {
-    std::cout << "Packages: " << std::endl;
+    std::cout << "Dependencies: " << std::endl;
     for (auto it = m_vDependencies.begin(); it != m_vDependencies.end(); ++it) {
-        std::cout << " - " << it->getName() << ":" << it->getVersion() << "    (" << it->getType() << ":" << it->getFrom() << ")" << std::endl;
+        std::cout << " - " << it->getName() << ":" << it->getVersion() << "    (" << it->getUrl() << " -> " << it->getInstallationDir() << ")" << std::endl;
     }
     std::cout << std::endl;
 }
@@ -794,9 +915,9 @@ void WSJCppPackageManager::printAuthorsTree() {
 void WSJCppPackageManager::recursive_printAuthorsTree(std::vector<WSJCppPackageManagerDependence> &vDependencies) {
     for (int i = 0; i < vDependencies.size(); i++) {
         WSJCppPackageManagerDependence dep = vDependencies[i];
-        std::string sInstalledDir = dep.getInstalledDir(); 
+        std::string sInstalledDir = dep.getInstallationDir(); 
 
-        if (WSJCppCore::dirExists(dep.getInstalledDir())) {
+        if (WSJCppCore::dirExists(dep.getInstallationDir())) {
             WSJCppPackageManager subpkg(sInstalledDir, m_sDir, true);
             WSJCppLog::info(TAG, "Loading package '" + sInstalledDir + "'");
             if (subpkg.load()) {
@@ -865,3 +986,210 @@ std::string WSJCppPackageManager::packageNameToUFolder(const std::string &sFilen
     }
     return ret;
 }
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManager::readFieldVersion() {
+    if (!m_yamlPackageInfo.getRoot()->hasElement("version")) {
+        WSJCppLog::err(TAG, "Missing required field 'version' in '" + m_sYamlFullpath + "'");
+        return false;
+    }
+    // TODO: check version format
+    m_sVersion = m_yamlPackageInfo["version"].getValue();
+    return true;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManager::readFieldCMakeVersion() {
+    if (!m_yamlPackageInfo.getRoot()->hasElement("cmake_version")) {
+        WSJCppLog::err(TAG, "Missing required field 'cmake_version' in '" + m_sYamlFullpath + "'");
+        return false;
+    }
+    // TODO: check cmake_version format
+    m_sVersion = m_yamlPackageInfo["cmake_version"].getValue();
+    return true;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManager::readFieldCMakeCxxStandard() {
+    if (!m_yamlPackageInfo.getRoot()->hasElement("cmake_cxx_standard")) {
+        WSJCppLog::err(TAG, "Missing required field 'cmake_cxx_standard' in '" + m_sYamlFullpath + "'");
+        return false;
+    }
+    // TODO: check cmake_cxx_standard format
+    m_sCMakeCxxStandard = m_yamlPackageInfo["cmake_cxx_standard"].getValue();
+    return true;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManager::readFieldName() {
+    if (!m_yamlPackageInfo.getRoot()->hasElement("name")) {
+        WSJCppLog::err(TAG, "Missing required field 'name' in " + m_yamlPackageInfo.getRoot()->getForLogFormat());
+        return false;
+    }
+    // TODO: check name format
+    m_sName = m_yamlPackageInfo["name"].getValue();
+    return true;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManager::readFieldDescription() {
+    if (!m_yamlPackageInfo.getRoot()->hasElement("description")) {
+        WSJCppLog::err(TAG, "Missing required field 'description' in '" + m_sYamlFullpath + "'");
+        return false;
+    }
+    m_sDescription = m_yamlPackageInfo["description"].getValue();
+    return true;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManager::readFieldWsjcppVersion() {    
+    if (!m_yamlPackageInfo.getRoot()->hasElement("wsjcpp_version")) {
+        WSJCppLog::err(TAG, "Missing required field 'wsjcpp_version' in '" + m_sYamlFullpath + "'");
+        return false;
+    }
+    m_sWSJCppVersion = m_yamlPackageInfo["wsjcpp_version"].getValue();
+    // TODO version comparator 
+    // if (nWSJCppVersion > m_nWSJCppVersion) {
+        //   std::cout << "WARN: Please update your 'cppspm' to " << nWSJCppVersion << std::endl;
+    // }
+    return true;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManager::readFieldIssues() {
+    if (!m_yamlPackageInfo.getRoot()->hasElement("issues")) {
+        WSJCppLog::err(TAG, "Missing required field 'issues' in '" + m_sYamlFullpath + "'");
+        return false;
+    }
+    m_sIssues = m_yamlPackageInfo["issues"].getValue();
+    return true;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManager::readFieldKeywords() {
+    if (!m_yamlPackageInfo.getRoot()->hasElement("keywords")) {
+        WSJCppLog::err(TAG, "Missing required field 'keywords' in '" + m_sYamlFullpath + "'");
+        return false;
+    }
+    WSJCppYAMLItem itemKeywords = m_yamlPackageInfo["keywords"];
+    int nLength = itemKeywords.getLength();
+    for (int i = 0; i < nLength; i++) {
+        std::string sKeyword = itemKeywords[i].getValue();
+        m_vKeywords.push_back(sKeyword);
+    }
+    return true;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManager::readFieldAuthors() {
+    if (!m_yamlPackageInfo.getRoot()->hasElement("authors")) {
+        WSJCppLog::err(TAG, "Missing required field 'authors' in '" + m_sYamlFullpath + "'");
+        return false;
+    }
+    WSJCppYAMLItem itemAuthors = m_yamlPackageInfo["authors"];
+    int nLength = itemAuthors.getLength();
+    for (int i = 0; i < nLength; i++) {
+        WSJCppYAMLItem *pYamlAuthor = itemAuthors.getElement(i);
+        WSJCppPackageManagerAuthor author;
+        author.fromYAML(pYamlAuthor);
+        m_vAuthors.push_back(author);
+    }
+    return true;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManager::readFieldDistribution() {
+    if (!m_yamlPackageInfo.getRoot()->hasElement("distribution")) {
+        WSJCppLog::err(TAG, "Missing required field 'distribution' in '" + m_sYamlFullpath + "'");
+        return false;
+    }
+    WSJCppYAMLItem itemDistribution = m_yamlPackageInfo["distribution"];
+    if (itemDistribution.hasElement("sources")) {
+        WSJCppYAMLItem *pItemSources = itemDistribution.getElement("sources");
+        int nLength = pItemSources->getLength();
+        for (int i = 0; i < nLength; i++) {
+            WSJCppYAMLItem *pYamlSource = pItemSources->getElement(i);
+            WSJCppPackageManagerDistributionSource source;
+            source.fromYAML(pYamlSource);
+            m_vDistributionSources.push_back(source);
+        }
+    }
+
+    if (itemDistribution.hasElement("scripts")) {
+        WSJCppYAMLItem *pItemScripts = itemDistribution.getElement("scripts");
+        int nLength = pItemScripts->getLength();
+        for (int i = 0; i < nLength; i++) {
+            WSJCppYAMLItem *pYamlSource = pItemScripts->getElement(i);
+            WSJCppPackageManagerDistributionScript script;
+            script.fromYAML(pYamlSource);
+            m_vDistributionScripts.push_back(script);
+        }
+    }
+    return true;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManager::readFieldServers() {
+    if (!m_yamlPackageInfo.getRoot()->hasElement("servers")) {
+        WSJCppLog::err(TAG, "Missing required field 'servers' in '" + m_sYamlFullpath + "'");
+        return false;
+    }
+    WSJCppYAMLItem itemServers = m_yamlPackageInfo["servers"];
+    int nLength = itemServers.getLength();
+    for (int i = 0; i < nLength; i++) {
+        WSJCppYAMLItem *pYamlServer = itemServers.getElement(i);
+        WSJCppPackageManagerServer server;
+        server.fromYAML(pYamlServer);
+        m_vServers.push_back(server);
+    }
+    return true;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManager::readFieldDependencies() {
+    if (!m_yamlPackageInfo.getRoot()->hasElement("dependencies")) {
+        WSJCppLog::err(TAG, "Missing required field 'dependencies' in '" + m_sYamlFullpath + "'");
+        return false;
+    }
+    WSJCppYAMLItem itemDependencies = m_yamlPackageInfo["dependencies"];
+    int nLength = itemDependencies.getLength();
+    for (int i = 0; i < nLength; i++) {
+        WSJCppYAMLItem *pYamlDependence = itemDependencies.getElement(i);
+        WSJCppPackageManagerDependence dependence;
+        dependence.fromYAML(pYamlDependence);
+        m_vDependencies.push_back(dependence);
+    }
+    return true;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManager::readFieldRepositories() {
+    if (!m_yamlPackageInfo.getRoot()->hasElement("repositories")) {
+        WSJCppLog::err(TAG, "Missing required field 'repositories' in '" + m_sYamlFullpath + "'");
+        return false;
+    }
+    WSJCppYAMLItem itemRepositories = m_yamlPackageInfo["repositories"];
+    int nLength = itemRepositories.getLength();
+    for (int i = 0; i < nLength; i++) {
+        WSJCppYAMLItem *pYamlRepository = itemRepositories.getElement(i);
+        WSJCppPackageManagerRepository repository;
+        repository.fromYAML(pYamlRepository);
+        m_vRepositories.push_back(repository);
+    }
+    return true;
+}
+
+// ---------------------------------------------------------------------

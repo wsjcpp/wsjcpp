@@ -3,21 +3,80 @@
 #include <wsjcpp_core.h>
 
 // ---------------------------------------------------------------------
+// WSJCppYAMLPlaceInFile
+
+WSJCppYAMLPlaceInFile::WSJCppYAMLPlaceInFile() {
+    m_sFilename = "";
+    m_nNumberOfLine = 0;
+    m_sLine = "";
+}
+
+// ---------------------------------------------------------------------
+
+WSJCppYAMLPlaceInFile::WSJCppYAMLPlaceInFile(const std::string &sFilename, int nNumberOfLine, const std::string &sLine) {
+    m_sFilename = sFilename;
+    m_nNumberOfLine = nNumberOfLine;
+    m_sLine = sLine;
+}
+
+// ---------------------------------------------------------------------
+
+std::string WSJCppYAMLPlaceInFile::getFilename() const {
+    return m_sFilename;
+}
+
+// ---------------------------------------------------------------------
+
+void WSJCppYAMLPlaceInFile::setFilename(const std::string &sFilename) {
+    m_sFilename = sFilename;
+}
+
+// ---------------------------------------------------------------------
+
+int WSJCppYAMLPlaceInFile::getNumberOfLine() const {
+    return m_nNumberOfLine;
+}
+
+// ---------------------------------------------------------------------
+
+void WSJCppYAMLPlaceInFile::setNumberOfLine(int nNumberOfLine) {
+    m_nNumberOfLine = nNumberOfLine;
+}
+
+// ---------------------------------------------------------------------
+
+std::string WSJCppYAMLPlaceInFile::getLine() const {
+    return m_sLine;
+}
+
+// ---------------------------------------------------------------------
+
+void WSJCppYAMLPlaceInFile::setLine(const std::string &sLine) {
+    m_sLine = sLine;
+}
+
+// ---------------------------------------------------------------------
+
+std::string WSJCppYAMLPlaceInFile::getForLogFormat() {
+    return "(" + m_sFilename + ":" + std::to_string(m_nNumberOfLine) + "): " + m_sLine;
+}
+
+// ---------------------------------------------------------------------
 // WSJCppYAMLItem
 
 WSJCppYAMLItem::WSJCppYAMLItem(
     WSJCppYAMLItem *pParent, 
-    int nOriginalNumberOfLine, 
-    const std::string &sOriginalLine,
+    const WSJCppYAMLPlaceInFile &placeInFile,
     WSJCppYAMLItemType nItemType
 ) {
     m_pParent = pParent;
-    m_nOriginalNumberOfLine = nOriginalNumberOfLine;
-    m_sOriginalLine = sOriginalLine;
+    m_placeInFile.setFilename(placeInFile.getFilename());
+    m_placeInFile.setLine(placeInFile.getLine());
+    m_placeInFile.setNumberOfLine(placeInFile.getNumberOfLine());
     m_nItemType = nItemType;
     m_bValueHasDoubleQuotes = false;
     m_bNameHasDoubleQuotes = false;
-    TAG = "WSJCppYAMLItem(line:" + std::to_string(m_nOriginalNumberOfLine) + ":'" + sOriginalLine + "')";
+    TAG = "WSJCppYAMLNode";
 }
 
 // ---------------------------------------------------------------------
@@ -38,12 +97,16 @@ WSJCppYAMLItem *WSJCppYAMLItem::getParent() {
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppYAMLItem::getOriginalLine() {
-    return m_sOriginalLine;
+WSJCppYAMLPlaceInFile WSJCppYAMLItem::getPlaceInFile() {
+    return m_placeInFile;
 }
 
-int WSJCppYAMLItem::getOriginalNumberOfLine() {
-    return m_nOriginalNumberOfLine;
+// ---------------------------------------------------------------------
+
+void WSJCppYAMLItem::setPlaceInFile(const WSJCppYAMLPlaceInFile &placeInFile) {
+    m_placeInFile.setFilename(placeInFile.getFilename());
+    m_placeInFile.setLine(placeInFile.getLine());
+    m_placeInFile.setNumberOfLine(placeInFile.getNumberOfLine());
 }
 
 // ---------------------------------------------------------------------
@@ -173,7 +236,7 @@ bool WSJCppYAMLItem::setElement(const std::string &sName, WSJCppYAMLItem *pItem)
     }
 
     if (m_nItemType != WSJCPP_YAML_ITEM_MAP) {
-        WSJCppLog::throw_err(TAG, "setElement, Element must be 'map' for line(" + std::to_string(pItem->getOriginalNumberOfLine()) + "): '" + pItem->getOriginalLine() + "'");
+        WSJCppLog::throw_err(TAG, "setElement, Element must be 'map' for line(" + std::to_string(pItem->getPlaceInFile().getNumberOfLine()) + "): '" + pItem->getPlaceInFile().getLine() + "'");
     }
     
     if (this->hasElement(sName)) { // TODO remove previous element
@@ -191,6 +254,23 @@ bool WSJCppYAMLItem::removeElement(const std::string &sName) {
     }
     // TODO erase
     return false;
+}
+
+// ---------------------------------------------------------------------
+
+std::vector<std::string> WSJCppYAMLItem::getKeys() {
+    if (m_nItemType != WSJCPP_YAML_ITEM_MAP) {
+        WSJCppLog::throw_err(TAG, "getKeys: Element must be map");
+    }
+    std::vector<std::string> vKeys;
+    for (int i = 0; i < m_vObjects.size(); i++) {
+        WSJCppYAMLItem *pItem = m_vObjects[i];
+        if (pItem->isValue() || pItem->isMap() || pItem->isArray()) {
+            std::string sName = pItem->getName();
+            vKeys.push_back(sName);
+        }
+    }
+    return vKeys;
 }
 
 // ---------------------------------------------------------------------
@@ -232,7 +312,7 @@ WSJCppYAMLItem *WSJCppYAMLItem::getElement(int i) {
         }
     }
     if (pItem == nullptr) {
-        WSJCppLog::throw_err(TAG, "getElement(" + std::to_string(i) +  "), Out of range in array for '" + this->getOriginalLine() + "'");
+        WSJCppLog::throw_err(TAG, "getElement(" + std::to_string(i) +  "), Out of range in array for '" + this->getPlaceInFile().getLine() + "'");
     }
     return pItem;
 }
@@ -245,7 +325,7 @@ bool WSJCppYAMLItem::appendElement(WSJCppYAMLItem *pItem) {
         return true;
     }
     if (m_nItemType != WSJCPP_YAML_ITEM_ARRAY) {
-        WSJCppLog::throw_err(TAG, "appendElement, Element must be array for line(" + std::to_string(pItem->getOriginalNumberOfLine()) + "): '" + pItem->getOriginalLine() + "'");
+        WSJCppLog::throw_err(TAG, "appendElement, Element must be array for " + this->getForLogFormat());
     }
     m_vObjects.push_back(pItem); // TODO clone object
     return true;
@@ -261,7 +341,7 @@ bool WSJCppYAMLItem::isValue() {
 
 std::string  WSJCppYAMLItem::getValue() {
     if (m_nItemType != WSJCPP_YAML_ITEM_VALUE) {
-        WSJCppLog::throw_err(TAG, "getValue, Element must be value for line");
+        WSJCppLog::throw_err(TAG, "getValue, Element must be value for " + this->getForLogFormat());
     }
     return m_sValue;
 }
@@ -270,7 +350,7 @@ std::string  WSJCppYAMLItem::getValue() {
 
 void WSJCppYAMLItem::setValue(const std::string &sValue, bool bHasQuotes) {
     if (m_nItemType != WSJCPP_YAML_ITEM_VALUE) {
-        WSJCppLog::throw_err(TAG, "setValue, Element must be value for line(" + std::to_string(this->getOriginalNumberOfLine()) + "): '" + this->getOriginalLine() + "'");
+        WSJCppLog::throw_err(TAG, "setValue, Element must be value for " + this->getForLogFormat());
     }
     m_bValueHasDoubleQuotes = bHasQuotes;
     m_sValue = sValue;
@@ -364,6 +444,12 @@ std::string WSJCppYAMLItem::getItemTypeAsString() {
         return "value";
     }
     return "unknown";
+}
+
+// ---------------------------------------------------------------------
+
+std::string WSJCppYAMLItem::getForLogFormat() {
+    return m_placeInFile.getForLogFormat();
 }
 
 // ---------------------------------------------------------------------
@@ -571,9 +657,10 @@ std::string WSJCppYAMLParsebleLine::removeStringDoubleQuotes(const std::string &
 // WSJCppYAMLParserStatus
 
 void WSJCppYAMLParserStatus::logUnknownLine(const std::string &sPrefix) {
-    WSJCppLog::warn(sPrefix, "Unknown line (" + std::to_string(nLine) + "): '" + sLine + "' \n"
+    WSJCppLog::warn(sPrefix, "Unknown line (" + std::to_string(placeInFile.getNumberOfLine()) + "): '" + placeInFile.getLine() + "' \n"
         + "Current Intent: " + std::to_string(nIntent) +  "\n"
-        + "Current Item(line: " + std::to_string(pCurItem->getOriginalNumberOfLine()) + "): '" + pCurItem->getOriginalLine() + "'"
+        + "Current Item(line: " + std::to_string(pCurItem->getPlaceInFile().getNumberOfLine()) + "): '" + pCurItem->getPlaceInFile().getLine() + "'"
+        + "Current Item(filename: " + pCurItem->getPlaceInFile().getFilename() + "'"
     );
 }
 
@@ -581,7 +668,7 @@ void WSJCppYAMLParserStatus::logUnknownLine(const std::string &sPrefix) {
 // WSJCppYAML
 
 WSJCppYAML::WSJCppYAML() {
-    m_pRoot = new WSJCppYAMLItem(nullptr, -1, "", WSJCPP_YAML_ITEM_MAP);
+    m_pRoot = new WSJCppYAMLItem(nullptr, WSJCppYAMLPlaceInFile(), WSJCPP_YAML_ITEM_MAP);
 }
 
 // ---------------------------------------------------------------------
@@ -597,7 +684,7 @@ bool WSJCppYAML::loadFromFile(const std::string &sFileName) {
     if (!WSJCppCore::readTextFile(sFileName, sTextContent)) {
         return false;    
     }
-    return parse(sTextContent);
+    return parse(sFileName, sTextContent);
 }
 
 // ---------------------------------------------------------------------
@@ -619,7 +706,7 @@ bool WSJCppYAML::loadFromString(const std::string &sBuffer) {
 // ---------------------------------------------------------------------
 
 bool WSJCppYAML::loadFromString(std::string &sBuffer) {
-    return parse(sBuffer);
+    return parse("", sBuffer);
 }
 
 // ---------------------------------------------------------------------
@@ -658,18 +745,20 @@ std::vector<std::string> WSJCppYAML::splitToLines(const std::string &sBuffer) {
 
 // ---------------------------------------------------------------------
 
-bool WSJCppYAML::parse(const std::string &sBuffer) {
+bool WSJCppYAML::parse(const std::string &sFileName, const std::string &sBuffer) {
     std::vector<std::string> vLines = this->splitToLines(sBuffer);
     WSJCppYAMLParserStatus st;
-    st.pCurItem = m_pRoot; // TODO create again new root element
+    st.pCurItem = m_pRoot; // TODO recreate again new root element
+    st.placeInFile.setFilename(sFileName);
     st.nIntent = 0;
+    m_pRoot->setPlaceInFile(st.placeInFile);
 
     for (int nLine = 0; nLine < vLines.size(); nLine++) {
-        st.sLine = vLines[nLine];
+        st.placeInFile.setLine(vLines[nLine]);
         // WSJCppLog::info(TAG, "Line(" + std::to_string(nLine) + ") '" + st.sLine + "'");
-        st.nLine = nLine;
+        st.placeInFile.setNumberOfLine(nLine);
         st.line = WSJCppYAMLParsebleLine(nLine);
-        st.line.parseLine(st.sLine);
+        st.line.parseLine(st.placeInFile.getLine());
         
         bool isEmptyName = st.line.isEmptyName();
         bool isEmptyValue = st.line.isEmptyValue();
@@ -736,9 +825,7 @@ void WSJCppYAML::process_sameIntent_hasName_emptyValue_arrayItem(WSJCppYAMLParse
 
 void WSJCppYAML::process_sameIntent_hasName_emptyValue_noArrayItem(WSJCppYAMLParserStatus &st) {
     WSJCppYAMLItem *pItem = new WSJCppYAMLItem(
-        st.pCurItem, 
-        st.nLine, 
-        st.sLine, 
+        st.pCurItem, st.placeInFile, 
         WSJCppYAMLItemType::WSJCPP_YAML_ITEM_UNDEFINED
     );
     if (st.line.hasValueDoubleQuotes()) {
@@ -758,12 +845,18 @@ void WSJCppYAML::process_sameIntent_hasName_hasValue_arrayItem(WSJCppYAMLParserS
     if (st.pCurItem->isUndefined()) {
         st.pCurItem->doArray();
     }
-    WSJCppYAMLItem *pMapItem = new WSJCppYAMLItem(st.pCurItem, st.nLine, st.sLine, WSJCppYAMLItemType::WSJCPP_YAML_ITEM_MAP);
+    WSJCppYAMLItem *pMapItem = new WSJCppYAMLItem(
+        st.pCurItem, st.placeInFile, 
+        WSJCppYAMLItemType::WSJCPP_YAML_ITEM_MAP
+    );
     st.pCurItem->appendElement(pMapItem);
     st.pCurItem = pMapItem;
     st.nIntent = st.nIntent + 2;
 
-    WSJCppYAMLItem *pItem = new WSJCppYAMLItem(st.pCurItem, st.nLine, st.sLine, WSJCppYAMLItemType::WSJCPP_YAML_ITEM_VALUE);
+    WSJCppYAMLItem *pItem = new WSJCppYAMLItem(
+        st.pCurItem, st.placeInFile, 
+        WSJCppYAMLItemType::WSJCPP_YAML_ITEM_VALUE
+    );
     pItem->setComment(st.line.getComment());
     pItem->setValue(st.line.getValue(), st.line.hasValueDoubleQuotes());
     pItem->setName(st.line.getName(), st.line.hasNameDoubleQuotes());
@@ -775,7 +868,10 @@ void WSJCppYAML::process_sameIntent_hasName_hasValue_arrayItem(WSJCppYAMLParserS
 // ---------------------------------------------------------------------
 
 void WSJCppYAML::process_sameIntent_hasName_hasValue_noArrayItem(WSJCppYAMLParserStatus &st) {
-    WSJCppYAMLItem *pItem = new WSJCppYAMLItem(st.pCurItem, st.nLine, st.sLine, WSJCppYAMLItemType::WSJCPP_YAML_ITEM_VALUE);
+    WSJCppYAMLItem *pItem = new WSJCppYAMLItem(
+        st.pCurItem, st.placeInFile, 
+        WSJCppYAMLItemType::WSJCPP_YAML_ITEM_VALUE
+    );
     pItem->setComment(st.line.getComment());
     pItem->setValue(st.line.getValue(), st.line.hasValueDoubleQuotes());
     pItem->setName(st.line.getName(), st.line.hasNameDoubleQuotes());
@@ -790,7 +886,10 @@ void WSJCppYAML::process_sameIntent_emptyName_hasValue_arrayItem(WSJCppYAMLParse
     if (st.pCurItem->isUndefined()) {
         st.pCurItem->doArray();
     }
-    WSJCppYAMLItem *pItem = new WSJCppYAMLItem(st.pCurItem, st.nLine, st.sLine, WSJCppYAMLItemType::WSJCPP_YAML_ITEM_VALUE);
+    WSJCppYAMLItem *pItem = new WSJCppYAMLItem(
+        st.pCurItem, st.placeInFile,
+        WSJCppYAMLItemType::WSJCPP_YAML_ITEM_VALUE
+    );
     pItem->setComment(st.line.getComment());
     pItem->setValue(st.line.getValue(), st.line.hasValueDoubleQuotes());
     st.pCurItem->appendElement(pItem);
@@ -810,7 +909,10 @@ void WSJCppYAML::process_sameIntent_emptyName_emptyValue_arrayItem(WSJCppYAMLPar
     if (st.pCurItem->isUndefined()) {
         st.pCurItem->doArray();
     }
-    WSJCppYAMLItem *pItem = new WSJCppYAMLItem(st.pCurItem, st.nLine, st.sLine, WSJCppYAMLItemType::WSJCPP_YAML_ITEM_VALUE);
+    WSJCppYAMLItem *pItem = new WSJCppYAMLItem(
+        st.pCurItem, st.placeInFile, 
+        WSJCppYAMLItemType::WSJCPP_YAML_ITEM_VALUE
+    );
     pItem->setComment(st.line.getComment());
     pItem->setValue(st.line.getValue(), st.line.hasValueDoubleQuotes());
     st.pCurItem->appendElement(pItem);
@@ -821,7 +923,10 @@ void WSJCppYAML::process_sameIntent_emptyName_emptyValue_arrayItem(WSJCppYAMLPar
 // ---------------------------------------------------------------------
 
 void WSJCppYAML::process_sameIntent_emptyName_emptyValue_noArrayItem(WSJCppYAMLParserStatus &st) {
-    WSJCppYAMLItem *pItem = new WSJCppYAMLItem(st.pCurItem, st.nLine, st.sLine, WSJCppYAMLItemType::WSJCPP_YAML_ITEM_EMPTY);
+    WSJCppYAMLItem *pItem = new WSJCppYAMLItem(
+        st.pCurItem, st.placeInFile,
+        WSJCppYAMLItemType::WSJCPP_YAML_ITEM_EMPTY
+    );
     pItem->setComment(st.line.getComment());
     st.pCurItem->appendElement(pItem);
 }

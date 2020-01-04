@@ -1,0 +1,43 @@
+
+wsjcpp: v1.0.0
+cmake_cxx_standard: 11
+cmake_minimum_required: 3.0
+
+name: wsjcpp/wsjcpp-arguments
+version: v0.0.1
+description: Helpful parser for parsing application arguments
+issues: https://github.com/wsjcpp/wsjcpp-arguments/issues
+repositories:
+  - "https://github.com/wsjcpp/wsjcpp-arguments"
+keywords:
+  - c++
+  - wsjcpp
+  - parser application arguments
+
+authors:
+  - name: Evgenii Sopov
+    email: mrseakg@gmail.com
+
+requirements:
+  libs:
+    - pthread
+  packages:
+    - name: "wsjcpp/wsjcpp-core"
+      version: "v0.0.1"
+      url: "https://github.com/wsjcpp/wsjcpp-core:v0.0.1"
+
+distribution:
+  sources:
+    - from: src/wsjcpp_arguments.cpp
+      to: wsjcpp_arguments.cpp
+      sha1: "99c2b2d74c99f5427b28df9e2211545ec0c1c6c2"
+    - from: src/wsjcpp_arguments.h
+      to: wsjcpp_arguments.h
+      sha1: "7029bc352d471e9aa778573a8aee162f2bd5cf95"
+
+unit-tests:
+  folder: unit-tests # default
+  files:
+    - unit-tests/src/main.cpp
+    - unit-tests/src/unit_tests.h
+    - unit-tests/src/unit_tests.cpp

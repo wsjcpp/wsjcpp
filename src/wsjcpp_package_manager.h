@@ -1,3 +1,4 @@
+
 #ifndef WSJCPP_PACKAGE_MANAGER_H
 #define WSJCPP_PACKAGE_MANAGER_H
 
@@ -7,22 +8,44 @@
 
 // ---------------------------------------------------------------------
 
-class WSJCppPackageManagerFile {
+class WSJCppPackageManagerDistributionSource {
     public:
-        WSJCppPackageManagerFile();
-        WSJCppPackageManagerFile(const std::string &sFile);
+        WSJCppPackageManagerDistributionSource();
+        WSJCppPackageManagerDistributionSource(const std::string &sFile);
+        bool fromYAML(WSJCppYAMLItem *pYamlDistributionSource);
+        WSJCppYAMLItem *toYAML();
+
         std::string getFrom();
         std::string getTo();
         std::string getSha1();
-        nlohmann::json toJson();
-        void fromJson(const nlohmann::json &jsonFile);
 
     private:
+        std::string TAG;
         std::string m_sFrom;
         std::string m_sTo;
         std::string m_sSha1;
-        nlohmann::json m_jsonFile;
+        WSJCppYAMLItem *m_pYamlDistributionSource;
+};
 
+// ---------------------------------------------------------------------
+
+class WSJCppPackageManagerDistributionScript {
+    public:
+        WSJCppPackageManagerDistributionScript();
+        WSJCppPackageManagerDistributionScript(const std::string &sFile);
+        bool fromYAML(WSJCppYAMLItem *pYamlDistributionScript);
+        WSJCppYAMLItem *toYAML();
+
+        std::string getFrom();
+        std::string getTo();
+        std::string getSha1();
+
+    private:
+        std::string TAG;
+        std::string m_sFrom;
+        std::string m_sTo;
+        std::string m_sSha1;
+        WSJCppYAMLItem *m_pYamlDistributionScript;
 };
 
 // ---------------------------------------------------------------------
@@ -31,15 +54,18 @@ class WSJCppPackageManagerAuthor {
     public:
         WSJCppPackageManagerAuthor();
         WSJCppPackageManagerAuthor(const std::string &sName, const std::string &sEmail);
+        bool fromYAML(WSJCppYAMLItem *pYamlAuthor);
+        WSJCppYAMLItem *toYAML();
+
         std::string getName();
         std::string getEmail(); 
         std::string getFullAuthor(); 
-        nlohmann::json toJson();
-        void fromJson(const nlohmann::json &jsonAuthor);
+
     private:
+        std::string TAG;
         std::string m_sName;
         std::string m_sEmail;
-        nlohmann::json m_jsonAuthor;
+        WSJCppYAMLItem *m_pYamlAuthor;
 };
 
 // ---------------------------------------------------------------------
@@ -48,14 +74,17 @@ class WSJCppPackageManagerServer {
     public:
         WSJCppPackageManagerServer();
         WSJCppPackageManagerServer(const std::string &sAddress);
-        std::string getAddress();
+        
+        bool fromYAML(WSJCppYAMLItem *pYaml);
+        WSJCppYAMLItem *toYAML();
 
-        nlohmann::json toJson();
-        void fromJson(const nlohmann::json &jsonServer);
+        std::string getAddress();
         
     private:
+        std::string TAG;
         std::string m_sAddress;
         nlohmann::json m_jsonServer;
+        WSJCppYAMLItem *m_pYamlServer;
 };
 
 // ---------------------------------------------------------------------
@@ -63,13 +92,16 @@ class WSJCppPackageManagerServer {
 class WSJCppPackageManagerRepository {
     public:
         WSJCppPackageManagerRepository();
+        WSJCppYAMLItem *toYAML();
+        bool fromYAML(WSJCppYAMLItem *pYaml);
+        std::string getType();
         std::string getUrl();
-        nlohmann::json toJson();
-        void fromJson(const nlohmann::json &jsonRepository);
 
     private:
+        std::string TAG;
+        std::string m_sType;
         std::string m_sUrl;
-        nlohmann::json m_jsonRepository;
+        WSJCppYAMLItem *m_pYamlRepository;
 };
 
 // ---------------------------------------------------------------------
@@ -77,21 +109,21 @@ class WSJCppPackageManagerRepository {
 class WSJCppPackageManagerDependence {
     public:
         WSJCppPackageManagerDependence();
-        std::string getInstalledDir();
-        std::string getType();
-        std::string getFrom();
+        std::string getInstallationDir();
+        std::string getUrl();
         std::string getName();
         std::string getVersion();
-        nlohmann::json toJson();
-        void fromJson(const nlohmann::json &jsonDependence);
+        
+        bool fromYAML(WSJCppYAMLItem *pYaml);
+        WSJCppYAMLItem *toYAML();
 
     private:
-        std::string m_sInstalledDir;
-        std::string m_sType;
-        std::string m_sFrom;
+        std::string TAG;
+        std::string m_sInstallationDir;
+        std::string m_sUrl;
         std::string m_sName;
         std::string m_sVersion;
-        nlohmann::json m_jsonDependece;
+        WSJCppYAMLItem *m_pYamlDependece;
 };
 
 // ---------------------------------------------------------------------
@@ -125,6 +157,19 @@ class WSJCppPackageManager {
         std::string packageNameToUFolder(const std::string &sFilename);
         bool installFromGithub(const std::string &sPackage);
         void recursive_printAuthorsTree(std::vector<WSJCppPackageManagerDependence> &vDependencies);
+        bool readFieldVersion();
+        bool readFieldCMakeVersion();
+        bool readFieldCMakeCxxStandard();
+        bool readFieldName();
+        bool readFieldDescription();
+        bool readFieldWsjcppVersion();
+        bool readFieldIssues();
+        bool readFieldKeywords();
+        bool readFieldAuthors();
+        bool readFieldDistribution();
+        bool readFieldServers();
+        bool readFieldDependencies();
+        bool readFieldRepositories();
 
         std::string m_sGithubPrefix;
         std::string m_sBitbucketPrefix;
@@ -136,16 +181,23 @@ class WSJCppPackageManager {
         bool m_bHolded;
         std::string m_sParentDir;
         std::string m_sYamlFilename;
-        int m_nWSJCppVersion;
+        std::string m_sYamlFullpath;
+        std::string m_sWSJCppCurrentVersion;
+        std::string m_sWSJCppVersion;
         std::string m_sDirWithSources;
         std::string m_sName;
+        std::string m_sIssues;
         std::string m_sVersion;
         std::string m_sDescription;
+        std::string m_sCMakeVersion;
+        std::string m_sCMakeCxxStandard;
+        
         std::vector<std::string> m_vKeywords;
         std::vector<WSJCppPackageManagerAuthor> m_vAuthors;
         std::vector<WSJCppPackageManagerServer> m_vServers;
         std::vector<WSJCppPackageManagerDependence> m_vDependencies;
-        std::vector<WSJCppPackageManagerFile> m_vDistributionFiles;
+        std::vector<WSJCppPackageManagerDistributionSource> m_vDistributionSources;
+        std::vector<WSJCppPackageManagerDistributionScript> m_vDistributionScripts;
         std::vector<WSJCppPackageManagerRepository> m_vRepositories;
         
         nlohmann::json m_jsonPackageInfo;

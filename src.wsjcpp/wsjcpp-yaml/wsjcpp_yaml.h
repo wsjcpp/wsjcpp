@@ -21,18 +21,46 @@ enum WSJCppYAMLItemType {
 
 // ---------------------------------------------------------------------
 
-class WSJCppYAMLItem {
+class WSJCppYAMLPlaceInFile {
+    public:
+        WSJCppYAMLPlaceInFile();
+        WSJCppYAMLPlaceInFile(const std::string &sFilename, int nNumberOfLine, const std::string &sLine);
+
+        std::string getFilename() const;
+        void setFilename(const std::string &sFilename);
+
+        int getNumberOfLine() const;
+        void setNumberOfLine(int nNumberOfLine);
+
+        std::string getLine() const;
+        void setLine(const std::string &sLine);
+        std::string getForLogFormat();
+
+    private:
+        std::string m_sFilename;
+        int m_nNumberOfLine;
+        std::string m_sLine;
+};
+
+// ---------------------------------------------------------------------
+/*!
+	\brief Class for keep data of yaml node
+
+	Basic class for yaml tree
+*/
+
+class WSJCppYAMLItem { // TODO: rename to node
     public:
         WSJCppYAMLItem(
             WSJCppYAMLItem *pParent,
-            int nOriginalNumberOfLine, 
-            const std::string &sOriginalLine,
+            const WSJCppYAMLPlaceInFile &placeInFile,
             WSJCppYAMLItemType nItemType
         );
         ~WSJCppYAMLItem();
         WSJCppYAMLItem *getParent();
-        std::string getOriginalLine();
-        int getOriginalNumberOfLine();
+
+        WSJCppYAMLPlaceInFile getPlaceInFile();
+        void setPlaceInFile(const WSJCppYAMLPlaceInFile &placeInFile);
 
         void setComment(const std::string &sComment);
         std::string getComment();
@@ -54,6 +82,7 @@ class WSJCppYAMLItem {
         WSJCppYAMLItem *getElement(const std::string &sName);
         bool setElement(const std::string &sName, WSJCppYAMLItem *pItem);
         bool removeElement(const std::string &sName);
+        std::vector<std::string> getKeys();
 
         bool isArray();
         int getLength();
@@ -71,11 +100,12 @@ class WSJCppYAMLItem {
         WSJCppYAMLItem &operator[](int idx) { return *(this->getElement(idx)); }
         WSJCppYAMLItem &operator[](const std::string &sName) { return *(this->getElement(sName)); }
 
+        std::string getForLogFormat();
+
     private:
         std::string TAG;
         WSJCppYAMLItem *m_pParent;
-        int m_nOriginalNumberOfLine;
-        std::string m_sOriginalLine;
+        WSJCppYAMLPlaceInFile m_placeInFile;
         WSJCppYAMLItemType m_nItemType;
         std::vector<WSJCppYAMLItem *> m_vObjects;
         std::string m_sValue; // if it is not array or map
@@ -136,11 +166,9 @@ class WSJCppYAMLParsebleLine {
 class WSJCppYAMLParserStatus {
     public:
         int nIntent;
-        int nLine;
         WSJCppYAMLItem *pCurItem;
         WSJCppYAMLParsebleLine line;
-        std::string sLine;
-
+        WSJCppYAMLPlaceInFile placeInFile;
         void logUnknownLine(const std::string &sPrefix);
 };
 
@@ -164,7 +192,7 @@ class WSJCppYAML {
         std::string TAG;
         
         std::vector<std::string> splitToLines(const std::string &sBuffer);
-        bool parse(const std::string &sBuffer);
+        bool parse(const std::string &sFileName, const std::string &sBuffer);
         void process_sameIntent_hasName_emptyValue_arrayItem(WSJCppYAMLParserStatus &st);
         void process_sameIntent_hasName_emptyValue_noArrayItem(WSJCppYAMLParserStatus &st);
         void process_sameIntent_hasName_hasValue_arrayItem(WSJCppYAMLParserStatus &st);

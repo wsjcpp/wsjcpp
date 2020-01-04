@@ -2,10 +2,6 @@ cmake_minimum_required(VERSION 3.0)
 
 project(wsjcpp)
 
-if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    set(MACOSX TRUE)
-endif()
-
 include(${CMAKE_CURRENT_SOURCE_DIR}/src.wsjcpp/CMakeLists.txt)
 
 set(CMAKE_CXX_STANDARD 11)
@@ -15,11 +11,23 @@ set(EXECUTABLE_OUTPUT_PATH ${wsjcpp_SOURCE_DIR})
 
 # include header dirs
 list (APPEND WSJCPP_INCLUDE_DIRS "src")
+list (APPEND WSJCPP_INCLUDE_DIRS "src/ArgumentsProcessors")
 
 list (APPEND WSJCPP_SOURCES "src/wsjcpp_packager_download_dependence.h")
 list (APPEND WSJCPP_SOURCES "src/wsjcpp_packager_download_dependence.cpp")
 list (APPEND WSJCPP_SOURCES "src/wsjcpp_package_manager.cpp")
 list (APPEND WSJCPP_SOURCES "src/wsjcpp_package_manager.h")
+list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_install.cpp")
+list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_install.h")
+list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_run.cpp")
+list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_run.h")
+list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_unit_tests.cpp")
+list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_unit_tests.h")
+list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_templates.cpp")
+list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_templates.h")
+list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_main.cpp")
+list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_main.h")
+
 list (APPEND WSJCPP_SOURCES "src/main.cpp")
 
 # LIBZIP
@@ -30,10 +38,10 @@ if(MACOSX)  # TODO redesign
   list (APPEND WSJCPP_LIBRARIES ${LIBZIP_LIBRARIES})
 else(MACOSX)
   
-  set(LIBZIP_INCLUDE_DIRS "/usr/include/")
-  list (APPEND WSJCPP_INCLUDE_DIRS ${LIBZIP_INCLUDE_DIRS})
-  set(LIBZIP_LIBRARIES "/usr/lib/x86_64-linux-gnu/libzip.so")
-  list (APPEND WSJCPP_LIBRARIES ${LIBZIP_LIBRARIES})
+set(LIBZIP_INCLUDE_DIRS "/usr/include/")
+list (APPEND WSJCPP_INCLUDE_DIRS ${LIBZIP_INCLUDE_DIRS})
+set(LIBZIP_LIBRARIES "/usr/lib/x86_64-linux-gnu/libzip.so")
+list (APPEND WSJCPP_LIBRARIES ${LIBZIP_LIBRARIES})
   
 endif(MACOSX)
 
@@ -47,20 +55,11 @@ ELSE(ZLIB_FOUND)
   MESSAGE(FATAL_ERROR "Could not find the zlib library and development files.")
 endif( ZLIB_FOUND )
 
-# CURL
-FIND_PACKAGE(CURL)
-IF(CURL_FOUND)
-  list (APPEND WSJCPP_INCLUDE_DIRS ${CURL_INCLUDE_DIR})
-  list (APPEND WSJCPP_LIBRARIES ${CURL_LIBRARIES})
-ELSE(CURL_FOUND)
-  MESSAGE(FATAL_ERROR "Could not find the CURL library and development files.")
-ENDIF(CURL_FOUND)
-
 include_directories(${WSJCPP_INCLUDE_DIRS})
 
 add_executable (wsjcpp ${WSJCPP_SOURCES})
 
-target_link_libraries(wsjcpp -lpthread ${WSJCPP_LIBRARIES} )
+target_link_libraries(wsjcpp ${WSJCPP_LIBRARIES} )
 
 install(
     TARGETS

@@ -1,7 +1,7 @@
 
 wsjcpp: 1.0.0
-cmake_cxx_standard: 11
 cmake_minimum_required: 3.0
+cmake_cxx_standard: 11
 
 name: wsjcpp/wsjcpp-core
 version: 0.0.1
@@ -9,9 +9,13 @@ description: Basic Utils for wsjcpp
 issues: https://github.com/wsjcpp/wsjcpp-core/issues
 repositories:
   - "https://github.com/wsjcpp/wsjcpp-core"
+
 keywords:
   - c++
   - wsjcpp
+
+required-libraries:
+  - pthread
 
 authors:
   - name: Evgenii Sopov

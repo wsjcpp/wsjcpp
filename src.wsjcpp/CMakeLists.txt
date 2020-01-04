@@ -3,7 +3,10 @@
 add_definitions(-DWSJCPP_VERSION="0.0.1")
 add_definitions(-DWSJCPP_NAME="wsjcpp")
 
-# set(CMAKE_AUTOMOC ON)
+if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    set(MACOSX TRUE)
+endif()
+
 set(CMAKE_CXX_STANDARD 11)
 
 set (WSJCPP_LIBRARIES "")
@@ -14,6 +17,11 @@ set (WSJCPP_SOURCES "")
 list (APPEND WSJCPP_INCLUDE_DIRS "src.wsjcpp/wsjcpp-core/")
 list (APPEND WSJCPP_SOURCES "src.wsjcpp/wsjcpp-core/wsjcpp_core.cpp")
 list (APPEND WSJCPP_SOURCES "src.wsjcpp/wsjcpp-core/wsjcpp_core.h")
+
+# wsjcpp-arguments
+list (APPEND WSJCPP_INCLUDE_DIRS "src.wsjcpp/wsjcpp-arguments/")
+list (APPEND WSJCPP_SOURCES "src.wsjcpp/wsjcpp-arguments/wsjcpp_arguments.cpp")
+list (APPEND WSJCPP_SOURCES "src.wsjcpp/wsjcpp-arguments/wsjcpp_arguments.h")
 
 # wsjcpp-hashes
 list (APPEND WSJCPP_INCLUDE_DIRS "src.wsjcpp/wsjcpp-hashes/")
@@ -32,3 +40,17 @@ list (APPEND WSJCPP_SOURCES "src.wsjcpp/wsjcpp-yaml/wsjcpp_yaml.h")
 # nlohmann_json
 list (APPEND WSJCPP_INCLUDE_DIRS "src.wsjcpp/sea_kg_nlohmann_json_master/")
 list (APPEND WSJCPP_SOURCES "src.wsjcpp/sea_kg_nlohmann_json_master/json.hpp")
+
+# required-libraries
+list (APPEND WSJCPP_LIBRARIES "-lpthread")
+
+# required-pkg-config
+## CURL
+FIND_PACKAGE(CURL)
+IF(CURL_FOUND)
+  list (APPEND WSJCPP_INCLUDE_DIRS ${CURL_INCLUDE_DIR})
+  list (APPEND WSJCPP_LIBRARIES ${CURL_LIBRARIES})
+ELSE(CURL_FOUND)
+  MESSAGE(FATAL_ERROR "Could not find the CURL library and development files.")
+ENDIF(CURL_FOUND)
+

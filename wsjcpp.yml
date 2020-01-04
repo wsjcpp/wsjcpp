@@ -1,12 +1,38 @@
 
-wsjcpp_version: 1
+wsjcpp_version: v0.0.1
+cmake_version: 3.0
+cmake_cxx_standard: 11
 name: wsjcpp
-version: 0.0.1
+version: v0.0.1
 description: C++ Source Package manager
-issues: none
+issues: https://github.com/wsjcpp/wsjcpp/issues
 keywords:
   - "c++"
   - "sources"
+
+required-libraries:
+  - pthread
+
+required-pkg-config:
+  - CURL
+
+dependencies:
+  - name: "wsjcpp/wsjcpp-core"
+    version: "v0.0.1"
+    url: "https://github.com/wsjcpp/wsjcpp-core:v0.0.1"
+    installation-dir: src.wsjcpp/wsjcpp_wsjcpp_core_v0_0_1
+
+replace-dependencies:
+  - from: "https://github.com/wsjcpp/wsjcpp-core:v0.0.1"
+    to: "https://github.com/sea-kg/wsjcpp-core:master"
+
+repositories:
+  - type: main
+    url: https://github.com/wsjcpp/wsjcpp
+  - type: mirror
+    url: https://bitbucket.org/wsjcpp/wsjcpp
+  - type: fork
+    url: https://github.com/sea-kg/wsjcpp
 
 authors:
   - name: "Evgenii Sopov"
@@ -17,5 +43,9 @@ distribution:
     - from: "src/cppspm_manager.cpp"
       to: "cppspm_manager.cpp"
       sha1: ""
-    # scripts:
+  # scripts:
+
+servers:
+  - "file:///usr/share/"
+  - "http://sea-kg.com/wsjcpp/"
 
