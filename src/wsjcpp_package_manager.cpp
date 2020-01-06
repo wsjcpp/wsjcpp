@@ -6,6 +6,7 @@
 #include <iomanip>
 #include <curl/curl.h>
 #include <wsjcpp_hashes.h>
+#include <wsjcpp_core.h>
 
 // ---------------------------------------------------------------------
 // WSJCppPackageManagerDistributionSource
@@ -817,7 +818,7 @@ bool WSJCppPackageManager::installFromGithub(const std::string &sPackage) {
     std::cout << "Installing package from https://github.com/ ..." << std::endl;
 
     std::string sPackageGithubPath = sPackage.substr(m_sGithubPrefix.size());
-    std::cout << "sPackageGithubPath: " << sPackageGithubPath << std::endl;
+    // std::cout << "sPackageGithubPath: " << sPackageGithubPath << std::endl;
     std::istringstream f(sPackageGithubPath);
     std::string packageName = "";
     std::string s;
@@ -851,6 +852,19 @@ bool WSJCppPackageManager::installFromGithub(const std::string &sPackage) {
     if (!pkg.load()) {
         WSJCppLog::err(TAG, "Could not load " + sCacheSubFolderName);
         return false;
+    }
+
+    // todo check in current dependencies
+    for (int i = 0; i < m_vDependencies.size(); i++) {
+        WSJCppPackageManagerDependence dep = m_vDependencies[i];
+        if (dep.getName() == pkg.getName()) {
+            if (dep.getVersion() == pkg.getVersion()) {
+                WSJCppLog::err(TAG, "Package '" + pkg.getName() + ":" + pkg.getVersion() + "' already installed");
+            } else {
+                WSJCppLog::err(TAG, "Package '" + pkg.getName() + ":" + pkg.getVersion() + "' installed with another version");
+            }
+            return false;
+        }
     }
 
     // sources
@@ -903,38 +917,34 @@ bool WSJCppPackageManager::installFromGithub(const std::string &sPackage) {
         }
     }
 
+    std::string sInstallationDir = "./src.wsjcpp/" + this->prepareCacheSubFolderName(pkg.getName());
+    if (!WSJCppCore::dirExists(sInstallationDir)) {
+        WSJCppCore::makeDir(sInstallationDir);
+    }
+
     WSJCppPackageManagerDependence dep;
     dep.setName(pkg.getName());
     dep.setVersion(pkg.getVersion());
     dep.setUrl(sPackage);
-    dep.setInstallationDir("todo");
+    dep.setInstallationDir(sInstallationDir);
     m_vDependencies.push_back(dep);
 
-    /*std::string url = "https://github.com/" + packageName + "/archive/" + packageVersion + ".zip";
-    // std::string url = "https://github.com/" + packageName + "/zip/" + packageVersion;
-    std::string ufolder = "github_" + this->packageNameToUFolder(packageName);
-
-    WSJCppPackageManagerDependence d;
-    nlohmann::json jsonDependence;
-    jsonDependence["type"] = "github";
-    jsonDependence["version"] = packageVersion;
-    jsonDependence["name"] = packageName;
-    jsonDependence["from"] = url;
-    jsonDependence["ufolder"] = ufolder;
-    
-    // https://raw.githubusercontent.com/sea-kg/nlohmann_json/master/cppspm.json
-
-    std::string zipFile = cacheDir + "/" + ufolder + ".zip";
-    if (WSJCppCore::fileExists(zipFile)) {
-        // TODO remove file    
+    // TODO redesign to WSJCppCore::recoursiveCopyFiles
+    // copy sources to installation dir
+    std::vector<std::string> vFiles = WSJCppCore::listOfFiles(sCacheSubFolderName);
+    for (int i = 0; i < vFiles.size(); i++) {
+        std::string sFrom = sCacheSubFolderName + "/" + vFiles[i];
+        std::string sTo = sInstallationDir + "/" + vFiles[i];
+        std::string sContent = "";
+        if (!WSJCppCore::readTextFile(sFrom, sContent)) {
+            WSJCppLog::err(TAG, "Could not read file " + sFrom);
+            return false;
+        }
+        if (!WSJCppCore::writeFile(sTo, sContent)) {
+            WSJCppLog::err(TAG, "Could not write to file '" + sTo + "'");
+            return false;
+        }
     }
-    CppSPM::DownloadDependence::downloadZipFromGithub(url, zipFile);
-
-    // TODO download and check package
-
-    // d.fromJson(jsonDependence);
-    // m_vDependencies.push_back(d);
-    */
     return true;
 }
 

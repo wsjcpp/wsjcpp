@@ -275,7 +275,7 @@ bool WSJCppCore::makeDir(const std::string &sDirname) {
         std::cout << "FAILED create folder " << sDirname << std::endl;
         return false;
     }
-    std::cout << "nStatus: " << nStatus << std::endl;
+    // std::cout << "nStatus: " << nStatus << std::endl;
     return true;
 }
 
@@ -283,12 +283,12 @@ bool WSJCppCore::makeDir(const std::string &sDirname) {
 
 bool WSJCppCore::writeFile(const std::string &sFilename, const std::string &sContent) {
     
-    std::ofstream f(sFilename, std::ifstream::in);
+    // std::ofstream f(sFilename, std::ifstream::in);
+    std::ofstream f(sFilename, std::ios::out);
     if (!f) {
-        std::cout << "FAILED could not create file to wtite " << sFilename << std::endl;
+        WSJCppLog::err("WSJCppCore", "Could not create file to write '" + sFilename + "'");
         return false;
     }
-
     f << sContent << std::endl;
     f.close();
     return true;

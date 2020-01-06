@@ -82,10 +82,6 @@ WSJCppYAMLItem::WSJCppYAMLItem(
 // ---------------------------------------------------------------------
 
 WSJCppYAMLItem::~WSJCppYAMLItem() {
-    for (int i = 0; i < m_vObjects.size(); i++) {
-        WSJCppYAMLItem *pItem = m_vObjects[i];
-        delete pItem;
-    }
     m_vObjects.clear();
 }
 
