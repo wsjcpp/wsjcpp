@@ -28,7 +28,7 @@ replace-dependencies:
 
 repositories:
   - type: main
-    url: https://github.com/wsjcpp/wsjcpp
+    url: "https://github.com/wsjcpp/wsjcpp"
   - type: mirror
     url: https://bitbucket.org/wsjcpp/wsjcpp
   - type: fork

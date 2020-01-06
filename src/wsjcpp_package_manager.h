@@ -114,6 +114,11 @@ class WSJCppPackageManagerDependence {
         std::string getName();
         std::string getVersion();
         
+        void setName(const std::string &sName);
+        void setVersion(const std::string &sVersion);
+        void setUrl(const std::string &sUrl);
+        void setInstallationDir(const std::string &sInstallationDir);
+
         bool fromYAML(WSJCppYAMLItem *pYaml);
         WSJCppYAMLItem *toYAML();
 
@@ -151,11 +156,17 @@ class WSJCppPackageManager {
         void printAuthorsTree();
         bool addAuthor(const std::string &sName, const std::string &sEmail);
         bool removeAuthor(const std::string &sAuthor);
+        std::vector<WSJCppPackageManagerDistributionSource> getListOfDistributionSources();
+        std::vector<WSJCppPackageManagerDistributionScript> getListOfDistributionScripts();
+        std::vector<WSJCppPackageManagerDependence> getListOfDependencies();
+        std::string getName();
+        std::string getVersion();
 
     private:
         std::string TAG;
-        std::string packageNameToUFolder(const std::string &sFilename);
+        std::string prepareCacheSubFolderName(const std::string &sFilename);
         bool installFromGithub(const std::string &sPackage);
+        bool downloadFileOverHttps(const std::string &sUrl, const std::string &sPath);
         void recursive_printAuthorsTree(std::vector<WSJCppPackageManagerDependence> &vDependencies);
         bool readFieldVersion();
         bool readFieldCMakeVersion();

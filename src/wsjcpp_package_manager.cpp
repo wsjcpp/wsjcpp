@@ -1,10 +1,11 @@
 #include "wsjcpp_package_manager.h"
-#include "wsjcpp_packager_download_dependence.h"
 #include <iostream>
 #include <wsjcpp_core.h>
 #include <sstream>
 #include <fstream>
 #include <iomanip>
+#include <curl/curl.h>
+#include <wsjcpp_hashes.h>
 
 // ---------------------------------------------------------------------
 // WSJCppPackageManagerDistributionSource
@@ -365,6 +366,31 @@ std::string WSJCppPackageManagerDependence::getName() {
 
 std::string WSJCppPackageManagerDependence::getVersion() {
     return m_sVersion;
+}
+
+
+// ---------------------------------------------------------------------
+
+void WSJCppPackageManagerDependence::setName(const std::string &sName) {
+    m_sName = sName;
+}
+
+// ---------------------------------------------------------------------
+
+void WSJCppPackageManagerDependence::setVersion(const std::string &sVersion) {
+    m_sVersion = sVersion;
+}
+
+// ---------------------------------------------------------------------
+
+void WSJCppPackageManagerDependence::setUrl(const std::string &sUrl) {
+    m_sUrl = sUrl;
+}
+
+// ---------------------------------------------------------------------
+
+void WSJCppPackageManagerDependence::setInstallationDir(const std::string &sInstallationDir) {
+    m_sInstallationDir = sInstallationDir;
 }
 
 // ---------------------------------------------------------------------
@@ -789,7 +815,6 @@ bool WSJCppPackageManager::installFromGithub(const std::string &sPackage) {
     }
 
     std::cout << "Installing package from https://github.com/ ..." << std::endl;
-    std::cout << "m_sGithubPrefix: " << m_sGithubPrefix << std::endl;
 
     std::string sPackageGithubPath = sPackage.substr(m_sGithubPrefix.size());
     std::cout << "sPackageGithubPath: " << sPackageGithubPath << std::endl;
@@ -800,14 +825,94 @@ bool WSJCppPackageManager::installFromGithub(const std::string &sPackage) {
         packageName = s;
     }
     std::string packageVersion = sPackageGithubPath.substr(packageName.size()+1);
-    std::string sWsjcppUrl = "https://raw.githubusercontent.com/" + packageName + "/" + packageVersion + "/wsjcpp.json";
-    std::cout << "sWsjcppUrl: " << sWsjcppUrl << std::endl;
+    std::string sWsjcppBaseUrl = "https://raw.githubusercontent.com/" + packageName + "/" + packageVersion + "/";
 
-    std::string url = "https://github.com/" + packageName + "/archive/" + packageVersion + ".zip";
+    std::string sWsjcppUrl = sWsjcppBaseUrl + "/wsjcpp.yml";
+    std::string sCacheDir = m_sDir + "/.wsjcpp-cache";
+    if (!WSJCppCore::dirExists(sCacheDir)) {
+        WSJCppCore::makeDir(sCacheDir);
+    }
+
+    std::string sCacheSubFolderName = sCacheDir + "/" + this->prepareCacheSubFolderName(sPackage);
+
+    if (!WSJCppCore::dirExists(sCacheSubFolderName)) {
+        WSJCppCore::makeDir(sCacheSubFolderName);
+    }
+
+    std::string sDownloadedWsjCppYml = sCacheSubFolderName + "/wsjcpp.hold.yml";
+
+    if (!this->downloadFileOverHttps(sWsjcppBaseUrl + "/wsjcpp.yml", sDownloadedWsjCppYml)) {
+        WSJCppLog::err(TAG, "Could not download " + sWsjcppBaseUrl);
+        // TODO remove from cache
+        return false;
+    }
+
+    WSJCppPackageManager pkg(sCacheSubFolderName, sCacheSubFolderName, true);
+    if (!pkg.load()) {
+        WSJCppLog::err(TAG, "Could not load " + sCacheSubFolderName);
+        return false;
+    }
+
+    // sources
+    std::vector<WSJCppPackageManagerDistributionSource> vSources = pkg.getListOfDistributionSources();
+    for (int i = 0; i < vSources.size(); i++) {
+        WSJCppPackageManagerDistributionSource src = vSources[i];
+        std::string sDownloadedWsjCppSourceFrom = sWsjcppBaseUrl + "/" + src.getFrom();
+        std::string sDownloadedWsjCppSourceTo = sCacheSubFolderName + "/" + src.getTo();
+
+        WSJCppLog::info(TAG, "\n\t" + sDownloadedWsjCppSourceFrom + " \n\t-> \n\t" + sDownloadedWsjCppSourceTo + "\n\t[sha1:" + src.getSha1() + "]");
+        if (!this->downloadFileOverHttps(sDownloadedWsjCppSourceFrom, sDownloadedWsjCppSourceTo)) {
+            WSJCppLog::err(TAG, "Could not download " + sDownloadedWsjCppSourceFrom);
+            // TODO remove from cache
+            return false;
+        }
+        std::string sContent = "";
+        if (!WSJCppCore::readTextFile(sDownloadedWsjCppSourceTo, sContent)) {
+            WSJCppLog::err(TAG, "Could not read file " + sDownloadedWsjCppSourceTo);
+            return false;
+        }
+        // calculate sha1
+        std::string sSha1 = WSJCppHashes::sha1_calc_hex(sContent);
+        if (sSha1 != src.getSha1()) {
+            WSJCppLog::warn(TAG, "Expected sha1 '" + sSha1 + "', but got '" + src.getSha1() + "'");
+        }
+    }
+
+    // scripts
+    std::vector<WSJCppPackageManagerDistributionScript> vScripts = pkg.getListOfDistributionScripts();
+    for (int i = 0; i < vScripts.size(); i++) {
+        WSJCppPackageManagerDistributionScript src = vScripts[i];
+        std::string sDownloadedWsjCppScriptFrom = sWsjcppBaseUrl + "/" + src.getFrom();
+        std::string sDownloadedWsjCppScriptTo = sCacheSubFolderName + "/" + src.getTo();
+
+        WSJCppLog::info(TAG, "\n\t" + sDownloadedWsjCppScriptFrom + " \n\t-> \n\t" + sDownloadedWsjCppScriptTo + "\n\t[sha1:" + src.getSha1() + "]");
+        if (!this->downloadFileOverHttps(sDownloadedWsjCppScriptFrom, sDownloadedWsjCppScriptTo)) {
+            WSJCppLog::err(TAG, "Could not download " + sDownloadedWsjCppScriptFrom);
+            // TODO remove from cache
+            return false;
+        }
+        std::string sContent = "";
+        if (!WSJCppCore::readTextFile(sDownloadedWsjCppScriptTo, sContent)) {
+            WSJCppLog::err(TAG, "Could not read file " + sDownloadedWsjCppScriptTo);
+            return false;
+        }
+        // calculate sha1
+        std::string sSha1 = WSJCppHashes::sha1_calc_hex(sContent);
+        if (sSha1 != src.getSha1()) {
+            WSJCppLog::warn(TAG, "Expected sha1 '" + sSha1 + "', but got '" + src.getSha1() + "'");
+        }
+    }
+
+    WSJCppPackageManagerDependence dep;
+    dep.setName(pkg.getName());
+    dep.setVersion(pkg.getVersion());
+    dep.setUrl(sPackage);
+    dep.setInstallationDir("todo");
+    m_vDependencies.push_back(dep);
+
+    /*std::string url = "https://github.com/" + packageName + "/archive/" + packageVersion + ".zip";
     // std::string url = "https://github.com/" + packageName + "/zip/" + packageVersion;
     std::string ufolder = "github_" + this->packageNameToUFolder(packageName);
-
-    // https://raw.githubusercontent.com/sea-kg/nlohmann_json/v3.7.0/cppspm.json
 
     WSJCppPackageManagerDependence d;
     nlohmann::json jsonDependence;
@@ -819,11 +924,6 @@ bool WSJCppPackageManager::installFromGithub(const std::string &sPackage) {
     
     // https://raw.githubusercontent.com/sea-kg/nlohmann_json/master/cppspm.json
 
-    std::string cacheDir = m_sDir + "/.wsjcpp-cache";
-    if (!WSJCppCore::dirExists(cacheDir)) {
-        WSJCppCore::makeDir(cacheDir);
-    }
-
     std::string zipFile = cacheDir + "/" + ufolder + ".zip";
     if (WSJCppCore::fileExists(zipFile)) {
         // TODO remove file    
@@ -834,7 +934,7 @@ bool WSJCppPackageManager::installFromGithub(const std::string &sPackage) {
 
     // d.fromJson(jsonDependence);
     // m_vDependencies.push_back(d);
-
+    */
     return true;
 }
 
@@ -975,9 +1075,39 @@ bool WSJCppPackageManager::removeAuthor(const std::string &sFullAuthor) {
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManager::packageNameToUFolder(const std::string &sFilename) {
-    std::string ret = sFilename;
-    std::string illegalChars = "\\/:?\"<>|";
+std::vector<WSJCppPackageManagerDistributionSource> WSJCppPackageManager::getListOfDistributionSources() {
+    return m_vDistributionSources;
+}
+
+// ---------------------------------------------------------------------
+
+std::vector<WSJCppPackageManagerDistributionScript> WSJCppPackageManager::getListOfDistributionScripts() {
+    return m_vDistributionScripts;
+}
+
+// ---------------------------------------------------------------------
+
+std::vector<WSJCppPackageManagerDependence> WSJCppPackageManager::getListOfDependencies() {
+    return m_vDependencies;
+}
+
+// ---------------------------------------------------------------------
+
+std::string WSJCppPackageManager::getName() {
+    return m_sName;
+}
+
+// ---------------------------------------------------------------------
+
+std::string WSJCppPackageManager::getVersion() {
+    return m_sVersion;
+}
+
+// ---------------------------------------------------------------------
+
+std::string WSJCppPackageManager::prepareCacheSubFolderName(const std::string &sPackage) {
+    std::string ret = sPackage;
+    std::string illegalChars = "\\/:?\"<>|.-";
     std::string::iterator it;
     for (it = ret.begin(); it < ret.end() ; ++it) {
         if (illegalChars.find(*it) != std::string::npos) {
@@ -985,6 +1115,61 @@ std::string WSJCppPackageManager::packageNameToUFolder(const std::string &sFilen
         }
     }
     return ret;
+}
+
+// ---------------------------------------------------------------------
+
+size_t CurlWrite_CallbackFunc_DataToFile(void *ptr, size_t size, size_t nmemb, FILE *stream) { 
+    size_t written = fwrite(ptr, size, nmemb, stream); 
+    return written; 
+}
+
+bool WSJCppPackageManager::downloadFileOverHttps(const std::string &sUrl, const std::string &sPath) {
+    WSJCppLog::info(TAG, "sUrl: " + sUrl);
+    WSJCppLog::info(TAG, "sPath: " + sPath);
+    std::string sUserAgent = "wsjcpp/" + m_sWSJCppCurrentVersion;
+    CURL *curl;
+    FILE *fp = fopen(sPath.c_str(),"wb"); 
+    if (fp == NULL) { 
+        WSJCppLog::err(TAG, "Could not open file for write '" + sPath + "'"); 
+        return false;
+    }
+
+    CURLcode res;
+    curl = curl_easy_init(); 
+    if (curl) { 
+        // curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L); //only for https
+        // curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L); //only for https
+        curl_easy_setopt(curl, CURLOPT_URL, sUrl.c_str()); 
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, CurlWrite_CallbackFunc_DataToFile); 
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
+        
+        curl_easy_setopt(curl, CURLOPT_USERAGENT, sUserAgent.c_str());
+        curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+        curl_easy_setopt(curl, CURLOPT_MAXREDIRS, 50L);
+        // curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+        res = curl_easy_perform(curl); 
+        if (res != CURLE_OK) {
+            WSJCppLog::err(TAG, "Curl failed, reason  " + std::string(curl_easy_strerror(res))); 
+            // TODO remove file
+            curl_easy_cleanup(curl);
+            return false;
+        } else {
+            long response_code;
+            curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &response_code);
+            if (response_code != 200) {
+                WSJCppLog::info(TAG, "end " + std::to_string(response_code));
+                // TODO remove file
+                curl_easy_cleanup(curl);
+                return false;
+            }
+        }
+
+        // always cleanup
+        curl_easy_cleanup(curl); 
+        fclose(fp);
+    }
+    return true;
 }
 
 // ---------------------------------------------------------------------
