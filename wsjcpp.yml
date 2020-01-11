@@ -1,4 +1,3 @@
-
 wsjcpp_version: v0.0.1
 cmake_version: 3.0
 cmake_cxx_standard: 11
@@ -17,10 +16,11 @@ required-pkg-config:
   - CURL
 
 dependencies:
-  - name: "wsjcpp/wsjcpp-core1"
-    version: "v0.0.1"
-    url: "https://github.com/wsjcpp/wsjcpp-core:v0.0.1"
-    installation-dir: src.wsjcpp/wsjcpp_wsjcpp_core_v0_0_1
+  - name: "wsjcpp/wsjcpp-core"
+    version: "0.0.1"
+    url: "https://github.com/wsjcpp/wsjcpp-core:dev"
+    origin: "https://github.com/"
+    installation-dir: "./src.wsjcpp/wsjcpp_wsjcpp_core"
 
 replace-dependencies:
   - from: "https://github.com/wsjcpp/wsjcpp-core:v0.0.1"
@@ -33,19 +33,23 @@ repositories:
     url: https://bitbucket.org/wsjcpp/wsjcpp
   - type: fork
     url: https://github.com/sea-kg/wsjcpp
+  - type: mirror
+    url: https://sea-kg.com/wsjcpp/wsjcpp
 
 authors:
   - name: "Evgenii Sopov"
     email: "mrseakg@gmail.com"
-    
-distribution:
+
+distribution: # one list without sources/scripts
   sources:
-    - from: "src/cppspm_manager.cpp"
-      to: "cppspm_manager.cpp"
+    - from: "src/cppspm_manager.cpp" # rename source-file
+      to: "cppspm_manager.cpp" # target-file
       sha1: ""
+      # type: source-code
+      # type: script
+      # type: binary - in future
   # scripts:
 
-servers:
-  - "file:///usr/share/"
-  - "http://sea-kg.com/wsjcpp/"
-
+servers: # rename origins
+  - "file:///usr/share/caa"
+  - "http://wsjcpp.sea-kg.com/"

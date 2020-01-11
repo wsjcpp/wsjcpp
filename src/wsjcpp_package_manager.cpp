@@ -298,6 +298,7 @@ std::string WSJCppPackageManagerRepository::getUrl() {
 
 WSJCppPackageManagerDependence::WSJCppPackageManagerDependence() {
     TAG = "WSJCppPackageManagerDependence";
+    m_pYamlDependece = nullptr;
 }
 
 // ---------------------------------------------------------------------
@@ -306,6 +307,7 @@ WSJCppYAMLItem *WSJCppPackageManagerDependence::toYAML() {
     m_pYamlDependece->getElement("url")->setValue(m_sUrl, true);
     m_pYamlDependece->getElement("name")->setValue(m_sName, true);
     m_pYamlDependece->getElement("version")->setValue(m_sVersion, true);
+    m_pYamlDependece->getElement("origin")->setValue(m_sOrigin, true);
     m_pYamlDependece->getElement("installation-dir")->setValue(m_sInstallationDir, true);
     return m_pYamlDependece;
 }
@@ -369,6 +371,11 @@ std::string WSJCppPackageManagerDependence::getVersion() {
     return m_sVersion;
 }
 
+// ---------------------------------------------------------------------
+
+std::string WSJCppPackageManagerDependence::getOrigin() {
+    return m_sOrigin;
+}
 
 // ---------------------------------------------------------------------
 
@@ -380,6 +387,12 @@ void WSJCppPackageManagerDependence::setName(const std::string &sName) {
 
 void WSJCppPackageManagerDependence::setVersion(const std::string &sVersion) {
     m_sVersion = sVersion;
+}
+
+// ---------------------------------------------------------------------
+
+void WSJCppPackageManagerDependence::setOrigin(const std::string &sOrigin) {
+    m_sOrigin = sOrigin;
 }
 
 // ---------------------------------------------------------------------
@@ -500,6 +513,7 @@ bool WSJCppPackageManager::save() {
     if (!WSJCppCore::fileExists(sGitkeepFile)) {
         WSJCppCore::writeFile(sGitkeepFile, ""); // TODO createEmptyFile
     }
+    m_yamlPackageInfo.saveToFile(m_sYamlFullpath);
 
     /* 
     m_jsonPackageInfo["wsjcpp_version"] = m_sWSJCppVersion;
@@ -616,7 +630,6 @@ bool WSJCppPackageManager::load() {
     }
 
     // WSJCppLog::warn(TAG, "Loaded");
-
     // TODO required-libraries
     // TODO required-pkg-config
     // TODO replace-dependencies
@@ -798,13 +811,58 @@ bool WSJCppPackageManager::install(const std::string &sPackage) {
         sPackage.compare(0, m_sHttpPrefix.size(), m_sHttpPrefix) == 0
         || sPackage.compare(0, m_sHttpsPrefix.size(), m_sHttpsPrefix) == 0
     ) {
-        // TODO
+        // TODO try find on different servers
         WSJCppLog::err(TAG, "Could not install package from http(s) - not implemented yet");
         return false;
     }
 
     WSJCppLog::err(TAG, "Could not install package from unknown source");
     return false;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManager::reinstall(const std::string &sPackageUrl) {
+    WSJCppLog::err(TAG, "reinstall Not inplemented");
+    return false;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManager::uninstall(const std::string &sPackageUrl) {
+    WSJCppLog::err(TAG, "uninstall Not inplemented");
+    return false;
+}
+
+// ---------------------------------------------------------------------
+
+void WSJCppPackageManager::addDependency(WSJCppPackageManagerDependence &dep) {
+    m_vDependencies.push_back(dep);
+    WSJCppYAMLItem *pDeps = m_yamlPackageInfo.getRoot()->getElement("dependencies");
+    WSJCppYAMLPlaceInFile pl;
+    WSJCppYAMLItem *pItem = new WSJCppYAMLItem(pDeps, pl, WSJCppYAMLItemType::WSJCPP_YAML_ITEM_MAP);
+    // TODO add simplyfy method
+    WSJCppYAMLItem *pItemName = new WSJCppYAMLItem(pItem, pl, WSJCppYAMLItemType::WSJCPP_YAML_ITEM_VALUE);
+    pItemName->setName("name", false);
+    pItemName->setValue(dep.getName(), true);
+    pItem->setElement("name", pItemName);
+    WSJCppYAMLItem *pItemVersion = new WSJCppYAMLItem(pItem, pl, WSJCppYAMLItemType::WSJCPP_YAML_ITEM_VALUE);
+    pItemVersion->setName("version", false);
+    pItemVersion->setValue(dep.getVersion(), true);
+    pItem->setElement("version", pItemVersion);
+    WSJCppYAMLItem *pItemURL = new WSJCppYAMLItem(pItem, pl, WSJCppYAMLItemType::WSJCPP_YAML_ITEM_VALUE);
+    pItemURL->setName("url", false);
+    pItemURL->setValue(dep.getUrl(), true);
+    pItem->setElement("url", pItemURL);
+    WSJCppYAMLItem *pItemOrigin = new WSJCppYAMLItem(pItem, pl, WSJCppYAMLItemType::WSJCPP_YAML_ITEM_VALUE);
+    pItemOrigin->setName("origin", false);
+    pItemOrigin->setValue(dep.getOrigin(), true);
+    pItem->setElement("origin", pItemOrigin);
+    WSJCppYAMLItem *pItemInstallationDir = new WSJCppYAMLItem(pItem, pl, WSJCppYAMLItemType::WSJCPP_YAML_ITEM_VALUE);
+    pItemInstallationDir->setName("installation-dir", false);
+    pItemInstallationDir->setValue(dep.getInstallationDir(), true);
+    pItem->setElement("installation-dir", pItemInstallationDir);
+    pDeps->appendElement(pItem);
 }
 
 // ---------------------------------------------------------------------
@@ -927,7 +985,8 @@ bool WSJCppPackageManager::installFromGithub(const std::string &sPackage) {
     dep.setVersion(pkg.getVersion());
     dep.setUrl(sPackage);
     dep.setInstallationDir(sInstallationDir);
-    m_vDependencies.push_back(dep);
+    dep.setOrigin("https://github.com/");
+    addDependency(dep);
 
     // TODO redesign to WSJCppCore::recoursiveCopyFiles
     // copy sources to installation dir

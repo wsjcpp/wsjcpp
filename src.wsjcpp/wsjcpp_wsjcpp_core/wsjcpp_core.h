@@ -103,3 +103,4 @@ class WSJCppLog {
 };
 
 #endif // WSJCPP_CORE_H
+

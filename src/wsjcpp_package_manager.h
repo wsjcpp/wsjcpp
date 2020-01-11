@@ -113,11 +113,13 @@ class WSJCppPackageManagerDependence {
         std::string getUrl();
         std::string getName();
         std::string getVersion();
-        
+        std::string getOrigin();
+            
         void setName(const std::string &sName);
         void setVersion(const std::string &sVersion);
         void setUrl(const std::string &sUrl);
         void setInstallationDir(const std::string &sInstallationDir);
+        void setOrigin(const std::string &sOrigin);
 
         bool fromYAML(WSJCppYAMLItem *pYaml);
         WSJCppYAMLItem *toYAML();
@@ -128,6 +130,7 @@ class WSJCppPackageManagerDependence {
         std::string m_sUrl;
         std::string m_sName;
         std::string m_sVersion;
+        std::string m_sOrigin;
         WSJCppYAMLItem *m_pYamlDependece;
 };
 
@@ -149,7 +152,9 @@ class WSJCppPackageManager {
         bool updateDependencies();
         void printDependencies(std::string sIntent = "");
         void verify();
-        bool install(const std::string &sPackage);
+        bool install(const std::string &sPackageUrl);
+        bool reinstall(const std::string &sPackageUrl);
+        bool uninstall(const std::string &sPackageUrl);
         void printInfo();
         void printPackages();
         void printAuthors();
@@ -164,6 +169,7 @@ class WSJCppPackageManager {
 
     private:
         std::string TAG;
+        void addDependency(WSJCppPackageManagerDependence &dep);
         std::string prepareCacheSubFolderName(const std::string &sFilename);
         bool installFromGithub(const std::string &sPackage);
         bool downloadFileOverHttps(const std::string &sUrl, const std::string &sPath);
