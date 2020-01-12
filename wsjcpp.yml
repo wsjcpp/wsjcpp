@@ -18,9 +18,14 @@ required-pkg-config:
 dependencies:
   - name: "wsjcpp/wsjcpp-core"
     version: "0.0.1"
-    url: "https://github.com/wsjcpp/wsjcpp-core:dev"
+    url: "https://github.com/wsjcpp/wsjcpp-core:master"
     origin: "https://github.com/"
     installation-dir: "./src.wsjcpp/wsjcpp_wsjcpp_core"
+  - name: "wsjcpp/wsjcpp-yaml"
+    version: "0.0.2"
+    url: "https://github.com/wsjcpp/wsjcpp-yaml:master"
+    origin: "https://github.com/"
+    installation-dir: "./src.wsjcpp/wsjcpp_wsjcpp_yaml"
 
 replace-dependencies:
   - from: "https://github.com/wsjcpp/wsjcpp-core:v0.0.1"
@@ -49,5 +54,3 @@ distribution:
     target-file: "cppspm_manager.cpp"
     sha1: ""
     type: "source-code"
-
-

@@ -928,3 +928,4 @@ void WSJCppYAML::process_sameIntent_emptyName_emptyValue_noArrayItem(WSJCppYAMLP
 }
 
 // ---------------------------------------------------------------------
+

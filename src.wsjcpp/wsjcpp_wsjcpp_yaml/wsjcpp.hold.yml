@@ -1,13 +1,16 @@
 wsjcpp: 1.0.0
-cmake_cxx_standard: 11
+c++: 11
 cmake: 3.0
 
 name: wsjcpp/wsjcpp-yaml
 version: 0.0.2
 description: Read/Write yaml files
 issues: https://github.com/wsjcpp/wsjcpp-yaml/issues
+
 repositories:
-  - "https://github.com/wsjcpp/wsjcpp-yaml"
+  - type: main
+    url: "https://github.com/wsjcpp/wsjcpp-yaml"
+
 keywords:
   - c++
   - yaml
@@ -23,17 +26,18 @@ requirements:
   libs:
     - pthread
   packages:
-    - "https://github.com/wsjcpp/wsjcpp-core:v0.0.1"
+    - "https://github.com/wsjcpp/wsjcpp-core:master"
 
 distribution:
-  sources:
-    - from: src/wsjcpp_yaml.cpp
-      to: wsjcpp_yaml.cpp
-      sha1: ""
-    - from: src/wsjcpp_yaml.h
-      to: wsjcpp_yaml.h
-      sha1: ""
-  # scripts:
+  - source-file: src/wsjcpp_yaml.cpp
+    target-file: wsjcpp_yaml.cpp
+    sha1: ""
+    type: "source-code"
+  - source-file: src/wsjcpp_yaml.h
+    target-file: wsjcpp_yaml.h
+    sha1: ""
+    type: "source-code"
+
 
 unit-tests:
   folder: unit-tests # default
@@ -49,4 +53,5 @@ unit-tests:
     - unit-tests/src/unit_test_yaml_parser_simple_map.cpp
     - unit-tests/src/unit_test_yaml_parser_hierarchical_map.h
     - unit-tests/src/unit_test_yaml_parser_hierarchical_map.cpp
+
 

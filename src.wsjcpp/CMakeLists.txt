@@ -32,10 +32,10 @@ list (APPEND WSJCPP_SOURCES "src.wsjcpp/wsjcpp-hashes/md5.cpp")
 list (APPEND WSJCPP_SOURCES "src.wsjcpp/wsjcpp-hashes/wsjcpp_hashes.h")
 list (APPEND WSJCPP_SOURCES "src.wsjcpp/wsjcpp-hashes/wsjcpp_hashes.cpp")
 
-# wsjcpp-yaml
-list (APPEND WSJCPP_INCLUDE_DIRS "src.wsjcpp/wsjcpp-yaml/")
-list (APPEND WSJCPP_SOURCES "src.wsjcpp/wsjcpp-yaml/wsjcpp_yaml.cpp")
-list (APPEND WSJCPP_SOURCES "src.wsjcpp/wsjcpp-yaml/wsjcpp_yaml.h")
+# wsjcpp/wsjcpp-yaml
+list (APPEND WSJCPP_INCLUDE_DIRS "src.wsjcpp/wsjcpp_wsjcpp_yaml/")
+list (APPEND WSJCPP_SOURCES "src.wsjcpp/wsjcpp_wsjcpp_yaml/wsjcpp_yaml.cpp")
+list (APPEND WSJCPP_SOURCES "src.wsjcpp/wsjcpp_wsjcpp_yaml/wsjcpp_yaml.h")
 
 # nlohmann_json
 list (APPEND WSJCPP_INCLUDE_DIRS "src.wsjcpp/sea_kg_nlohmann_json_master/")

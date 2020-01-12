@@ -1110,8 +1110,8 @@ size_t CurlWrite_CallbackFunc_DataToFile(void *ptr, size_t size, size_t nmemb, F
 }
 
 bool WSJCppPackageManager::downloadFileOverHttps(const std::string &sUrl, const std::string &sPath) {
-    WSJCppLog::info(TAG, "sUrl: " + sUrl);
-    WSJCppLog::info(TAG, "sPath: " + sPath);
+    WSJCppLog::info(TAG, "sUrl: '" + sUrl + "'");
+    WSJCppLog::info(TAG, "sPath: '" + sPath + "'");
     std::string sUserAgent = "wsjcpp/" + m_sWSJCppCurrentVersion;
     CURL *curl;
     FILE *fp = fopen(sPath.c_str(),"wb"); 
