@@ -40,16 +40,14 @@ authors:
   - name: "Evgenii Sopov"
     email: "mrseakg@gmail.com"
 
-distribution: # one list without sources/scripts
-  sources:
-    - from: "src/cppspm_manager.cpp" # rename source-file
-      to: "cppspm_manager.cpp" # target-file
-      sha1: ""
-      # type: source-code
-      # type: script
-      # type: binary - in future
-  # scripts:
+origins: # rename origins
+  - "https://sea-kg.com/wsjcpp-registry/"
+  - "file:///usr/share/wsjcpp-registry"
 
-servers: # rename origins
-  - "file:///usr/share/caa"
-  - "http://wsjcpp.sea-kg.com/"
+distribution:
+  - source-file: "src/cppspm_manager.cpp"
+    target-file: "cppspm_manager.cpp"
+    sha1: ""
+    type: "source-code"
+
+

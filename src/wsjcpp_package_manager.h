@@ -8,44 +8,25 @@
 
 // ---------------------------------------------------------------------
 
-class WSJCppPackageManagerDistributionSource {
+class WSJCppPackageManagerDistributionFile {
     public:
-        WSJCppPackageManagerDistributionSource();
-        WSJCppPackageManagerDistributionSource(const std::string &sFile);
-        bool fromYAML(WSJCppYAMLItem *pYamlDistributionSource);
+        WSJCppPackageManagerDistributionFile();
+        WSJCppPackageManagerDistributionFile(const std::string &sFile);
+        bool fromYAML(WSJCppYAMLItem *pYamlDistributionFile);
         WSJCppYAMLItem *toYAML();
 
-        std::string getFrom();
-        std::string getTo();
+        std::string getSourceFile();
+        std::string getTargetFile();
         std::string getSha1();
+        std::string getType();
 
     private:
         std::string TAG;
-        std::string m_sFrom;
-        std::string m_sTo;
+        std::string m_sSourceFile;
+        std::string m_sTargetFile;
         std::string m_sSha1;
-        WSJCppYAMLItem *m_pYamlDistributionSource;
-};
-
-// ---------------------------------------------------------------------
-
-class WSJCppPackageManagerDistributionScript {
-    public:
-        WSJCppPackageManagerDistributionScript();
-        WSJCppPackageManagerDistributionScript(const std::string &sFile);
-        bool fromYAML(WSJCppYAMLItem *pYamlDistributionScript);
-        WSJCppYAMLItem *toYAML();
-
-        std::string getFrom();
-        std::string getTo();
-        std::string getSha1();
-
-    private:
-        std::string TAG;
-        std::string m_sFrom;
-        std::string m_sTo;
-        std::string m_sSha1;
-        WSJCppYAMLItem *m_pYamlDistributionScript;
+        std::string m_sType;
+        WSJCppYAMLItem *m_pYamlDistributionFile;
 };
 
 // ---------------------------------------------------------------------
@@ -161,8 +142,7 @@ class WSJCppPackageManager {
         void printAuthorsTree();
         bool addAuthor(const std::string &sName, const std::string &sEmail);
         bool removeAuthor(const std::string &sAuthor);
-        std::vector<WSJCppPackageManagerDistributionSource> getListOfDistributionSources();
-        std::vector<WSJCppPackageManagerDistributionScript> getListOfDistributionScripts();
+        std::vector<WSJCppPackageManagerDistributionFile> getListOfDistributionFiles();
         std::vector<WSJCppPackageManagerDependence> getListOfDependencies();
         std::string getName();
         std::string getVersion();
@@ -213,8 +193,7 @@ class WSJCppPackageManager {
         std::vector<WSJCppPackageManagerAuthor> m_vAuthors;
         std::vector<WSJCppPackageManagerServer> m_vServers;
         std::vector<WSJCppPackageManagerDependence> m_vDependencies;
-        std::vector<WSJCppPackageManagerDistributionSource> m_vDistributionSources;
-        std::vector<WSJCppPackageManagerDistributionScript> m_vDistributionScripts;
+        std::vector<WSJCppPackageManagerDistributionFile> m_vDistributionFiles;
         std::vector<WSJCppPackageManagerRepository> m_vRepositories;
         
         nlohmann::json m_jsonPackageInfo;

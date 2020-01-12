@@ -9,141 +9,88 @@
 #include <wsjcpp_core.h>
 
 // ---------------------------------------------------------------------
-// WSJCppPackageManagerDistributionSource
+// WSJCppPackageManagerDistributionFile
 
-WSJCppPackageManagerDistributionSource::WSJCppPackageManagerDistributionSource() {
-    TAG = "WSJCppPackageManagerDistributionSource";
+WSJCppPackageManagerDistributionFile::WSJCppPackageManagerDistributionFile() {
+    TAG = "WSJCppPackageManagerDistributionFile";
 }
 
 // ---------------------------------------------------------------------
 
-WSJCppPackageManagerDistributionSource::WSJCppPackageManagerDistributionSource(const std::string &sFile) {
-    TAG = "WSJCppPackageManagerDistributionSource";
-    m_sFrom = sFile;
+WSJCppPackageManagerDistributionFile::WSJCppPackageManagerDistributionFile(const std::string &sFile) {
+    TAG = "WSJCppPackageManagerDistributionFile";
+    m_sSourceFile = sFile;
 }
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManagerDistributionSource::fromYAML(WSJCppYAMLItem *pYamlDistributionSource) {
-    m_pYamlDistributionSource = pYamlDistributionSource;
-    if (!m_pYamlDistributionSource->hasElement("from")) {
-        WSJCppLog::err(TAG, "Missing required field 'from' in " + m_pYamlDistributionSource->getForLogFormat());
+bool WSJCppPackageManagerDistributionFile::fromYAML(WSJCppYAMLItem *pYamlDistributionFile) {
+    m_pYamlDistributionFile = pYamlDistributionFile;
+    if (!m_pYamlDistributionFile->hasElement("source-file")) {
+        WSJCppLog::err(TAG, "Missing required field 'source-file' in " + m_pYamlDistributionFile->getForLogFormat());
         return false; 
     } else {
-        m_sFrom = m_pYamlDistributionSource->getElement("from")->getValue();
+        m_sSourceFile = m_pYamlDistributionFile->getElement("source-file")->getValue();
     }
 
-    if (!m_pYamlDistributionSource->hasElement("to")) {
-        WSJCppLog::err(TAG, "Missing required field 'to' in " + m_pYamlDistributionSource->getForLogFormat());
+    if (!m_pYamlDistributionFile->hasElement("target-file")) {
+        WSJCppLog::err(TAG, "Missing required field 'target-file' in " + m_pYamlDistributionFile->getForLogFormat());
         return false; 
     } else {
-        m_sTo = m_pYamlDistributionSource->getElement("to")->getValue();
+        m_sTargetFile = m_pYamlDistributionFile->getElement("target-file")->getValue();
     }
 
-    if (!m_pYamlDistributionSource->hasElement("sha1")) {
-        WSJCppLog::err(TAG, "Missing required field 'sha1' in " + m_pYamlDistributionSource->getForLogFormat());
+    if (!m_pYamlDistributionFile->hasElement("sha1")) {
+        WSJCppLog::err(TAG, "Missing required field 'sha1' in " + m_pYamlDistributionFile->getForLogFormat());
         return false; 
     } else {
-        m_sSha1 = m_pYamlDistributionSource->getElement("sha1")->getValue();
+        m_sSha1 = m_pYamlDistributionFile->getElement("sha1")->getValue();
     }
+
+    if (!m_pYamlDistributionFile->hasElement("type")) {
+        WSJCppLog::err(TAG, "Missing required field 'type' in " + m_pYamlDistributionFile->getForLogFormat());
+        return false; 
+    } else {
+        m_sType = m_pYamlDistributionFile->getElement("type")->getValue();
+    }
+
+    // TODO check possible formats
 
     return true;
 }
 
 // ---------------------------------------------------------------------
 
-WSJCppYAMLItem *WSJCppPackageManagerDistributionSource::toYAML() {
-    m_pYamlDistributionSource->getElement("from")->setValue(m_sFrom, true);
-    m_pYamlDistributionSource->getElement("to")->setValue(m_sTo, true);
-    m_pYamlDistributionSource->getElement("sha1")->setValue(m_sSha1, true);
-    return m_pYamlDistributionSource;
+WSJCppYAMLItem *WSJCppPackageManagerDistributionFile::toYAML() {
+    m_pYamlDistributionFile->getElement("source-file")->setValue(m_sSourceFile, true);
+    m_pYamlDistributionFile->getElement("target-file")->setValue(m_sTargetFile, true);
+    m_pYamlDistributionFile->getElement("sha1")->setValue(m_sSha1, true);
+    m_pYamlDistributionFile->getElement("type")->setValue(m_sType, true);
+    return m_pYamlDistributionFile;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManagerDistributionSource::getFrom() {
-    return m_sFrom;
+std::string WSJCppPackageManagerDistributionFile::getSourceFile() {
+    return m_sSourceFile;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManagerDistributionSource::getTo() {
-    return m_sTo;
+std::string WSJCppPackageManagerDistributionFile::getTargetFile() {
+    return m_sTargetFile;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManagerDistributionSource::getSha1() {
+std::string WSJCppPackageManagerDistributionFile::getSha1() {
     return m_sSha1;
 }
 
 // ---------------------------------------------------------------------
-// WSJCppPackageManagerDistributionScript
 
-WSJCppPackageManagerDistributionScript::WSJCppPackageManagerDistributionScript() {
-    TAG = "WSJCppPackageManagerDistributionScript";
-}
-
-// ---------------------------------------------------------------------
-
-WSJCppPackageManagerDistributionScript::WSJCppPackageManagerDistributionScript(const std::string &sFile) {
-    TAG = "WSJCppPackageManagerDistributionScript";
-    m_sFrom = sFile;
-}
-
-// ---------------------------------------------------------------------
-
-bool WSJCppPackageManagerDistributionScript::fromYAML(WSJCppYAMLItem *pYamlDistributionSource) {
-    m_pYamlDistributionScript = pYamlDistributionSource;
-    if (!m_pYamlDistributionScript->hasElement("from")) {
-        WSJCppLog::err(TAG, "Missing required field 'from' in " + m_pYamlDistributionScript->getForLogFormat());
-        return false; 
-    } else {
-        m_sFrom = m_pYamlDistributionScript->getElement("from")->getValue();
-    }
-
-    if (!m_pYamlDistributionScript->hasElement("to")) {
-        WSJCppLog::err(TAG, "Missing required field 'to' in " + m_pYamlDistributionScript->getForLogFormat());
-        return false; 
-    } else {
-        m_sTo = m_pYamlDistributionScript->getElement("to")->getValue();
-    }
-
-    if (!m_pYamlDistributionScript->hasElement("sha1")) {
-        WSJCppLog::err(TAG, "Missing required field 'sha1' in " + m_pYamlDistributionScript->getForLogFormat());
-        return false; 
-    } else {
-        m_sSha1 = m_pYamlDistributionScript->getElement("sha1")->getValue();
-    }
-
-    return true;
-}
-
-// ---------------------------------------------------------------------
-
-WSJCppYAMLItem *WSJCppPackageManagerDistributionScript::toYAML() {
-    m_pYamlDistributionScript->getElement("from")->setValue(m_sFrom, true);
-    m_pYamlDistributionScript->getElement("to")->setValue(m_sTo, true);
-    m_pYamlDistributionScript->getElement("sha1")->setValue(m_sSha1, true);
-    return m_pYamlDistributionScript;
-}
-
-// ---------------------------------------------------------------------
-
-std::string WSJCppPackageManagerDistributionScript::getFrom() {
-    return m_sFrom;
-}
-
-// ---------------------------------------------------------------------
-
-std::string WSJCppPackageManagerDistributionScript::getTo() {
-    return m_sTo;
-}
-
-// ---------------------------------------------------------------------
-
-std::string WSJCppPackageManagerDistributionScript::getSha1() {
-    return m_sSha1;
+std::string WSJCppPackageManagerDistributionFile::getType() {
+    return m_sType;
 }
 
 // ---------------------------------------------------------------------
@@ -641,8 +588,8 @@ bool WSJCppPackageManager::load() {
 // ---------------------------------------------------------------------
 
 void WSJCppPackageManager::printFiles() {
-    for (auto it = m_vDistributionSources.begin(); it != m_vDistributionSources.end(); ++it) {
-        std::cout << it->getSha1() << " " << it->getFrom() << " -> " << it->getTo() << std::endl;
+    for (auto it = m_vDistributionFiles.begin(); it != m_vDistributionFiles.end(); ++it) {
+        std::cout << it->getSha1() << " " << it->getSourceFile() << " -> " << it->getTargetFile() << std::endl;
     }
 }
 
@@ -659,15 +606,15 @@ bool WSJCppPackageManager::addFile(const std::string &sFromFile, const std::stri
         return false;
     }
 
-    for (auto it = m_vDistributionSources.begin(); it != m_vDistributionSources.end(); ++it) {
-        if (it->getFrom() == sFromFile) {
+    for (auto it = m_vDistributionFiles.begin(); it != m_vDistributionFiles.end(); ++it) {
+        if (it->getSourceFile() == sFromFile) {
             WSJCppLog::err(TAG, "This package already contained file '" + sFromFile + "'");
             return false;
         }
     }
 
-    WSJCppPackageManagerDistributionSource source(sFromFile);
-    m_vDistributionSources.push_back(source);
+    WSJCppPackageManagerDistributionFile source(sFromFile);
+    m_vDistributionFiles.push_back(source);
     return true;
 }
 
@@ -679,13 +626,13 @@ bool WSJCppPackageManager::removeFile(const std::string &sFromFile) {
         return false;
     }
 
-    for (auto it = m_vDistributionSources.begin(); it != m_vDistributionSources.end(); ++it) {
-        if (it->getFrom() == sFromFile) {
-            m_vDistributionSources.erase(it);
+    for (auto it = m_vDistributionFiles.begin(); it != m_vDistributionFiles.end(); ++it) {
+        if (it->getSourceFile() == sFromFile) {
+            m_vDistributionFiles.erase(it);
             return true;
         }
     }
-    WSJCppLog::err(TAG, "Distribution source '" + sFromFile + "' cound not found in this package");
+    WSJCppLog::err(TAG, "Distribution file '" + sFromFile + "' cound not found in this package");
     return false;
 }
 
@@ -926,11 +873,11 @@ bool WSJCppPackageManager::installFromGithub(const std::string &sPackage) {
     }
 
     // sources
-    std::vector<WSJCppPackageManagerDistributionSource> vSources = pkg.getListOfDistributionSources();
+    std::vector<WSJCppPackageManagerDistributionFile> vSources = pkg.getListOfDistributionFiles();
     for (int i = 0; i < vSources.size(); i++) {
-        WSJCppPackageManagerDistributionSource src = vSources[i];
-        std::string sDownloadedWsjCppSourceFrom = sWsjcppBaseUrl + "/" + src.getFrom();
-        std::string sDownloadedWsjCppSourceTo = sCacheSubFolderName + "/" + src.getTo();
+        WSJCppPackageManagerDistributionFile src = vSources[i];
+        std::string sDownloadedWsjCppSourceFrom = sWsjcppBaseUrl + "/" + src.getSourceFile();
+        std::string sDownloadedWsjCppSourceTo = sCacheSubFolderName + "/" + src.getTargetFile();
 
         WSJCppLog::info(TAG, "\n\t" + sDownloadedWsjCppSourceFrom + " \n\t-> \n\t" + sDownloadedWsjCppSourceTo + "\n\t[sha1:" + src.getSha1() + "]");
         if (!this->downloadFileOverHttps(sDownloadedWsjCppSourceFrom, sDownloadedWsjCppSourceTo)) {
@@ -941,31 +888,6 @@ bool WSJCppPackageManager::installFromGithub(const std::string &sPackage) {
         std::string sContent = "";
         if (!WSJCppCore::readTextFile(sDownloadedWsjCppSourceTo, sContent)) {
             WSJCppLog::err(TAG, "Could not read file " + sDownloadedWsjCppSourceTo);
-            return false;
-        }
-        // calculate sha1
-        std::string sSha1 = WSJCppHashes::sha1_calc_hex(sContent);
-        if (sSha1 != src.getSha1()) {
-            WSJCppLog::warn(TAG, "Expected sha1 '" + sSha1 + "', but got '" + src.getSha1() + "'");
-        }
-    }
-
-    // scripts
-    std::vector<WSJCppPackageManagerDistributionScript> vScripts = pkg.getListOfDistributionScripts();
-    for (int i = 0; i < vScripts.size(); i++) {
-        WSJCppPackageManagerDistributionScript src = vScripts[i];
-        std::string sDownloadedWsjCppScriptFrom = sWsjcppBaseUrl + "/" + src.getFrom();
-        std::string sDownloadedWsjCppScriptTo = sCacheSubFolderName + "/" + src.getTo();
-
-        WSJCppLog::info(TAG, "\n\t" + sDownloadedWsjCppScriptFrom + " \n\t-> \n\t" + sDownloadedWsjCppScriptTo + "\n\t[sha1:" + src.getSha1() + "]");
-        if (!this->downloadFileOverHttps(sDownloadedWsjCppScriptFrom, sDownloadedWsjCppScriptTo)) {
-            WSJCppLog::err(TAG, "Could not download " + sDownloadedWsjCppScriptFrom);
-            // TODO remove from cache
-            return false;
-        }
-        std::string sContent = "";
-        if (!WSJCppCore::readTextFile(sDownloadedWsjCppScriptTo, sContent)) {
-            WSJCppLog::err(TAG, "Could not read file " + sDownloadedWsjCppScriptTo);
             return false;
         }
         // calculate sha1
@@ -1027,11 +949,11 @@ void WSJCppPackageManager::printInfo() {
     for (unsigned int i = 0; i < m_vKeywords.size(); i++) {
         std::cout << " - " << m_vKeywords[i] << std::endl;
     }
-    if (m_vDistributionSources.size() > 0) {
+    if (m_vDistributionFiles.size() > 0) {
         std::cout << std::endl << "Distribution-Files: " << std::endl;
-        for (unsigned int i = 0; i < m_vDistributionSources.size(); i++) {
-            WSJCppPackageManagerDistributionSource source = m_vDistributionSources[i];
-            std::cout << " - " << source.getFrom() << " -> " << source.getTo() << " [sha1:" << source.getSha1() << "]" << std::endl;
+        for (unsigned int i = 0; i < m_vDistributionFiles.size(); i++) {
+            WSJCppPackageManagerDistributionFile source = m_vDistributionFiles[i];
+            std::cout << " - " << source.getSourceFile() << " -> " << source.getTargetFile() << " [sha1:" << source.getSha1() << "]" << std::endl;
         }
     }
     
@@ -1144,14 +1066,8 @@ bool WSJCppPackageManager::removeAuthor(const std::string &sFullAuthor) {
 
 // ---------------------------------------------------------------------
 
-std::vector<WSJCppPackageManagerDistributionSource> WSJCppPackageManager::getListOfDistributionSources() {
-    return m_vDistributionSources;
-}
-
-// ---------------------------------------------------------------------
-
-std::vector<WSJCppPackageManagerDistributionScript> WSJCppPackageManager::getListOfDistributionScripts() {
-    return m_vDistributionScripts;
+std::vector<WSJCppPackageManagerDistributionFile> WSJCppPackageManager::getListOfDistributionFiles() {
+    return m_vDistributionFiles;
 }
 
 // ---------------------------------------------------------------------
@@ -1368,26 +1284,12 @@ bool WSJCppPackageManager::readFieldDistribution() {
         return false;
     }
     WSJCppYAMLItem itemDistribution = m_yamlPackageInfo["distribution"];
-    if (itemDistribution.hasElement("sources")) {
-        WSJCppYAMLItem *pItemSources = itemDistribution.getElement("sources");
-        int nLength = pItemSources->getLength();
-        for (int i = 0; i < nLength; i++) {
-            WSJCppYAMLItem *pYamlSource = pItemSources->getElement(i);
-            WSJCppPackageManagerDistributionSource source;
-            source.fromYAML(pYamlSource);
-            m_vDistributionSources.push_back(source);
-        }
-    }
-
-    if (itemDistribution.hasElement("scripts")) {
-        WSJCppYAMLItem *pItemScripts = itemDistribution.getElement("scripts");
-        int nLength = pItemScripts->getLength();
-        for (int i = 0; i < nLength; i++) {
-            WSJCppYAMLItem *pYamlSource = pItemScripts->getElement(i);
-            WSJCppPackageManagerDistributionScript script;
-            script.fromYAML(pYamlSource);
-            m_vDistributionScripts.push_back(script);
-        }
+    int nLength = itemDistribution.getLength();
+    for (int i = 0; i < nLength; i++) {
+        WSJCppYAMLItem *pYamlSource = itemDistribution.getElement(i);
+        WSJCppPackageManagerDistributionFile source;
+        source.fromYAML(pYamlSource);
+        m_vDistributionFiles.push_back(source);
     }
     return true;
 }
