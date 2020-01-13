@@ -3,7 +3,6 @@
 #define WSJCPP_PACKAGE_MANAGER_H
 
 #include <string>
-#include <json.hpp>
 #include <wsjcpp_yaml.h>
 
 // ---------------------------------------------------------------------
@@ -64,7 +63,6 @@ class WSJCppPackageManagerServer {
     private:
         std::string TAG;
         std::string m_sAddress;
-        nlohmann::json m_jsonServer;
         WSJCppYAMLItem *m_pYamlServer;
 };
 
@@ -195,8 +193,7 @@ class WSJCppPackageManager {
         std::vector<WSJCppPackageManagerDependence> m_vDependencies;
         std::vector<WSJCppPackageManagerDistributionFile> m_vDistributionFiles;
         std::vector<WSJCppPackageManagerRepository> m_vRepositories;
-        
-        nlohmann::json m_jsonPackageInfo;
+
         WSJCppYAML m_yamlPackageInfo;
 };
 

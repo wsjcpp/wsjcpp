@@ -95,7 +95,6 @@ class WSJCppLog {
         static void ok(const std::string &sTag, const std::string &sMessage);
         static void setLogDirectory(const std::string &sDirectoryPath);
         static void setPrefixLogFile(const std::string &sPrefixLogFile);
-        // static nlohmann::json getLastLogs();
         static void initGlobalVariables();
 
     private:

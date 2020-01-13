@@ -37,9 +37,6 @@ list (APPEND WSJCPP_INCLUDE_DIRS "src.wsjcpp/wsjcpp_wsjcpp_yaml/")
 list (APPEND WSJCPP_SOURCES "src.wsjcpp/wsjcpp_wsjcpp_yaml/wsjcpp_yaml.cpp")
 list (APPEND WSJCPP_SOURCES "src.wsjcpp/wsjcpp_wsjcpp_yaml/wsjcpp_yaml.h")
 
-# nlohmann_json
-list (APPEND WSJCPP_INCLUDE_DIRS "src.wsjcpp/sea_kg_nlohmann_json_master/")
-list (APPEND WSJCPP_SOURCES "src.wsjcpp/sea_kg_nlohmann_json_master/json.hpp")
 
 # required-libraries
 list (APPEND WSJCPP_LIBRARIES "-lpthread")
