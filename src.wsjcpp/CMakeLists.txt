@@ -23,14 +23,14 @@ list (APPEND WSJCPP_INCLUDE_DIRS "src.wsjcpp/wsjcpp_wsjcpp_arguments/")
 list (APPEND WSJCPP_SOURCES "src.wsjcpp/wsjcpp_wsjcpp_arguments/wsjcpp_arguments.cpp")
 list (APPEND WSJCPP_SOURCES "src.wsjcpp/wsjcpp_wsjcpp_arguments/wsjcpp_arguments.h")
 
-# wsjcpp-hashes
-list (APPEND WSJCPP_INCLUDE_DIRS "src.wsjcpp/wsjcpp-hashes/")
-list (APPEND WSJCPP_SOURCES "src.wsjcpp/wsjcpp-hashes/smallsha1.h")
-list (APPEND WSJCPP_SOURCES "src.wsjcpp/wsjcpp-hashes/smallsha1.cpp")
-list (APPEND WSJCPP_SOURCES "src.wsjcpp/wsjcpp-hashes/md5.h")
-list (APPEND WSJCPP_SOURCES "src.wsjcpp/wsjcpp-hashes/md5.cpp")
-list (APPEND WSJCPP_SOURCES "src.wsjcpp/wsjcpp-hashes/wsjcpp_hashes.h")
-list (APPEND WSJCPP_SOURCES "src.wsjcpp/wsjcpp-hashes/wsjcpp_hashes.cpp")
+# wsjcpp/wsjcpp-hashes
+list (APPEND WSJCPP_INCLUDE_DIRS "src.wsjcpp/wsjcpp_wsjcpp_hashes/")
+list (APPEND WSJCPP_SOURCES "src.wsjcpp/wsjcpp_wsjcpp_hashes/smallsha1.h")
+list (APPEND WSJCPP_SOURCES "src.wsjcpp/wsjcpp_wsjcpp_hashes/smallsha1.cpp")
+list (APPEND WSJCPP_SOURCES "src.wsjcpp/wsjcpp_wsjcpp_hashes/md5.h")
+list (APPEND WSJCPP_SOURCES "src.wsjcpp/wsjcpp_wsjcpp_hashes/md5.cpp")
+list (APPEND WSJCPP_SOURCES "src.wsjcpp/wsjcpp_wsjcpp_hashes/wsjcpp_hashes.h")
+list (APPEND WSJCPP_SOURCES "src.wsjcpp/wsjcpp_wsjcpp_hashes/wsjcpp_hashes.cpp")
 
 # wsjcpp/wsjcpp-yaml
 list (APPEND WSJCPP_INCLUDE_DIRS "src.wsjcpp/wsjcpp_wsjcpp_yaml/")
