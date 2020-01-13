@@ -279,7 +279,7 @@ bool WSJCppYAMLItem::isArray() {
 
 int WSJCppYAMLItem::getLength() {
     if (m_nItemType != WSJCPP_YAML_ITEM_ARRAY) {
-        WSJCppLog::throw_err(TAG, "getLength, Element must be array");
+        WSJCppLog::throw_err(TAG, "getLength, Element must be array for " + this->getForLogFormat());
     }
     int nCount = 0;
     for (int i = 0; i < m_vObjects.size(); i++) {

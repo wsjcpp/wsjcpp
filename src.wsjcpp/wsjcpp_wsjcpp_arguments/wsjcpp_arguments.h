@@ -116,3 +116,4 @@ class WSJCppArguments {
 // ---------------------------------------------------------------------
 
 #endif // WSJCPP_ARGUMENTS_H
+

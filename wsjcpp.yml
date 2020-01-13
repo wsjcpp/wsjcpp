@@ -1,5 +1,5 @@
 wsjcpp_version: v0.0.1
-cmake_version: 3.0
+cmake_minimum_required: 3.0
 cmake_cxx_standard: 11
 name: wsjcpp
 version: v0.0.1
@@ -26,6 +26,11 @@ dependencies:
     url: "https://github.com/wsjcpp/wsjcpp-yaml:master"
     origin: "https://github.com/"
     installation-dir: "./src.wsjcpp/wsjcpp_wsjcpp_yaml"
+  - name: "wsjcpp/wsjcpp-arguments"
+    version: "v0.0.1"
+    url: "https://github.com/wsjcpp/wsjcpp-arguments:master"
+    origin: "https://github.com/"
+    installation-dir: "./src.wsjcpp/wsjcpp_wsjcpp_arguments"
 
 replace-dependencies:
   - from: "https://github.com/wsjcpp/wsjcpp-core:v0.0.1"
