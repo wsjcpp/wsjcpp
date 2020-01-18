@@ -158,11 +158,12 @@ class WSJCppPackageManager {
         bool isHttpPackage(const std::string &sPackage);
         bool isHttpsPackage(const std::string &sPackage);
 
-        
         void addDependency(WSJCppPackageManagerDependence &dep);
         void updateDependency(WSJCppPackageManagerDependence &dep);
+
         std::string prepareCacheSubFolderName(const std::string &sFilename);
         bool downloadFromGithubToCache(const std::string &sPackage, WSJCppPackageManagerDependence &dep);
+        bool isInstalled(const std::string &sPackage);
         bool installFromCache(const std::string &sPackage, const WSJCppPackageManagerDependence &dep);
         bool downloadFileOverHttps(const std::string &sUrl, const std::string &sPath);
         void recursive_printAuthorsTree(std::vector<WSJCppPackageManagerDependence> &vDependencies);

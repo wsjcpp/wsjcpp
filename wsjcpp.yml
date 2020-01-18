@@ -17,7 +17,7 @@ required-pkg-config:
 
 dependencies:
   - name: "wsjcpp/wsjcpp-core"
-    version: "0.0.1"
+    version: "v0.0.2"
     url: "https://github.com/wsjcpp/wsjcpp-core:master"
     origin: "https://github.com/"
     installation-dir: "./src.wsjcpp/wsjcpp_wsjcpp_core"
@@ -36,11 +36,6 @@ dependencies:
     url: "https://github.com/wsjcpp/wsjcpp-hashes:master"
     origin: "https://github.com/"
     installation-dir: "./src.wsjcpp/wsjcpp_wsjcpp_hashes"
-  - name: "wsjcpp/wsjcpp-core"
-    version: "0.0.1"
-    url: "https://github.com/wsjcpp/wsjcpp-core:master"
-    origin: "https://github.com/"
-    installation-dir: "./src.wsjcpp/wsjcpp_wsjcpp_core"
 
 replace-dependencies:
   - from: "https://github.com/wsjcpp/wsjcpp-core:v0.0.1"

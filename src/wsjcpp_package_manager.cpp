@@ -839,6 +839,10 @@ bool WSJCppPackageManager::install(const std::string &sPackage) {
     }
 
     if (isGitHubPackage(sPackage)) {
+        if (isInstalled(sPackage)) {
+            WSJCppLog::err(TAG, "Package '" + sPackage + "' already installed");
+            return false;
+        }
         WSJCppPackageManagerDependence dep;
         if (downloadFromGithubToCache(sPackage, dep)) {
             addDependency(dep);
@@ -871,14 +875,17 @@ bool WSJCppPackageManager::reinstall(const std::string &sPackage) {
         return false;
     }
 
-    WSJCppLog::err(TAG, "reinstall Not inplemented");
-
     if (m_bHolded) {
         WSJCppLog::err(TAG, "Could not install package when holded");
         return false;
     }
 
     if (isGitHubPackage(sPackage)) {
+        if (!isInstalled(sPackage)) {
+            WSJCppLog::err(TAG, "Package '" + sPackage + "' not installed");
+            return false;
+        }
+
         WSJCppPackageManagerDependence dep;
         if (downloadFromGithubToCache(sPackage, dep)) {
             updateDependency(dep);
@@ -979,11 +986,14 @@ void WSJCppPackageManager::updateDependency(WSJCppPackageManagerDependence &dep)
     int nLen = pDeps->getLength();
     for (int i = 0; i < nLen; i++) {
         WSJCppYAMLItem *pItem = pDeps->getElement(i);
-        pItem->getElement("version")->setValue(dep.getVersion(), true);
-        pItem->getElement("name")->setValue(dep.getName(), true);
-        pItem->getElement("url")->setValue(dep.getUrl(), true);
-        pItem->getElement("origin")->setValue(dep.getOrigin(), true);
-        pItem->getElement("installation-dir")->setValue(dep.getInstallationDir(), true);
+        std::string sUrl = pItem->getElement("url")->getValue();
+        if (dep.getUrl() == sUrl) {
+            pItem->getElement("version")->setValue(dep.getVersion(), true);
+            pItem->getElement("name")->setValue(dep.getName(), true);
+            // pItem->getElement("url")->setValue(dep.getUrl(), true);
+            pItem->getElement("origin")->setValue(dep.getOrigin(), true);
+            pItem->getElement("installation-dir")->setValue(dep.getInstallationDir(), true);
+        }
     }
 }
 
@@ -1066,20 +1076,18 @@ bool WSJCppPackageManager::downloadFromGithubToCache(const std::string &sPackage
     return true;
 }
 
-/*
-// todo check in current dependencies
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManager::isInstalled(const std::string &sPackage) {
+    // todo check in current dependencies
     for (int i = 0; i < m_vDependencies.size(); i++) {
         WSJCppPackageManagerDependence dep = m_vDependencies[i];
-        if (dep.getName() == pkg.getName()) {
-            if (dep.getVersion() == pkg.getVersion()) {
-                WSJCppLog::err(TAG, "Package '" + pkg.getName() + ":" + pkg.getVersion() + "' already installed");
-            } else {
-                WSJCppLog::err(TAG, "Package '" + pkg.getName() + ":" + pkg.getVersion() + "' installed with another version");
-            }
-            return false;
+        if (dep.getUrl() == sPackage) {
+            return true;
         }
     }
-*/
+    return false;
+}
 
 // ---------------------------------------------------------------------
 
