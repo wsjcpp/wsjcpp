@@ -588,6 +588,10 @@ bool WSJCppPackageManager::load() {
             if (!readFieldRepositories()) {
                 return false;
             }
+        } else if (sKey == "required-libraries") {
+            if (!readFieldRequiredLibraries()) {
+                return false;
+            }
         } else {
             WSJCppLog::warn(TAG, "Ignored option '" + sKey + "' in " + m_yamlPackageInfo.getRoot()->getForLogFormat());
         }
@@ -1535,6 +1539,23 @@ bool WSJCppPackageManager::readFieldRepositories() {
         WSJCppPackageManagerRepository repository;
         repository.fromYAML(pYamlRepository);
         m_vRepositories.push_back(repository);
+    }
+    return true;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManager::readFieldRequiredLibraries() {
+    if (!m_yamlPackageInfo.getRoot()->hasElement("required-libraries")) {
+        WSJCppLog::err(TAG, "Missing required field 'required-libraries' in '" + m_sYamlFullpath + "'");
+        return false;
+    }
+    WSJCppYAMLItem itemRepositories = m_yamlPackageInfo["required-libraries"];
+    int nLength = itemRepositories.getLength();
+    for (int i = 0; i < nLength; i++) {
+        WSJCppYAMLItem *pYamlRequredLibrary = itemRepositories.getElement(i);
+        std::string sRequiredLibrary = pYamlRequredLibrary->getValue();
+        m_sRequiredLibraries.push_back(sRequiredLibrary);
     }
     return true;
 }
