@@ -540,8 +540,8 @@ bool WSJCppPackageManager::load() {
             if (!readFieldVersion()) {
                 return false;
             }
-        } else if (sKey == "cmake_version") {
-            if (!readFieldCMakeVersion()) {
+        } else if (sKey == "cmake_minimum_required") {
+            if (!readFieldCMakeMinimumRequired()) {
                 return false;
             }
         } else if (sKey == "cmake_cxx_standard") {
@@ -1030,19 +1030,6 @@ bool WSJCppPackageManager::downloadFromGithubToCache(const std::string &sPackage
         return false;
     }
 
-    // todo check in current dependencies
-    for (int i = 0; i < m_vDependencies.size(); i++) {
-        WSJCppPackageManagerDependence dep = m_vDependencies[i];
-        if (dep.getName() == pkg.getName()) {
-            if (dep.getVersion() == pkg.getVersion()) {
-                WSJCppLog::err(TAG, "Package '" + pkg.getName() + ":" + pkg.getVersion() + "' already installed");
-            } else {
-                WSJCppLog::err(TAG, "Package '" + pkg.getName() + ":" + pkg.getVersion() + "' installed with another version");
-            }
-            return false;
-        }
-    }
-
     // sources
     std::vector<WSJCppPackageManagerDistributionFile> vSources = pkg.getListOfDistributionFiles();
     for (int i = 0; i < vSources.size(); i++) {
@@ -1069,9 +1056,6 @@ bool WSJCppPackageManager::downloadFromGithubToCache(const std::string &sPackage
     }
 
     std::string sInstallationDir = "./src.wsjcpp/" + this->prepareCacheSubFolderName(pkg.getName());
-    if (!WSJCppCore::dirExists(sInstallationDir)) {
-        WSJCppCore::makeDir(sInstallationDir);
-    }
 
     // WSJCppPackageManagerDependence dep;
     dep.setName(pkg.getName());
@@ -1081,6 +1065,21 @@ bool WSJCppPackageManager::downloadFromGithubToCache(const std::string &sPackage
     dep.setOrigin("https://github.com/");
     return true;
 }
+
+/*
+// todo check in current dependencies
+    for (int i = 0; i < m_vDependencies.size(); i++) {
+        WSJCppPackageManagerDependence dep = m_vDependencies[i];
+        if (dep.getName() == pkg.getName()) {
+            if (dep.getVersion() == pkg.getVersion()) {
+                WSJCppLog::err(TAG, "Package '" + pkg.getName() + ":" + pkg.getVersion() + "' already installed");
+            } else {
+                WSJCppLog::err(TAG, "Package '" + pkg.getName() + ":" + pkg.getVersion() + "' installed with another version");
+            }
+            return false;
+        }
+    }
+*/
 
 // ---------------------------------------------------------------------
 
@@ -1355,13 +1354,13 @@ bool WSJCppPackageManager::readFieldVersion() {
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::readFieldCMakeVersion() {
-    if (!m_yamlPackageInfo.getRoot()->hasElement("cmake_version")) {
-        WSJCppLog::err(TAG, "Missing required field 'cmake_version' in '" + m_sYamlFullpath + "'");
+bool WSJCppPackageManager::readFieldCMakeMinimumRequired() {
+    if (!m_yamlPackageInfo.getRoot()->hasElement("cmake_minimum_required")) {
+        WSJCppLog::err(TAG, "Missing required field 'cmake_minimum_required' in '" + m_sYamlFullpath + "'");
         return false;
     }
     // TODO: check cmake_version format
-    m_sVersion = m_yamlPackageInfo["cmake_version"].getValue();
+    m_sCMakeMinimumRequired = m_yamlPackageInfo["cmake_minimum_required"].getValue();
     return true;
 }
 

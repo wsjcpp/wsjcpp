@@ -521,3 +521,4 @@ void WSJCppLog::add(WSJCppColorModifier &clr, const std::string &sType, const st
     logFile.close();
 }
 
+

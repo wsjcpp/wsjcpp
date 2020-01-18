@@ -167,7 +167,7 @@ class WSJCppPackageManager {
         bool downloadFileOverHttps(const std::string &sUrl, const std::string &sPath);
         void recursive_printAuthorsTree(std::vector<WSJCppPackageManagerDependence> &vDependencies);
         bool readFieldVersion();
-        bool readFieldCMakeVersion();
+        bool readFieldCMakeMinimumRequired();
         bool readFieldCMakeCxxStandard();
         bool readFieldName();
         bool readFieldDescription();
@@ -198,7 +198,7 @@ class WSJCppPackageManager {
         std::string m_sIssues;
         std::string m_sVersion;
         std::string m_sDescription;
-        std::string m_sCMakeVersion;
+        std::string m_sCMakeMinimumRequired;
         std::string m_sCMakeCxxStandard;
         
         std::vector<std::string> m_vKeywords;

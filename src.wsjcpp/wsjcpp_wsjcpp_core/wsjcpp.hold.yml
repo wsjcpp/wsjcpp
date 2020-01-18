@@ -1,4 +1,3 @@
-
 wsjcpp_version: v0.0.1
 cmake_cxx_standard: 11
 cmake_minimum_required: 3.0
@@ -23,13 +22,14 @@ requirements:
     - pthread
 
 distribution:
-  sources:
-    - from: src/wsjcpp_core.cpp
-      to: wsjcpp_core.cpp
-      sha1: ""
-    - from: src/wsjcpp_core.h
-      to: wsjcpp_core.h
-      sha1: ""
+  - source-file: src/wsjcpp_core.cpp
+    target-file: wsjcpp_core.cpp
+    sha1: "bede8216bc5aaf105e86a9572c3d9066a71026b7"
+    type: "source-code"
+  - source-file: src/wsjcpp_core.h
+    target-file: wsjcpp_core.h
+    sha1: "b3d842d01fe13c5463fc3af61c5408ac437c65aa"
+    type: "source-code"
 
 unit-tests:
   folder: unit-tests # default
