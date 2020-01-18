@@ -592,6 +592,10 @@ bool WSJCppPackageManager::load() {
             if (!readFieldRequiredLibraries()) {
                 return false;
             }
+        } else if (sKey == "required-pkg-config") {
+            if (!readFieldRequiredPkgConfig()) {
+                return false;
+            }
         } else {
             WSJCppLog::warn(TAG, "Ignored option '" + sKey + "' in " + m_yamlPackageInfo.getRoot()->getForLogFormat());
         }
@@ -1550,12 +1554,29 @@ bool WSJCppPackageManager::readFieldRequiredLibraries() {
         WSJCppLog::err(TAG, "Missing required field 'required-libraries' in '" + m_sYamlFullpath + "'");
         return false;
     }
-    WSJCppYAMLItem itemRepositories = m_yamlPackageInfo["required-libraries"];
-    int nLength = itemRepositories.getLength();
+    WSJCppYAMLItem itemRequiredLibraries = m_yamlPackageInfo["required-libraries"];
+    int nLength = itemRequiredLibraries.getLength();
     for (int i = 0; i < nLength; i++) {
-        WSJCppYAMLItem *pYamlRequredLibrary = itemRepositories.getElement(i);
+        WSJCppYAMLItem *pYamlRequredLibrary = itemRequiredLibraries.getElement(i);
         std::string sRequiredLibrary = pYamlRequredLibrary->getValue();
         m_sRequiredLibraries.push_back(sRequiredLibrary);
+    }
+    return true;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManager::readFieldRequiredPkgConfig() {
+    if (!m_yamlPackageInfo.getRoot()->hasElement("required-pkg-config")) {
+        WSJCppLog::err(TAG, "Missing required field 'required-pkg-config' in '" + m_sYamlFullpath + "'");
+        return false;
+    }
+    WSJCppYAMLItem itemRequiredPkgConfig = m_yamlPackageInfo["required-pkg-config"];
+    int nLength = itemRequiredPkgConfig.getLength();
+    for (int i = 0; i < nLength; i++) {
+        WSJCppYAMLItem *pYamlRequredPkgConfig = itemRequiredPkgConfig.getElement(i);
+        std::string sRequiredPkgConfig = pYamlRequredPkgConfig->getValue();
+        m_sRequiredPkgConfig.push_back(sRequiredPkgConfig);
     }
     return true;
 }

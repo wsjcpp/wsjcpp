@@ -181,6 +181,7 @@ class WSJCppPackageManager {
         bool readFieldDependencies();
         bool readFieldRepositories();
         bool readFieldRequiredLibraries();
+        bool readFieldRequiredPkgConfig();
 
         std::string m_sGithubPrefix;
         std::string m_sBitbucketPrefix;
@@ -210,6 +211,7 @@ class WSJCppPackageManager {
         std::vector<WSJCppPackageManagerDistributionFile> m_vDistributionFiles;
         std::vector<WSJCppPackageManagerRepository> m_vRepositories;
         std::vector<std::string> m_sRequiredLibraries;
+        std::vector<std::string> m_sRequiredPkgConfig;
 
         WSJCppYAML m_yamlPackageInfo;
 };

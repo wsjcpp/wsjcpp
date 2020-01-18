@@ -44,12 +44,6 @@ replace-dependencies:
 repositories:
   - type: main
     url: "https://github.com/wsjcpp/wsjcpp"
-  - type: mirror
-    url: https://bitbucket.org/wsjcpp/wsjcpp
-  - type: fork
-    url: https://github.com/sea-kg/wsjcpp
-  - type: mirror
-    url: https://sea-kg.com/wsjcpp/wsjcpp
 
 authors:
   - name: "Evgenii Sopov"
@@ -63,8 +57,8 @@ distribution:
   - source-file: "src/wsjcpp_package_manager.cpp"
     target-file: "wsjcpp_package_manager.cpp"
     type: "source-code"
-    sha1: "8c7d34f8a4f693343bc3259dd7f956b252d86694"
+    sha1: "49ab393b9d2804b6ff66d40a0819198600bee369"
   - source-file: "src/wsjcpp_package_manager.h"
     target-file: "wsjcpp_package_manager.h"
     type: "source-code"
-    sha1: "6e0cc8a8fdd629628ac2600de8ba9392322a7fd3"
+    sha1: "55e0f7ec0fb01100027b8187ce5389c1742bbf58"

@@ -73,6 +73,18 @@ WSJCppArgumentProcessor::WSJCppArgumentProcessor(const std::string &sName, const
 
 // ---------------------------------------------------------------------
 
+WSJCppArgumentProcessor::WSJCppArgumentProcessor(const std::vector<std::string> &vNames, const std::string &sDescription) {
+    if (vNames.size() < 1) {
+        WSJCppLog::throw_err(TAG, "Names must have 1 or more values for '" + sDescription + "'");
+    }
+    std::string sName = vNames[0];
+    TAG = "WSJCppArgumentProcessor-" + sName;
+    m_sName = sName;
+    m_sDescription = sDescription;
+}
+
+// ---------------------------------------------------------------------
+
 std::string WSJCppArgumentProcessor::getName() {
     return m_sName;
 }
@@ -363,4 +375,5 @@ std::string WSJCppArguments::help() {
 }
 
 // ---------------------------------------------------------------------
+
 
