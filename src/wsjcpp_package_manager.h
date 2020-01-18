@@ -10,7 +10,6 @@
 class WSJCppPackageManagerDistributionFile {
     public:
         WSJCppPackageManagerDistributionFile();
-        WSJCppPackageManagerDistributionFile(const std::string &sFile);
         bool fromYAML(WSJCppYAMLItem *pYamlDistributionFile);
         WSJCppYAMLItem *toYAML();
 
@@ -18,6 +17,11 @@ class WSJCppPackageManagerDistributionFile {
         std::string getTargetFile();
         std::string getSha1();
         std::string getType();
+
+        void setSourceFile(const std::string &sSourceFile);
+        void setTargetFile(const std::string &sTargetFile);
+        void setSha1(const std::string &sSha1);
+        void setType(const std::string &sType);
 
     private:
         std::string TAG;
@@ -88,11 +92,11 @@ class WSJCppPackageManagerRepository {
 class WSJCppPackageManagerDependence {
     public:
         WSJCppPackageManagerDependence();
-        std::string getInstallationDir();
-        std::string getUrl();
-        std::string getName();
-        std::string getVersion();
-        std::string getOrigin();
+        std::string getInstallationDir() const;
+        std::string getUrl() const;
+        std::string getName() const;
+        std::string getVersion() const;
+        std::string getOrigin() const;
             
         void setName(const std::string &sName);
         void setVersion(const std::string &sVersion);
@@ -123,8 +127,9 @@ class WSJCppPackageManager {
         bool load();
         bool save();
         void printFiles();
-        bool addFile(const std::string &sFromFile, const std::string &sToFile);
-        bool removeFile(const std::string &sFromFile);
+        bool addSourceFile(const std::string &sSourceFile, const std::string &sTargetFile, const std::string &sType);
+        bool removeSourceFile(const std::string &sSourceFile);
+        bool updateSourceFile(const std::string &sSourceFile);
         void printServers();
         bool addServer(const std::string &sServer);
         bool deleteServer(const std::string &sServer);
@@ -147,9 +152,18 @@ class WSJCppPackageManager {
 
     private:
         std::string TAG;
+        bool isGitHubPackage(const std::string &sPackage);
+        bool isBitbucketPackage(const std::string &sPackage);
+        bool isFilePackage(const std::string &sPackage);
+        bool isHttpPackage(const std::string &sPackage);
+        bool isHttpsPackage(const std::string &sPackage);
+
+        
         void addDependency(WSJCppPackageManagerDependence &dep);
+        void updateDependency(WSJCppPackageManagerDependence &dep);
         std::string prepareCacheSubFolderName(const std::string &sFilename);
-        bool installFromGithub(const std::string &sPackage);
+        bool downloadFromGithubToCache(const std::string &sPackage, WSJCppPackageManagerDependence &dep);
+        bool installFromCache(const std::string &sPackage, const WSJCppPackageManagerDependence &dep);
         bool downloadFileOverHttps(const std::string &sUrl, const std::string &sPath);
         void recursive_printAuthorsTree(std::vector<WSJCppPackageManagerDependence> &vDependencies);
         bool readFieldVersion();

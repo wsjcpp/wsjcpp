@@ -84,10 +84,13 @@ class WSJCppYAMLItem { // TODO: rename to node
         bool removeElement(const std::string &sName);
         std::vector<std::string> getKeys();
 
+        bool setElementValue(const std::string &sName, bool bHasNameQuotes, const std::string &sValue, bool bHasValueQuotes);
+
         bool isArray();
         int getLength();
         WSJCppYAMLItem *getElement(int i);
         bool appendElement(WSJCppYAMLItem *pItem);
+        bool removeElement(int i);
 
         bool isValue();
         std::string getValue();

@@ -271,6 +271,30 @@ std::vector<std::string> WSJCppYAMLItem::getKeys() {
 
 // ---------------------------------------------------------------------
 
+bool WSJCppYAMLItem::setElementValue(const std::string &sName, bool bHasNameQuotes, const std::string &sValue, bool bHasValueQuotes) {
+    if (m_nItemType == WSJCPP_YAML_ITEM_UNDEFINED) {
+        m_nItemType = WSJCPP_YAML_ITEM_MAP; // change item type to map on first element  
+    }
+
+    if (m_nItemType != WSJCPP_YAML_ITEM_MAP) {
+        WSJCppLog::throw_err(TAG, "setElement, Element must be 'map' for " + this->getPlaceInFile().getForLogFormat());
+    }
+    
+    if (this->hasElement(sName)) {
+        WSJCppYAMLItem *pItem = this->getElement(sName);
+        pItem->setValue(sValue, bHasValueQuotes);
+    } else {
+        WSJCppYAMLPlaceInFile pl;
+        WSJCppYAMLItem *pNewItem = new WSJCppYAMLItem(this, pl, WSJCppYAMLItemType::WSJCPP_YAML_ITEM_VALUE);
+        pNewItem->setName(sName, bHasNameQuotes);
+        pNewItem->setValue(sValue, bHasValueQuotes);
+        this->setElement(sName, pNewItem);
+    }
+    return true;
+}
+
+// ---------------------------------------------------------------------
+
 bool WSJCppYAMLItem::isArray() {
     return m_nItemType == WSJCPP_YAML_ITEM_ARRAY;
 }
@@ -325,6 +349,36 @@ bool WSJCppYAMLItem::appendElement(WSJCppYAMLItem *pItem) {
     }
     m_vObjects.push_back(pItem); // TODO clone object
     return true;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppYAMLItem::removeElement(int i) {
+    if (m_nItemType != WSJCPP_YAML_ITEM_ARRAY) {
+        WSJCppLog::throw_err(TAG, "appendElement, Element must be array for " + this->getForLogFormat());
+    }
+    int nCounter = -1;
+    WSJCppYAMLItem *pItem = nullptr;
+    for (int n = 0; n < m_vObjects.size(); n++) {
+        if (!m_vObjects[n]->isEmpty()) {
+            nCounter++;
+            if (nCounter == i) {
+                pItem = m_vObjects[n];
+                break; 
+            }
+        }
+    }
+    if (pItem == nullptr) {
+        WSJCppLog::throw_err(TAG, "getElement(" + std::to_string(i) +  "), Out of range in array for '" + this->getPlaceInFile().getLine() + "'");
+    }
+    std::vector<WSJCppYAMLItem *>::iterator it;
+    for (it = m_vObjects.begin(); it != m_vObjects.end(); ++it) {
+        if (*it == pItem) {
+            m_vObjects.erase(it);
+            return true;
+        }
+    }
+    return false;
 }
 
 // ---------------------------------------------------------------------

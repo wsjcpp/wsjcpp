@@ -60,7 +60,11 @@ origins: # rename origins
   - "file:///usr/share/wsjcpp-registry"
 
 distribution:
-  - source-file: "src/cppspm_manager.cpp"
-    target-file: "cppspm_manager.cpp"
-    sha1: ""
+  - source-file: "src/wsjcpp_package_manager.cpp"
+    target-file: "wsjcpp_package_manager.cpp"
     type: "source-code"
+    sha1: "8c7d34f8a4f693343bc3259dd7f956b252d86694"
+  - source-file: "src/wsjcpp_package_manager.h"
+    target-file: "wsjcpp_package_manager.h"
+    type: "source-code"
+    sha1: "6e0cc8a8fdd629628ac2600de8ba9392322a7fd3"

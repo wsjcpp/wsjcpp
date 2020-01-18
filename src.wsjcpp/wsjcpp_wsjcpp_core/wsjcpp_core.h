@@ -18,7 +18,8 @@ class WSJCppCore {
             const std::string &sLibraryNameForExports
         );
 
-        static std::string doNormalizePath(const std::string & sPath);
+        static std::string doNormalizePath(const std::string &sPath);
+        static std::string extractFilename(const std::string &sPath);
         static std::string getCurrentDirectory();
 
         static long currentTime_milliseconds();

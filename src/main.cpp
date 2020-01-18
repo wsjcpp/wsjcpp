@@ -168,53 +168,6 @@ int main(int argc, const char* argv[]) {
                 return 0;
             }
             // TODO parse sub commands for fix-conflicts
-        } else if (vArgs[1] == "distribution-files") {
-            if (argc == 3 && vArgs[2] == "list") {
-                pkg.printFiles();
-                return 0;
-            }
-            
-            if (argc == 4 && vArgs[2] == "rm") {
-                std::string fromFile = vArgs[3];
-                if (pkg.removeFile(fromFile)) {
-                    pkg.save();
-                }
-                return 0;
-            }
-
-            if (argc == 5 && vArgs[2] == "add") {
-                std::string fromFile = vArgs[3];
-                std::string toFile = vArgs[4];
-                if (pkg.addFile(fromFile, toFile)) {
-                    pkg.save();
-                }
-                return 0;
-            }
-
-            printHelp(vArgs);
-            return -1;
-        } else if (vArgs[1] == "info") {
-            if (argc == 2) {
-                pkg.printInfo();
-                return 0;
-            }
-            // TODO find some package and print info it
-        } else if (vArgs[1] == "install") {
-            if (argc != 3) {
-                printHelp(vArgs);
-                return -1;
-            }
-            std::string sPackage = vArgs[2];
-            std::cout << "Try installing source package " << sPackage << " ..." << std::endl;
-            if (pkg.install(sPackage)) {
-                std::cout << "Installed." << std::endl;
-                pkg.save();
-            } else {
-                std::cout << "Could not install this package." << std::endl;
-                return -1;
-            }
-            return 0;
-
         }
     }
     printHelp(vArgs);

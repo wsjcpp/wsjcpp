@@ -17,13 +17,6 @@ WSJCppPackageManagerDistributionFile::WSJCppPackageManagerDistributionFile() {
 
 // ---------------------------------------------------------------------
 
-WSJCppPackageManagerDistributionFile::WSJCppPackageManagerDistributionFile(const std::string &sFile) {
-    TAG = "WSJCppPackageManagerDistributionFile";
-    m_sSourceFile = sFile;
-}
-
-// ---------------------------------------------------------------------
-
 bool WSJCppPackageManagerDistributionFile::fromYAML(WSJCppYAMLItem *pYamlDistributionFile) {
     m_pYamlDistributionFile = pYamlDistributionFile;
     if (!m_pYamlDistributionFile->hasElement("source-file")) {
@@ -91,6 +84,30 @@ std::string WSJCppPackageManagerDistributionFile::getSha1() {
 
 std::string WSJCppPackageManagerDistributionFile::getType() {
     return m_sType;
+}
+
+// ---------------------------------------------------------------------
+
+void WSJCppPackageManagerDistributionFile::setSourceFile(const std::string &sSourceFile) {
+    m_sSourceFile = sSourceFile;
+}
+
+// ---------------------------------------------------------------------
+
+void WSJCppPackageManagerDistributionFile::setTargetFile(const std::string &sTargetFile) {
+    m_sTargetFile = sTargetFile;
+}
+
+// ---------------------------------------------------------------------
+
+void WSJCppPackageManagerDistributionFile::setSha1(const std::string &sSha1) {
+    m_sSha1 = sSha1;
+}
+
+// ---------------------------------------------------------------------
+
+void WSJCppPackageManagerDistributionFile::setType(const std::string &sType) {
+    m_sType = sType;
 }
 
 // ---------------------------------------------------------------------
@@ -296,31 +313,31 @@ bool WSJCppPackageManagerDependence::fromYAML(WSJCppYAMLItem *pYaml) {
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManagerDependence::getInstallationDir() {
+std::string WSJCppPackageManagerDependence::getInstallationDir() const {
     return m_sInstallationDir;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManagerDependence::getUrl() {
+std::string WSJCppPackageManagerDependence::getUrl() const {
     return m_sUrl;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManagerDependence::getName() {
+std::string WSJCppPackageManagerDependence::getName() const {
     return m_sName;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManagerDependence::getVersion() {
+std::string WSJCppPackageManagerDependence::getVersion() const {
     return m_sVersion;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManagerDependence::getOrigin() {
+std::string WSJCppPackageManagerDependence::getOrigin() const {
     return m_sOrigin;
 }
 
@@ -495,8 +512,8 @@ bool WSJCppPackageManager::save() {
     m_jsonPackageInfo["repositories"] = jsonRepositories;
 
     int indent = 4;
-    std::ofstream cppspmJson(m_sDir + "/" + m_sYamlFilename);
-    cppspmJson << std::setw(4) << m_jsonPackageInfo << std::endl;
+    std::ofstream wsjcppJson(m_sDir + "/" + m_sYamlFilename);
+    wsjcppJson << std::setw(4) << m_jsonPackageInfo << std::endl;
     */
     return true;
 }
@@ -587,53 +604,130 @@ bool WSJCppPackageManager::load() {
 
 // ---------------------------------------------------------------------
 
-void WSJCppPackageManager::printFiles() {
-    for (auto it = m_vDistributionFiles.begin(); it != m_vDistributionFiles.end(); ++it) {
-        std::cout << it->getSha1() << " " << it->getSourceFile() << " -> " << it->getTargetFile() << std::endl;
-    }
-}
-
-// ---------------------------------------------------------------------
-
-bool WSJCppPackageManager::addFile(const std::string &sFromFile, const std::string &sToFile) {
+bool WSJCppPackageManager::addSourceFile(const std::string &sSourceFile, const std::string &sTargetFile, const std::string &sType) {
     if (m_bHolded) {
         WSJCppLog::err(TAG, "wsjcpp is holded");
         return false;
     }
 
-    if (!WSJCppCore::fileExists(sFromFile)) {
-        WSJCppLog::err(TAG, "'" + sFromFile + "' file does not exists");
+    if (!WSJCppCore::fileExists(sSourceFile)) {
+        WSJCppLog::err(TAG, "'" + sSourceFile + "' file does not exists");
         return false;
     }
-
-    for (auto it = m_vDistributionFiles.begin(); it != m_vDistributionFiles.end(); ++it) {
-        if (it->getSourceFile() == sFromFile) {
-            WSJCppLog::err(TAG, "This package already contained file '" + sFromFile + "'");
+    std::vector<WSJCppPackageManagerDistributionFile>::iterator it;
+    for (it = m_vDistributionFiles.begin(); it != m_vDistributionFiles.end(); ++it) {
+        if (it->getSourceFile() == sSourceFile) {
+            WSJCppLog::err(TAG, "This package already contained file '" + sSourceFile + "'");
             return false;
         }
     }
 
-    WSJCppPackageManagerDistributionFile source(sFromFile);
-    m_vDistributionFiles.push_back(source);
+    std::string sContent = "";
+    if (!WSJCppCore::readTextFile(sSourceFile, sContent)) {
+        return false;
+    }
+    std::string sSha1 = WSJCppHashes::sha1_calc_hex(sContent);
+
+    WSJCppPackageManagerDistributionFile file;
+    file.setSourceFile(sSourceFile);
+    file.setTargetFile(sTargetFile);
+    file.setType(sType);
+    file.setSha1(sSha1);
+    m_vDistributionFiles.push_back(file);
+    
+    WSJCppYAMLItem *pDist = m_yamlPackageInfo.getRoot()->getElement("distribution");
+    WSJCppYAMLPlaceInFile pl;
+    WSJCppYAMLItem *pItem = new WSJCppYAMLItem(pDist, pl, WSJCppYAMLItemType::WSJCPP_YAML_ITEM_MAP);
+    pItem->setElementValue("source-file", false, sSourceFile, true);
+    pItem->setElementValue("target-file", false, sTargetFile, true);
+    pItem->setElementValue("type", false, sType, true);
+    pItem->setElementValue("sha1", false, sSha1, true);
+    pDist->appendElement(pItem);
+
     return true;
 }
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::removeFile(const std::string &sFromFile) {
+bool WSJCppPackageManager::removeSourceFile(const std::string &sSourceFile) {
+    if (m_bHolded) {
+        WSJCppLog::err(TAG, "wsjcpp is holded");
+        return false;
+    }
+    bool bResult = false;
+    for (auto it = m_vDistributionFiles.begin(); it != m_vDistributionFiles.end(); ++it) {
+        if (it->getSourceFile() == sSourceFile) {
+            m_vDistributionFiles.erase(it);
+            bResult = true;
+        }
+    }
+    if (bResult) {
+        bResult = false;
+        WSJCppYAMLItem *pDist = m_yamlPackageInfo.getRoot()->getElement("distribution");
+        int nLen = pDist->getLength();
+        for (int i = nLen-1; i >= 0; i--) {
+            WSJCppYAMLItem *pItem = pDist->getElement(i);
+            if (pItem->getElement("source-file")->getValue() == sSourceFile) {
+                pDist->removeElement(i);
+                bResult = true;
+            }
+        }
+    }
+
+    if (!bResult) {
+        WSJCppLog::err(TAG, "Distribution file '" + sSourceFile + "' cound not found in this package");
+    }
+    return bResult;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManager::updateSourceFile(const std::string &sSourceFile) {
     if (m_bHolded) {
         WSJCppLog::err(TAG, "wsjcpp is holded");
         return false;
     }
 
-    for (auto it = m_vDistributionFiles.begin(); it != m_vDistributionFiles.end(); ++it) {
-        if (it->getSourceFile() == sFromFile) {
-            m_vDistributionFiles.erase(it);
-            return true;
+    if (!WSJCppCore::fileExists(sSourceFile)) {
+        WSJCppLog::err(TAG, "'" + sSourceFile + "' file does not exists");
+        return false;
+    }
+
+    std::string sContent = "";
+    if (!WSJCppCore::readTextFile(sSourceFile, sContent)) {
+        return false;
+    }
+    std::string sSha1 = WSJCppHashes::sha1_calc_hex(sContent);
+
+    WSJCppLog::info(TAG, "'" + sSourceFile + "' some");
+
+    bool bFound = false;
+    std::vector<WSJCppPackageManagerDistributionFile>::iterator it;
+    for (it = m_vDistributionFiles.begin(); it != m_vDistributionFiles.end(); ++it) {
+        if (it->getSourceFile() == sSourceFile) {
+            it->setSha1(sSha1);
+            bFound = true;
         }
     }
-    WSJCppLog::err(TAG, "Distribution file '" + sFromFile + "' cound not found in this package");
-    return false;
+
+    if (!bFound) {
+        WSJCppLog::err(TAG, "'" + sSourceFile + "' file not found in list. Please add this before");
+        return false;
+    }
+
+    if (bFound) {
+        bFound = false;
+        WSJCppYAMLItem *pDist = m_yamlPackageInfo.getRoot()->getElement("distribution");
+        int nLen = pDist->getLength();
+        for (int i = nLen-1; i >= 0; i--) {
+            WSJCppYAMLItem *pItem = pDist->getElement(i);
+            if (pItem->getElement("source-file")->getValue() == sSourceFile) {
+                pItem->getElement("sha1")->setValue(sSha1, true);
+                bFound = true;
+            }
+        }
+    }
+    return bFound;
 }
 
 // ---------------------------------------------------------------------
@@ -668,7 +762,7 @@ bool WSJCppPackageManager::addServer(const std::string &sServer) {
 
 bool WSJCppPackageManager::deleteServer(const std::string &sServer) {
     if (m_bHolded) {
-        std::cout << "ERROR: cppspm is holded" << std::endl;
+        std::cout << "ERROR: wsjcpp is holded" << std::endl;
         return false;
     }
 
@@ -686,7 +780,7 @@ bool WSJCppPackageManager::deleteServer(const std::string &sServer) {
 
 bool WSJCppPackageManager::updateDependencies() {
     if (m_bHolded) {
-        std::cout << "ERROR: cppspm is holded" << std::endl;
+        std::cout << "ERROR: wsjcpp is holded" << std::endl;
         return false;
     }
     return true;
@@ -744,20 +838,23 @@ bool WSJCppPackageManager::install(const std::string &sPackage) {
         return false;
     }
 
-    if (sPackage.compare(0, m_sGithubPrefix.size(), m_sGithubPrefix) == 0) {
-        return installFromGithub(sPackage);
-    } else if (sPackage.compare(0, m_sBitbucketPrefix.size(), m_sBitbucketPrefix) == 0) {
+    if (isGitHubPackage(sPackage)) {
+        WSJCppPackageManagerDependence dep;
+        if (downloadFromGithubToCache(sPackage, dep)) {
+            addDependency(dep);
+            return installFromCache(sPackage, dep);
+        } else {
+            return false;
+        }
+    } else if (isBitbucketPackage(sPackage)) {
         // TODO
         WSJCppLog::err(TAG, "Could not install package from bitbucket - not implemented yet");
         return false;
-    } else if (sPackage.compare(0, m_sFilePrefix.size(), m_sFilePrefix) == 0) {
+    } else if (isFilePackage(sPackage)) {
         // TODO
         WSJCppLog::err(TAG, "Could not install package from file - not implemented yet");
         return false;
-    } else if (
-        sPackage.compare(0, m_sHttpPrefix.size(), m_sHttpPrefix) == 0
-        || sPackage.compare(0, m_sHttpsPrefix.size(), m_sHttpsPrefix) == 0
-    ) {
+    } else if (isHttpPackage(sPackage) || isHttpsPackage(sPackage)) {
         // TODO try find on different servers
         WSJCppLog::err(TAG, "Could not install package from http(s) - not implemented yet");
         return false;
@@ -769,8 +866,41 @@ bool WSJCppPackageManager::install(const std::string &sPackage) {
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::reinstall(const std::string &sPackageUrl) {
+bool WSJCppPackageManager::reinstall(const std::string &sPackage) {
+    if (m_bHolded) { // readonly
+        return false;
+    }
+
     WSJCppLog::err(TAG, "reinstall Not inplemented");
+
+    if (m_bHolded) {
+        WSJCppLog::err(TAG, "Could not install package when holded");
+        return false;
+    }
+
+    if (isGitHubPackage(sPackage)) {
+        WSJCppPackageManagerDependence dep;
+        if (downloadFromGithubToCache(sPackage, dep)) {
+            updateDependency(dep);
+            return installFromCache(sPackage, dep);
+        } else {
+            return false;
+        }
+    } else if (isBitbucketPackage(sPackage)) {
+        // TODO
+        WSJCppLog::err(TAG, "Could not reinstall package from bitbucket - not implemented yet");
+        return false;
+    } else if (isFilePackage(sPackage)) {
+        // TODO
+        WSJCppLog::err(TAG, "Could not reinstall package from file - not implemented yet");
+        return false;
+    } else if (isHttpPackage(sPackage) || isHttpsPackage(sPackage)) {
+        // TODO try find on different servers
+        WSJCppLog::err(TAG, "Could not reinstall package from http(s) - not implemented yet");
+        return false;
+    }
+
+    WSJCppLog::err(TAG, "Could not install package from unknown source");
     return false;
 }
 
@@ -779,6 +909,36 @@ bool WSJCppPackageManager::reinstall(const std::string &sPackageUrl) {
 bool WSJCppPackageManager::uninstall(const std::string &sPackageUrl) {
     WSJCppLog::err(TAG, "uninstall Not inplemented");
     return false;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManager::isGitHubPackage(const std::string &sPackage) {
+    return sPackage.compare(0, m_sGithubPrefix.size(), m_sGithubPrefix) == 0;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManager::isBitbucketPackage(const std::string &sPackage) {
+    return sPackage.compare(0, m_sBitbucketPrefix.size(), m_sBitbucketPrefix) == 0;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManager::isFilePackage(const std::string &sPackage) {
+    return sPackage.compare(0, m_sFilePrefix.size(), m_sFilePrefix) == 0;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManager::isHttpPackage(const std::string &sPackage) {
+    return sPackage.compare(0, m_sHttpPrefix.size(), m_sHttpPrefix) == 0;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManager::isHttpsPackage(const std::string &sPackage) {
+    return sPackage.compare(0, m_sHttpsPrefix.size(), m_sHttpsPrefix) == 0;
 }
 
 // ---------------------------------------------------------------------
@@ -814,13 +974,24 @@ void WSJCppPackageManager::addDependency(WSJCppPackageManagerDependence &dep) {
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::installFromGithub(const std::string &sPackage) {
-    
-    if (m_bHolded) { // readonly
-        return false;
+void WSJCppPackageManager::updateDependency(WSJCppPackageManagerDependence &dep) {
+    WSJCppYAMLItem *pDeps = m_yamlPackageInfo.getRoot()->getElement("dependencies");
+    int nLen = pDeps->getLength();
+    for (int i = 0; i < nLen; i++) {
+        WSJCppYAMLItem *pItem = pDeps->getElement(i);
+        pItem->getElement("version")->setValue(dep.getVersion(), true);
+        pItem->getElement("name")->setValue(dep.getName(), true);
+        pItem->getElement("url")->setValue(dep.getUrl(), true);
+        pItem->getElement("origin")->setValue(dep.getOrigin(), true);
+        pItem->getElement("installation-dir")->setValue(dep.getInstallationDir(), true);
     }
+}
 
-    std::cout << "Installing package from https://github.com/ ..." << std::endl;
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManager::downloadFromGithubToCache(const std::string &sPackage, WSJCppPackageManagerDependence &dep) {
+
+    std::cout << "Download package from https://github.com/ ..." << std::endl;
 
     std::string sPackageGithubPath = sPackage.substr(m_sGithubPrefix.size());
     // std::cout << "sPackageGithubPath: " << sPackageGithubPath << std::endl;
@@ -902,13 +1073,26 @@ bool WSJCppPackageManager::installFromGithub(const std::string &sPackage) {
         WSJCppCore::makeDir(sInstallationDir);
     }
 
-    WSJCppPackageManagerDependence dep;
+    // WSJCppPackageManagerDependence dep;
     dep.setName(pkg.getName());
     dep.setVersion(pkg.getVersion());
     dep.setUrl(sPackage);
     dep.setInstallationDir(sInstallationDir);
     dep.setOrigin("https://github.com/");
-    addDependency(dep);
+    return true;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManager::installFromCache(const std::string &sPackage, const WSJCppPackageManagerDependence &dep) {
+    std::string sInstallationDir = dep.getInstallationDir();
+    // TODO check path
+    if (!WSJCppCore::dirExists(sInstallationDir)) {
+        WSJCppCore::makeDir(sInstallationDir);
+    }
+    
+    std::string sCacheDir = m_sDir + "/.wsjcpp-cache"; // TODO sCacheDir must be init close with init m_sDir
+    std::string sCacheSubFolderName = sCacheDir + "/" + this->prepareCacheSubFolderName(sPackage);
 
     // TODO redesign to WSJCppCore::recoursiveCopyFiles
     // copy sources to installation dir
@@ -1226,7 +1410,7 @@ bool WSJCppPackageManager::readFieldWsjcppVersion() {
     m_sWSJCppVersion = m_yamlPackageInfo["wsjcpp_version"].getValue();
     // TODO version comparator 
     // if (nWSJCppVersion > m_nWSJCppVersion) {
-        //   std::cout << "WARN: Please update your 'cppspm' to " << nWSJCppVersion << std::endl;
+        //   std::cout << "WARN: Please update your 'wsjcpp' to " << nWSJCppVersion << std::endl;
     // }
     return true;
 }
