@@ -57,4 +57,3 @@ unit-tests:
     - unit-tests/src/unit_test_yaml_parser_simple_map.cpp
     - unit-tests/src/unit_test_yaml_parser_hierarchical_map.h
     - unit-tests/src/unit_test_yaml_parser_hierarchical_map.cpp
-

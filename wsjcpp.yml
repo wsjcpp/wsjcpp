@@ -62,3 +62,25 @@ distribution:
     target-file: "wsjcpp_package_manager.h"
     type: "source-code"
     sha1: "55e0f7ec0fb01100027b8187ce5389c1742bbf58"
+
+unit-tests:
+  cases: 
+    - name: Test1
+      description: Test1
+
+docker:
+  for-build: 
+    packages:
+      - "libcurl4-openssl-dev"
+  for-release:
+    packages:
+      - "libcurl4"
+  release:
+    label-maintainer: "Evgenii Sopov <mrseakg@gmail.com>"
+    label-repository: "https://github.com/wsjcpp/wsjcpp"
+    dockerfile: "Dockerfile.wsjcpp"
+    copy-binary-file: wsjcpp # will be copied to /usr/bin
+    command: "wsjcpp start"
+    expose-ports: 
+      - 80
+      - 443

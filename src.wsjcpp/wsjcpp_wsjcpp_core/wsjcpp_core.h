@@ -39,7 +39,7 @@ class WSJCppCore {
         static bool writeFile(const std::string &sFilename, const std::string &sContent);
         static bool readTextFile(const std::string &sFilename, std::string &sOutputContent);
         static bool writeFile(const std::string &sFilename, const char *pBuffer, const int nBufferSize);
-        
+        static bool removeFile(const std::string &sFilename);
 
         static std::string& ltrim(std::string& str, const std::string& chars = "\t\n\v\f\r ");
         static std::string& rtrim(std::string& str, const std::string& chars = "\t\n\v\f\r ");

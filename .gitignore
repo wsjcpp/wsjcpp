@@ -1,9 +1,8 @@
 wsjcpp
 tmp/*
 .vscode/*
-.wsjcpp-cache
-.wsjcpp-logs/*
-*/.wsjcpp-logs/*
+.wsjcpp/*
+*/.wsjcpp/*
 .DS_Store
 
 # Prerequisites

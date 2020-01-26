@@ -15,7 +15,9 @@ ArgumentProcessorMain::ArgumentProcessorMain()
     registryProcessor(new ArgumentProcessorInstall());
     registryProcessor(new ArgumentProcessorReinstall());
     registryProcessor(new ArgumentProcessorUninstall());
+    registryProcessor(new ArgumentProcessorList());
     registryProcessor(new ArgumentProcessorInfo());
+    registryProcessor(new ArgumentProcessorUpdateGen());
     registryProcessor(new ArgumentProcessorDistribution());
     registryProcessor(new ArgumentProcessorRun());
     registryProcessor(new ArgumentProcessorTemplates());
@@ -25,22 +27,6 @@ ArgumentProcessorMain::ArgumentProcessorMain()
 // ---------------------------------------------------------------------
 
 int ArgumentProcessorMain::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
-    if (vSubParams.size() == 0) {
-        // printHelp(vArgs);
-        return -1;
-    }
-
-    if (vSubParams[0] == "packages") {
-        WSJCppPackageManager pkg(".");
-        if (!pkg.load()) {
-            WSJCppLog::err(TAG, "Could not load package info from current directory");
-            std::cout << "Could not load package info from current directory" << std::endl;
-            return -1;
-        }
-
-        pkg.printPackages();
-        return 0;
-    }
     return -1;
 }
 

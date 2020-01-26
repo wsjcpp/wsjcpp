@@ -225,6 +225,13 @@ int WSJCppArgumentProcessor::exec(const std::string &sProgramName, const std::ve
 
 std::string WSJCppArgumentProcessor::help(const std::string &sProgramName, const std::string &sPrefix) {
     std::string sRet = "";
+
+    if (m_vExamples.size() > 0) {
+        for (int ei = 0; ei < m_vExamples.size(); ei++) {
+            sRet += sPrefix + "      - example " + std::to_string(ei) + ": " + m_vExamples[ei] + "\r\n";
+        }
+    }
+
     int nParams = 0;
     if (m_vSingleArguments.size() > 0 || m_vParameterArguments.size()) {
         sRet += "\r\n" + sPrefix + "Arguments: \r\n";
@@ -237,12 +244,6 @@ std::string WSJCppArgumentProcessor::help(const std::string &sProgramName, const
         for (int i = 0; i < m_vParameterArguments.size(); i++) {
             sRet += m_vParameterArguments[i]->help(sProgramName, sPrefix + "  ") + " \r\n";
             nParams++;
-        }
-    }
-
-    if (m_vExamples.size() > 0) {
-        for (int ei = 0; ei < m_vExamples.size(); ei++) {
-            sRet += sPrefix + "      - example " + std::to_string(ei) + ": " + m_vExamples[ei] + "\r\n";
         }
         sRet += "\r\n";
     }

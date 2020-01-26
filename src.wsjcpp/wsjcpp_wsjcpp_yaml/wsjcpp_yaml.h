@@ -211,4 +211,3 @@ class WSJCppYAML {
 
 #endif // WSJCPP_YAML_H
 
-

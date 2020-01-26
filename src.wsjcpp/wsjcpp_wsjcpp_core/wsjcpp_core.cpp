@@ -353,7 +353,11 @@ bool WSJCppCore::writeFile(const std::string &sFilename, const char *pBuffer, co
     return true;
 }
 
+// ---------------------------------------------------------------------
 
+bool WSJCppCore::removeFile(const std::string &sFilename) {
+    return remove(sFilename.c_str()) == 0;
+}
 
 // ---------------------------------------------------------------------
 

@@ -37,3 +37,4 @@ unit-tests:
     - unit-tests/src/unit_tests.h
     - unit-tests/src/unit_tests.cpp
 
+root-dir: ../../

@@ -64,13 +64,15 @@ int main(int argc, const char* argv[]) {
     std::string TAG = "MAIN";
     std::string appName = std::string(WSJCPP_NAME);
     std::string appVersion = std::string(WSJCPP_VERSION);
-    std::string appLogPath = ".wsjcpp-logs";
+    if (!WSJCppCore::dirExists(".wsjcpp")) {
+        WSJCppCore::makeDir(".wsjcpp");
+    }
+    std::string appLogPath = ".wsjcpp/logs";
     if (!WSJCppCore::dirExists(appLogPath)) {
         WSJCppCore::makeDir(appLogPath);
     }
     WSJCppLog::setPrefixLogFile("wsjcpp");
-    WSJCppLog::setLogDirectory(".wsjcpp-logs");
-
+    WSJCppLog::setLogDirectory(".wsjcpp/logs");
 
     ArgumentProcessorMain *pMain = new ArgumentProcessorMain();
     WSJCppArguments prog(argc, argv, pMain);
@@ -111,7 +113,7 @@ int main(int argc, const char* argv[]) {
             }
             // TODO move inside WSJCppPackageManager.init
             std::string sDirectory = vArgs[2];
-            std::string sWSJCppJson = sDirectory + "/wsjcpp.json";
+            std::string sWSJCppJson = sDirectory + "/wsjcpp.yml";
             if (WSJCppCore::fileExists(sWSJCppJson)) {
                 std::cout << "Error: wsjcpp.json already exists." << std::endl;
                 return -1;
@@ -130,10 +132,7 @@ int main(int argc, const char* argv[]) {
             return -1;
         }
 
-        if (vArgs[1] == "packages" && argc == 2) {
-            pkg.printPackages();
-            return 0;
-        } else if (vArgs[1] == "verify" && argc == 2) {
+        if (vArgs[1] == "verify" && argc == 2) {
             pkg.verify();
             return 0;
         } else if (vArgs[1] == "authors") {
@@ -162,12 +161,6 @@ int main(int argc, const char* argv[]) {
             }
             printHelp(vArgs);
             return -1;
-        } else if (vArgs[1] == "deps") {
-            if (argc == 2) {
-                pkg.printDependencies();
-                return 0;
-            }
-            // TODO parse sub commands for fix-conflicts
         }
     }
     printHelp(vArgs);

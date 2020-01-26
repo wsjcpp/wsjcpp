@@ -258,6 +258,53 @@ std::string WSJCppPackageManagerRepository::getUrl() {
 }
 
 // ---------------------------------------------------------------------
+// WSJCppPackageManagerUnitTest - main class
+
+WSJCppPackageManagerUnitTest::WSJCppPackageManagerUnitTest() {
+    TAG = "WSJCppPackageManagerUnitTest";
+}
+
+// ---------------------------------------------------------------------
+
+WSJCppYAMLItem *WSJCppPackageManagerUnitTest::toYAML() {
+    m_pYamlUnitTest->getElement("url")->setValue(m_sName, true);
+    m_pYamlUnitTest->getElement("type")->setValue(m_sDescription, true);
+    return m_pYamlUnitTest;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManagerUnitTest::fromYAML(WSJCppYAMLItem *pYaml) {
+    m_pYamlUnitTest = pYaml;
+    if (!m_pYamlUnitTest->hasElement("name")) {
+        WSJCppLog::err(TAG, "Missing required field 'name' in " + m_pYamlUnitTest->getForLogFormat());
+        return false; 
+    } else {
+        m_sName = m_pYamlUnitTest->getElement("name")->getValue();
+    }
+
+    if (!m_pYamlUnitTest->hasElement("description")) {
+        WSJCppLog::err(TAG, "Missing required field 'url' in " + m_pYamlUnitTest->getForLogFormat());
+        return false; 
+    } else {
+        m_sDescription = m_pYamlUnitTest->getElement("description")->getValue();
+    }
+    return true;
+}
+
+// ---------------------------------------------------------------------
+
+std::string WSJCppPackageManagerUnitTest::getName() {
+    return m_sName;
+}
+
+// ---------------------------------------------------------------------
+
+std::string WSJCppPackageManagerUnitTest::getDescription() {
+    return m_sDescription;
+}
+
+// ---------------------------------------------------------------------
 // WSJCppPackageManager - main class
 
 WSJCppPackageManagerDependence::WSJCppPackageManagerDependence() {
@@ -398,7 +445,20 @@ WSJCppPackageManager::WSJCppPackageManager(const std::string &sDir, const std::s
     m_sDirWithSources = m_sDir + "/src.wsjcpp";
     m_sYamlFilename = "wsjcpp.hold.yml";
     m_bHolded = true;
+    m_bHasDocker = false;
     m_sParentDir = sParentDir;
+}
+
+// ---------------------------------------------------------------------
+
+std::string WSJCppPackageManager::getDir() const {
+    return m_sDir;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManager::isHolded() const {
+    return m_bHolded;
 }
 
 // ---------------------------------------------------------------------
@@ -478,43 +538,6 @@ bool WSJCppPackageManager::save() {
         WSJCppCore::writeFile(sGitkeepFile, ""); // TODO createEmptyFile
     }
     m_yamlPackageInfo.saveToFile(m_sYamlFullpath);
-
-    /* 
-    m_jsonPackageInfo["wsjcpp_version"] = m_sWSJCppVersion;
-    m_jsonPackageInfo["name"] = m_sName;
-    m_jsonPackageInfo["version"] = m_sVersion;
-    m_jsonPackageInfo["description"] = m_sDescription;
-    m_jsonPackageInfo["keywords"] = m_vKeywords;
-
-    nlohmann::json jsonAuthors = nlohmann::json::array();
-    for (int i = 0; i < m_vAuthors.size(); i++) {
-        jsonAuthors.push_back(m_vAuthors[i].toJson());
-    }
-    // m_jsonPackageInfo["authors"] = jsonAuthors;
-
-    nlohmann::json jsonServers = nlohmann::json::array();
-    for (int i = 0; i < m_vServers.size(); i++) {
-        jsonServers.push_back(m_vServers[i].toJson());
-    }
-
-    m_jsonPackageInfo["servers"] = jsonServers;
-
-    nlohmann::json jsonDependencies = nlohmann::json::array();
-    for (int i = 0; i < m_vDependencies.size(); i++) {
-        jsonDependencies.push_back(m_vDependencies[i].toJson());
-    }
-    m_jsonPackageInfo["dependencies"] = jsonDependencies;
-
-    nlohmann::json jsonRepositories = nlohmann::json::array();
-    for (int i = 0; i < m_vRepositories.size(); i++) {
-        jsonRepositories.push_back(m_vRepositories[i].toJson());
-    }
-    m_jsonPackageInfo["repositories"] = jsonRepositories;
-
-    int indent = 4;
-    std::ofstream wsjcppJson(m_sDir + "/" + m_sYamlFilename);
-    wsjcppJson << std::setw(4) << m_jsonPackageInfo << std::endl;
-    */
     return true;
 }
 
@@ -588,6 +611,10 @@ bool WSJCppPackageManager::load() {
             if (!readFieldRepositories()) {
                 return false;
             }
+        } else if (sKey == "unit-tests") {
+            if (!readFieldUnitTests()) {
+                return false;
+            }
         } else if (sKey == "required-libraries") {
             if (!readFieldRequiredLibraries()) {
                 return false;
@@ -596,6 +623,12 @@ bool WSJCppPackageManager::load() {
             if (!readFieldRequiredPkgConfig()) {
                 return false;
             }
+        } else if (sKey == "docker") {
+            m_bHasDocker = true;
+            WSJCppLog::warn(TAG, "TODO read docker section");
+            // if (!readFieldRequiredPkgConfig()) {
+            //    return false;
+            // }
         } else {
             WSJCppLog::warn(TAG, "Ignored option '" + sKey + "' in " + m_yamlPackageInfo.getRoot()->getForLogFormat());
         }
@@ -796,27 +829,6 @@ bool WSJCppPackageManager::updateDependencies() {
 
 // ---------------------------------------------------------------------
 
-void WSJCppPackageManager::printDependencies(std::string sIntent) {
-    std::string sNexIntent = sIntent + "  \\--";
-    for (auto it = m_vDependencies.begin(); it != m_vDependencies.end(); ++it) {
-        std::cout << sIntent << " * " << it->getName() << ":" << it->getVersion() << "    (" << it->getUrl() << ":" << it->getInstallationDir() << ")" << std::endl;
-        if (m_bHolded) {
-            WSJCppPackageManager m(m_sParentDir + "/" + it->getName(), m_sParentDir, true);
-            if (m.load()) {
-                m.printDependencies(sNexIntent);
-            }
-        } else {
-            WSJCppPackageManager m(m_sDirWithSources + "/" + it->getName(), m_sDirWithSources, true);
-            if (m.load()) {
-                m.printDependencies(sNexIntent);
-            }
-        }
-        
-    }
-}
-
-// ---------------------------------------------------------------------
-
 void WSJCppPackageManager::verify() {
     std::vector<std::string> m_vVerified;
 
@@ -879,21 +891,17 @@ bool WSJCppPackageManager::install(const std::string &sPackage) {
 // ---------------------------------------------------------------------
 
 bool WSJCppPackageManager::reinstall(const std::string &sPackage) {
-    if (m_bHolded) { // readonly
+    if (m_bHolded) {
+        WSJCppLog::err(TAG, "Could not reinstall package when holded");
         return false;
     }
 
-    if (m_bHolded) {
-        WSJCppLog::err(TAG, "Could not install package when holded");
+    if (!isInstalled(sPackage)) {
+        WSJCppLog::err(TAG, "Package '" + sPackage + "' not installed");
         return false;
     }
 
     if (isGitHubPackage(sPackage)) {
-        if (!isInstalled(sPackage)) {
-            WSJCppLog::err(TAG, "Package '" + sPackage + "' not installed");
-            return false;
-        }
-
         WSJCppPackageManagerDependence dep;
         if (downloadFromGithubToCache(sPackage, dep)) {
             updateDependency(dep);
@@ -922,8 +930,39 @@ bool WSJCppPackageManager::reinstall(const std::string &sPackage) {
 // ---------------------------------------------------------------------
 
 bool WSJCppPackageManager::uninstall(const std::string &sPackageUrl) {
-    WSJCppLog::err(TAG, "uninstall Not inplemented");
-    return false;
+    if (m_bHolded) {
+        WSJCppLog::err(TAG, "Could not reinstall package when holded");
+        return false;
+    }
+
+    bool bResult = false;
+    std::vector<WSJCppPackageManagerDependence>::iterator it;
+    for (it = m_vDependencies.begin(); it != m_vDependencies.end(); ++it) {
+        if (it->getUrl() == sPackageUrl) {
+            WSJCppPackageManagerDependence dep = *it;
+            removeDependenciesFilesSafe(dep);
+            m_vDependencies.erase(it);
+            bResult = true;
+            break;
+        }
+    }
+    if (!bResult) {
+        WSJCppLog::err(TAG, "Package '" + sPackageUrl + "' did not installed");
+        return false;
+    }
+    WSJCppYAMLItem *pDeps = m_yamlPackageInfo.getRoot()->getElement("dependencies");
+    int nLen = pDeps->getLength();
+    for (int i = nLen-1; i >= 0; i--) {
+        WSJCppYAMLItem *pItemMap = pDeps->getElement(i);
+        if (sPackageUrl == pItemMap->getElement("url")->getValue()) {
+            pDeps->removeElement(i);
+        }
+    }
+
+    // TODO remove files
+    // TODO remove none defined sub-requirements
+
+    return true;
 }
 
 // ---------------------------------------------------------------------
@@ -1023,7 +1062,7 @@ bool WSJCppPackageManager::downloadFromGithubToCache(const std::string &sPackage
     std::string sWsjcppBaseUrl = "https://raw.githubusercontent.com/" + packageName + "/" + packageVersion + "/";
 
     std::string sWsjcppUrl = sWsjcppBaseUrl + "/wsjcpp.yml";
-    std::string sCacheDir = m_sDir + "/.wsjcpp-cache";
+    std::string sCacheDir = m_sDir + "/.wsjcpp/cache";
     if (!WSJCppCore::dirExists(sCacheDir)) {
         WSJCppCore::makeDir(sCacheDir);
     }
@@ -1106,30 +1145,29 @@ bool WSJCppPackageManager::installFromCache(const std::string &sPackage, const W
         WSJCppCore::makeDir(sInstallationDir);
     }
     
-    std::string sCacheDir = m_sDir + "/.wsjcpp-cache"; // TODO sCacheDir must be init close with init m_sDir
+    std::string sCacheDir = m_sDir + "/.wsjcpp/cache"; // TODO sCacheDir must be init close with init m_sDir
     std::string sCacheSubFolderName = sCacheDir + "/" + this->prepareCacheSubFolderName(sPackage);
 
     // TODO redesign to WSJCppCore::recoursiveCopyFiles
     // copy sources to installation dir
+    // TODO copy only if sha1 equal!!!
     std::vector<std::string> vFiles = WSJCppCore::listOfFiles(sCacheSubFolderName);
     for (int i = 0; i < vFiles.size(); i++) {
         std::string sFrom = sCacheSubFolderName + "/" + vFiles[i];
         std::string sTo = sInstallationDir + "/" + vFiles[i];
-        std::string sContent = "";
-        if (!WSJCppCore::readTextFile(sFrom, sContent)) {
-            WSJCppLog::err(TAG, "Could not read file " + sFrom);
-            return false;
-        }
-        if (!WSJCppCore::writeFile(sTo, sContent)) {
-            WSJCppLog::err(TAG, "Could not write to file '" + sTo + "'");
-            return false;
-        }
+	// TODO move to wsjcpp-core
+        std::ifstream  src(sFrom, std::ios::binary);
+        std::ofstream  dst(sTo,   std::ios::binary);
+        dst << src.rdbuf();
     }
+    // TODO install all dependencies
+    // TODO update src.wsjcpp/
     return true;
 }
 
 // ---------------------------------------------------------------------
 
+// TODO remove it
 void WSJCppPackageManager::printInfo() {
     
     std::cout << std::endl 
@@ -1161,16 +1199,6 @@ void WSJCppPackageManager::printInfo() {
 
     std::cout << "===== end: wsjcpp info =====" << std::endl
         << std::endl;
-}
-
-// ---------------------------------------------------------------------
-
-void WSJCppPackageManager::printPackages() {
-    std::cout << "Dependencies: " << std::endl;
-    for (auto it = m_vDependencies.begin(); it != m_vDependencies.end(); ++it) {
-        std::cout << " - " << it->getName() << ":" << it->getVersion() << "    (" << it->getUrl() << " -> " << it->getInstallationDir() << ")" << std::endl;
-    }
-    std::cout << std::endl;
 }
 
 // ---------------------------------------------------------------------
@@ -1277,6 +1305,12 @@ std::vector<WSJCppPackageManagerDependence> WSJCppPackageManager::getListOfDepen
 
 // ---------------------------------------------------------------------
 
+std::vector<WSJCppPackageManagerUnitTest> WSJCppPackageManager::getListOfUnitTests() {
+    return m_vUnitTests;
+}
+
+// ---------------------------------------------------------------------
+
 std::string WSJCppPackageManager::getName() {
     return m_sName;
 }
@@ -1285,6 +1319,25 @@ std::string WSJCppPackageManager::getName() {
 
 std::string WSJCppPackageManager::getVersion() {
     return m_sVersion;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManager::updateAutogeneratedFiles() {
+    if (m_bHolded) {
+        WSJCppLog::err(TAG, "Could not reinstall package when holded");
+        return false;
+    }
+
+    if (!updateAutogeneratedFiles_CMakeListsTXT()) {
+        return false;
+    }
+
+    if (!updateAutogeneratedFiles_Dockerfiles()) {
+        return false;
+    }
+
+    return true;
 }
 
 // ---------------------------------------------------------------------
@@ -1549,6 +1602,31 @@ bool WSJCppPackageManager::readFieldRepositories() {
 
 // ---------------------------------------------------------------------
 
+bool WSJCppPackageManager::readFieldUnitTests() {
+    if (!m_yamlPackageInfo.getRoot()->hasElement("unit-tests")) {
+        WSJCppLog::err(TAG, "Missing required field 'unit-tests' in '" + m_sYamlFullpath + "'");
+        return false;
+    }
+
+    WSJCppYAMLItem itemUnitTests = m_yamlPackageInfo["unit-tests"];
+    if (!itemUnitTests.hasElement("cases")) {
+        WSJCppLog::err(TAG, "Missing required field 'cases' in '" + m_sYamlFullpath + "' " + itemUnitTests.getForLogFormat());
+        return false;
+    }
+    WSJCppYAMLItem itemCases = itemUnitTests["cases"];
+
+    int nLength = itemCases.getLength();
+    for (int i = 0; i < nLength; i++) {
+        WSJCppYAMLItem *pYamlCase = itemCases.getElement(i);
+        WSJCppPackageManagerUnitTest unitTest;
+        unitTest.fromYAML(pYamlCase);
+        m_vUnitTests.push_back(unitTest);
+    }
+    return true;
+}
+
+// ---------------------------------------------------------------------
+
 bool WSJCppPackageManager::readFieldRequiredLibraries() {
     if (!m_yamlPackageInfo.getRoot()->hasElement("required-libraries")) {
         WSJCppLog::err(TAG, "Missing required field 'required-libraries' in '" + m_sYamlFullpath + "'");
@@ -1578,6 +1656,265 @@ bool WSJCppPackageManager::readFieldRequiredPkgConfig() {
         std::string sRequiredPkgConfig = pYamlRequredPkgConfig->getValue();
         m_sRequiredPkgConfig.push_back(sRequiredPkgConfig);
     }
+    return true;
+}
+
+// ---------------------------------------------------------------------
+
+void WSJCppPackageManager::removeDependenciesFilesSafe(const WSJCppPackageManagerDependence &dep) {
+    WSJCppPackageManager pkgDep(dep.getInstallationDir(), m_sDir, true);
+    if (pkgDep.load()) {
+        std::vector<WSJCppPackageManagerDistributionFile> vFiles = pkgDep.getListOfDistributionFiles();
+        int nRemovedFiles = 0;
+        for (int i = 0; i < vFiles.size(); i++) {
+            WSJCppPackageManagerDistributionFile file = vFiles[i];
+            std::string sFilePath = dep.getInstallationDir() + "/" + file.getTargetFile();
+            if (!WSJCppCore::fileExists(sFilePath)) {
+                WSJCppLog::info(TAG, "Did not found file '" + sFilePath + "'");
+            } else {
+                std::string sContent;
+                WSJCppCore::readTextFile(sFilePath, sContent);
+                std::string sSha1 = WSJCppHashes::sha1_calc_hex(sContent);
+                if (sSha1 != file.getSha1()) {
+                    WSJCppLog::warn(TAG, "Could not remove file '" + sFilePath + "', because maybe has local important changes. "
+                        "\r\n  sha1 expected '" + file.getSha1() + "', but got '" + sSha1 + "'");
+                } else {
+                    if (WSJCppCore::removeFile(sFilePath)) {
+                        nRemovedFiles++;
+                        WSJCppLog::ok(TAG, "Successfully removed '" + sFilePath + "'");
+                    }
+                }
+            }
+        }
+        if (nRemovedFiles == vFiles.size()) {
+            std::string sFilePath = dep.getInstallationDir() + "/wsjcpp.hold.yml";
+            if (WSJCppCore::removeFile(sFilePath)) {
+                nRemovedFiles++;
+                WSJCppLog::ok(TAG, "Successfully removed '" + sFilePath + "'");
+            } else {
+                WSJCppLog::warn(TAG, "Could not remove '" + sFilePath + "'");
+            }
+
+            if (WSJCppCore::removeFile(dep.getInstallationDir())) {
+                WSJCppLog::ok(TAG, "Successfully removed directory '" + dep.getInstallationDir() + "'");
+            } else {
+                WSJCppLog::warn(TAG, "Could not remove directory '" + dep.getInstallationDir() + "'");
+            }
+        }
+    }
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManager::updateAutogeneratedFiles_CMakeListsTXT() {
+    std::string sCMakeListsTXT = ""
+        "# Automaticly generated by wsjcpp@" + m_sWSJCppCurrentVersion + "\n"
+        "cmake_minimum_required(VERSION " + m_sCMakeMinimumRequired + ")\n"
+        "\n"
+        "add_definitions(-DWSJCPP_VERSION=\"" + m_sVersion + "\")\n"
+        "add_definitions(-DWSJCPP_NAME=\"" + m_sName + "\")\n"
+        "\n"
+        "if (${CMAKE_SYSTEM_NAME} MATCHES \"Darwin\")\n"    
+        "    set(MACOSX TRUE)\n"
+        "endif()\n"
+        "\n"
+        "set(CMAKE_CXX_STANDARD " + m_sCMakeCxxStandard + ")\n"
+        "\n"
+        "set (WSJCPP_LIBRARIES \"\")\n"
+        "set (WSJCPP_INCLUDE_DIRS \"\")\n"
+        "set (WSJCPP_SOURCES \"\")\n"
+        "\n"
+    ;
+
+    for (int i = 0; i < m_vDependencies.size(); i++) {
+        WSJCppPackageManagerDependence dep = m_vDependencies[i];
+        std::string sInstDir = dep.getInstallationDir();
+        WSJCppPackageManager pkg(dep.getInstallationDir(), m_sDir, true);
+        if (pkg.load()) {
+            sCMakeListsTXT += 
+                "# " + pkg.getName() + ":" + pkg.getVersion() + "\n"
+                "list (APPEND WSJCPP_INCLUDE_DIRS \"" + sInstDir + "/\")\n";
+            std::vector<WSJCppPackageManagerDistributionFile> vFiles = pkg.getListOfDistributionFiles();
+            for (int i = 0; i < vFiles.size(); i++) {
+                WSJCppPackageManagerDistributionFile file = vFiles[i];
+                sCMakeListsTXT += "list (APPEND WSJCPP_SOURCES \"" + sInstDir + "/" + file.getTargetFile() + "\")\n";
+            }
+        }
+        sCMakeListsTXT += "\n";
+    }
+    
+    if (m_sRequiredLibraries.size() > 0) {
+        sCMakeListsTXT += "# required-libraries\n";
+        for (int i = 0; i < m_sRequiredLibraries.size(); i++) {
+            std::string sLibrary = m_sRequiredLibraries[i];
+            sCMakeListsTXT += "list (APPEND WSJCPP_LIBRARIES \"-l" + sLibrary + "\")\n";
+        }
+        sCMakeListsTXT += "\n";
+    }
+    
+    if (m_sRequiredPkgConfig.size() > 0) {
+        sCMakeListsTXT += "# required-pkg-config\n";
+        for (int i = 0; i < m_sRequiredPkgConfig.size(); i++) {
+            std::string sPkgConfig = m_sRequiredPkgConfig[i];
+            sCMakeListsTXT += 
+                "## " + sPkgConfig + "\n"
+                "FIND_PACKAGE(" + sPkgConfig + ")\n"
+                "IF(" + sPkgConfig + "_FOUND)\n"
+                "   list (APPEND WSJCPP_INCLUDE_DIRS ${" + sPkgConfig + "_INCLUDE_DIR})\n"
+                "   list (APPEND WSJCPP_LIBRARIES ${" + sPkgConfig + "_LIBRARIES})\n"
+                "ELSE(" + sPkgConfig + "_FOUND)\n"
+                "   MESSAGE(FATAL_ERROR \"Could not find the " + sPkgConfig + " library and development files.\")\n"
+                "ENDIF(" + sPkgConfig + "_FOUND)\n";
+        }
+        sCMakeListsTXT += "\n";
+    }
+
+    WSJCppCore::writeFile("./src.wsjcpp/CMakeLists.txt", sCMakeListsTXT);
+    return true;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManager::updateAutogeneratedFiles_Dockerfiles() {
+    if (!m_yamlPackageInfo.getRoot()->hasElement("docker")) {
+        // Not need if docker section not defined
+        return true;
+    }
+
+    if (!updateAutogeneratedFiles_Dockerfile_for_build()) {
+        return false;
+    }
+
+    if (!updateAutogeneratedFiles_Dockerfile_for_release()) {
+        return false;
+    }
+
+    if (!updateAutogeneratedFiles_Dockerfile_release()) {
+        return false;
+    }
+    return true;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManager::updateAutogeneratedFiles_Dockerfile_for_build() {
+    if (!m_yamlPackageInfo.getRoot()->hasElement("docker")) {
+        // Not need if docker section not defined
+        return true;
+    }
+
+    std::string sContent = 
+        "# Automaticly generated by wsjcpp@" + m_sWSJCppCurrentVersion + "\n"
+        "# for-build " + m_sName + ":" + m_sVersion + "\n"
+        "FROM debian:10\n"
+    ;
+
+    std::vector<std::string> vInstallPackagesBuild = {"make", "cmake", "gcc", "g++", "pkg-config" };
+    // TODO check equals and from dependencies 
+    for (int i = 0; i < m_sDockerPackagesBuild.size(); i++) {
+        vInstallPackagesBuild.push_back(m_sDockerPackagesBuild[i]);
+    }
+    // TODO: packages-build
+    sContent += 
+        "# install build requiremenets\n"
+        "RUN apt-get update && apt-get install -y \\\n";
+    for (int i = 0; i < vInstallPackagesBuild.size(); i++) {
+        sContent += "  " + vInstallPackagesBuild[i] + "\\\n";
+    }
+    sContent += 
+        "\n"
+        "RUN apt-get clean\n"
+        "\n"
+        "WORKDIR /root/sources\n"
+    ;
+
+    if (!WSJCppCore::dirExists("./docker.for-build")) {
+        WSJCppCore::makeDir("./docker.for-build");
+    }
+    WSJCppCore::writeFile("./docker.for-build/Dockerfile", sContent);
+    return true;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManager::updateAutogeneratedFiles_Dockerfile_for_release() {
+    if (!m_yamlPackageInfo.getRoot()->hasElement("docker")) {
+        // Not need if docker section not defined
+        return true;
+    }
+
+    std::string sContent = 
+        "# Automaticly generated by wsjcpp@" + m_sWSJCppCurrentVersion + "\n"
+        "# for-release " + m_sName + ":" + m_sVersion + "\n"
+        "FROM debian:10\n";
+
+    std::vector<std::string> vInstallPackagesRelease = {"locales", "libpthread-stubs0-dev" };
+    // TODO check equals and from dependencies 
+    for (int i = 0; i < m_sDockerPackagesRelease.size(); i++) {
+        vInstallPackagesRelease.push_back(m_sDockerPackagesRelease[i]);
+    }
+    // TODO: packages-build
+    sContent += 
+        "# install release requiremenets\n"
+        "RUN apt-get update && apt-get install -y \\\n";
+    for (int i = 0; i < vInstallPackagesRelease.size(); i++) {
+        sContent += "  " + vInstallPackagesRelease[i] + "\\\n";
+    }
+    sContent += 
+        "\n"
+        "RUN sed -i -e \"s/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/\" /etc/locale.gen && \\\n"
+        "  echo 'LANG=\"en_US.UTF-8\"'>/etc/default/locale && \\\n"
+        "  dpkg-reconfigure --frontend=noninteractive locales && \\\n"
+        "  update-locale LANG=en_US.UTF-8\n"
+        "\n"
+        "RUN apt-get clean\n"
+        "\n"
+        "WORKDIR /root/\n";
+
+    if (!WSJCppCore::dirExists("./docker.for-release")) {
+        WSJCppCore::makeDir("./docker.for-release");
+    }
+    WSJCppCore::writeFile("./docker.for-release/Dockerfile", sContent);
+    return true;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManager::updateAutogeneratedFiles_Dockerfile_release() {
+    if (!m_yamlPackageInfo.getRoot()->hasElement("docker")) {
+        // Not need if docker section not defined
+        return true;
+    }
+    WSJCppYAMLItem *pItem = m_yamlPackageInfo.getRoot()->getElement("docker");
+    if (!pItem->hasElement("release")) {
+        // Do nothing if docker/release section not defined
+        return true;
+    }
+
+    // if has docker/release
+    std::string sContent = 
+        "# Automaticly generated by wsjcpp@" + m_sWSJCppCurrentVersion + "\n"
+        "# for-release " + m_sName + ":" + m_sVersion + "\n"
+        "FROM " + m_sName + "-for-build:latest\n"
+        "\n"
+        "COPY . /root/sources\n"
+        "RUN mkdir -p tmp.docker && cd tmp.docker && cmake .. && make\n"
+        "\n"
+        "FROM " + m_sName + "-for-release:latest\n"
+        "\n";
+
+        // TODO labels
+        // LABEL "maintainer"="FreeHackQuest Team <freehackquest@gmail.com>"
+        // LABEL "repository"="https://github.com/freehackquest/fhq-docker-build"
+    sContent += 
+        "COPY --from=0 /root/sources/" + m_sName + " /usr/bin/" + m_sName + "\n";
+    
+    // TODO expose-ports 
+    // EXPOSE 1234 4613 7080
+    // TODO command
+    // CMD wsjcpp start
+
+    WSJCppCore::writeFile("./Dockerfile", sContent);
     return true;
 }
 
