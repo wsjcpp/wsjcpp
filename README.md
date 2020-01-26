@@ -1,8 +1,6 @@
 # wsjcpp
 
-(in process)
-
-WebSocket JSON && C++ (and a little http) Also it's 'Source Package Manager For C++'
+Yet one... C++ Source Package Manager
 
 ## Build and Install
 
