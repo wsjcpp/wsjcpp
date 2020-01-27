@@ -16,6 +16,9 @@
 #include <cstdint>
 #include <unistd.h>
 #include <streambuf>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
 
 // ---------------------------------------------------------------------
 
@@ -406,6 +409,44 @@ std::string WSJCppCore::createUuid() {
     }
     // Fallen::initRandom();
     return sRet;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppCore::isIPv4(const std::string& str) {
+    int n = 0;
+    std::string s[4] = {"", "", "", ""};
+    for (int i = 0; i < str.length(); i++) {
+        char c = str[i];
+        if (n > 3) {
+            return false;
+        }
+        if (c >= '0' && c <= '9') {
+            s[n] += c;
+        } else if (c == '.') {
+            n++;
+        } else {
+            return false;
+        }
+    }
+    for (int i = 0; i < 4; i++) {
+        if (s[i].length() > 3) {
+            return false;
+        }
+        int p = std::stoi(s[i]);
+        if (p > 255 || p < 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppCore::isIPv6(const std::string& str) {
+    unsigned char buf[sizeof(struct in6_addr)];
+    bool isValid = inet_pton(AF_INET6, str.c_str(), buf);
+    return isValid;
 }
 
 // ---------------------------------------------------------------------

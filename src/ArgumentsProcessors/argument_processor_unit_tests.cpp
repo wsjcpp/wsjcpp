@@ -20,6 +20,20 @@ ArgumentProcessorUnitTestsCreate::ArgumentProcessorUnitTestsCreate()
 // ---------------------------------------------------------------------
 
 int ArgumentProcessorUnitTestsCreate::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+    WSJCppPackageManager pkg("./");
+    if (!pkg.load()) {
+        return -1;
+    }
+
+    if (vSubParams.size() != 2) {
+        WSJCppLog::err(TAG, "Usage: <Name> <Description>");
+        return -1;
+    }
+    if (pkg.createUnitTest(vSubParams[0], vSubParams[1])) {
+      pkg.save();
+      return 0;
+    }
+
     return -1;
 }
 

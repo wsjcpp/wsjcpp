@@ -1,0 +1,56 @@
+wsjcpp_version: v0.0.1
+cmake_cxx_standard: 11
+cmake_minimum_required: 3.0
+
+name: wsjcpp-core
+version: v0.0.4
+description: Basic Utils for wsjcpp
+issues: https://github.com/wsjcpp/wsjcpp-core/issues
+repositories:
+  - type: main
+    url: "https://github.com/wsjcpp/wsjcpp-core"
+keywords:
+  - c++
+  - wsjcpp
+
+authors:
+  - name: Evgenii Sopov
+    email: mrseakg@gmail.com
+
+required-libraries:
+  - pthread
+
+distribution:
+  - source-file: src/wsjcpp_core.cpp
+    target-file: wsjcpp_core.cpp
+    sha1: "04a9e3c6db3c7190c6589514a4b5957dbb4c366d"
+    type: "source-code"
+  - source-file: src/wsjcpp_core.h
+    target-file: wsjcpp_core.h
+    sha1: "1d76447c6880f43f9afeca89111ec64d3574ccb7"
+    type: "source-code"
+  - source-file: "src/unit_tests.cpp"
+    target-file: "unit_tests.cpp"
+    type: "unit-tests"
+    sha1: "a36d71646ddd6041346909c0481a59299f01f898"
+  - source-file: "src/unit_tests.h"
+    target-file: "unit_tests.h"
+    type: "unit-tests"
+    sha1: "a20248c9801c53519ad847aa19d80460289a5dd1"
+  - source-file: "src/unit_tests_main.cpp"
+    target-file: "unit_tests_main.cpp"
+    type: "unit-tests"
+    sha1: "81a2b3d7328575c0087fa43000b05a96e278da07"
+
+unit-tests:
+  cases:
+    - name: CoreNormalizePath
+      description: Check function normalizePath
+    - name: CoreUuid
+      description: Check test generate uuid function
+    - name: CoreExtractFilename
+      description: Check function extract filenane from path
+    - name: IPv4
+      description: Check function isIPv4
+    - name: IPv6
+      description: Check function isIPv6

@@ -44,16 +44,6 @@ distribution:
 
 
 unit-tests:
-  folder: unit-tests # default
-  files:
-    - unit-tests/src/main.cpp
-    - unit-tests/src/unit_tests.h
-    - unit-tests/src/unit_tests.cpp
-    - unit-tests/src/unit_test_line_parser.h
-    - unit-tests/src/unit_test_line_parser.cpp
-    - unit-tests/src/unit_test_yaml_parser_simple_array.h
-    - unit-tests/src/unit_test_yaml_parser_simple_array.cpp
-    - unit-tests/src/unit_test_yaml_parser_simple_map.h
-    - unit-tests/src/unit_test_yaml_parser_simple_map.cpp
-    - unit-tests/src/unit_test_yaml_parser_hierarchical_map.h
-    - unit-tests/src/unit_test_yaml_parser_hierarchical_map.cpp
+  cases:
+    - name: Test1
+      description: Test1

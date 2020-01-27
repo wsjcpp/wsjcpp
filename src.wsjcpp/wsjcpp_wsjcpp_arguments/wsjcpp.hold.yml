@@ -41,9 +41,7 @@ distribution:
     type: "source-code"
 
 unit-tests:
-  folder: unit-tests # default
-  files:
-    - unit-tests/src/main.cpp
-    - unit-tests/src/unit_tests.h
-    - unit-tests/src/unit_tests.cpp
+  cases:
+    - name: Test1
+      description: Test1
 

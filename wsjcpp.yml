@@ -16,11 +16,11 @@ required-pkg-config:
   - CURL
 
 dependencies:
-  - name: "wsjcpp/wsjcpp-core"
-    version: "v0.0.2"
+  - name: "wsjcpp-core"
+    version: "v0.0.4"
     url: "https://github.com/wsjcpp/wsjcpp-core:master"
     origin: "https://github.com/"
-    installation-dir: "./src.wsjcpp/wsjcpp_wsjcpp_core"
+    installation-dir: "./src.wsjcpp/wsjcpp_core"
   - name: "wsjcpp/wsjcpp-yaml"
     version: "0.0.2"
     url: "https://github.com/wsjcpp/wsjcpp-yaml:master"
@@ -57,19 +57,14 @@ distribution:
   - source-file: "src/wsjcpp_package_manager.cpp"
     target-file: "wsjcpp_package_manager.cpp"
     type: "source-code"
-    sha1: "49ab393b9d2804b6ff66d40a0819198600bee369"
+    sha1: "75ecfa5bd35135f6a3ddf3bdc17fdeb847255114"
   - source-file: "src/wsjcpp_package_manager.h"
     target-file: "wsjcpp_package_manager.h"
     type: "source-code"
-    sha1: "55e0f7ec0fb01100027b8187ce5389c1742bbf58"
-
-unit-tests:
-  cases: 
-    - name: Test1
-      description: Test1
+    sha1: "1f6f1a3a5283a3ef882dd2063dc804d1977740d9"
 
 docker:
-  for-build: 
+  for-build:
     packages:
       - "libcurl4-openssl-dev"
   for-release:
@@ -81,6 +76,6 @@ docker:
     dockerfile: "Dockerfile.wsjcpp"
     copy-binary-file: wsjcpp # will be copied to /usr/bin
     command: "wsjcpp start"
-    expose-ports: 
+    expose-ports:
       - 80
       - 443

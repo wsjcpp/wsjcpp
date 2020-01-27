@@ -216,11 +216,12 @@ WSJCppYAMLItem *WSJCppYAMLItem::getElement(const std::string &sName) {
     }
     
     for (int i = 0; i < m_vObjects.size(); i++) {
+        std::string sObjectName = m_vObjects[i]->getName();
         if (m_vObjects[i]->getName() == sName) {
             return m_vObjects[i];
         }
     }
-    WSJCppLog::throw_err(TAG, "Element '" + sName + "' not found");    
+    WSJCppLog::throw_err(TAG, "Element '" + sName + "' not found for " + this->getForLogFormat());  
     return nullptr;
 }
 
@@ -232,7 +233,7 @@ bool WSJCppYAMLItem::setElement(const std::string &sName, WSJCppYAMLItem *pItem)
     }
 
     if (m_nItemType != WSJCPP_YAML_ITEM_MAP) {
-        WSJCppLog::throw_err(TAG, "setElement, Element must be 'map' for line(" + std::to_string(pItem->getPlaceInFile().getNumberOfLine()) + "): '" + pItem->getPlaceInFile().getLine() + "'");
+        WSJCppLog::throw_err(TAG, "setElement, Element must be 'map' for " + pItem->getPlaceInFile().getForLogFormat());
     }
     
     if (this->hasElement(sName)) { // TODO remove previous element
@@ -290,6 +291,50 @@ bool WSJCppYAMLItem::setElementValue(const std::string &sName, bool bHasNameQuot
         pNewItem->setValue(sValue, bHasValueQuotes);
         this->setElement(sName, pNewItem);
     }
+    return true;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppYAMLItem::createElementMap(const std::string &sName, bool bHasNameQuotes) {
+    if (m_nItemType != WSJCPP_YAML_ITEM_MAP ) {
+        WSJCppLog::throw_err(TAG, "createElementMap, Element must be 'map' for " + this->getPlaceInFile().getForLogFormat());
+    }
+    if (this->hasElement(sName)) {
+        return false; // already exists
+    }
+    WSJCppYAMLPlaceInFile pl;
+    WSJCppYAMLItem *pNewItem = new WSJCppYAMLItem(this, pl, WSJCppYAMLItemType::WSJCPP_YAML_ITEM_MAP);
+    pNewItem->setName(sName, bHasNameQuotes);
+    this->setElement(sName, pNewItem);
+    return true;
+}
+
+// ---------------------------------------------------------------------
+
+WSJCppYAMLItem *WSJCppYAMLItem::createElementMap() {
+    if (m_nItemType != WSJCPP_YAML_ITEM_ARRAY ) {
+        WSJCppLog::throw_err(TAG, "createElementMap, Element must be 'array' for " + this->getPlaceInFile().getForLogFormat());
+    }
+    WSJCppYAMLPlaceInFile pl;
+    WSJCppYAMLItem *pNewItem = new WSJCppYAMLItem(this, pl, WSJCppYAMLItemType::WSJCPP_YAML_ITEM_MAP);
+    this->appendElement(pNewItem);
+    return pNewItem;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppYAMLItem::createElementArray(const std::string &sName, bool bHasNameQuotes) {
+    if (m_nItemType != WSJCPP_YAML_ITEM_MAP ) {
+        WSJCppLog::throw_err(TAG, "createElementArray, Element must be 'map' for " + this->getPlaceInFile().getForLogFormat());
+    }
+    if (this->hasElement(sName)) {
+        return false;
+    }
+    WSJCppYAMLPlaceInFile pl;
+    WSJCppYAMLItem *pNewItem = new WSJCppYAMLItem(this, pl, WSJCppYAMLItemType::WSJCPP_YAML_ITEM_ARRAY);
+    pNewItem->setName(sName, bHasNameQuotes);
+    this->setElement(sName, pNewItem);
     return true;
 }
 

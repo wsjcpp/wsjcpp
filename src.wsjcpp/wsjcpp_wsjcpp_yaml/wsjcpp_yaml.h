@@ -85,6 +85,9 @@ class WSJCppYAMLItem { // TODO: rename to node
         std::vector<std::string> getKeys();
 
         bool setElementValue(const std::string &sName, bool bHasNameQuotes, const std::string &sValue, bool bHasValueQuotes);
+        bool createElementMap(const std::string &sName, bool bHasNameQuotes);
+        WSJCppYAMLItem *createElementMap();
+        bool createElementArray(const std::string &sName, bool bHasNameQuotes);
 
         bool isArray();
         int getLength();
