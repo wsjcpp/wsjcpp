@@ -1,0 +1,23 @@
+language: cpp
+
+branches:
+  only:
+    - master
+
+dist: bionic
+
+addons:
+  apt:
+    packages:
+    - cmake
+    - make
+    - g++
+    - pkg-config
+    - libcurl4-openssl-dev
+
+# Build steps
+script:
+  - ./build_simple.sh
+  - cd unit-tests.wsjcpp
+  - ./build_simple.sh
+  - ./unit-tests
