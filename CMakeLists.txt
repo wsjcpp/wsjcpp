@@ -32,31 +32,6 @@ list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_basic.cp
 
 list (APPEND WSJCPP_SOURCES "src/main.cpp")
 
-# LIBZIP
-if(MACOSX)  # TODO redesign
-  set(LIBZIP_INCLUDE_DIRS "/usr/local/Cellar/libzip/1.5.2/include/")
-  list (APPEND WSJCPP_INCLUDE_DIRS ${LIBZIP_INCLUDE_DIRS})
-  set(LIBZIP_LIBRARIES "/usr/local/Cellar/libzip/1.5.2/lib/libzip.dylib")
-  list (APPEND WSJCPP_LIBRARIES ${LIBZIP_LIBRARIES})
-else(MACOSX)
-  
-set(LIBZIP_INCLUDE_DIRS "/usr/include/")
-list (APPEND WSJCPP_INCLUDE_DIRS ${LIBZIP_INCLUDE_DIRS})
-set(LIBZIP_LIBRARIES "/usr/lib/x86_64-linux-gnu/libzip.so")
-list (APPEND WSJCPP_LIBRARIES ${LIBZIP_LIBRARIES})
-  
-endif(MACOSX)
-
-# ZLIB
-FIND_PACKAGE(ZLIB REQUIRED)
-IF(ZLIB_FOUND)
-    list (APPEND WSJCPP_INCLUDE_DIRS ${ZLIB_INCLUDE_DIRS})
-    include_directories( ${ZLIB_INCLUDE_DIRS} )
-    list (APPEND WSJCPP_LIBRARIES ${ZLIB_LIBRARIES})
-ELSE(ZLIB_FOUND)
-  MESSAGE(FATAL_ERROR "Could not find the zlib library and development files.")
-endif( ZLIB_FOUND )
-
 include_directories(${WSJCPP_INCLUDE_DIRS})
 
 add_executable (wsjcpp ${WSJCPP_SOURCES})
