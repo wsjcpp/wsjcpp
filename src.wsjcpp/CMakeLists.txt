@@ -20,9 +20,9 @@ list (APPEND WSJCPP_SOURCES "./src.wsjcpp/wsjcpp_core/wsjcpp_core.cpp")
 list (APPEND WSJCPP_SOURCES "./src.wsjcpp/wsjcpp_core/wsjcpp_core.h")
 
 # wsjcpp/wsjcpp-yaml:0.0.2
-list (APPEND WSJCPP_INCLUDE_DIRS "./src.wsjcpp/wsjcpp_wsjcpp_yaml/")
-list (APPEND WSJCPP_SOURCES "./src.wsjcpp/wsjcpp_wsjcpp_yaml/wsjcpp_yaml.cpp")
-list (APPEND WSJCPP_SOURCES "./src.wsjcpp/wsjcpp_wsjcpp_yaml/wsjcpp_yaml.h")
+list (APPEND WSJCPP_INCLUDE_DIRS "./src.wsjcpp/wsjcpp_yaml/")
+list (APPEND WSJCPP_SOURCES "./src.wsjcpp/wsjcpp_yaml/wsjcpp_yaml.cpp")
+list (APPEND WSJCPP_SOURCES "./src.wsjcpp/wsjcpp_yaml/wsjcpp_yaml.h")
 
 # wsjcpp/wsjcpp-arguments:v0.0.1
 list (APPEND WSJCPP_INCLUDE_DIRS "./src.wsjcpp/wsjcpp_wsjcpp_arguments/")

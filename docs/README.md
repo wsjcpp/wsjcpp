@@ -2,7 +2,7 @@
 
 (in a progress...)
 
-Yet one... 'Source Package Manager For C++' for create a little microservices based on dockerfile using c++
+Yet one... 'C++ Source Package Manager' for create a little microservices based on dockerfile using c++
 
 ## Mission
 

@@ -6,8 +6,29 @@ Yet one... C++ Source Package Manager
 
 ## Build and Install
 
-* [Build && Install: Mac OS](https://github.com/sea-kg/wsjcpp/blob/master/docs/BUILD-AND-INSTALL-MACOS.md)
-* [Build && Install: Ubuntu/Debian](https://github.com/sea-kg/wsjcpp/blob/master/docs/BUILD-AND-INSTALL-UBUNTU.md)
+### MacOS (Build and Install)
+
+Short list commands:
+```
+$ brew install curl-openssl pkg-config cmake
+$ cd ~
+$ git clone https://github.com/wsjcpp/wsjcpp
+$ cd ~/wsjcpp
+$ ./build_simple.sh
+$ sudo ln -s `pwd`/wsjcpp /usr/local/bin/wsjcpp
+```
+
+### Ubuntu/Debian (Build and Install)
+
+Short list commands:
+```
+$ sudo apt install cmake make g++ pkg-config libcurl4-openssl-dev git-core
+$ cd ~
+$ git clone https://github.com/wsjcpp/wsjcpp
+$ cd ~/wsjcpp
+$ ./build_simple.sh
+$ sudo ln -s `pwd`/wsjcpp /usr/local/bin/wsjcpp
+```
 
 ## Init new package
 
@@ -21,7 +42,7 @@ Will be prepared file: CMakeLists.txt
 For distribute your files:
 
 ```
-$ wsjcpp files add src/your_source_file.cpp
+$ wsjcpp distribution add src/your_source_file.cpp
 ```
 
 ## How to install packages
@@ -32,12 +53,12 @@ From github:
 $ wsjcpp install 'https://github.com/sea-kg/nlohmann_json:v3.7.0'
 ```
 
-From bitbucket:
+From bitbucket (not implemented yet):
 ```
 $ wsjcpp install https://bitbucket.org/sea-kg/nlohmann_json:v3.7.0
 ```
 
-Via link:
+Via (http/https) link (not implemented yet):
 ```
 $ wsjcpp install https://sea-kg.com/wsjcpp/pkg-example/v1.0.0
 $ wsjcpp install http://sea-kg.com/wsjcpp/pkg-example/v1.0.0
@@ -48,10 +69,18 @@ From local folder:
 $ wsjcpp install file:///usr/share/pkg-example-v1.0.0
 ```
 
-## How to look what installed
+## How to look what packages installed
 
+`$ wsjcpp list`
+
+Example
 ```
-$ wsjcpp deps list
+$ wsjcpp list
+Dependencies: 
+* 'wsjcpp-core:v0.0.4' (https://github.com/wsjcpp/wsjcpp-core:master -> ./src.wsjcpp/wsjcpp_core)
+* 'wsjcpp-yaml:v0.0.2' (https://github.com/wsjcpp/wsjcpp-yaml:master -> ./src.wsjcpp/wsjcpp_yaml)
+* 'wsjcpp/wsjcpp-arguments:v0.0.1' (https://github.com/wsjcpp/wsjcpp-arguments:master -> ./src.wsjcpp/wsjcpp_wsjcpp_arguments)
+* 'wsjcpp/wsjcpp-hashes:v0.0.1' (https://github.com/wsjcpp/wsjcpp-hashes:master -> ./src.wsjcpp/wsjcpp_wsjcpp_hashes)
 ```
 
 ## How to uninstall packages
