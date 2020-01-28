@@ -284,7 +284,7 @@ bool WSJCppPackageManagerUnitTest::fromYAML(WSJCppYAMLItem *pYaml) {
     }
 
     if (!m_pYamlUnitTest->hasElement("description")) {
-        WSJCppLog::err(TAG, "Missing required field 'url' in " + m_pYamlUnitTest->getForLogFormat());
+        WSJCppLog::err(TAG, "Missing required field 'description' in " + m_pYamlUnitTest->getForLogFormat());
         return false; 
     } else {
         m_sDescription = m_pYamlUnitTest->getElement("description")->getValue();
