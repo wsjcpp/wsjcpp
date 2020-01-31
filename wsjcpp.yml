@@ -1,4 +1,4 @@
-wsjcpp_version: v0.0.1
+wsjcpp_version: v0.0.2
 cmake_minimum_required: 3.0
 cmake_cxx_standard: 11
 name: wsjcpp
@@ -21,25 +21,21 @@ dependencies:
     url: "https://github.com/wsjcpp/wsjcpp-core:master"
     origin: "https://github.com/"
     installation-dir: "./src.wsjcpp/wsjcpp_core"
-  - name: "wsjcpp/wsjcpp-yaml"
+  - name: "wsjcpp-yaml"
     version: "0.0.2"
     url: "https://github.com/wsjcpp/wsjcpp-yaml:master"
     origin: "https://github.com/"
-    installation-dir: "./src.wsjcpp/wsjcpp_wsjcpp_yaml"
-  - name: "wsjcpp/wsjcpp-arguments"
+    installation-dir: "./src.wsjcpp/wsjcpp_yaml"
+  - name: "wsjcpp-arguments"
     version: "v0.0.1"
     url: "https://github.com/wsjcpp/wsjcpp-arguments:master"
     origin: "https://github.com/"
-    installation-dir: "./src.wsjcpp/wsjcpp_wsjcpp_arguments"
+    installation-dir: "./src.wsjcpp/wsjcpp_arguments"
   - name: "wsjcpp/wsjcpp-hashes"
     version: "v0.0.1"
     url: "https://github.com/wsjcpp/wsjcpp-hashes:master"
     origin: "https://github.com/"
     installation-dir: "./src.wsjcpp/wsjcpp_wsjcpp_hashes"
-
-replace-dependencies:
-  - from: "https://github.com/wsjcpp/wsjcpp-core:v0.0.1"
-    to: "https://github.com/sea-kg/wsjcpp-core:master"
 
 repositories:
   - type: main
@@ -50,8 +46,10 @@ authors:
     email: "mrseakg@gmail.com"
 
 origins: # rename origins
-  - "https://sea-kg.com/wsjcpp-registry/"
-  - "file:///usr/share/wsjcpp-registry"
+  - address: "https://sea-kg.com/wsjcpp-package-registry/"
+    type: package-registry
+  - address: "file:///usr/share/wsjcpp-package-registry"
+    type: local-file-system
 
 distribution:
   - source-file: "src/wsjcpp_package_manager.cpp"
@@ -65,10 +63,10 @@ distribution:
 
 docker:
   for-build:
-    packages:
+    install:
       - "libcurl4-openssl-dev"
   for-release:
-    packages:
+    install:
       - "libcurl4"
   release:
     label-maintainer: "Evgenii Sopov <mrseakg@gmail.com>"
@@ -79,3 +77,10 @@ docker:
     expose-ports:
       - 80
       - 443
+
+unit-tests:
+  cases:
+    - name: "NormalizeUnitTestName"
+      description: "Test Normalize UnitTest Name"
+    - name: "generateFilenameForUnitTest"
+      description: "Test generate filename for UnitTest"

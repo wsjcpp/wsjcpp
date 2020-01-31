@@ -2,7 +2,7 @@ wsjcpp_version: v0.0.1
 cmake_cxx_standard: 11
 cmake_minimum_required: 3.0
 
-name: wsjcpp/wsjcpp-arguments
+name: wsjcpp-arguments
 version: v0.0.1
 description: Helpful parser for parsing application arguments
 issues: https://github.com/wsjcpp/wsjcpp-arguments/issues
@@ -24,7 +24,7 @@ required-libraries:
   - pthread
 
 dependencies:
-  - name: "wsjcpp/wsjcpp-core"
+  - name: "wsjcpp-core"
     version: "v0.0.2"
     url: "https://github.com/wsjcpp/wsjcpp-core:master"
     origin: "https://github.com/"

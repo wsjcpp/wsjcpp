@@ -50,9 +50,9 @@ class ArgumentProcessorList : public WSJCppArgumentProcessor {
         );
 };
 
-class ArgumentProcessorUpdateGen : public WSJCppArgumentProcessor {
+class ArgumentProcessorUpdate : public WSJCppArgumentProcessor {
     public:
-        ArgumentProcessorUpdateGen();
+        ArgumentProcessorUpdate();
         virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
 
     private:

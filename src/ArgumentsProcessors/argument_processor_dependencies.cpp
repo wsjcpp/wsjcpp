@@ -44,8 +44,9 @@ ArgumentProcessorReinstall::ArgumentProcessorReinstall()
   : WSJCppArgumentProcessor("reinstall", "Reinstall a source package (will be replaced all sources)") {
       TAG = "ArgumentProcessorReinstall";
       registrySingleArgument("--all", "reinstall all");
-      registryExample("from github source `./wsjcpp reinstall 'https://github.com/wsjcpp/json:develop'`");
-      registryExample("from github source `./wsjcpp reinstall --all`");
+      registryExample("from github source `wsjcpp reinstall 'https://github.com/wsjcpp/json:develop'`");
+      registryExample("reintall by name package `wsjcpp reinstall wsjcpp-core`");
+      registryExample("reinstall all packages `wsjcpp reinstall --all`");
       m_bReinstallAll = false;
 }
 
@@ -90,6 +91,13 @@ int ArgumentProcessorReinstall::exec(const std::string &sProgramName, const std:
         }
     } else {
         std::string sPackage = vSubParams[0];
+        std::vector<WSJCppPackageManagerDependence> deps = pkg.getListOfDependencies();
+        for (int i = 0; i < deps.size(); i++) {
+            WSJCppPackageManagerDependence dep = deps[i];
+            if (sPackage == dep.getUrl() || sPackage == dep.getName()) {
+                sPackage = dep.getUrl();
+            }
+        }
         WSJCppLog::info(TAG, "Try reinstalling '" + sPackage + "' package...");
         if (pkg.reinstall(sPackage)) {
             std::cout << "Reinstalled." << std::endl;
@@ -107,7 +115,8 @@ int ArgumentProcessorReinstall::exec(const std::string &sProgramName, const std:
 ArgumentProcessorUninstall::ArgumentProcessorUninstall() 
   : WSJCppArgumentProcessor("uninstall", "Uninstall source package (!will be removed sources)") {
       TAG = "ArgumentProcessorUninstall";
-      registryExample("from github source `./wsjcpp uninstall 'https://github.com/sea-kg/nlohmann_json:v3.7.0'`");
+      registryExample("uninstall by full url `./wsjcpp uninstall 'https://github.com/wsjcpp/json:develop'`");
+      registryExample("uninstall by name `./wsjcpp uninstall 'nlohmann/json'`");
 }
 
 int ArgumentProcessorUninstall::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
@@ -203,12 +212,12 @@ std::string ArgumentProcessorList::loadDependencies(
 
 // ---------------------------------------------------------------------
 
-ArgumentProcessorUpdateGen::ArgumentProcessorUpdateGen() 
-  : WSJCppArgumentProcessor("update-gen", "Update all auto-generated files") {
-      TAG = "ArgumentProcessorUpdateGen";
+ArgumentProcessorUpdate::ArgumentProcessorUpdate() 
+  : WSJCppArgumentProcessor("update", "Update all auto-generated files") {
+      TAG = "ArgumentProcessorUpdate";
 }
 
-int ArgumentProcessorUpdateGen::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int ArgumentProcessorUpdate::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
     WSJCppPackageManager pkg(".");
     if (!pkg.load()) {
         WSJCppLog::err(TAG, "Could not load package info from current directory");

@@ -5,6 +5,7 @@
 #include "argument_processor_dependencies.h"
 #include "argument_processor_distribution.h"
 #include "argument_processor_basic.h"
+#include "argument_processor_origins.h"
 
 #include <wsjcpp_package_manager.h>
 #include <iostream>
@@ -17,11 +18,12 @@ ArgumentProcessorMain::ArgumentProcessorMain()
     registryProcessor(new ArgumentProcessorUninstall());
     registryProcessor(new ArgumentProcessorList());
     registryProcessor(new ArgumentProcessorInfo());
-    registryProcessor(new ArgumentProcessorUpdateGen());
+    registryProcessor(new ArgumentProcessorUpdate());
     registryProcessor(new ArgumentProcessorDistribution());
     registryProcessor(new ArgumentProcessorRun());
     registryProcessor(new ArgumentProcessorTemplates());
     registryProcessor(new ArgumentProcessorUnitTests());
+    registryProcessor(new ArgumentProcessorOrigins());
 }
 
 // ---------------------------------------------------------------------

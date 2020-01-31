@@ -1,4 +1,4 @@
-#include "unit_tests.h"
+#include "wsjcpp_unit_tests.h"
 
 UnitTestBase::UnitTestBase(const std::string &sTestName) {
     m_sTestName = sTestName;

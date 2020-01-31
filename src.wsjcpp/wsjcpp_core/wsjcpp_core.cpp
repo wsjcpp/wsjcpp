@@ -389,6 +389,14 @@ std::string& WSJCppCore::to_lower(std::string& str) {
     return str;
 }
 
+// ---------------------------------------------------------------------
+// will worked only with latin
+
+std::string WSJCppCore::toUpper(const std::string& str) {
+    std::string sRet = str;
+    std::transform(sRet.begin(), sRet.end(), sRet.begin(), ::toupper);
+    return sRet;
+}
 
 // ---------------------------------------------------------------------
 

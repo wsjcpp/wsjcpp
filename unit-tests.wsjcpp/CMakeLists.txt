@@ -18,19 +18,19 @@ set (WSJCPP_SOURCES "")
 list (APPEND WSJCPP_INCLUDE_DIRS "../src.wsjcpp/wsjcpp_core/")
 list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_core/wsjcpp_core.cpp")
 list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_core/wsjcpp_core.h")
-list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_core/unit_tests.cpp")
-list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_core/unit_tests.h")
-list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_core/unit_tests_main.cpp")
+list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_core/wsjcpp_unit_tests.cpp")
+list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_core/wsjcpp_unit_tests.h")
+list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_core/wsjcpp_unit_tests_main.cpp")
 
 # wsjcpp/wsjcpp-yaml:0.0.2
 list (APPEND WSJCPP_INCLUDE_DIRS "../src.wsjcpp/wsjcpp_yaml/")
 list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_yaml/wsjcpp_yaml.cpp")
 list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_yaml/wsjcpp_yaml.h")
 
-# wsjcpp/wsjcpp-arguments:v0.0.1
-list (APPEND WSJCPP_INCLUDE_DIRS "../src.wsjcpp/wsjcpp_wsjcpp_arguments/")
-list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_wsjcpp_arguments/wsjcpp_arguments.cpp")
-list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_wsjcpp_arguments/wsjcpp_arguments.h")
+# wsjcpp-arguments:v0.0.1
+list (APPEND WSJCPP_INCLUDE_DIRS "../src.wsjcpp/wsjcpp_arguments/")
+list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_arguments/wsjcpp_arguments.cpp")
+list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_arguments/wsjcpp_arguments.h")
 
 # wsjcpp/wsjcpp-hashes:v0.0.1
 list (APPEND WSJCPP_INCLUDE_DIRS "../src.wsjcpp/wsjcpp_wsjcpp_hashes/")
@@ -48,6 +48,10 @@ list (APPEND WSJCPP_SOURCES "../src/wsjcpp_package_manager.h")
 
 # unit-tests
 list (APPEND WSJCPP_INCLUDE_DIRS "src")
+list (APPEND WSJCPP_SOURCES "../unit-tests.wsjcpp/src/unit_test_normalize_unit_test_name.h")
+list (APPEND WSJCPP_SOURCES "../unit-tests.wsjcpp/src/unit_test_normalize_unit_test_name.cpp")
+list (APPEND WSJCPP_SOURCES "../unit-tests.wsjcpp/src/unit_test_generate_filename_for_unit_test.h")
+list (APPEND WSJCPP_SOURCES "../unit-tests.wsjcpp/src/unit_test_generate_filename_for_unit_test.cpp")
 
 # required-libraries
 list (APPEND WSJCPP_LIBRARIES "-lpthread")

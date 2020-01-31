@@ -7,6 +7,8 @@
 #include <curl/curl.h>
 #include <wsjcpp_hashes.h>
 #include <wsjcpp_core.h>
+#include <stdio.h>
+#include <ctype.h>
 
 // ---------------------------------------------------------------------
 // WSJCppPackageManagerDistributionFile
@@ -174,39 +176,63 @@ bool WSJCppPackageManagerAuthor::fromYAML(WSJCppYAMLItem *pYamlAuthor) {
 }
 
 // ---------------------------------------------------------------------
-// WSJCppPackageManagerServer - server info class
+// WSJCppPackageManagerOrigin - server info class
 
-WSJCppPackageManagerServer::WSJCppPackageManagerServer() {
-    TAG = "WSJCppPackageManagerServer";
+WSJCppPackageManagerOrigin::WSJCppPackageManagerOrigin() {
+    TAG = "WSJCppPackageManagerOrigin";
+    m_pYamlOrigin = nullptr;
 }
 
 // ---------------------------------------------------------------------
 
-WSJCppPackageManagerServer::WSJCppPackageManagerServer(const std::string &sAddress) {
-    TAG = "WSJCppPackageManagerServer";
-    m_sAddress = sAddress;
-    m_pYamlServer = nullptr;
+WSJCppYAMLItem *WSJCppPackageManagerOrigin::toYAML() {
+    m_pYamlOrigin->setValue(m_sAddress, true);
+    return m_pYamlOrigin;
 }
 
 // ---------------------------------------------------------------------
 
-WSJCppYAMLItem *WSJCppPackageManagerServer::toYAML() {
-    m_pYamlServer->setValue(m_sAddress, true);
-    return m_pYamlServer;
-}
+bool WSJCppPackageManagerOrigin::fromYAML(WSJCppYAMLItem *pYaml) {
+    m_pYamlOrigin = pYaml;
+    if (!m_pYamlOrigin->hasElement("address")) {
+        WSJCppLog::err(TAG, "Missing required field 'address' in " + m_pYamlOrigin->getForLogFormat());
+        return false; 
+    } else {
+        m_sAddress = m_pYamlOrigin->getElement("address")->getValue();
+    }
 
-// ---------------------------------------------------------------------
+    if (!m_pYamlOrigin->hasElement("type")) {
+        WSJCppLog::err(TAG, "Missing required field 'type' in " + m_pYamlOrigin->getForLogFormat());
+        return false; 
+    } else {
+        m_sType = m_pYamlOrigin->getElement("type")->getValue();
+    }
 
-bool WSJCppPackageManagerServer::fromYAML(WSJCppYAMLItem *pYaml) {
-    m_pYamlServer = pYaml;
-    m_sAddress = m_pYamlServer->getValue();
     return true;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManagerServer::getAddress() {
+std::string WSJCppPackageManagerOrigin::getAddress() {
     return m_sAddress;
+}
+
+// ---------------------------------------------------------------------
+
+std::string WSJCppPackageManagerOrigin::getType() {
+    return m_sType;
+}
+
+// ---------------------------------------------------------------------
+
+void WSJCppPackageManagerOrigin::setAddress(const std::string &sAddress) {
+    m_sAddress = sAddress;
+}
+
+// ---------------------------------------------------------------------
+
+void WSJCppPackageManagerOrigin::setType(const std::string &sType) {
+    m_sType = sType;
 }
 
 // ---------------------------------------------------------------------
@@ -527,8 +553,8 @@ bool WSJCppPackageManager::init() {
     if (sServerAddress == "") {
         sServerAddress = sDefaultServerAddress;
     }
-    WSJCppPackageManagerServer server(sServerAddress);
-    m_vServers.push_back(server);
+    // WSJCppPackageManagerServer server(sServerAddress);
+    // m_vServers.push_back(server);
 
     return true;
 }
@@ -611,8 +637,8 @@ bool WSJCppPackageManager::load() {
             if (!readFieldDistribution()) {
                 return false;
             }
-        } else if (sKey == "servers") {
-            if (!readFieldServers()) {
+        } else if (sKey == "origins") {
+            if (!readFieldOrigins()) {
                 return false;
             }
         } else if (sKey == "dependencies") {
@@ -794,16 +820,20 @@ bool WSJCppPackageManager::createUnitTest(const std::string &sUnitTestName, cons
         WSJCppLog::err(TAG, "wsjcpp is holded");
         return false;
     }
+    std::string sName = normalizeUnitTestName(sUnitTestName, false);
+    if (sName != sUnitTestName) {
+        WSJCppLog::warn(TAG, "UnitTest name was normalized '" + sUnitTestName + "' -> '" + sName + "'");
+    }
 
     for (int i = 0; i < m_vUnitTests.size(); i++) {
-        if (m_vUnitTests[i].getName() == sUnitTestName) {
-            WSJCppLog::err(TAG, "Unit test with name '" + sUnitTestName + "' already exists");
+        if (m_vUnitTests[i].getName() == sName) {
+            WSJCppLog::err(TAG, "Unit test with name '" + sName + "' already exists");
             return false;
         }
     }
 
     WSJCppPackageManagerUnitTest unitTest;
-    unitTest.setName(sUnitTestName);
+    unitTest.setName(sName);
     unitTest.setDescription(sUnitTestDescription);
     m_vUnitTests.push_back(unitTest);
     
@@ -813,60 +843,105 @@ bool WSJCppPackageManager::createUnitTest(const std::string &sUnitTestName, cons
     WSJCppYAMLItem *pCases = pUnitTests->getElement("cases");
 
     WSJCppYAMLItem *pNewItem = pCases->createElementMap();
-    pNewItem->setElementValue("name", false, sUnitTestName, true);
+    pNewItem->setElementValue("name", false, sName, true);
     pNewItem->setElementValue("description", false, sUnitTestDescription, true);
-    // TODO generate files
-    std::string sBaseName = generateFilenameForUnitTest(sUnitTestName);
-    WSJCppLog::warn(TAG, sBaseName + ".h TODO generate");
 
-    // TODO updateAutogenerate
+    if (!updateAutogenerateFileUnitTestHeader(sName)) {
+        return false;
+    }
+
+    if (!updateAutogenerateFileUnitTestSource(sName)) {
+        return false;
+    }
+
     updateAutogeneratedFiles();
     return true;
 }
 
 // ---------------------------------------------------------------------
 
-void WSJCppPackageManager::printServers() {
-    for (auto it = m_vServers.begin(); it != m_vServers.end(); ++it) {
-        std::cout << it->getAddress() << std::endl;
+bool WSJCppPackageManager::deleteUnitTest(const std::string &sUnitTestName) {
+    if (m_bHolded) {
+        WSJCppLog::err(TAG, "Package is holded");
+        return false;
     }
+
+    bool bFound = false;
+    std::vector<WSJCppPackageManagerUnitTest>::iterator it; 
+    for (it = m_vUnitTests.begin(); it < m_vUnitTests.end(); ++it) {
+        if (it->getName() == sUnitTestName) {
+            bFound = true;
+            m_vUnitTests.erase(it);
+            break;
+        }
+    }
+    if (!bFound) {
+        return false;    
+    }
+    WSJCppYAMLItem *pItem = m_yamlPackageInfo["unit-tests"].getElement("cases");
+    int nLength = pItem->getLength();
+    for (int i = 0; i < nLength; i++) {
+        if (pItem->getElement(i)->getElement("name")->getValue() == sUnitTestName) {
+            std::string sBaseName = this->generateFilenameForUnitTest(sUnitTestName);
+            std::string sFileHeader = "./unit-tests.wsjcpp/src/" + sBaseName + ".h";
+            std::string sFileSource = "./unit-tests.wsjcpp/src/" + sBaseName + ".cpp";
+            if (WSJCppCore::fileExists(sFileHeader)) {
+                WSJCppCore::removeFile(sFileHeader);
+            }
+            if (WSJCppCore::fileExists(sFileSource)) {
+                WSJCppCore::removeFile(sFileSource);
+            }
+            /*if (nLength == 1) {
+                return m_yamlPackageInfo.getRoot()->removeElement("unit-tests");
+            }*/
+            if (pItem->removeElement(i)) {
+                updateAutogeneratedFiles();
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::addServer(const std::string &sServer) {
+bool WSJCppPackageManager::addOrigin(const std::string &sAddress) {
     if (m_bHolded) {
-        std::cout << "ERROR: package is holded" << std::endl;
+        WSJCppLog::err(TAG, "Package is holded");
         return false;
     }
-
-    for (auto it = m_vServers.begin(); it != m_vServers.end(); ++it) {
-        if (it->getAddress() == sServer) {
-            std::cout << "Error: Server '" << sServer << "' already defined." << std::endl;
+    // TODO check address format
+    // TODO request online for type
+    for (auto it = m_vOrigins.begin(); it != m_vOrigins.end(); ++it) {
+        if (it->getAddress() == sAddress) {
+            WSJCppLog::err(TAG, "Error: Origin '" + sAddress + "' already defined.");
             return false;
         }
     }
 
-    WSJCppPackageManagerServer server(sServer);
-    m_vServers.push_back(server);
+    WSJCppPackageManagerOrigin origin;
+    origin.setAddress(sAddress);
+    origin.setType("package-registry");
+    m_vOrigins.push_back(origin);
     return true;
 }
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::deleteServer(const std::string &sServer) {
+bool WSJCppPackageManager::deleteOrigin(const std::string &sAddress) {
     if (m_bHolded) {
-        std::cout << "ERROR: wsjcpp is holded" << std::endl;
+        WSJCppLog::err(TAG, "wsjcpp is holded");
         return false;
     }
 
-    for (auto it = m_vServers.begin(); it != m_vServers.end(); ++it) {
-        if (it->getAddress() == sServer) {
-            m_vServers.erase(it);
+    std::vector<WSJCppPackageManagerOrigin>::iterator it;
+    for (it = m_vOrigins.begin(); it != m_vOrigins.end(); ++it) {
+        if (it->getAddress() == sAddress) {
+            m_vOrigins.erase(it);
             return true;
         }
     }
-    std::cout << "Error: Server '" << sServer << "' did not found." << std::endl;
+    WSJCppLog::err(TAG, "Origin '" + sAddress + "' did not found." );
     return false;
 }
 
@@ -1364,6 +1439,12 @@ std::vector<WSJCppPackageManagerUnitTest> WSJCppPackageManager::getListOfUnitTes
 
 // ---------------------------------------------------------------------
 
+std::vector<WSJCppPackageManagerOrigin> WSJCppPackageManager::getListOfOrigins() {
+    return m_vOrigins;
+}
+
+// ---------------------------------------------------------------------
+
 std::string WSJCppPackageManager::getName() {
     return m_sName;
 }
@@ -1372,6 +1453,45 @@ std::string WSJCppPackageManager::getName() {
 
 std::string WSJCppPackageManager::getVersion() {
     return m_sVersion;
+}
+
+// ---------------------------------------------------------------------
+
+std::string WSJCppPackageManager::normalizeUnitTestName(const std::string &sUnitTestName, bool bSilent) {
+    std::string sRet = ""; 
+    for (int i = 0; i < sUnitTestName.size(); i++) {
+        char c = sUnitTestName[i];
+        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9')) {
+            sRet += c;
+        } else {
+            if (!bSilent) {
+                WSJCppLog::warn(TAG, std::string("Ignored symbol in UnitTest Name") + c);
+            }
+        }
+    }
+    return sRet;
+}
+
+// ---------------------------------------------------------------------
+// TODO test for this
+std::string WSJCppPackageManager::generateFilenameForUnitTest(const std::string &sUnitTestName) {
+    std::string sName = normalizeUnitTestName(sUnitTestName, false);
+    std::string sRet = "";
+    for (int i = 0; i < sName.size(); i++) {
+        char c = sUnitTestName[i];
+        if (c >= 'A' && c <= 'Z') {
+            c = char(c + 32);
+            sRet += sRet.length() == 0 ? "" : "_";
+            sRet += c;
+        } else if (c >= 'a' && c <= 'z') {
+            sRet += c;
+        } else if (c >= '0' && c <= '9') {
+            sRet += c;
+        } else {
+            WSJCppLog::warn(TAG, std::string("Ignored ") + c);
+        }
+    }
+    return "unit_test_" + sRet;
 }
 
 // ---------------------------------------------------------------------
@@ -1607,18 +1727,18 @@ bool WSJCppPackageManager::readFieldDistribution() {
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::readFieldServers() {
-    if (!m_yamlPackageInfo.getRoot()->hasElement("servers")) {
-        WSJCppLog::err(TAG, "Missing required field 'servers' in '" + m_sYamlFullpath + "'");
+bool WSJCppPackageManager::readFieldOrigins() {
+    if (!m_yamlPackageInfo.getRoot()->hasElement("origins")) {
+        WSJCppLog::err(TAG, "Missing required field 'origins' in '" + m_sYamlFullpath + "'");
         return false;
     }
-    WSJCppYAMLItem itemServers = m_yamlPackageInfo["servers"];
-    int nLength = itemServers.getLength();
+    WSJCppYAMLItem itemOrigins = m_yamlPackageInfo["origins"];
+    int nLength = itemOrigins.getLength();
     for (int i = 0; i < nLength; i++) {
-        WSJCppYAMLItem *pYamlServer = itemServers.getElement(i);
-        WSJCppPackageManagerServer server;
-        server.fromYAML(pYamlServer);
-        m_vServers.push_back(server);
+        WSJCppYAMLItem *pYamlOrigins = itemOrigins.getElement(i);
+        WSJCppPackageManagerOrigin origin;
+        origin.fromYAML(pYamlOrigins);
+        m_vOrigins.push_back(origin);
     }
     return true;
 }
@@ -1716,13 +1836,6 @@ bool WSJCppPackageManager::readFieldRequiredPkgConfig() {
         m_sRequiredPkgConfig.push_back(sRequiredPkgConfig);
     }
     return true;
-}
-
-// ---------------------------------------------------------------------
-
-std::string WSJCppPackageManager::generateFilenameForUnitTest(const std::string &sUnitTestName) {
-    // TODO
-    return "unit_test_" + sUnitTestName;
 }
 
 // ---------------------------------------------------------------------
@@ -2074,10 +2187,33 @@ bool WSJCppPackageManager::updateAutogeneratedFiles_UnitTests() {
     sCMakeListsTXT += 
         "\n"
         "# unit-tests\n"
-        "list (APPEND WSJCPP_INCLUDE_DIRS \"src\")\n"
-        "\n";
+        "list (APPEND WSJCPP_INCLUDE_DIRS \"src\")\n";
 
-    // TODO list of unit-tests files
+    // list of unit-tests files
+    for (int i = 0; i < m_vUnitTests.size(); i++) {
+        WSJCppPackageManagerUnitTest ut = m_vUnitTests[i];
+        std::string sUnitTestName = ut.getName();
+        std::string sName = normalizeUnitTestName(sUnitTestName, false);
+        std::string sBaseName = this->generateFilenameForUnitTest(sName);
+        std::string sFileHeader = "./unit-tests.wsjcpp/src/" + sBaseName + ".h";
+        std::string sFileSource = "./unit-tests.wsjcpp/src/" + sBaseName + ".cpp";
+        if (WSJCppCore::fileExists(sFileHeader)) {
+            sCMakeListsTXT += "list (APPEND WSJCPP_SOURCES \""
+                + WSJCppCore::doNormalizePath("../" + sFileHeader)
+                + "\")\n";
+        } else {
+            WSJCppLog::warn(TAG, "Ignored '" + sFileHeader + "' - file did not exists");
+        }
+
+        if (WSJCppCore::fileExists(sFileSource)) {
+            sCMakeListsTXT += "list (APPEND WSJCPP_SOURCES \""
+                + WSJCppCore::doNormalizePath("../" + sFileSource)
+                + "\")\n";
+        } else {
+            WSJCppLog::warn(TAG, "Ignored '" + sFileSource + "' - file did not exists");
+        }
+    }
+    sCMakeListsTXT += "\n";
 
     if (m_sRequiredLibraries.size() > 0) {
         sCMakeListsTXT += "# required-libraries\n";
@@ -2123,3 +2259,104 @@ bool WSJCppPackageManager::updateAutogeneratedFiles_UnitTests() {
     WSJCppCore::writeFile(sUnitTestsDir + "/CMakeLists.txt", sCMakeListsTXT);
     return true;
 }
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManager::updateAutogenerateFileUnitTestHeader(const std::string &sUnitTestName) {
+    std::string sName = normalizeUnitTestName(sUnitTestName, false);
+    if (sName != sUnitTestName) {
+        WSJCppLog::warn(TAG, "UnitTest name was normalized '" + sUnitTestName + "' -> '" + sName + "'");
+    }
+    if (!WSJCppCore::dirExists("./unit-tests.wsjcpp")) {
+        WSJCppCore::makeDir("./unit-tests.wsjcpp");
+    }
+    if (!WSJCppCore::dirExists("./unit-tests.wsjcpp/src/")) {
+        WSJCppCore::makeDir("./unit-tests.wsjcpp/src/");
+    }
+    if (!WSJCppCore::dirExists("./unit-tests.wsjcpp/src/")) {
+        WSJCppLog::err(TAG, "Directory does not exists './unit-tests.wsjcpp/src/'");
+        return false;
+    }
+    std::string sBaseName = this->generateFilenameForUnitTest(sName);
+    std::string sFileHeader = "./unit-tests.wsjcpp/src/" + sBaseName + ".h";
+    if (WSJCppCore::fileExists(sFileHeader)) {
+        WSJCppLog::err(TAG, "File already exists: '" + sFileHeader + "'");
+        return false;
+    } else {
+        std::string sDefine = WSJCppCore::toUpper(sBaseName + "_H");
+        std::string sContent = ""
+            "#ifndef " + sDefine + "\n"
+            "#define " + sDefine + "\n"
+            "\n"
+            "#include <wsjcpp_unit_tests.h>\n"
+            "\n"
+            "// Description: TODO\n"
+            "class UnitTest" + sName + " : public UnitTestBase {\n"
+            "    public:\n"
+            "        UnitTest" + sName + "();\n"
+            "        virtual void init();\n"
+            "        virtual bool run();\n"
+            "};\n"
+            "\n"
+            "#endif // " + sDefine + "\n";
+        WSJCppCore::writeFile(sFileHeader, sContent);
+    }
+    return true;
+}
+
+// ---------------------------------------------------------------------
+
+bool WSJCppPackageManager::updateAutogenerateFileUnitTestSource(const std::string &sUnitTestName) {
+    std::string sName = normalizeUnitTestName(sUnitTestName, false);
+    if (sName != sUnitTestName) {
+        WSJCppLog::warn(TAG, "UnitTest name was normalized '" + sUnitTestName + "' -> '" + sName + "'");
+    }
+    if (!WSJCppCore::dirExists("./unit-tests.wsjcpp")) {
+        WSJCppCore::makeDir("./unit-tests.wsjcpp");
+    }
+    if (!WSJCppCore::dirExists("./unit-tests.wsjcpp/src/")) {
+        WSJCppCore::makeDir("./unit-tests.wsjcpp/src/");
+    }
+    if (!WSJCppCore::dirExists("./unit-tests.wsjcpp/src/")) {
+        WSJCppLog::err(TAG, "Directory does not exists './unit-tests.wsjcpp/src/'");
+        return false;
+    }
+
+    std::string sBaseName = this->generateFilenameForUnitTest(sName);
+    std::string sFileSource = "./unit-tests.wsjcpp/src/" + sBaseName + ".cpp";
+    if (WSJCppCore::fileExists(sFileSource)) {
+        WSJCppLog::err(TAG, "File already exists: '" + sFileSource + "'");
+        return false;
+    } else {
+        std::string sContent = ""
+            "#include \"" + sBaseName + ".h\"\n"
+            "#include <vector>\n"
+            "#include <wsjcpp_core.h>\n"
+            // TODO include add current headers
+            "\n"
+            "REGISTRY_UNIT_TEST(UnitTest" + sName + ")\n"
+            "\n"
+            "UnitTest" + sName + "::UnitTest" + sName + "()\n"
+            "    : UnitTestBase(\"UnitTest" + sName + "\") {\n"
+            "}\n"
+            "\n"
+            "// ---------------------------------------------------------------------\n"
+            "\n"
+            "void UnitTest" + sName + "::init() {\n"
+            "    // nothing\n"
+            "}\n"
+            "\n"
+            "// ---------------------------------------------------------------------\n"
+            "\n"
+            "bool UnitTest" + sName + "::run() {\n"
+            "    bool bTestSuccess = true;\n"
+            "    compareB(bTestSuccess, \"Not implemented\", true, false);\n"
+            "    return bTestSuccess;\n"
+            "}\n";
+        
+        WSJCppCore::writeFile(sFileSource, sContent);
+    }
+    return true;
+}
+
+// ---------------------------------------------------------------------

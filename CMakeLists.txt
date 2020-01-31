@@ -29,6 +29,8 @@ list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_main.cpp
 list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_main.h")
 list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_basic.h")
 list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_basic.cpp")
+list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_origins.h")
+list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_origins.cpp")
 
 list (APPEND WSJCPP_SOURCES "src/main.cpp")
 

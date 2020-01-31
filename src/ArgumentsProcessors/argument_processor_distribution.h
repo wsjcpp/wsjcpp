@@ -11,6 +11,8 @@ class ArgumentProcessorDistribution : public WSJCppArgumentProcessor {
         
 };
 
+// ---------------------------------------------------------------------
+
 class ArgumentProcessorDistributionList : public WSJCppArgumentProcessor {
     public:
         ArgumentProcessorDistributionList();
@@ -19,6 +21,8 @@ class ArgumentProcessorDistributionList : public WSJCppArgumentProcessor {
     private:
         
 };
+
+// ---------------------------------------------------------------------
 
 class ArgumentProcessorDistributionAdd : public WSJCppArgumentProcessor {
     public:
@@ -29,6 +33,8 @@ class ArgumentProcessorDistributionAdd : public WSJCppArgumentProcessor {
         
 };
 
+// ---------------------------------------------------------------------
+
 class ArgumentProcessorDistributionRemove : public WSJCppArgumentProcessor {
     public:
         ArgumentProcessorDistributionRemove();
@@ -37,6 +43,8 @@ class ArgumentProcessorDistributionRemove : public WSJCppArgumentProcessor {
     private:
         
 };
+
+// ---------------------------------------------------------------------
 
 class ArgumentProcessorDistributionUpdate : public WSJCppArgumentProcessor {
     public:

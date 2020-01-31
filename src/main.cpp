@@ -174,14 +174,6 @@ int main(int argc, const char* argv[]) {
     // like `wsjcpp fix-conflict 'for-some-package' 'package-with-conflict' 'package-to-fix-conflict'`
     // helpArgs.addHelp("install-via-link", "il", FallenParseArgType::PARAMETER, "Install a source package from a link 'http://your-site.com/cppspm/some_package-v1.0.0.zip'");
     // helpArgs.addHelp("uninstall", "un", FallenParseArgType::PARAMETER, "Uninstall package 'some_package'");
-    
-    // helpArgs.addHelp("add-remote-server", "as", FallenParseArgType::PARAMETER, "Add server to source package");
-    // helpArgs.addHelp("delete-remote-server", "ds", FallenParseArgType::PARAMETER, "Delete server from source package");
-
-    // must be 
-    // files add 'from-filename' 'to-filename'
-    // files rm 'from-filename' 
-    // files list
 
     /*helpArgs.addHelp("verify", "vf", FallenParseArgType::SINGLE_OPTION, "");
     // helpArgs.addHelp("publish", "p", FallenParseArgType::PARAMETER, "Publish your package to server");
@@ -195,27 +187,7 @@ int main(int argc, const char* argv[]) {
         }
         
         return 0;
-    }  else if (helpArgs.has("add-source-file")) {
-        WSJCppPackageManager pkg(".");
-        std::string sFile = helpArgs.option("add-source-file");
-        if (!pkg.load()) {
-            return -1;
-        }
-        if (pkg.addFile(sFile)) {
-            pkg.save();
-        }
-        return 0;
-    } else if (helpArgs.has("delete-source-file")) {
-        WSJCppPackageManager pkg(".");
-        std::string sFile = helpArgs.option("delete-source-file");
-        if (!pkg.load()) {
-            return -1;
-        }
-        if (pkg.deleteFile(sFile)) {
-            pkg.save();
-        }
-        return 0;
-    }  else if (helpArgs.has("servers")) {
+    else if (helpArgs.has("servers")) {
         WSJCppPackageManager pkg(".");
         if (!pkg.load()) {
             return -1;
