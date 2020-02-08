@@ -398,6 +398,18 @@ bool WSJCppYAMLItem::appendElement(WSJCppYAMLItem *pItem) {
 
 // ---------------------------------------------------------------------
 
+bool WSJCppYAMLItem::appendElementValue(const std::string &sValue, bool bHasValueQuotes) {
+    if (m_nItemType != WSJCPP_YAML_ITEM_ARRAY) {
+        WSJCppLog::throw_err(TAG, "appendElement, Element must be array for " + this->getForLogFormat());
+    }
+    WSJCppYAMLPlaceInFile pl;
+    WSJCppYAMLItem *pNewItem = new WSJCppYAMLItem(this, pl, WSJCppYAMLItemType::WSJCPP_YAML_ITEM_VALUE);
+    pNewItem->setValue(sValue, bHasValueQuotes);
+    return this->appendElement(pNewItem);
+}
+
+// ---------------------------------------------------------------------
+
 bool WSJCppYAMLItem::removeElement(int i) {
     if (m_nItemType != WSJCPP_YAML_ITEM_ARRAY) {
         WSJCppLog::throw_err(TAG, "appendElement, Element must be array for " + this->getForLogFormat());
@@ -913,7 +925,27 @@ bool WSJCppYAML::parse(const std::string &sFileName, const std::string &sBuffer)
 // ---------------------------------------------------------------------
 
 void WSJCppYAML::process_sameIntent_hasName_emptyValue_arrayItem(WSJCppYAMLParserStatus &st) {
-    st.logUnknownLine("process_sameIntent_hasName_emptyValue_arrayItem");
+    if (st.pCurItem->isUndefined()) {
+        st.pCurItem->doArray();
+    }
+    WSJCppYAMLItem *pMapItem = new WSJCppYAMLItem(
+        st.pCurItem, st.placeInFile, 
+        WSJCppYAMLItemType::WSJCPP_YAML_ITEM_MAP
+    );
+    st.pCurItem->appendElement(pMapItem);
+    st.pCurItem = pMapItem;
+    st.nIntent = st.nIntent + 2;
+
+    WSJCppYAMLItem *pItem = new WSJCppYAMLItem(
+        st.pCurItem, st.placeInFile, 
+        WSJCppYAMLItemType::WSJCPP_YAML_ITEM_VALUE
+    );
+    pItem->setComment(st.line.getComment());
+    pItem->setValue(st.line.getValue(), st.line.hasValueDoubleQuotes());
+    pItem->setName(st.line.getName(), st.line.hasNameDoubleQuotes());
+    pMapItem->setElement(st.line.getName(), pItem);
+    st.pCurItem = pItem;
+    st.nIntent = st.nIntent + 2;
 }
 
 // ---------------------------------------------------------------------

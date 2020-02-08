@@ -2,8 +2,8 @@ wsjcpp_version: v0.0.1
 cmake_minimum_required: 3.0
 cmake_cxx_standard: 11
 
-name: wsjcpp/wsjcpp-yaml
-version: 0.0.2
+name: wsjcpp-yaml
+version: v0.0.3
 description: Read/Write yaml files
 issues: https://github.com/wsjcpp/wsjcpp-yaml/issues
 
@@ -26,11 +26,11 @@ required-libraries:
   - pthread
 
 dependencies:
-  - name: "wsjcpp/wsjcpp-core"
-    version: "v0.0.2"
+  - name: "wsjcpp-core"
+    version: "v0.0.4"
     url: "https://github.com/wsjcpp/wsjcpp-core:master"
     origin: "https://github.com/"
-    installation-dir: "./src.wsjcpp/wsjcpp_wsjcpp_core"
+    installation-dir: "./src.wsjcpp/wsjcpp_core"
 
 distribution:
   - source-file: src/wsjcpp_yaml.cpp
@@ -42,8 +42,13 @@ distribution:
     sha1: "3d4b215e387978ec0aa0956a3d81d024334593f2"
     type: "source-code"
 
-
 unit-tests:
   cases:
-    - name: Test1
-      description: Test1
+    - name: LineParser
+      description: Test Parse YAML Line
+    - name: YamlParserSimpleArray
+      description: Test Parse Array
+    - name: YamlParserSimpleMap
+      description: Test Parse Map
+    - name: YamlParserHierarchicalMap
+      description: Test Hierarchical Map

@@ -10,21 +10,6 @@
 void printHelp(std::vector<std::string> &vArgs) {
     std::string sProgramName = vArgs.size() > 0 ? vArgs[0] : "wsjcpp";
     std::cout << std::endl
-    << " Usage: " << sProgramName << " <command> <params>" << std::endl << std::endl
-    << " Commands: " << std::endl
-    << std::endl
-    << "\t" << "new <dir>" << std::endl
-    << "\t\t" << "Prepare new package in dir" << std::endl
-    << "\t\t" << "Will be generated build_simple / clean / wsjcpp.json / etc.. files README.md" << std::endl
-    << "\t\t" << " - example: `" << sProgramName << " new .`" << std::endl
-    << std::endl
-    // "New a source package %DIRECTORY% (wsjcpp.json file)"
-    << "\t" << "requirements packages list - List of requirements a source packages " << std::endl
-    << "\t" << "requirements packages install - List of requirements a source packages " << std::endl
-    << "\t\t" << " - example: `" << sProgramName << " requirements packages`" << std::endl
-    << std::endl
-    << "\t" << "uninstall <package-name>" << std::endl
-    << std::endl
     << "\t" << "verify" << std::endl
     << "\t\t" << "Verify files / sums / format / configs etc.." << std::endl
     << std::endl
@@ -40,10 +25,6 @@ void printHelp(std::vector<std::string> &vArgs) {
     << "\t" << "authors rm 'Full Name <Author Email>'" << std::endl
     << "\t\t" << "Remove author from curernt package" << std::endl
     << std::endl
-    << "\t" << "distribution sources list" << std::endl
-    << "\t" << "distribution sources add <from-filepath> <to-filepath>" << std::endl
-    << "\t" << "distribution sources rm <from-filepath>" << std::endl
-    << std::endl
     << "\t" << "deps" << std::endl
     << "\t\t" << "Show dependencies" << std::endl
     << std::endl
@@ -51,10 +32,6 @@ void printHelp(std::vector<std::string> &vArgs) {
     << "\t" << "generate list" << std::endl
     << "\t" << "generate <name>" << std::endl
     << "\t\t" << "Generate some custom files/classes" << std::endl
-    << std::endl
-    // << "\t" << "docs" << std::endl
-    // << "\t" << "docs make" << std::endl
-    // << "\t\t" << "Make documentation" << std::endl
     << std::endl;
 }
 
@@ -66,6 +43,9 @@ int main(int argc, const char* argv[]) {
     std::string appVersion = std::string(WSJCPP_VERSION);
     if (!WSJCppCore::dirExists(".wsjcpp")) {
         WSJCppCore::makeDir(".wsjcpp");
+    }
+    if (!WSJCppCore::fileExists(".wsjcpp/.gitignore")) {
+        WSJCppCore::writeFile(".wsjcpp/.gitignore", "logs/*\ncache/*\n");
     }
     std::string appLogPath = ".wsjcpp/logs";
     if (!WSJCppCore::dirExists(appLogPath)) {
@@ -83,6 +63,7 @@ int main(int argc, const char* argv[]) {
     for (int i = 0; i < argc; i++) {
         vArgs.push_back(std::string(argv[i]));
     }
+
     // printHelp(vArgs);
     int nResult = prog.exec();
     if (nResult != 0) {
@@ -92,40 +73,13 @@ int main(int argc, const char* argv[]) {
     }
     return nResult;
 
-    if (vArgs.size() == 3 && vArgs[1] == "info") {
-        WSJCppPackageManager pkg(vArgs[2]);
-        if (!pkg.load()) {
-            return -1;
-        }
-        pkg.printInfo();
-        return 0;
-    }
     
     if (vArgs.size() > 1) {
         if (vArgs[1] == "help") {
             printHelp(vArgs);
             return -1;
         }
-        if (vArgs[1] == "new") {
-            if (argc != 3) {
-                printHelp(vArgs);
-                return -1;
-            }
-            // TODO move inside WSJCppPackageManager.init
-            std::string sDirectory = vArgs[2];
-            std::string sWSJCppJson = sDirectory + "/wsjcpp.yml";
-            if (WSJCppCore::fileExists(sWSJCppJson)) {
-                std::cout << "Error: wsjcpp.json already exists." << std::endl;
-                return -1;
-            }
-            WSJCppPackageManager pkg(sDirectory);
-            if (!pkg.init()) {
-                return -1;
-            }
-            pkg.save();
-            return 0;
-        }
-
+    
         WSJCppPackageManager pkg(".");
         if (!pkg.load()) {
             std::cout << "Could not load package info from current directory" << std::endl;
@@ -177,44 +131,6 @@ int main(int argc, const char* argv[]) {
 
     /*helpArgs.addHelp("verify", "vf", FallenParseArgType::SINGLE_OPTION, "");
     // helpArgs.addHelp("publish", "p", FallenParseArgType::PARAMETER, "Publish your package to server");
-    
-    if (helpArgs.handleDefault()) {
-        return 0;
-    } else if (helpArgs.has("files")) {
-        WSJCppPackageManager pkg(".");
-        if (!pkg.load()) {
-            return -1;
-        }
-        
-        return 0;
-    else if (helpArgs.has("servers")) {
-        WSJCppPackageManager pkg(".");
-        if (!pkg.load()) {
-            return -1;
-        }
-        pkg.printServers();
-        return 0;
-    }  else if (helpArgs.has("add-remote-server")) {
-        WSJCppPackageManager pkg(".");
-        std::string sServer = helpArgs.option("add-remote-server");
-        if (!pkg.load()) {
-            return -1;
-        }
-        if (pkg.addServer(sServer)) {
-            pkg.save();
-        }
-        return 0;
-    } else if (helpArgs.has("delete-remote-server")) {
-        WSJCppPackageManager pkg(".");
-        std::string sServer = helpArgs.option("delete-remote-server");
-        if (!pkg.load()) {
-            return -1;
-        }
-        if (pkg.deleteServer(sServer)) {
-            pkg.save();
-        }
-        return 0;
-    } 
     */
     return 0;
 }

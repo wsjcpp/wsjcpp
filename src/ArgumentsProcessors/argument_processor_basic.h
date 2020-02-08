@@ -11,4 +11,20 @@ class ArgumentProcessorInfo : public WSJCppArgumentProcessor {
         
 };
 
+class ArgumentProcessorInit : public WSJCppArgumentProcessor {
+    public:
+        ArgumentProcessorInit();
+        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
+    private:
+        
+};
+
+class ArgumentProcessorClean : public WSJCppArgumentProcessor {
+    public:
+        ArgumentProcessorClean();
+        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
+    private:
+        
+};
+
 #endif // ARGUMENT_PROCESSOR_BASIC_H

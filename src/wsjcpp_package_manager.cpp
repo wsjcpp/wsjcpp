@@ -9,6 +9,7 @@
 #include <wsjcpp_core.h>
 #include <stdio.h>
 #include <ctype.h>
+#include <sys/stat.h>
 
 // ---------------------------------------------------------------------
 // WSJCppPackageManagerDistributionFile
@@ -19,7 +20,8 @@ WSJCppPackageManagerDistributionFile::WSJCppPackageManagerDistributionFile() {
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManagerDistributionFile::fromYAML(WSJCppYAMLItem *pYamlDistributionFile) {
+bool WSJCppPackageManagerDistributionFile::fromYAML(WSJCppYAMLItem *pYamlDistributionFile, bool bHolded) {
+    m_bHolded = bHolded;
     m_pYamlDistributionFile = pYamlDistributionFile;
     if (!m_pYamlDistributionFile->hasElement("source-file")) {
         WSJCppLog::err(TAG, "Missing required field 'source-file' in " + m_pYamlDistributionFile->getForLogFormat());
@@ -35,11 +37,17 @@ bool WSJCppPackageManagerDistributionFile::fromYAML(WSJCppYAMLItem *pYamlDistrib
         m_sTargetFile = m_pYamlDistributionFile->getElement("target-file")->getValue();
     }
 
-    if (!m_pYamlDistributionFile->hasElement("sha1")) {
-        WSJCppLog::err(TAG, "Missing required field 'sha1' in " + m_pYamlDistributionFile->getForLogFormat());
-        return false; 
+    if (m_bHolded) {
+        if (!m_pYamlDistributionFile->hasElement("sha1")) {
+            WSJCppLog::err(TAG, "Missing required field 'sha1' in " + m_pYamlDistributionFile->getForLogFormat());
+            return false; 
+        } else {
+            m_sSha1 = m_pYamlDistributionFile->getElement("sha1")->getValue();
+        }
     } else {
-        m_sSha1 = m_pYamlDistributionFile->getElement("sha1")->getValue();
+        if (m_pYamlDistributionFile->hasElement("sha1")) {
+            WSJCppLog::warn(TAG, "Exccess field 'sha1' in " + m_pYamlDistributionFile->getForLogFormat());
+        }
     }
 
     if (!m_pYamlDistributionFile->hasElement("type")) {
@@ -502,29 +510,36 @@ bool WSJCppPackageManager::isHolded() const {
 // ---------------------------------------------------------------------
 
 bool WSJCppPackageManager::init() {
-
-    if (!WSJCppCore::dirExists(m_sDir)) {
-        std::cout << "Directory '" << m_sDir << "' did not exists... create the dir ? (y/n)" << std::endl;
-        std::string sYN;
-        std::cin >> sYN;
-        if (sYN == "y" || sYN == "Y") {
-            WSJCppCore::makeDir(m_sDir);
-        }
-
-        if (!WSJCppCore::dirExists(m_sDir)) {
-            std::cout << "ERROR: Directory '" << m_sDir << "' did not exists." << std::endl;
-            return false;
-        }
+    std::string sCurrentDirectory = WSJCppCore::getCurrentDirectory() + "/" + m_sDir;
+    sCurrentDirectory = WSJCppCore::doNormalizePath(sCurrentDirectory);
+    if (sCurrentDirectory[sCurrentDirectory.length()-1] == '/') {
+        sCurrentDirectory = sCurrentDirectory.substr(0, sCurrentDirectory.size()-1);
     }
+    m_sYamlFullpath = "wsjcpp.yml";
 
-    std::cout << "Directory: " << m_sDir << std::endl; // Type a number and press enter
-    std::cout << "Source Package Name: ";
-    std::getline(std::cin, m_sName);
-    std::cout << "Version: ";
-    std::getline(std::cin, m_sVersion);
+    // TODO check wsjcpp.yml
+
+    m_sName = WSJCppCore::extractFilename(sCurrentDirectory);
+    m_yamlPackageInfo.getRoot()->setElementValue("name", false, m_sName, true);
+
+    m_sVersion = "v0.0.1";
+    m_yamlPackageInfo.getRoot()->setElementValue("version", false, m_sVersion, true);
+    
+    m_sCMakeMinimumRequired = "3.0";
+    m_yamlPackageInfo.getRoot()->setElementValue("cmake_minimum_required", false, m_sCMakeMinimumRequired, true);
+
+    m_sCMakeCxxStandard = "11";
+    m_yamlPackageInfo.getRoot()->setElementValue("cmake_cxx_standard", false, m_sCMakeCxxStandard, true);
+
+
+    std::cout << "Source Package Name: " << m_sName << std::endl;
+    std::cout << "Version: " << m_sVersion << std::endl;
+
     std::cout << "Description: ";
     std::getline(std::cin, m_sDescription);
-    
+
+    m_yamlPackageInfo.getRoot()->setElementValue("description", false, m_sDescription, true);
+
     std::string sAuthorName = "";
     std::cout << "Author's Name: ";
     std::getline(std::cin, sAuthorName);
@@ -533,28 +548,13 @@ bool WSJCppPackageManager::init() {
     std::cout << "Author's Email: ";
     std::getline(std::cin, sAuthorEmail);
 
-    WSJCppPackageManagerAuthor author(sAuthorName, sAuthorEmail);
-    m_vAuthors.push_back(author);
-    
-    for (int i = 0; i < 10; i++) {
-        std::string sKeyword = "";
-        std::cout << "Keyword " << (i+1) << ": ";
-        std::getline(std::cin, sKeyword);
-        if (sKeyword == "") {
-            break;
-        }
-        m_vKeywords.push_back(sKeyword);
-    }
+    addAuthor(sAuthorName, sAuthorEmail);
+    addOrigin("https://sea-kg.com/wsjcpp-package-registry/");
 
-    std::string sDefaultServerAddress = "sea-kg.com";
-    std::string sServerAddress = "sea-kg.com";
-    std::cout << "Server Address (default '" << sDefaultServerAddress << "'): ";
-    std::getline(std::cin, sServerAddress);
-    if (sServerAddress == "") {
-        sServerAddress = sDefaultServerAddress;
-    }
-    // WSJCppPackageManagerServer server(sServerAddress);
-    // m_vServers.push_back(server);
+    m_yamlPackageInfo.getRoot()->createElementArray("keywords", false);
+    m_yamlPackageInfo.getRoot()->getElement("keywords")->appendElementValue("c++", true);
+
+    // addKeyword("wsjcpp");
 
     return true;
 }
@@ -705,13 +705,11 @@ bool WSJCppPackageManager::addSourceFile(const std::string &sSourceFile, const s
     if (!WSJCppCore::readTextFile(sSourceFile, sContent)) {
         return false;
     }
-    std::string sSha1 = WSJCppHashes::sha1_calc_hex(sContent);
 
     WSJCppPackageManagerDistributionFile file;
     file.setSourceFile(sSourceFile);
     file.setTargetFile(sTargetFile);
     file.setType(sType);
-    file.setSha1(sSha1);
     m_vDistributionFiles.push_back(file);
     
     WSJCppYAMLItem *pDist = m_yamlPackageInfo.getRoot()->getElement("distribution");
@@ -720,7 +718,6 @@ bool WSJCppPackageManager::addSourceFile(const std::string &sSourceFile, const s
     pItem->setElementValue("source-file", false, sSourceFile, true);
     pItem->setElementValue("target-file", false, sTargetFile, true);
     pItem->setElementValue("type", false, sType, true);
-    pItem->setElementValue("sha1", false, sSha1, true);
     pDist->appendElement(pItem);
     updateAutogeneratedFiles();
     return true;
@@ -738,6 +735,7 @@ bool WSJCppPackageManager::removeSourceFile(const std::string &sSourceFile) {
         if (it->getSourceFile() == sSourceFile) {
             m_vDistributionFiles.erase(it);
             bResult = true;
+            break;
         }
     }
     if (bResult) {
@@ -919,10 +917,22 @@ bool WSJCppPackageManager::addOrigin(const std::string &sAddress) {
         }
     }
 
+    std::string sOriginType = "package-registry";
     WSJCppPackageManagerOrigin origin;
     origin.setAddress(sAddress);
-    origin.setType("package-registry");
+    origin.setType(sOriginType);
     m_vOrigins.push_back(origin);
+
+    if (!m_yamlPackageInfo.getRoot()->hasElement("origins")) {
+        m_yamlPackageInfo.getRoot()->createElementArray("origins", false);
+    }
+    
+    WSJCppYAMLItem *pOrigins = m_yamlPackageInfo.getRoot()->getElement("origins");
+    WSJCppYAMLPlaceInFile pl;
+    WSJCppYAMLItem *pNewItemMap = new WSJCppYAMLItem(pOrigins, pl, WSJCppYAMLItemType::WSJCPP_YAML_ITEM_MAP);
+    pNewItemMap->setElementValue("address", false, sAddress, true);
+    pNewItemMap->setElementValue("type", false, sOriginType, true);
+    pOrigins->appendElement(pNewItemMap);
     return true;
 }
 
@@ -1127,30 +1137,20 @@ bool WSJCppPackageManager::isHttpsPackage(const std::string &sPackage) {
 
 void WSJCppPackageManager::addDependency(WSJCppPackageManagerDependence &dep) {
     m_vDependencies.push_back(dep);
-    WSJCppYAMLItem *pDeps = m_yamlPackageInfo.getRoot()->getElement("dependencies");
+    WSJCppYAMLItem *pRoot = m_yamlPackageInfo.getRoot();
+    if (!pRoot->hasElement("dependencies")) {
+        pRoot->createElementArray("dependencies", false);
+    }
+
+    WSJCppYAMLItem *pDeps = pRoot->getElement("dependencies");
     WSJCppYAMLPlaceInFile pl;
     WSJCppYAMLItem *pItem = new WSJCppYAMLItem(pDeps, pl, WSJCppYAMLItemType::WSJCPP_YAML_ITEM_MAP);
     // TODO add simplyfy method
-    WSJCppYAMLItem *pItemName = new WSJCppYAMLItem(pItem, pl, WSJCppYAMLItemType::WSJCPP_YAML_ITEM_VALUE);
-    pItemName->setName("name", false);
-    pItemName->setValue(dep.getName(), true);
-    pItem->setElement("name", pItemName);
-    WSJCppYAMLItem *pItemVersion = new WSJCppYAMLItem(pItem, pl, WSJCppYAMLItemType::WSJCPP_YAML_ITEM_VALUE);
-    pItemVersion->setName("version", false);
-    pItemVersion->setValue(dep.getVersion(), true);
-    pItem->setElement("version", pItemVersion);
-    WSJCppYAMLItem *pItemURL = new WSJCppYAMLItem(pItem, pl, WSJCppYAMLItemType::WSJCPP_YAML_ITEM_VALUE);
-    pItemURL->setName("url", false);
-    pItemURL->setValue(dep.getUrl(), true);
-    pItem->setElement("url", pItemURL);
-    WSJCppYAMLItem *pItemOrigin = new WSJCppYAMLItem(pItem, pl, WSJCppYAMLItemType::WSJCPP_YAML_ITEM_VALUE);
-    pItemOrigin->setName("origin", false);
-    pItemOrigin->setValue(dep.getOrigin(), true);
-    pItem->setElement("origin", pItemOrigin);
-    WSJCppYAMLItem *pItemInstallationDir = new WSJCppYAMLItem(pItem, pl, WSJCppYAMLItemType::WSJCPP_YAML_ITEM_VALUE);
-    pItemInstallationDir->setName("installation-dir", false);
-    pItemInstallationDir->setValue(dep.getInstallationDir(), true);
-    pItem->setElement("installation-dir", pItemInstallationDir);
+    pItem->setElementValue("name", false, dep.getName(), true);
+    pItem->setElementValue("version", false, dep.getVersion(), true);
+    pItem->setElementValue("url", false, dep.getUrl(), true);
+    pItem->setElementValue("origin", false, dep.getOrigin(), true);
+    pItem->setElementValue("installation-dir", false, dep.getInstallationDir(), true);
     pDeps->appendElement(pItem);
 }
 
@@ -1295,42 +1295,6 @@ bool WSJCppPackageManager::installFromCache(const std::string &sPackage, const W
 
 // ---------------------------------------------------------------------
 
-// TODO remove it
-void WSJCppPackageManager::printInfo() {
-    
-    std::cout << std::endl 
-        << "===== begin: wsjcpp info =====" << std::endl
-        << "Name: " << m_sName << std::endl
-        << "Version: " << m_sVersion << std::endl
-        << "Description: " << m_sDescription
-        << std::endl;
-    if (m_bHolded) {
-        std::cout << "Package is holded" << std::endl;
-    }
-    std::cout << "Directory: " << m_sDir << std::endl;
-    std::cout << "wsjcpp.version = " << m_sWSJCppVersion << std::endl;
-    // print keywords
-    std::cout << "Keywords: " << std::endl;
-    for (unsigned int i = 0; i < m_vKeywords.size(); i++) {
-        std::cout << " - " << m_vKeywords[i] << std::endl;
-    }
-    if (m_vDistributionFiles.size() > 0) {
-        std::cout << std::endl << "Distribution-Files: " << std::endl;
-        for (unsigned int i = 0; i < m_vDistributionFiles.size(); i++) {
-            WSJCppPackageManagerDistributionFile source = m_vDistributionFiles[i];
-            std::cout << " - " << source.getSourceFile() << " -> " << source.getTargetFile() << " [sha1:" << source.getSha1() << "]" << std::endl;
-        }
-    }
-    
-    // TODO: print authors
-    // TODO: print deps
-
-    std::cout << "===== end: wsjcpp info =====" << std::endl
-        << std::endl;
-}
-
-// ---------------------------------------------------------------------
-
 void WSJCppPackageManager::printAuthors() {
     std::cout << "Authors (" << m_sName << ":" << m_sVersion << "): " << std::endl;
     for (int i = 0; i < m_vAuthors.size(); i++) {
@@ -1395,6 +1359,19 @@ bool WSJCppPackageManager::addAuthor(const std::string &sName, const std::string
 
     WSJCppPackageManagerAuthor newAuthor(sName, sEmail);
     m_vAuthors.push_back(newAuthor);
+
+    if (!m_yamlPackageInfo.getRoot()->hasElement("authors")) {
+        m_yamlPackageInfo.getRoot()->createElementArray("authors", false);
+    }
+
+    WSJCppYAMLItem *pItem = m_yamlPackageInfo.getRoot()->getElement("authors");
+    WSJCppYAMLPlaceInFile pl;
+    WSJCppYAMLItem *pNewItemMap = new WSJCppYAMLItem(pItem, pl, WSJCppYAMLItemType::WSJCPP_YAML_ITEM_MAP);
+    // pNewItem->setName(sName, false);
+    // pItem->setElement(sName, pNewItem);
+    pNewItemMap->setElementValue("name", false, sName, true);
+    pNewItemMap->setElementValue("email", false, sEmail, true);
+    pItem->appendElement(pNewItemMap);
     return true;
 }
 
@@ -1445,6 +1422,18 @@ std::vector<WSJCppPackageManagerOrigin> WSJCppPackageManager::getListOfOrigins()
 
 // ---------------------------------------------------------------------
 
+std::vector<WSJCppPackageManagerAuthor> WSJCppPackageManager::getListOfAuthors() {
+    return m_vAuthors;
+}
+
+// ---------------------------------------------------------------------
+
+std::vector<std::string> WSJCppPackageManager::getListOfKeywords() {
+    return m_vKeywords;
+}
+
+// ---------------------------------------------------------------------
+
 std::string WSJCppPackageManager::getName() {
     return m_sName;
 }
@@ -1453,6 +1442,31 @@ std::string WSJCppPackageManager::getName() {
 
 std::string WSJCppPackageManager::getVersion() {
     return m_sVersion;
+}
+
+// ---------------------------------------------------------------------
+
+std::string WSJCppPackageManager::getWSJCppVersion() {
+    return m_sWSJCppVersion;
+}
+
+// ---------------------------------------------------------------------
+
+std::string WSJCppPackageManager::getDescription() {
+    return m_sDescription;
+}
+
+
+// ---------------------------------------------------------------------
+
+std::string WSJCppPackageManager::getCMakeCxxStandard() {
+    return m_sCMakeCxxStandard;
+}
+
+// ---------------------------------------------------------------------
+
+std::string WSJCppPackageManager::getCMakeMinimumRequired() {
+    return m_sCMakeMinimumRequired;
 }
 
 // ---------------------------------------------------------------------
@@ -1719,7 +1733,7 @@ bool WSJCppPackageManager::readFieldDistribution() {
     for (int i = 0; i < nLength; i++) {
         WSJCppYAMLItem *pYamlSource = itemDistribution.getElement(i);
         WSJCppPackageManagerDistributionFile source;
-        source.fromYAML(pYamlSource);
+        source.fromYAML(pYamlSource, m_bHolded);
         m_vDistributionFiles.push_back(source);
     }
     return true;
@@ -2125,19 +2139,7 @@ bool WSJCppPackageManager::updateAutogeneratedFiles_UnitTests() {
     ;
         
     WSJCppCore::writeFile(sUnitTestsDir + "/.gitignore", sGitignore);
-
-    std::string sBuildSimpleSH = 
-        "#!/bin/bash\n"
-        "\n"
-        "if [ ! -d tmp ]; then\n"
-        "	mkdir -p tmp\n"
-        "fi\n"
-        "\n"
-        "cd tmp\n"
-        "cmake ..\n"
-        "make\n";
-
-    WSJCppCore::writeFile(sUnitTestsDir + "/build_simple.sh", sBuildSimpleSH);
+    WSJCppCore::writeFile(sUnitTestsDir + "/build_simple.sh", this->getSampleForBuildSimpleSh());
 
     std::string sCMakeListsTXT = ""
         "# Automaticly generated by wsjcpp@" + m_sWSJCppCurrentVersion + "\n"
@@ -2371,6 +2373,22 @@ bool WSJCppPackageManager::updateAutogenerateFileUnitTestSource(const std::strin
         WSJCppCore::writeFile(sFileSource, sContent);
     }
     return true;
+}
+
+// ---------------------------------------------------------------------
+
+std::string WSJCppPackageManager::getSampleForBuildSimpleSh() {
+    return
+        "#!/bin/bash\n"
+        "\n"
+        "if [ ! -d tmp ]; then\n"
+        "	mkdir -p tmp\n"
+        "fi\n"
+        "\n"
+        "cd tmp\n"
+        "cmake ..\n"
+        "make\n"
+    ;
 }
 
 // ---------------------------------------------------------------------

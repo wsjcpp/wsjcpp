@@ -13,11 +13,13 @@
 
 ArgumentProcessorMain::ArgumentProcessorMain() 
   : WSJCppArgumentProcessor("main", "C++ Source Package manager") {
+    registryProcessor(new ArgumentProcessorInit());
+    registryProcessor(new ArgumentProcessorClean());
+    registryProcessor(new ArgumentProcessorInfo());
     registryProcessor(new ArgumentProcessorInstall());
     registryProcessor(new ArgumentProcessorReinstall());
     registryProcessor(new ArgumentProcessorUninstall());
     registryProcessor(new ArgumentProcessorList());
-    registryProcessor(new ArgumentProcessorInfo());
     registryProcessor(new ArgumentProcessorUpdate());
     registryProcessor(new ArgumentProcessorDistribution());
     registryProcessor(new ArgumentProcessorRun());

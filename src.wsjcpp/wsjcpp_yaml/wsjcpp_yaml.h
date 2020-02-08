@@ -93,6 +93,7 @@ class WSJCppYAMLItem { // TODO: rename to node
         int getLength();
         WSJCppYAMLItem *getElement(int i);
         bool appendElement(WSJCppYAMLItem *pItem);
+        bool appendElementValue(const std::string &sValue, bool bHasNameQuotes);
         bool removeElement(int i);
 
         bool isValue();
