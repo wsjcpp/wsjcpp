@@ -4,7 +4,7 @@
 #include <wsjcpp_unit_tests.h>
 
 // Description: TODO
-class UnitTestNormalizeUnitTestName : public UnitTestBase {
+class UnitTestNormalizeUnitTestName : public WSJCppUnitTestBase {
     public:
         UnitTestNormalizeUnitTestName();
         virtual void init();

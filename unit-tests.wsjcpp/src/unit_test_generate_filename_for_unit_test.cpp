@@ -6,7 +6,7 @@
 REGISTRY_UNIT_TEST(UnitTestgenerateFilenameForUnitTest)
 
 UnitTestgenerateFilenameForUnitTest::UnitTestgenerateFilenameForUnitTest()
-    : UnitTestBase("UnitTestgenerateFilenameForUnitTest") {
+    : WSJCppUnitTestBase("UnitTestgenerateFilenameForUnitTest") {
 }
 
 // ---------------------------------------------------------------------

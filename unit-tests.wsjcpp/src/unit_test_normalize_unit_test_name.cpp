@@ -5,7 +5,7 @@
 REGISTRY_UNIT_TEST(UnitTestNormalizeUnitTestName)
 
 UnitTestNormalizeUnitTestName::UnitTestNormalizeUnitTestName()
-    : UnitTestBase("UnitTestNormalizeUnitTestName") {
+    : WSJCppUnitTestBase("UnitTestNormalizeUnitTestName") {
 }// ---------------------------------------------------------------------
 
 void UnitTestNormalizeUnitTestName::init() {
