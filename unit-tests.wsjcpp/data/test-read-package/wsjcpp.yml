@@ -1,0 +1,47 @@
+wsjcpp_version: v0.0.1
+cmake_minimum_required: 3.0
+cmake_cxx_standard: 11
+name: wsjcpp-test-read-package
+version: v0.1.1a
+description: C++. Test Read Package
+issues: "https://github.com/wsjcpp/wsjcpp/issues"
+keywords:
+  - "c++"
+  - "test"
+
+required-pkg-config:
+  - CURL
+
+repositories:
+  - type: main
+    url: "https://github.com/wsjcpp/wsjcpp"
+
+authors:
+  - name: "Unit Tests"
+    email: "author@test.test"
+
+distribution:
+  - source-file: "src/test.cpp"
+    target-file: "test.cpp"
+    type: "source-code"
+  - source-file: "src/test.h"
+    target-file: "test.h"
+    type: "source-code"
+
+origins:
+  - address: "https://sea-kg.com/wsjcpp-package-registry/"
+    type: package-registry
+  - address: "file:///usr/share/wsjcpp-package-registry"
+    type: local-file-system
+
+unit-tests:
+  cases:
+    - name: "Test1"
+      description: "Test 1"
+      enabled: "yes"
+    - name: "Test2"
+      description: "Test 2"
+      enabled: "yes"
+    - name: "Test3"
+      description: "Test 3"
+      enabled: "no"

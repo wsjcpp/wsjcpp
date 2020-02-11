@@ -4,7 +4,7 @@ cmake_cxx_standard: 11
 name: wsjcpp
 version: v0.0.1
 description: C++ Source Package manager
-issues: https://github.com/wsjcpp/wsjcpp/issues
+issues: https://github.com/wsjcpp/wsjcpp/issues # TODO add validate
 keywords:
   - "c++"
   - "sources"
@@ -37,29 +37,29 @@ dependencies:
     origin: "https://github.com/"
     installation-dir: "./src.wsjcpp/wsjcpp_wsjcpp_hashes"
 
+# build-dependencies:
+
 repositories:
-  - type: main
-    url: "https://github.com/wsjcpp/wsjcpp"
+  - type: main # TODO validator
+    url: "https://github.com/wsjcpp/wsjcpp" # TODO validator
 
 authors:
   - name: "Evgenii Sopov"
-    email: "mrseakg@gmail.com"
+    email: "mrseakg@gmail.com" # add validate email format
 
-origins: # rename origins
+origins:
   - address: "https://sea-kg.com/wsjcpp-package-registry/"
     type: package-registry
   - address: "file:///usr/share/wsjcpp-package-registry"
-    type: local-file-system
+    type: local-file-system # must be in global ~/.wsjcpp/config.yml
 
 distribution:
   - source-file: "src/wsjcpp_package_manager.cpp"
     target-file: "wsjcpp_package_manager.cpp"
-    type: "source-code"
-    sha1: "75ecfa5bd35135f6a3ddf3bdc17fdeb847255114"
+    type: "source-code" # TODO validator
   - source-file: "src/wsjcpp_package_manager.h"
     target-file: "wsjcpp_package_manager.h"
     type: "source-code"
-    sha1: "1f6f1a3a5283a3ef882dd2063dc804d1977740d9"
 
 docker:
   for-build:
@@ -84,3 +84,8 @@ unit-tests:
       description: "Test Normalize UnitTest Name"
     - name: "generateFilenameForUnitTest"
       description: "Test generate filename for UnitTest"
+    - name: "InitPackage"
+      description: "Test for init package"
+      enabled: "no"
+    - name: "ReadPackage"
+      description: "Test for read package"

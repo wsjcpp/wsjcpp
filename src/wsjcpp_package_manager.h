@@ -100,13 +100,16 @@ class WSJCppPackageManagerUnitTest {
         bool fromYAML(WSJCppYAMLItem *pYaml);
         std::string getName();
         std::string getDescription();
+        bool isEnabled();
         void setName(const std::string &sName);
         void setDescription(const std::string &sDescription);
+        void setEnabled(bool bEnabled);
 
     private:
         std::string TAG;
         std::string m_sName;
         std::string m_sDescription;
+        bool m_bEnabled;
         WSJCppYAMLItem *m_pYamlUnitTest;
 };
 
@@ -155,8 +158,13 @@ class WSJCppPackageManager {
         bool addSourceFile(const std::string &sSourceFile, const std::string &sTargetFile, const std::string &sType);
         bool removeSourceFile(const std::string &sSourceFile);
         bool updateSourceFile(const std::string &sSourceFile);
+        
+        // unit-tests
         bool createUnitTest(const std::string &sUnitTestName, const std::string &sUnitTestDescription);
         bool deleteUnitTest(const std::string &sUnitTestName);
+        bool enableUnitTest(const std::string &sUnitTestName, bool bEnable);
+        std::vector<WSJCppPackageManagerUnitTest> getListOfUnitTests();
+
         bool addOrigin(const std::string &sAddress);
         bool deleteOrigin(const std::string &sAddress);
         bool updateDependencies();
@@ -170,10 +178,10 @@ class WSJCppPackageManager {
         bool removeAuthor(const std::string &sAuthor);
         std::vector<WSJCppPackageManagerDistributionFile> getListOfDistributionFiles();
         std::vector<WSJCppPackageManagerDependence> getListOfDependencies();
-        std::vector<WSJCppPackageManagerUnitTest> getListOfUnitTests();
         std::vector<WSJCppPackageManagerOrigin> getListOfOrigins();
         std::vector<WSJCppPackageManagerAuthor> getListOfAuthors();
         std::vector<std::string> getListOfKeywords();
+        std::vector<WSJCppPackageManagerRepository> getListOfRepositories();
         
         std::string getName();
         std::string getVersion();
@@ -181,7 +189,7 @@ class WSJCppPackageManager {
         std::string getDescription();
         std::string getCMakeCxxStandard();
         std::string getCMakeMinimumRequired();
-        
+        std::string getIssues();
         std::string normalizeUnitTestName(const std::string &sUnitTestName, bool bSilent);
         std::string generateFilenameForUnitTest(const std::string &sUnitTestName);
 

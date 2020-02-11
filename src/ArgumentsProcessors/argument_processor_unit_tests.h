@@ -11,6 +11,8 @@ class ArgumentProcessorUnitTests : public WSJCppArgumentProcessor {
         
 };
 
+// ---------------------------------------------------------------------
+
 class ArgumentProcessorUnitTestsCreate : public WSJCppArgumentProcessor {
     public:
         ArgumentProcessorUnitTestsCreate();
@@ -20,9 +22,33 @@ class ArgumentProcessorUnitTestsCreate : public WSJCppArgumentProcessor {
         
 };
 
+// ---------------------------------------------------------------------
+
 class ArgumentProcessorUnitTestsDelete : public WSJCppArgumentProcessor {
     public:
         ArgumentProcessorUnitTestsDelete();
+        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
+        
+    private:
+        
+};
+
+// ---------------------------------------------------------------------
+
+class ArgumentProcessorUnitTestsEnable : public WSJCppArgumentProcessor {
+    public:
+        ArgumentProcessorUnitTestsEnable();
+        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
+        
+    private:
+        
+};
+
+// ---------------------------------------------------------------------
+
+class ArgumentProcessorUnitTestsDisable : public WSJCppArgumentProcessor {
+    public:
+        ArgumentProcessorUnitTestsDisable();
         virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
         
     private:
