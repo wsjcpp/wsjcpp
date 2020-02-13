@@ -296,7 +296,7 @@ std::string WSJCppPackageManagerRepository::getUrl() {
 
 WSJCppPackageManagerUnitTest::WSJCppPackageManagerUnitTest() {
     TAG = "WSJCppPackageManagerUnitTest";
-    m_bEnabled = false;
+    m_bEnabled = true; // default enbaled 
 }
 
 // ---------------------------------------------------------------------
