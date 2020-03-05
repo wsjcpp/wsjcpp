@@ -44,5 +44,5 @@ install(
     TARGETS
         wsjcpp
     RUNTIME DESTINATION
-        /usr/bin
+        /usr/local/bin
 )
