@@ -100,3 +100,26 @@ About current package:
 ```
 $ wsjcpp info
 ```
+
+
+### Build and run in docker
+
+Build:
+
+```
+$ docker build --rm --tag "wsjcpp" .
+$ sudo docker run -it --rm \
+  -v `pwd`/.:/home/node/app \
+  -w /home/node/app \
+  angular-cli-start:latest \
+  bash
+```
+
+Run:
+
+```
+$ sudo docker run -it --rm \
+  -v `pwd`/.:/root/project \
+  wsjcpp:latest \
+  bash
+```
