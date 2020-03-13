@@ -1,0 +1,65 @@
+
+# commands
+# wsjcpp build-server command build
+# wsjcpp build-server command run
+# wsjcpp build-server command remove
+# wsjcpp build-server command build-and-run
+# wsjcpp build-server command unit-tests
+# docker start my_container -p
+
+build-server:
+  servers: # may be move to different file like a local.properties
+    default:
+      host: "127.0.0.1"
+      port: 51755
+      auth: no
+      workdir: "/home/user-wsjcpp/guitar-solo-part-generator"
+    my-build-server:
+      host: "sea-kg.com"
+      port: "51755"
+      auth: simple
+      workdir: "/home/user1/guitar-solo-part-generator" # может сделать через переменные окружения ?
+      enviroment:
+        - SOME: 111
+    my-build-server2:
+      host: "sea-kg.com"
+      port: "220"
+      auth: ssh # тут можно попробовать че нить типа как в постгре сделать
+      workdir: "/home/user0/guitar-solo-part-generator"
+  commands:
+    build:
+      - "./build_simple.sh"
+    clean: # default command (can be rewrite)
+      - "./clean.sh"
+    run:
+      - "./guitar-solo-part-generator start-server"
+    build-and-run:
+      - "./build_simple.sh"
+      - "./guitar-solo-part-generator start-server"
+    unit-tests:
+      - "cd unit-tests"
+      - "./build_simple.sh"
+      - "./unit-tests"
+  sync: # for sinchronization files and folders
+    - "./"
+  ignore-sync: # must be default folders for ignore sync
+    - "./tmp"
+    - "./logs"
+    - "./wsjcpp"
+
+
+docker:
+  dockerignore: # must be default
+    - ".logs/*"
+    - "tmp/*"
+    - "tmp.docker/*"
+    - ".wsjcpp/*"
+  for-build:
+    image: wsjcpp/wsjcpp-for-build:0.0.1
+  for-release:
+    image: wsjcpp/wsjcpp-for-release:0.0.1
+    copy:
+      - from: "./gspg-config"
+        to: "/home/user0/gspg-config"
+      - from: "./web"
+        to: "/home/user0/web"
