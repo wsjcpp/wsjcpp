@@ -2,7 +2,7 @@ wsjcpp_version: v0.0.2
 cmake_minimum_required: 3.0
 cmake_cxx_standard: 11
 name: wsjcpp
-version: v0.0.1
+version: v0.0.2
 description: C++ Source Package manager
 issues: https://github.com/wsjcpp/wsjcpp/issues # TODO add validate
 keywords:
@@ -17,7 +17,7 @@ required-pkg-config:
 
 dependencies:
   - name: "wsjcpp-core"
-    version: "v0.0.4"
+    version: "v0.0.7"
     url: "https://github.com/wsjcpp/wsjcpp-core:master"
     origin: "https://github.com/"
     installation-dir: "./src.wsjcpp/wsjcpp_core"

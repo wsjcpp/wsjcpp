@@ -3,7 +3,7 @@ cmake_cxx_standard: 11
 cmake_minimum_required: 3.0
 
 name: wsjcpp-core
-version: v0.0.4
+version: v0.0.7
 description: Basic Utils for wsjcpp
 issues: https://github.com/wsjcpp/wsjcpp-core/issues
 repositories:
@@ -17,30 +17,22 @@ authors:
   - name: Evgenii Sopov
     email: mrseakg@gmail.com
 
-required-libraries:
-  - pthread
-
 distribution:
   - source-file: src/wsjcpp_core.cpp
     target-file: wsjcpp_core.cpp
-    sha1: "a80af85d404179f9514990e59696287810ead4eb"
     type: "source-code"
   - source-file: src/wsjcpp_core.h
     target-file: wsjcpp_core.h
-    sha1: "a8a5197a0b6f6230cd8f75ee536bb590ed61125a"
-    type: "source-code"
+    type: "source-code" # todo must be header-file
   - source-file: "src/wsjcpp_unit_tests.cpp"
     target-file: "wsjcpp_unit_tests.cpp"
     type: "unit-tests"
-    sha1: "4208e039ec2923636655b3ada79ec223cca7bae2"
   - source-file: "src/wsjcpp_unit_tests.h"
     target-file: "wsjcpp_unit_tests.h"
     type: "unit-tests"
-    sha1: "8d2ec886f23161a639bb2419bb5e4af48278f18b"
   - source-file: "src/wsjcpp_unit_tests_main.cpp"
     target-file: "wsjcpp_unit_tests_main.cpp"
     type: "unit-tests"
-    sha1: "2c02fb58f51687eeac2076096b7df698cc246c9d"
 
 unit-tests:
   cases:
@@ -50,9 +42,23 @@ unit-tests:
       description: Check test generate uuid function
     - name: CoreExtractFilename
       description: Check function extract filenane from path
-    - name: IpV4
-      description: Check function isIPv4
-    - name: IpV6
-      description: Check function isIPv6
     - name: "ToUpper"
       description: "String to upper"
+    - name: "CreateUuid"
+      description: "Test generation uuids"
+    - name: "GetEnv"
+      description: "Test getEnv function"
+    - name: "ToLower"
+      description: "Test toLower"
+    - name: "ReplaceAll"
+      description: "Test replace all"
+    - name: "DecodeUriComponent"
+      description: "Check decoding"
+    - name: "EncodeUriComponent"
+      description: "Check encoding"
+    - name: "Uint2HexString"
+      description: "Test convert unsigned int to hex string"
+    - name: "Split"
+      description: "Test split function"
+    - name: "CreateEmptyFile"
+      description: "Test create empty file"
