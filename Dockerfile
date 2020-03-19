@@ -7,6 +7,7 @@ RUN apt update && apt install -y --no-install-recommends \
   cmake \
   g++ \
   pkg-config \
+  git-core \
   libcurl4-openssl-dev
 
 COPY . /root/wsjcpp-src

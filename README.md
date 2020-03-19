@@ -4,122 +4,151 @@
 
 Yet one... C++ Source Package Manager
 
-## Build and Install
+## Get for work 
 
-### MacOS (Build and Install)
+### Use a docker
 
-Short list commands:
+Docker:
 ```
-$ brew install curl-openssl pkg-config cmake
-$ cd ~
-$ git clone https://github.com/wsjcpp/wsjcpp
-$ cd ~/wsjcpp
-$ ./build_simple.sh
-$ sudo ln -s `pwd`/wsjcpp /usr/local/bin/wsjcpp
+$ docker pull sea5kg/wsjcpp:latest
+$ docker run -it --rm \
+    -v `pwd`/.:/root/project \
+    sea5kg/wsjcpp:latest \
+    bash
+root@8b93098b8a07:~/project#
+```
+Now you can call wsjcpp inside a container
+For exit, just enter `exit` command after this container will be destroed.
+
+### Install to MacOS
+
+```
+$ brew tap wsjcpp/wsjcpp
+$ brew install wsjcpp
 ```
 
-### Ubuntu/Debian (Build and Install)
+### Build and install in Ubuntu/Debian
 
-Short list commands:
 ```
 $ sudo apt install cmake make g++ pkg-config libcurl4-openssl-dev git-core
-$ cd ~
-$ git clone https://github.com/wsjcpp/wsjcpp
-$ cd ~/wsjcpp
+$ git clone https://github.com/wsjcpp/wsjcpp /tmp/wsjcpp.git
+$ cd /tmp/wsjcpp.git
 $ ./build_simple.sh
-$ sudo ln -s `pwd`/wsjcpp /usr/local/bin/wsjcpp
+$ sudo cp -r /tmp/wsjcpp.git /bin/wsjcpp
 ```
 
-## Init new package
+## Basic usage
+
+### Init new project / package
+
+Inside with your folder project
+```
+$ wsjcpp init .
+$ chmod +x build_simple.sh
+$ chmod +x unit-tests.wsjcpp/build_simple.sh
+```
+
+If you already have a project and want integrate to you project please look here: TODO
+
+On this step will be generated different files, like (only if files not exists):
+
+- src.wsjcpp/CMakeLists.txt
+- src.wsjcpp/wsjcpp_core/* <- sample of package (core always required)
+- unit-tests.wsjcpp/* <- folder for unit-tests
+- src/main.cpp
+- .wsjcpp/* <- temporary folder
+- CMakeLists.txt
+- build_simple.sh
+- .gitignore
+- ...
+
+### Install packages
+
+You can find on github package what a need you here (for example) https://github.com/topics/wsjcpp
+
+And next command you can install package:
+```
+$ wsjcpp install https://github.com/wsjcpp/wsjcpp-print-tree:master
+```
+Also you can change 'master' to specific version or branch
+
+After downloading wsjcpp will be automaticly update file: src.wsjcpp/CMakeLists.txt
+
+### Upgrade package
 
 ```
-$ cd your_package
-$ wsjcpp new .
+$ wsjcpp list 
+
+  Dependencies: 
+  * 'wsjcpp-core:v0.0.8' (https://github.com/wsjcpp/wsjcpp-core:master -> ./src.wsjcpp/wsjcpp_core)
+  * 'wsjcpp-print-tree:v0.0.1' (https://github.com/wsjcpp/wsjcpp-print-tree:master -> ./src.wsjcpp/wsjcpp_print_tree)
+
+$ wsjcpp reinstall wsjcpp-print-tree
 ```
 
-Will be prepared file: CMakeLists.txt
-
-For distribute your files:
+### Uninstall package
 
 ```
+$ wsjcpp uninstall https://github.com/wsjcpp/wsjcpp-print-tree:master
+```
+
+## Unit-tests
+
+Create a new unit-test
+```
+$ wsjcpp unit-tests create SomeTest "Tesing some"
+```
+Will be created new files:
+
+- unit-tests.wsjcpp/src/unit_test_init_package.h
+- unit-tests.wsjcpp/src/unit_test_init_package.cpp
+
+Also will be automaticly updated unit-tests.wsjcpp/CMakeLists.txt
+
+For build and run unit-tests:
+```
+$ cd unit-tests.wsjcpp
+$ ./build_simple.sh
+$ ./unit-tests
+```
+
+P.S. For testing you package - you need define distribution files (for automaticly include to unit-tests.wsjcpp/CMakeLists.txt)
+
+## Specify distribution files from your package for uses your package
+
+### Add to distribution
+```
+$ wsjcpp distribution add src/your_source_file.h
 $ wsjcpp distribution add src/your_source_file.cpp
 ```
 
-## How to install packages
-
-From github:
-
+Will be updated section 'distribution' in wsjcpp.yml
 ```
-$ wsjcpp install 'https://github.com/sea-kg/nlohmann_json:v3.7.0'
-```
-
-From bitbucket (not implemented yet):
-```
-$ wsjcpp install https://bitbucket.org/sea-kg/nlohmann_json:v3.7.0
+distribution:
+  - source-file: "src/your_source_file.h"
+    target-file: "your_source_file.h"
+    type: "source-code"
+  - source-file: "src/your_source_file.cpp"
+    target-file: "your_source_file.cpp"
+    type: "source-code"
 ```
 
-Via (http/https) link (not implemented yet):
+### Remove from distribution
 ```
-$ wsjcpp install https://sea-kg.com/wsjcpp/pkg-example/v1.0.0
-$ wsjcpp install http://sea-kg.com/wsjcpp/pkg-example/v1.0.0
-```
-
-From local folder:
-```
-$ wsjcpp install file:///usr/share/pkg-example-v1.0.0
+$ wsjcpp distribution remove src/your_source_file.cpp
 ```
 
-## How to look what packages installed
+## Manual changed wsjcpp.yml
 
-`$ wsjcpp list`
-
-Example
+For update automaticly generated files:
 ```
-$ wsjcpp list
-Dependencies: 
-* 'wsjcpp-core:v0.0.4' (https://github.com/wsjcpp/wsjcpp-core:master -> ./src.wsjcpp/wsjcpp_core)
-* 'wsjcpp-yaml:v0.0.2' (https://github.com/wsjcpp/wsjcpp-yaml:master -> ./src.wsjcpp/wsjcpp_yaml)
-* 'wsjcpp/wsjcpp-arguments:v0.0.1' (https://github.com/wsjcpp/wsjcpp-arguments:master -> ./src.wsjcpp/wsjcpp_wsjcpp_arguments)
-* 'wsjcpp/wsjcpp-hashes:v0.0.1' (https://github.com/wsjcpp/wsjcpp-hashes:master -> ./src.wsjcpp/wsjcpp_wsjcpp_hashes)
-```
-
-## How to uninstall packages
-
-```
-$ wsjcpp uninstall 'sea-kg/nlohmann_json'
-```
-
-## Infomation about package 
-
-```
-$ wsjcpp info 'sea-kg/nlohmann_json'
-```
-
-About current package:
-
-```
-$ wsjcpp info
+$ wsjcpp update
 ```
 
 
-### Build and run in docker
+## For building 
 
-Build:
-
+wsjcpp prepare file 'build_simple.sh' for easy building 
 ```
-$ docker build --rm --tag "wsjcpp" .
-$ sudo docker run -it --rm \
-  -v `pwd`/.:/home/node/app \
-  -w /home/node/app \
-  angular-cli-start:latest \
-  bash
-```
-
-Run:
-
-```
-$ sudo docker run -it --rm \
-  -v `pwd`/.:/root/project \
-  wsjcpp:latest \
-  bash
+$ ./build_simple.sh
 ```
