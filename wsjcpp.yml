@@ -36,6 +36,11 @@ dependencies:
     url: "https://github.com/wsjcpp/wsjcpp-hashes:master"
     origin: "https://github.com/"
     installation-dir: "./src.wsjcpp/wsjcpp_wsjcpp_hashes"
+  - name: "wsjcpp-safe-scripting"
+    version: "v0.0.1"
+    url: "https://github.com/wsjcpp/wsjcpp-safe-scripting:master"
+    origin: "https://github.com/"
+    installation-dir: "./src.wsjcpp/wsjcpp_safe_scripting"
 
 # build-dependencies:
 

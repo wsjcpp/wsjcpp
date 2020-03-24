@@ -1,0 +1,43 @@
+name: "wsjcpp-safe-scripting"
+version: "v0.0.1"
+cmake_minimum_required: "3.0"
+cmake_cxx_standard: "11"
+description: "C++ Safe Scripting"
+
+authors:
+  - name: "Evgenii Sopov"
+    email: "mrseakg@gmail.com"
+
+origins:
+  - address: "https://sea-kg.com/wsjcpp-package-registry/"
+    type: "package-registry"
+  
+keywords:
+  - "c++"
+  - "script"
+  - "scripting"
+  - "safe-scripting"
+
+dependencies:
+  - name: "wsjcpp-core"
+    version: "v0.0.7"
+    url: "https://github.com/wsjcpp/wsjcpp-core:master"
+    origin: "https://github.com/"
+    installation-dir: "./src.wsjcpp/wsjcpp_core"
+
+distribution:
+  - source-file: "src/wsjcpp_safe_scripting.h"
+    target-file: "wsjcpp_safe_scripting.h"
+    type: "source-code"
+  - source-file: "src/wsjcpp_safe_scripting.cpp"
+    target-file: "wsjcpp_safe_scripting.cpp"
+    type: "source-code"
+
+unit-tests:
+  cases:
+    - name: "Variable"
+      description: "Test variable class"
+    - name: "ProcedureConcat"
+      description: "Test concat"
+    - name: "ProcedureSetValue"
+      description: "Test set value"

@@ -46,6 +46,11 @@ list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_wsjcpp_hashes/smallsha1.cpp")
 list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_wsjcpp_hashes/wsjcpp_hashes.cpp")
 list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_wsjcpp_hashes/wsjcpp_hashes.h")
 
+# wsjcpp-safe-scripting:v0.0.1
+list (APPEND WSJCPP_INCLUDE_DIRS "../src.wsjcpp/wsjcpp_safe_scripting/")
+list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_safe_scripting/wsjcpp_safe_scripting.h")
+list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_safe_scripting/wsjcpp_safe_scripting.cpp")
+
 # wsjcpp:v0.0.2
 list (APPEND WSJCPP_INCLUDE_DIRS "../src")
 list (APPEND WSJCPP_SOURCES "../src/wsjcpp_package_manager.cpp")
