@@ -10,4 +10,3 @@ class WSJCppHashes {
 };
 
 #endif // WSJCPP_HASHES_H
-
