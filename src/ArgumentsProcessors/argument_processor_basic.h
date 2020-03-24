@@ -27,4 +27,11 @@ class ArgumentProcessorClean : public WSJCppArgumentProcessor {
         
 };
 
+class ArgumentProcessorVersion : public WSJCppArgumentProcessor {
+    public:
+        ArgumentProcessorVersion();
+        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) override;
+    private: 
+};
+
 #endif // ARGUMENT_PROCESSOR_BASIC_H

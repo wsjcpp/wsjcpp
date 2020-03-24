@@ -126,7 +126,7 @@ int ArgumentProcessorInit::exec(const std::string &sProgramName, const std::vect
             "    WSJCppLog::setPrefixLogFile(\"wsjcpp\");\n"
             "    WSJCppLog::setLogDirectory(\".logs\");\n"
             "    // TODO your code here\n"
-            "    return 0;"
+            "    return 0;\n"
             "}\n"
         );
     }
@@ -163,7 +163,6 @@ int ArgumentProcessorInit::exec(const std::string &sProgramName, const std::vect
             "    RUNTIME DESTINATION\n"
             "        /usr/bin\n"
             ")\n"
-
         );
     }
 
@@ -234,3 +233,21 @@ int ArgumentProcessorClean::exec(const std::string &sProgramName, const std::vec
     }
     return 0;
 }
+
+// ---------------------------------------------------------------------
+
+ArgumentProcessorVersion::ArgumentProcessorVersion() 
+: WSJCppArgumentProcessor("version", "Current version of wsjcpp") {
+      
+}
+
+// ---------------------------------------------------------------------
+
+int ArgumentProcessorVersion::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+    // TODO move to default arguments
+    std::cout << "Application: " << std::string(WSJCPP_NAME) << std::endl;
+    std::cout << "Version: " << std::string(WSJCPP_VERSION) << std::endl;
+    return 0;
+}
+
+// ---------------------------------------------------------------------

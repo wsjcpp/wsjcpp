@@ -3,35 +3,35 @@
 
 #include <wsjcpp_arguments.h>
 
-class ArgumentProcessorTemplates : public WSJCppArgumentProcessor {
+class ArgumentProcessorGenerate : public WSJCppArgumentProcessor {
     public:
-        ArgumentProcessorTemplates();
+        ArgumentProcessorGenerate();
         
     private:
         
 };
 
-class ArgumentProcessorTemplatesList : public WSJCppArgumentProcessor {
+class ArgumentProcessorGenerateList : public WSJCppArgumentProcessor {
     public:
-        ArgumentProcessorTemplatesList();
+        ArgumentProcessorGenerateList();
         virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
         
     private:
         
 };
 
-class ArgumentProcessorTemplatesCreate : public WSJCppArgumentProcessor {
+class ArgumentProcessorGenerateCreate : public WSJCppArgumentProcessor {
     public:
-        ArgumentProcessorTemplatesCreate();
+        ArgumentProcessorGenerateCreate();
         virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
         
     private:
         
 };
 
-class ArgumentProcessorTemplatesDelete : public WSJCppArgumentProcessor {
+class ArgumentProcessorGenerateDelete : public WSJCppArgumentProcessor {
     public:
-        ArgumentProcessorTemplatesDelete();
+        ArgumentProcessorGenerateDelete();
         virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
         
     private:

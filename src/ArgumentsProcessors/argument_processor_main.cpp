@@ -1,7 +1,7 @@
 #include "argument_processor_main.h"
 #include "argument_processor_unit_tests.h"
 #include "argument_processor_run.h"
-#include "argument_processor_templates.h"
+#include "argument_processor_generate.h"
 #include "argument_processor_dependencies.h"
 #include "argument_processor_distribution.h"
 #include "argument_processor_basic.h"
@@ -16,6 +16,7 @@ ArgumentProcessorMain::ArgumentProcessorMain()
     registryProcessor(new ArgumentProcessorInit());
     registryProcessor(new ArgumentProcessorClean());
     registryProcessor(new ArgumentProcessorInfo());
+    registryProcessor(new ArgumentProcessorVersion());
     registryProcessor(new ArgumentProcessorInstall());
     registryProcessor(new ArgumentProcessorReinstall());
     registryProcessor(new ArgumentProcessorUninstall());
@@ -23,7 +24,7 @@ ArgumentProcessorMain::ArgumentProcessorMain()
     registryProcessor(new ArgumentProcessorUpdate());
     registryProcessor(new ArgumentProcessorDistribution());
     registryProcessor(new ArgumentProcessorRun());
-    registryProcessor(new ArgumentProcessorTemplates());
+    registryProcessor(new ArgumentProcessorGenerate());
     registryProcessor(new ArgumentProcessorUnitTests());
     registryProcessor(new ArgumentProcessorOrigins());
 }

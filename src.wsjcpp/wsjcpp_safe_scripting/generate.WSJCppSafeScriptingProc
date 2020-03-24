@@ -1,0 +1,86 @@
+#!/usr/bin/wsjcpp-safe-scripting
+
+# log_info rootdir
+# log_info script_filename
+
+make_dir "src"
+
+var proc_name
+set_value proc_name arg1
+normalize_class_name proc_name
+convert_CamelCase_to_snake_case proc_name proc_name
+
+var class_name
+concat class_name "SafeScriptingProc" arg1
+normalize_class_name class_name
+
+var base_filename
+convert_CamelCase_to_snake_case class_name base_filename
+# log_info base_filename
+
+var filename_cpp
+concat filename_cpp "./src/" base_filename ".cpp"
+
+var filename_h
+concat filename_h "./src/" base_filename ".h"
+
+var ifndef_header
+set_value ifndef_header base_filename
+concat ifndef_header "_H"
+
+to_upper_case ifndef_header
+
+var content_header
+concat content_header "#ifndef " ifndef_header "
+#define " ifndef_header "
+
+#include <wsjcpp_safe_scripting.h>
+
+class " class_name " : public WSJCppSafeScriptingProc {
+    public:
+        " class_name "();
+        virtual bool exec(const std::vector<WSJCppSafeScriptingVariable *> &m_vArgs);
+};
+
+#endif // " ifndef_header
+
+ 
+var content_source
+concat content_source  "
+#include \"" base_filename ".h\"
+#include <wsjcpp_core.h>
+
+// ---------------------------------------------------------------------
+// " class_name "
+
+" class_name "::" class_name "() 
+: WSJCppSafeScriptingProc(\"" proc_name "\") {
+
+}
+
+// ---------------------------------------------------------------------
+
+bool " class_name "::exec(const std::vector<WSJCppSafeScriptingVariable *> &vArgs) {
+    WSJCppLog::err(TAG, \"Not implemented\");
+    return false;
+}
+"
+
+var file_source
+concat file_source "src/" filename_cpp
+
+write_file filename_h content_header
+write_file filename_cpp content_source
+
+log_info "
+======
+Generated class:
+    - " class_name "
+Generated files:
+    - " filename_h "
+    - " filename_cpp "
+======
+"
+
+cmakelists_txt_append_wsjcpp filename_h
+cmakelists_txt_append_wsjcpp filename_cpp
