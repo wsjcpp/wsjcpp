@@ -6,11 +6,13 @@
 ArgumentProcessorInstall::ArgumentProcessorInstall() 
   : WSJCppArgumentProcessor("install", "Install a source package from any sources (will be install deps)") {
       TAG = "ArgumentProcessorInstall";
-    registryExample("from github source `./wsjcpp install 'https://github.com/wsjcpp/json:v3.7.0'`");
-    registryExample("from github source `./wsjcpp install 'https://github.com/wsjcpp/json:develop'`");
-    registryExample("from local system `./wsjcpp install 'file:///usr/share/some_package'`");
-    registryExample("from http(s) `./wsjcpp install 'https://sea-kg.com/wsjcpp/example/latest'`");
-    registryExample("from http(s) `./wsjcpp install 'https://sea-kg.com/wsjcpp/example/v3.0.0'`");
+    registryExample("from github source `wsjcpp install 'https://github.com/wsjcpp/json:v3.7.0'`");
+    registryExample("from github source `wsjcpp install 'https://github.com/wsjcpp/json:develop'`");
+    // registryExample("from local system `wsjcpp install 'file:///usr/share/some_package'`");
+    // registryExample("from local system `wsjcpp install author/package_name`"); - try find in origns and install latest version
+    // registryExample("from local system `wsjcpp install package_name`"); - try find in origns
+    // registryExample("from http(s) `wsjcpp install 'https://wsjcpp.org/source-packages/pkgname'`");
+    // registryExample("from http(s) `wsjcpp install 'https://wsjcpp.org/source-packages/example/v3.0.0'`");
 }
 
 int ArgumentProcessorInstall::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
