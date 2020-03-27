@@ -37,6 +37,10 @@ $ ./build_simple.sh
 $ sudo cp -r /tmp/wsjcpp.git /bin/wsjcpp
 ```
 
+## More package managers for c++
+
+[Here](https://github.com/wsjcpp/wsjcpp/blob/master/docs/PACKAGE_MANAGERS_FOR_CPP.md)
+
 ## Basic usage
 
 ### Init new project / package
