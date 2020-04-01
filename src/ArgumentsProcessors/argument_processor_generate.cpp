@@ -1,12 +1,72 @@
 #include "argument_processor_generate.h"
 #include "wsjcpp_package_manager.h"
 #include <wsjcpp_core.h>
+#include <wsjcpp_safe_scripting.h>
+
+// ---------------------------------------------------------------------
+// ArgumentProcessorGenerate
 
 ArgumentProcessorGenerate::ArgumentProcessorGenerate() 
 : WSJCppArgumentProcessor("generate", "Generate source code snippets/templates/examples") {
     registryProcessor(new ArgumentProcessorGenerateList());
+
     // registryProcessor(new ArgumentProcessorGenerateCreate());
     // registryProcessor(new ArgumentProcessorGenerateDelete());
+}
+
+// ---------------------------------------------------------------------
+
+int ArgumentProcessorGenerate::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+    WSJCppPackageManager pkg("./");
+    if (!pkg.load()) {
+        return -1;
+    }
+
+    if (vSubParams.size() == 0) {
+        WSJCppLog::err(TAG, "Expected name of components and arguments for script");
+        return -1;
+    }
+    std::string sComponentName = vSubParams[0];
+
+    bool bFound = false;
+    WSJCppPackageManagerSafeScriptingGenerate gen;
+    std::vector<WSJCppPackageManagerSafeScriptingGenerate> vScripts = pkg.getListOfSafeScriptingGenerate();
+    for (int i = 0; i < vScripts.size(); i++) {
+        if (vScripts[i].getName() == sComponentName) {
+            gen = vScripts[i];
+            bFound = true;
+        }
+    }
+
+    if (!bFound) {
+        WSJCppLog::err(TAG, "Not found component with name '" + sComponentName + "'");
+        return -1;
+    }
+
+    if (!WSJCppCore::fileExists(gen.getFullPath())) {
+        WSJCppLog::err(TAG, "File not found '" + gen.getFullPath() + "'");
+        return -1;
+    }
+
+    std::string sScriptContent;
+    WSJCppCore::readTextFile(gen.getFullPath(), sScriptContent);
+
+    WSJCppSafeScriptingContext scriptContext;
+    std::vector<std::string> vScriptArgs;
+    for (int i = 0; i < vSubParams.size(); i++) {
+        if (i != 0) {
+            vScriptArgs.push_back(vSubParams[i]);
+        }
+    }
+
+    int nResult = scriptContext.exec(
+        WSJCppCore::getCurrentDirectory(), 
+        gen.getFullPath(), 
+        sScriptContent,
+        vScriptArgs
+    );
+
+    return nResult;
 }
 
 // ---------------------------------------------------------------------
@@ -44,16 +104,16 @@ int ArgumentProcessorGenerateList::exec(
     std::string sOutput = "";
 
     if (vScripts.size() == 0) {
-        sOutput = "\n Generate not found ";
+        sOutput = "\n Components not found ";
     } else {
-        sOutput = "\n\n Generate: \n";
+        sOutput = "\n\n Components: \n";
     }
 
     for (int i = 0; i < vScripts.size(); i++) {
         sOutput += " - " + vScripts[i].getName() + "\n";
         if (m_bMore) {
             sOutput += 
-                "     from module: '" + vScripts[i].getModuleName() + "' \n"
+                "     from package: '" + vScripts[i].getModuleName() + "' \n"
                 "     script path: '" + vScripts[i].getFullPath() + "'\n";
         }
     }
@@ -62,6 +122,7 @@ int ArgumentProcessorGenerateList::exec(
 }
 
 // ---------------------------------------------------------------------
+// ArgumentProcessorGenerateCreate
 
 ArgumentProcessorGenerateCreate::ArgumentProcessorGenerateCreate() 
 : WSJCppArgumentProcessor("create", "Create new template") {

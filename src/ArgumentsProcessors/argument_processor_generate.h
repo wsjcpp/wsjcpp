@@ -6,7 +6,8 @@
 class ArgumentProcessorGenerate : public WSJCppArgumentProcessor {
     public:
         ArgumentProcessorGenerate();
-        
+        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
+
     private:
         
 };
