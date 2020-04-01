@@ -139,6 +139,9 @@ class WSJCppPackageManager {
         bool enableUnitTest(const std::string &sUnitTestName, bool bEnable);
         std::vector<WSJCppPackageManagerUnitTest> getListOfUnitTests();
 
+        // safe-scripting-generate
+        std::vector<WSJCppPackageManagerSafeScriptingGenerate> getListOfSafeScriptingGenerate();
+
         bool addOrigin(const std::string &sAddress);
         bool deleteOrigin(const std::string &sAddress);
         bool updateDependencies();

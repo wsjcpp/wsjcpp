@@ -13,7 +13,18 @@ ArgumentProcessorGenerate::ArgumentProcessorGenerate()
 
 ArgumentProcessorGenerateList::ArgumentProcessorGenerateList() 
 : WSJCppArgumentProcessor("list", "List of defined templates") {
+    registrySingleArgument("--more", "More details");
+    m_bMore = false;
+}
 
+// ---------------------------------------------------------------------
+
+bool ArgumentProcessorGenerateList::applySingleArgument(const std::string &sProgramName, const std::string &sArgumentName) {
+    if (sArgumentName == "--more") {
+        m_bMore = true;
+        return true;
+    }
+    return false;
 }
 
 // ---------------------------------------------------------------------
@@ -28,35 +39,7 @@ int ArgumentProcessorGenerateList::exec(
         return -1;
     }
 
-    std::vector<WSJCppPackageManagerDistributionFile> vScripts;
-    std::vector<WSJCppPackageManagerDistributionFile> vFiles = pkg.getListOfDistributionFiles();
-    for (int i = 0; i < vFiles.size(); i++) {
-        WSJCppPackageManagerDistributionFile file = vFiles[i];
-        // WSJCppLog::warn(TAG, file.getTargetFile());
-        if (file.getType() == "safe-scripting-generate") {
-            vScripts.push_back(file);
-        }
-    }
-
-    std::vector<WSJCppPackageManagerDependence> vDeps = pkg.getListOfDependencies();
-    for (int i = 0; i < vDeps.size(); i++) {
-        WSJCppPackageManagerDependence dep = vDeps[i];
-        std::string sInstallationDir = dep.getInstallationDir();
-        // WSJCppLog::warn(TAG, sInstallationDir);
-        WSJCppPackageManager pkgHold(sInstallationDir, pkg.getDir(), true);
-        if (!pkgHold.load()) {
-            WSJCppLog::err(TAG, "Could not load package from '" + sInstallationDir + "'");
-            return -1;
-        }
-        std::vector<WSJCppPackageManagerDistributionFile> vFilesDep = pkgHold.getListOfDistributionFiles();
-        for (int n = 0; n < vFilesDep.size(); n++) {
-            WSJCppPackageManagerDistributionFile file = vFilesDep[n];
-            // WSJCppLog::warn(TAG, file.getTargetFile());
-            if (file.getType() == "safe-scripting-generate") {
-                vScripts.push_back(file);
-            }
-        }        
-    }
+    std::vector<WSJCppPackageManagerSafeScriptingGenerate> vScripts = pkg.getListOfSafeScriptingGenerate();
 
     std::string sOutput = "";
 
@@ -65,18 +48,13 @@ int ArgumentProcessorGenerateList::exec(
     } else {
         sOutput = "\n\n Generate: \n";
     }
-    
+
     for (int i = 0; i < vScripts.size(); i++) {
-        std::string sFileName = vScripts[i].getTargetFile();
-        std::vector<std::string> vSplit = WSJCppCore::split(sFileName, ".");
-        if (vSplit.size() != 2) {
-            sOutput += " - ERROR: Wrong script name: '" + sFileName + "' must like 'generate.ScriptName'\n";
-        } else {
-            if (vSplit[0] != "generate") {
-                sOutput += " - ERROR: Wrong script name: '" + sFileName + "' (left part must be 'generate.*')\n";
-            } else {
-                sOutput += " - " + vSplit[1] + "\n";
-            }
+        sOutput += " - " + vScripts[i].getName() + "\n";
+        if (m_bMore) {
+            sOutput += 
+                "     from module: '" + vScripts[i].getModuleName() + "' \n"
+                "     script path: '" + vScripts[i].getFullPath() + "'\n";
         }
     }
     WSJCppLog::info(TAG, sOutput);

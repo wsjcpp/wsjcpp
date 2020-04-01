@@ -1372,6 +1372,69 @@ std::vector<WSJCppPackageManagerUnitTest> WSJCppPackageManager::getListOfUnitTes
 
 // ---------------------------------------------------------------------
 
+std::vector<WSJCppPackageManagerSafeScriptingGenerate> WSJCppPackageManager::getListOfSafeScriptingGenerate() {
+    std::vector<WSJCppPackageManagerSafeScriptingGenerate> vRet;
+
+    // from current package
+    std::vector<WSJCppPackageManagerDistributionFile> vFiles = this->getListOfDistributionFiles();
+    for (int i = 0; i < vFiles.size(); i++) {
+        WSJCppPackageManagerDistributionFile file = vFiles[i];
+        // WSJCppLog::warn(TAG, file.getTargetFile());
+        if (file.getType() == "safe-scripting-generate") {
+            WSJCppPackageManagerSafeScriptingGenerate gen;
+            gen.setModuleName(this->getName());
+            gen.setFullPath(file.getSourceFile());
+            std::string sTargetName = file.getTargetFile();
+            std::vector<std::string> vSplit = WSJCppCore::split(sTargetName, ".");
+            if (vSplit.size() != 2) {
+                WSJCppLog::err(TAG, "Wrong script name: '" + sTargetName + "' must like 'generate.ScriptName'");
+            } else {
+                if (vSplit[0] != "generate") {
+                    WSJCppLog::err(TAG, "Wrong script name: '" + sTargetName + "' (left part must be 'generate.*')");
+                } else {
+                    gen.setName(vSplit[1]);
+                    vRet.push_back(gen);
+                }
+            }     
+        }
+    }
+
+    std::vector<WSJCppPackageManagerDependence> vDeps = this->getListOfDependencies();
+    for (int i = 0; i < vDeps.size(); i++) {
+        WSJCppPackageManagerDependence dep = vDeps[i];
+        std::string sInstallationDir = dep.getInstallationDir();
+        WSJCppPackageManager pkgHold(sInstallationDir, this->getDir(), true);
+        if (!pkgHold.load()) {
+            WSJCppLog::err(TAG, "Could not load package from '" + sInstallationDir + "'");
+            continue;
+        }
+        std::vector<WSJCppPackageManagerDistributionFile> vFilesDep = pkgHold.getListOfDistributionFiles();
+        for (int n = 0; n < vFilesDep.size(); n++) {
+            WSJCppPackageManagerDistributionFile file = vFilesDep[n];
+            if (file.getType() == "safe-scripting-generate") {
+                WSJCppPackageManagerSafeScriptingGenerate gen;
+                gen.setModuleName(pkgHold.getName());
+                std::string sTargetName = file.getTargetFile();
+                gen.setFullPath(sInstallationDir + "/" + sTargetName);
+                std::vector<std::string> vSplit = WSJCppCore::split(sTargetName, ".");
+                if (vSplit.size() != 2) {
+                    WSJCppLog::err(TAG, "Wrong script name: '" + sTargetName + "' must like 'generate.ScriptName'");
+                } else {
+                    if (vSplit[0] != "generate") {
+                        WSJCppLog::err(TAG, "Wrong script name: '" + sTargetName + "' (left part must be 'generate.*')");
+                    } else {
+                        gen.setName(vSplit[1]);
+                        vRet.push_back(gen);
+                    }
+                }
+            }
+        }        
+    }
+    return vRet;
+}
+
+// ---------------------------------------------------------------------
+
 std::vector<WSJCppPackageManagerOrigin> WSJCppPackageManager::getListOfOrigins() {
     return m_vOrigins;
 }

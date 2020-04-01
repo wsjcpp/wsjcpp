@@ -14,10 +14,11 @@ class ArgumentProcessorGenerate : public WSJCppArgumentProcessor {
 class ArgumentProcessorGenerateList : public WSJCppArgumentProcessor {
     public:
         ArgumentProcessorGenerateList();
+        virtual bool applySingleArgument(const std::string &sProgramName, const std::string &sArgumentName);
         virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
         
     private:
-        
+        bool m_bMore;
 };
 
 class ArgumentProcessorGenerateCreate : public WSJCppArgumentProcessor {
