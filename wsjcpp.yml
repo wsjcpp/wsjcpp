@@ -59,13 +59,25 @@ origins:
     type: local-file-system # must be in global ~/.wsjcpp/config.yml
 
 distribution:
+  - source-file: "src/wsjcpp_package_manager_distribution_file.cpp"
+    target-file: "wsjcpp_package_manager_distribution_file.cpp"
+    type: "source-code"
+  - source-file: "src/wsjcpp_package_manager_distribution_file.h"
+    target-file: "wsjcpp_package_manager_distribution_file.h"
+    type: "source-code"
+  - source-file: "src/wsjcpp_package_manager_safe_scripting_generate.cpp"
+    target-file: "wsjcpp_package_manager_safe_scripting_generate.cpp"
+    type: "source-code"
+  - source-file: "src/wsjcpp_package_manager_safe_scripting_generate.h"
+    target-file: "wsjcpp_package_manager_safe_scripting_generate.h"
+    type: "source-code"
   - source-file: "src/wsjcpp_package_manager.cpp"
     target-file: "wsjcpp_package_manager.cpp"
     type: "source-code" # TODO validator
   - source-file: "src/wsjcpp_package_manager.h"
     target-file: "wsjcpp_package_manager.h"
     type: "source-code"
-
+  
 unit-tests:
   cases:
     - name: "NormalizeUnitTestName"
