@@ -1,4 +1,4 @@
-wsjcpp_version: v0.0.1
+wsjcpp_version: v0.1.0
 cmake_cxx_standard: 11
 cmake_minimum_required: 3.0
 
@@ -31,7 +31,7 @@ authors:
 
 dependencies:
   - name: "wsjcpp-core"
-    version: "v0.0.4"
+    version: "v0.1.0"
     url: "https://github.com/wsjcpp/wsjcpp-core:master"
     origin: "https://github.com/"
     installation-dir: "./src.wsjcpp/wsjcpp_core"
