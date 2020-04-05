@@ -2395,7 +2395,7 @@ bool WsjcppPackageManager::updateAutogenerateFileUnitTestSource(const std::strin
             "#include <wsjcpp_core.h>\n"
             // TODO include add current headers
             "\n"
-            "REGISTRY_UNIT_TEST(UnitTest" + sName + ")\n"
+            "REGISTRY_WSJCPP_UNIT_TEST(UnitTest" + sName + ")\n"
             "\n"
             "UnitTest" + sName + "::UnitTest" + sName + "()\n"
             "    : WsjcppUnitTestBase(\"UnitTest" + sName + "\") {\n"

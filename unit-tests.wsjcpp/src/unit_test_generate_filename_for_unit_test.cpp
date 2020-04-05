@@ -3,7 +3,7 @@
 #include <wsjcpp_core.h>
 #include <wsjcpp_package_manager.h>
 
-REGISTRY_UNIT_TEST(UnitTestgenerateFilenameForUnitTest)
+REGISTRY_WSJCPP_UNIT_TEST(UnitTestgenerateFilenameForUnitTest)
 
 UnitTestgenerateFilenameForUnitTest::UnitTestgenerateFilenameForUnitTest()
     : WsjcppUnitTestBase("UnitTestgenerateFilenameForUnitTest") {

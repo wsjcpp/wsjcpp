@@ -2,7 +2,7 @@
 #include <vector>
 #include <wsjcpp_package_manager.h>
 
-REGISTRY_UNIT_TEST(UnitTestNormalizeUnitTestName)
+REGISTRY_WSJCPP_UNIT_TEST(UnitTestNormalizeUnitTestName)
 
 UnitTestNormalizeUnitTestName::UnitTestNormalizeUnitTestName()
     : WsjcppUnitTestBase("UnitTestNormalizeUnitTestName") {

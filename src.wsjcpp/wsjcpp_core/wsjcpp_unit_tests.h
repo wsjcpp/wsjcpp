@@ -32,7 +32,7 @@ class WsjcppUnitTests {
 };
 
 // RegistryCmdHandler
-#define REGISTRY_UNIT_TEST( classname ) \
+#define REGISTRY_WSJCPP_UNIT_TEST( classname ) \
     static classname * pRegistryWsjcppUnitTest ## classname = new classname(); \
 
 

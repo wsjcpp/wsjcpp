@@ -3,7 +3,7 @@
 #include <wsjcpp_core.h>
 #include <wsjcpp_package_manager.h>
 
-REGISTRY_UNIT_TEST(UnitTestReadPackage)
+REGISTRY_WSJCPP_UNIT_TEST(UnitTestReadPackage)
 
 UnitTestReadPackage::UnitTestReadPackage()
     : WsjcppUnitTestBase("UnitTestReadPackage") {
