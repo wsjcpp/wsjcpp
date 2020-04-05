@@ -6,79 +6,79 @@
 // #include <wsjcpp_safe_scripting_proc_make_dir.h>
 
 // ---------------------------------------------------------------------
-// WSJCppSafeScriptingVariable
+// WsjcppSafeScriptingVariable
 
-WSJCppSafeScriptingVariable::WSJCppSafeScriptingVariable(const std::string &sValue) {
-    TAG = "WSJCppSafeScriptingVariable";
+WsjcppSafeScriptingVariable::WsjcppSafeScriptingVariable(const std::string &sValue) {
+    TAG = "WsjcppSafeScriptingVariable";
     m_sValue = sValue;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppSafeScriptingVariable::getValue() {
+std::string WsjcppSafeScriptingVariable::getValue() {
     return m_sValue;
 }
 
 // ---------------------------------------------------------------------
 
-void WSJCppSafeScriptingVariable::setValue(const std::string &sValue) {
+void WsjcppSafeScriptingVariable::setValue(const std::string &sValue) {
     m_sValue = sValue;
 }
 
 // ---------------------------------------------------------------------
-// WSJCppSafeScriptingProc
+// WsjcppSafeScriptingProc
 
-WSJCppSafeScriptingProc::WSJCppSafeScriptingProc(const std::string &sProcName) {
-    TAG = "WSJCppSafeScriptingProc[" + sProcName + "]";
+WsjcppSafeScriptingProc::WsjcppSafeScriptingProc(const std::string &sProcName) {
+    TAG = "WsjcppSafeScriptingProc[" + sProcName + "]";
     m_sProcName = sProcName;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppSafeScriptingProc::getName() {
+std::string WsjcppSafeScriptingProc::getName() {
     return m_sProcName;
 }
 
 // ---------------------------------------------------------------------
 
-bool WSJCppSafeScriptingProc::exec(const std::vector<WSJCppSafeScriptingVariable *> &vArgs) {
-    WSJCppLog::err(TAG, "Procedure not implemented");
+bool WsjcppSafeScriptingProc::exec(const std::vector<WsjcppSafeScriptingVariable *> &vArgs) {
+    WsjcppLog::err(TAG, "Procedure not implemented");
     return false;
 }
 
 // ---------------------------------------------------------------------
-// WSJCppSafeScriptingProcLogInfo
+// WsjcppSafeScriptingProcLogInfo
 
-WSJCppSafeScriptingProcLogInfo::WSJCppSafeScriptingProcLogInfo() 
-: WSJCppSafeScriptingProc("log_info") {
+WsjcppSafeScriptingProcLogInfo::WsjcppSafeScriptingProcLogInfo() 
+: WsjcppSafeScriptingProc("log_info") {
 
 }
 
 // ---------------------------------------------------------------------
 
-bool WSJCppSafeScriptingProcLogInfo::exec(const std::vector<WSJCppSafeScriptingVariable *> &vArgs) {
+bool WsjcppSafeScriptingProcLogInfo::exec(const std::vector<WsjcppSafeScriptingVariable *> &vArgs) {
     std::string sRet = "";
     for (int i = 0; i < vArgs.size(); i++) {
         sRet += vArgs[i]->getValue();
     }
-    WSJCppLog::info(TAG, sRet);
+    WsjcppLog::info(TAG, sRet);
     return true;
 }
 
 // ---------------------------------------------------------------------
-// WSJCppSafeScriptingProcedureSetValue
+// WsjcppSafeScriptingProcedureSetValue
 
-WSJCppSafeScriptingProcedureSetValue::WSJCppSafeScriptingProcedureSetValue() 
-: WSJCppSafeScriptingProc("set_value") {
+WsjcppSafeScriptingProcedureSetValue::WsjcppSafeScriptingProcedureSetValue() 
+: WsjcppSafeScriptingProc("set_value") {
 
 }
 
 // ---------------------------------------------------------------------
 
-bool WSJCppSafeScriptingProcedureSetValue::exec(const std::vector<WSJCppSafeScriptingVariable *> &vArgs) {
+bool WsjcppSafeScriptingProcedureSetValue::exec(const std::vector<WsjcppSafeScriptingVariable *> &vArgs) {
     std::string sRet = "";
     if (vArgs.size() != 2) {
-        WSJCppLog::err(TAG, "Expected 2 arguments");
+        WsjcppLog::err(TAG, "Expected 2 arguments");
         return false;
     }
     vArgs[0]->setValue(vArgs[1]->getValue());
@@ -86,19 +86,19 @@ bool WSJCppSafeScriptingProcedureSetValue::exec(const std::vector<WSJCppSafeScri
 }
 
 // ---------------------------------------------------------------------
-// WSJCppSafeScriptingProcedureConcat
+// WsjcppSafeScriptingProcedureConcat
 
-WSJCppSafeScriptingProcedureConcat::WSJCppSafeScriptingProcedureConcat() 
-: WSJCppSafeScriptingProc("concat") {
+WsjcppSafeScriptingProcedureConcat::WsjcppSafeScriptingProcedureConcat() 
+: WsjcppSafeScriptingProc("concat") {
 
 }
 
 // ---------------------------------------------------------------------
 
-bool WSJCppSafeScriptingProcedureConcat::exec(const std::vector<WSJCppSafeScriptingVariable *> &vArgs) {
+bool WsjcppSafeScriptingProcedureConcat::exec(const std::vector<WsjcppSafeScriptingVariable *> &vArgs) {
     std::string sRet = "";
     if (vArgs.size() < 2) {
-        WSJCppLog::err(TAG, "Expected 2 and more variables");
+        WsjcppLog::err(TAG, "Expected 2 and more variables");
         return false;
     }
     std::string sNewValue = "";
@@ -110,43 +110,43 @@ bool WSJCppSafeScriptingProcedureConcat::exec(const std::vector<WSJCppSafeScript
 }
 
 // ---------------------------------------------------------------------
-// WSJCppSafeScriptingProcMakeDir
+// WsjcppSafeScriptingProcMakeDir
 
-WSJCppSafeScriptingProcMakeDir::WSJCppSafeScriptingProcMakeDir() 
-: WSJCppSafeScriptingProc("make_dir") {
+WsjcppSafeScriptingProcMakeDir::WsjcppSafeScriptingProcMakeDir() 
+: WsjcppSafeScriptingProc("make_dir") {
 
 }
 
 // ---------------------------------------------------------------------
 
-bool WSJCppSafeScriptingProcMakeDir::exec(const std::vector<WSJCppSafeScriptingVariable *> &vArgs) {
+bool WsjcppSafeScriptingProcMakeDir::exec(const std::vector<WsjcppSafeScriptingVariable *> &vArgs) {
     std::string sRet = "";
     if (vArgs.size() != 1) {
-        WSJCppLog::err(TAG, "Expected 1 arguments");
+        WsjcppLog::err(TAG, "Expected 1 arguments");
         return false;
     }
     // TODO check rootdir safe!
     std::string sDir = vArgs[0]->getValue();
-    if (WSJCppCore::dirExists(sDir)) {
+    if (WsjcppCore::dirExists(sDir)) {
         return true;
     }
-    return WSJCppCore::makeDir(sDir);
+    return WsjcppCore::makeDir(sDir);
 }
 
 
 // ---------------------------------------------------------------------
-// WSJCppSafeScriptingProcNormalizeClassName
+// WsjcppSafeScriptingProcNormalizeClassName
 
-WSJCppSafeScriptingProcNormalizeClassName::WSJCppSafeScriptingProcNormalizeClassName() 
-: WSJCppSafeScriptingProc("normalize_class_name") {
+WsjcppSafeScriptingProcNormalizeClassName::WsjcppSafeScriptingProcNormalizeClassName() 
+: WsjcppSafeScriptingProc("normalize_class_name") {
 
 }
 
 // ---------------------------------------------------------------------
 
-bool WSJCppSafeScriptingProcNormalizeClassName::exec(const std::vector<WSJCppSafeScriptingVariable *> &vArgs) {
+bool WsjcppSafeScriptingProcNormalizeClassName::exec(const std::vector<WsjcppSafeScriptingVariable *> &vArgs) {
     if (vArgs.size() != 1) {
-        WSJCppLog::err(TAG, "Expected 1 arguments");
+        WsjcppLog::err(TAG, "Expected 1 arguments");
         return false;
     }
 
@@ -159,7 +159,7 @@ bool WSJCppSafeScriptingProcNormalizeClassName::exec(const std::vector<WSJCppSaf
         }
     }
     if (sRet != sInput) {
-        WSJCppLog::info(TAG, "normalized class name '" + sInput + "' -> '" + sRet + "'");
+        WsjcppLog::info(TAG, "normalized class name '" + sInput + "' -> '" + sRet + "'");
     }
     vArgs[0]->setValue(sRet);
     return true;
@@ -167,18 +167,18 @@ bool WSJCppSafeScriptingProcNormalizeClassName::exec(const std::vector<WSJCppSaf
 
 
 // ---------------------------------------------------------------------
-// WSJCppSafeScriptingProcCamelCaseToSnakeCase
+// WsjcppSafeScriptingProcCamelCaseToSnakeCase
 
-WSJCppSafeScriptingProcCamelCaseToSnakeCase::WSJCppSafeScriptingProcCamelCaseToSnakeCase() 
-: WSJCppSafeScriptingProc("convert_CamelCase_to_snake_case") {
+WsjcppSafeScriptingProcCamelCaseToSnakeCase::WsjcppSafeScriptingProcCamelCaseToSnakeCase() 
+: WsjcppSafeScriptingProc("convert_CamelCase_to_snake_case") {
 
 }
 
 // ---------------------------------------------------------------------
 
-bool WSJCppSafeScriptingProcCamelCaseToSnakeCase::exec(const std::vector<WSJCppSafeScriptingVariable *> &vArgs) {
+bool WsjcppSafeScriptingProcCamelCaseToSnakeCase::exec(const std::vector<WsjcppSafeScriptingVariable *> &vArgs) {
     if (vArgs.size() != 2) {
-        WSJCppLog::err(TAG, "Expected 2 arguments");
+        WsjcppLog::err(TAG, "Expected 2 arguments");
         return false;
     }
     std::string sInput = vArgs[0]->getValue();
@@ -194,7 +194,7 @@ bool WSJCppSafeScriptingProcCamelCaseToSnakeCase::exec(const std::vector<WSJCppS
         } else if (c >= '0' && c <= '9') {
             sRet += c;
         } else {
-            WSJCppLog::warn(TAG, std::string("Ignored ") + c);
+            WsjcppLog::warn(TAG, std::string("Ignored ") + c);
         }
     }
     vArgs[1]->setValue(sRet);
@@ -202,78 +202,78 @@ bool WSJCppSafeScriptingProcCamelCaseToSnakeCase::exec(const std::vector<WSJCppS
 }
 
 // ---------------------------------------------------------------------
-// WSJCppSafeScriptingProcToUpperCase
+// WsjcppSafeScriptingProcToUpperCase
 
-WSJCppSafeScriptingProcToUpperCase::WSJCppSafeScriptingProcToUpperCase() 
-: WSJCppSafeScriptingProc("to_upper_case") {
+WsjcppSafeScriptingProcToUpperCase::WsjcppSafeScriptingProcToUpperCase() 
+: WsjcppSafeScriptingProc("to_upper_case") {
 
 }
 
 // ---------------------------------------------------------------------
 
-bool WSJCppSafeScriptingProcToUpperCase::exec(const std::vector<WSJCppSafeScriptingVariable *> &vArgs) {
+bool WsjcppSafeScriptingProcToUpperCase::exec(const std::vector<WsjcppSafeScriptingVariable *> &vArgs) {
     if (vArgs.size() != 1) {
-        WSJCppLog::err(TAG, "Expected 1 arguments");
+        WsjcppLog::err(TAG, "Expected 1 arguments");
         return false;
     }
     std::string sInput = vArgs[0]->getValue();
-    std::string sRet = WSJCppCore::toUpper(sInput);
+    std::string sRet = WsjcppCore::toUpper(sInput);
     vArgs[0]->setValue(sRet);
     return true;
 }
 
 // ---------------------------------------------------------------------
-// WSJCppSafeScriptingProcWriteFile
+// WsjcppSafeScriptingProcWriteFile
 
-WSJCppSafeScriptingProcWriteFile::WSJCppSafeScriptingProcWriteFile() 
-: WSJCppSafeScriptingProc("write_file") {
+WsjcppSafeScriptingProcWriteFile::WsjcppSafeScriptingProcWriteFile() 
+: WsjcppSafeScriptingProc("write_file") {
 
 }
 
 // ---------------------------------------------------------------------
 
-bool WSJCppSafeScriptingProcWriteFile::exec(const std::vector<WSJCppSafeScriptingVariable *> &vArgs) {
+bool WsjcppSafeScriptingProcWriteFile::exec(const std::vector<WsjcppSafeScriptingVariable *> &vArgs) {
     if (vArgs.size() != 2) {
-        WSJCppLog::err(TAG, "Expected 2 arguments");
+        WsjcppLog::err(TAG, "Expected 2 arguments");
         return false;
     }
     std::string sFilePath = vArgs[0]->getValue();
     // TODO check safe file
     std::string sFileContent = vArgs[1]->getValue();
-    return WSJCppCore::writeFile(sFilePath, sFileContent);
+    return WsjcppCore::writeFile(sFilePath, sFileContent);
 }
 
 // ---------------------------------------------------------------------
-// WSJCppSafeScriptingProcCMakeListsTxtAppendWSJCpp
+// WsjcppSafeScriptingProcCMakeListsTxtAppendWsjcpp
 
-WSJCppSafeScriptingProcCMakeListsTxtAppendWSJCpp::WSJCppSafeScriptingProcCMakeListsTxtAppendWSJCpp() 
-: WSJCppSafeScriptingProc("cmakelists_txt_append_wsjcpp") {
+WsjcppSafeScriptingProcCMakeListsTxtAppendWsjcpp::WsjcppSafeScriptingProcCMakeListsTxtAppendWsjcpp() 
+: WsjcppSafeScriptingProc("cmakelists_txt_append_wsjcpp") {
 
 }
 
 // ---------------------------------------------------------------------
 
-bool WSJCppSafeScriptingProcCMakeListsTxtAppendWSJCpp::exec(const std::vector<WSJCppSafeScriptingVariable *> &vArgs) {
+bool WsjcppSafeScriptingProcCMakeListsTxtAppendWsjcpp::exec(const std::vector<WsjcppSafeScriptingVariable *> &vArgs) {
     if (vArgs.size() != 1) {
-        WSJCppLog::err(TAG, "Expected 1 arguments");
+        WsjcppLog::err(TAG, "Expected 1 arguments");
         return false;
     }
     std::string sFilePath = vArgs[0]->getValue();
     std::string sToAppend = "list (APPEND WSJCPP_SOURCES \"" + sFilePath + "\")";
     std::string sCMakeListsTxt;
-    if (!WSJCppCore::readTextFile("./CMakeLists.txt", sCMakeListsTxt)) {
-        WSJCppLog::err(TAG, "Could not read file ./CMakeLists.txt");
+    if (!WsjcppCore::readTextFile("./CMakeLists.txt", sCMakeListsTxt)) {
+        WsjcppLog::err(TAG, "Could not read file ./CMakeLists.txt");
         return false;
     }
-    WSJCppCore::trim(sCMakeListsTxt);
+    WsjcppCore::trim(sCMakeListsTxt);
 
     std::string sCMakeListsTxtOutput;
-    std::vector<std::string> vLines = WSJCppCore::split(sCMakeListsTxt, "\n");
+    std::vector<std::string> vLines = WsjcppCore::split(sCMakeListsTxt, "\n");
     bool bAdded = false;
     int nState = 0;
     for (int i = 0; i < vLines.size(); i++) {
         std::string sLine = vLines[i];
-        WSJCppCore::trim(sLine);
+        WsjcppCore::trim(sLine);
         if (nState == 0 && sLine == "#### BEGIN_WSJCPP_APPEND") {
             nState = 1;
         } else if (nState == 1) {
@@ -291,16 +291,16 @@ bool WSJCppSafeScriptingProcCMakeListsTxtAppendWSJCpp::exec(const std::vector<WS
     }
     sCMakeListsTxtOutput += "\n";
     if (!bAdded) {
-        WSJCppLog::err(TAG, "Not found '#### BEGIN_WSJCPP_APPEND' and '#### END_WSJCPP_APPEND' in file './CMakeLists.txt'");
+        WsjcppLog::err(TAG, "Not found '#### BEGIN_WSJCPP_APPEND' and '#### END_WSJCPP_APPEND' in file './CMakeLists.txt'");
         return false;
     }
-    return WSJCppCore::writeFile("./CMakeLists.txt", sCMakeListsTxtOutput);
+    return WsjcppCore::writeFile("./CMakeLists.txt", sCMakeListsTxtOutput);
 }
 
 // ---------------------------------------------------------------------
-// WSJCppSafeScriptingToken
+// WsjcppSafeScriptingToken
 
-WSJCppSafeScriptingToken::WSJCppSafeScriptingToken(
+WsjcppSafeScriptingToken::WsjcppSafeScriptingToken(
     const std::string &sToken,
     const std::string &sScriptName,
     int nNumberOfLine
@@ -312,7 +312,7 @@ WSJCppSafeScriptingToken::WSJCppSafeScriptingToken(
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppSafeScriptingToken::getToken() {
+std::string WsjcppSafeScriptingToken::getToken() {
     if (!this->hasString()) {
         return m_sToken;
     }
@@ -322,55 +322,55 @@ std::string WSJCppSafeScriptingToken::getToken() {
 
 // ---------------------------------------------------------------------
 
-bool WSJCppSafeScriptingToken::hasString() {
+bool WsjcppSafeScriptingToken::hasString() {
     return m_sToken.length() > 0 && m_sToken[0] == '"' && m_sToken[m_sToken.length()-1] == '"';
 }
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppSafeScriptingToken::getContextForLog() {
+std::string WsjcppSafeScriptingToken::getContextForLog() {
     return m_sScriptName + ":" + std::to_string(m_nNumberOfLine) + " -> " + m_sToken;
 }
 
 // ---------------------------------------------------------------------
-// WSJCppSafeScriptingContext
+// WsjcppSafeScriptingContext
 
-WSJCppSafeScriptingContext::WSJCppSafeScriptingContext() {
-    TAG = "WSJCppSafeScriptingContext";
-    addProc(new WSJCppSafeScriptingProcLogInfo());
-    addProc(new WSJCppSafeScriptingProcedureSetValue());
-    addProc(new WSJCppSafeScriptingProcedureConcat());
-    addProc(new WSJCppSafeScriptingProcMakeDir());
-    addProc(new WSJCppSafeScriptingProcNormalizeClassName());
-    addProc(new WSJCppSafeScriptingProcCamelCaseToSnakeCase());
-    addProc(new WSJCppSafeScriptingProcToUpperCase());
-    addProc(new WSJCppSafeScriptingProcWriteFile());
-    addProc(new WSJCppSafeScriptingProcCMakeListsTxtAppendWSJCpp());
+WsjcppSafeScriptingContext::WsjcppSafeScriptingContext() {
+    TAG = "WsjcppSafeScriptingContext";
+    addProc(new WsjcppSafeScriptingProcLogInfo());
+    addProc(new WsjcppSafeScriptingProcedureSetValue());
+    addProc(new WsjcppSafeScriptingProcedureConcat());
+    addProc(new WsjcppSafeScriptingProcMakeDir());
+    addProc(new WsjcppSafeScriptingProcNormalizeClassName());
+    addProc(new WsjcppSafeScriptingProcCamelCaseToSnakeCase());
+    addProc(new WsjcppSafeScriptingProcToUpperCase());
+    addProc(new WsjcppSafeScriptingProcWriteFile());
+    addProc(new WsjcppSafeScriptingProcCMakeListsTxtAppendWsjcpp());
 }
 
 // ---------------------------------------------------------------------
 
-WSJCppSafeScriptingContext::~WSJCppSafeScriptingContext() {
+WsjcppSafeScriptingContext::~WsjcppSafeScriptingContext() {
     // TODO cleanup all pointers
-    WSJCppLog::warn(TAG, "TODO cleanup all pointers");
+    WsjcppLog::warn(TAG, "TODO cleanup all pointers");
 }
 
 // ---------------------------------------------------------------------
 
-WSJCppSafeScriptingVariable * WSJCppSafeScriptingContext::addVariable(const std::string &sName) {
+WsjcppSafeScriptingVariable * WsjcppSafeScriptingContext::addVariable(const std::string &sName) {
     if (hasVariable(sName)) {
-        WSJCppLog::err(TAG, "Variable '" + sName + "' already defined");
+        WsjcppLog::err(TAG, "Variable '" + sName + "' already defined");
         return nullptr;
     }
-    WSJCppSafeScriptingVariable *pVar = new WSJCppSafeScriptingVariable("");
+    WsjcppSafeScriptingVariable *pVar = new WsjcppSafeScriptingVariable("");
     m_vVariables[sName] = pVar;
     return pVar;
 }
 
 // ---------------------------------------------------------------------
 
-WSJCppSafeScriptingVariable * WSJCppSafeScriptingContext::getVariable(const std::string &sName) {
-    std::map<std::string, WSJCppSafeScriptingVariable *>::iterator it;
+WsjcppSafeScriptingVariable * WsjcppSafeScriptingContext::getVariable(const std::string &sName) {
+    std::map<std::string, WsjcppSafeScriptingVariable *>::iterator it;
     it = m_vVariables.find(sName);
     if (it != m_vVariables.end()) {
         return it->second;
@@ -380,21 +380,21 @@ WSJCppSafeScriptingVariable * WSJCppSafeScriptingContext::getVariable(const std:
 
 // ---------------------------------------------------------------------
 
-bool WSJCppSafeScriptingContext::hasVariable(const std::string &sName) {
+bool WsjcppSafeScriptingContext::hasVariable(const std::string &sName) {
     return this->hasVar(sName);
 }
 
 // ---------------------------------------------------------------------
 
-bool WSJCppSafeScriptingContext::hasVar(const std::string &sName) {
+bool WsjcppSafeScriptingContext::hasVar(const std::string &sName) {
     return m_vVariables.find(sName) != m_vVariables.end();
 }
 
 // ---------------------------------------------------------------------
 
-bool WSJCppSafeScriptingContext::addProc(WSJCppSafeScriptingProc *pProc) {
+bool WsjcppSafeScriptingContext::addProc(WsjcppSafeScriptingProc *pProc) {
     if (this->hasProc(pProc->getName())) {
-        WSJCppLog::err(TAG, "Proc already defined '" + pProc->getName() + "'");
+        WsjcppLog::err(TAG, "Proc already defined '" + pProc->getName() + "'");
         return false;
     }
     m_vProcs[pProc->getName()] = pProc;
@@ -403,8 +403,8 @@ bool WSJCppSafeScriptingContext::addProc(WSJCppSafeScriptingProc *pProc) {
 
 // ---------------------------------------------------------------------
 
-WSJCppSafeScriptingProc *WSJCppSafeScriptingContext::getProc(const std::string &sName) {
-    std::map<std::string, WSJCppSafeScriptingProc *>::iterator it;
+WsjcppSafeScriptingProc *WsjcppSafeScriptingContext::getProc(const std::string &sName) {
+    std::map<std::string, WsjcppSafeScriptingProc *>::iterator it;
     it = m_vProcs.find(sName);
     if (it != m_vProcs.end()) {
         return it->second;
@@ -414,13 +414,13 @@ WSJCppSafeScriptingProc *WSJCppSafeScriptingContext::getProc(const std::string &
 
 // ---------------------------------------------------------------------
 
-bool WSJCppSafeScriptingContext::hasProc(const std::string &sName) {
+bool WsjcppSafeScriptingContext::hasProc(const std::string &sName) {
     return m_vProcs.find(sName) != m_vProcs.end();
 }
 
 // ---------------------------------------------------------------------
 
-int WSJCppSafeScriptingContext::exec(
+int WsjcppSafeScriptingContext::exec(
     const std::string &sScriptRootDir,
     const std::string &sScriptFileName, 
     const std::string &sScriptContent, 
@@ -430,23 +430,23 @@ int WSJCppSafeScriptingContext::exec(
     m_sScriptFileName = sScriptFileName;
     m_sScriptContent = sScriptContent;
 
-    m_vVariables["rootdir"] = new WSJCppSafeScriptingVariable(m_sScriptRootDir);
-    m_vVariables["script_filename"] = new WSJCppSafeScriptingVariable(m_sScriptFileName);
+    m_vVariables["rootdir"] = new WsjcppSafeScriptingVariable(m_sScriptRootDir);
+    m_vVariables["script_filename"] = new WsjcppSafeScriptingVariable(m_sScriptFileName);
     for (int i = 0; i < vArgs.size(); i++) {
         std::string sArgName = "arg" + std::to_string(i+1);
-        WSJCppLog::info(TAG, sArgName + " = '" + vArgs[i] + "'");
-        m_vVariables[sArgName] = new WSJCppSafeScriptingVariable(vArgs[i]);
+        WsjcppLog::info(TAG, sArgName + " = '" + vArgs[i] + "'");
+        m_vVariables[sArgName] = new WsjcppSafeScriptingVariable(vArgs[i]);
     }
     if (!parseScript()) {
-        WSJCppLog::err(TAG, "Parse script failed");
+        WsjcppLog::err(TAG, "Parse script failed");
         return -1;
     }
     std::string sError = "";
     for (int i = 0; i < m_vScriptTokens.size(); i++) {
-        WSJCppSafeScriptingToken *pToken = m_vScriptTokens[i];
+        WsjcppSafeScriptingToken *pToken = m_vScriptTokens[i];
         std::string sToken = pToken->getToken();
         if (sToken == "error") {
-            WSJCppLog::err(TAG, "error");
+            WsjcppLog::err(TAG, "error");
             return -1;
         } else if (sToken == "exit") {
             return 0;
@@ -455,26 +455,26 @@ int WSJCppSafeScriptingContext::exec(
             i++;
             std::string sEndToken = m_vScriptTokens[i+1]->getToken();
             if (sEndToken != "end") {
-                WSJCppLog::err(TAG, "Expected token 'end' after '" + sVarName + "' but got '" + sEndToken + "'");
+                WsjcppLog::err(TAG, "Expected token 'end' after '" + sVarName + "' but got '" + sEndToken + "'");
                 return -1;
             }
             i++;
             // TODO check empty name
             if (hasVariable(sVarName)) {
-                WSJCppLog::err(TAG, "variable already defined " + sVarName);
+                WsjcppLog::err(TAG, "variable already defined " + sVarName);
                 return -1;
             } else if (hasProc(sVarName)) {
-                WSJCppLog::err(TAG, "Procedure with this name already exists " + sVarName);
+                WsjcppLog::err(TAG, "Procedure with this name already exists " + sVarName);
                 return -1;
             } else {
                 addVariable(sVarName); // TODO add variable
             }
         } else if (hasProc(sToken)) {
-            std::vector<WSJCppSafeScriptingVariable *> vArgs;
-            std::vector<WSJCppSafeScriptingVariable *> vRuntimeRemoveAfter;
-            std::vector<WSJCppSafeScriptingToken *> vTokenArgs;
+            std::vector<WsjcppSafeScriptingVariable *> vArgs;
+            std::vector<WsjcppSafeScriptingVariable *> vRuntimeRemoveAfter;
+            std::vector<WsjcppSafeScriptingToken *> vTokenArgs;
             for (int n = i+1; n < m_vScriptTokens.size(); n++) {
-                WSJCppSafeScriptingToken *pToken2 = m_vScriptTokens[n];
+                WsjcppSafeScriptingToken *pToken2 = m_vScriptTokens[n];
                 std::string sTokenValue2 = pToken2->getToken();
                 vTokenArgs.push_back(pToken2);
                 if (sTokenValue2 == "end") {
@@ -482,20 +482,20 @@ int WSJCppSafeScriptingContext::exec(
                     vTokenArgs.pop_back();
                     break;
                 } else if (pToken2->hasString()) {
-                    WSJCppSafeScriptingVariable *pVar = addVariable("vartmp_" + WSJCppCore::createUuid());
+                    WsjcppSafeScriptingVariable *pVar = addVariable("vartmp_" + WsjcppCore::createUuid());
                     pVar->setValue(sTokenValue2);
                     vArgs.push_back(pVar);
                     vRuntimeRemoveAfter.push_back(pVar);
                 } else if (hasVariable(sTokenValue2)) {
-                    WSJCppSafeScriptingVariable *pVar = getVariable(sTokenValue2);
+                    WsjcppSafeScriptingVariable *pVar = getVariable(sTokenValue2);
                     vArgs.push_back(pVar);
                 } else {
-                    WSJCppLog::err(TAG, "Uknown token: " + sTokenValue2);
+                    WsjcppLog::err(TAG, "Uknown token: " + sTokenValue2);
                     // TODO cleanup 
                     return -1;
                 }
             }
-            WSJCppSafeScriptingProc *pProcedure = this->getProc(sToken);
+            WsjcppSafeScriptingProc *pProcedure = this->getProc(sToken);
             if (!pProcedure->exec(vArgs)) {
                 std::string sDebugInfo = "Procedure: " + sToken + "\n";
                 sDebugInfo += "Arguments: \n";
@@ -507,7 +507,7 @@ int WSJCppSafeScriptingContext::exec(
                 for (int n = 0; n < vTokenArgs.size(); n++) {
                     sDebugInfo += vTokenArgs[n]->getContextForLog() + "\n";
                 }
-                WSJCppLog::err(TAG, sDebugInfo);
+                WsjcppLog::err(TAG, sDebugInfo);
                 return -1;
             };
             for (int n = 0; n < vRuntimeRemoveAfter.size(); n++) {
@@ -516,7 +516,7 @@ int WSJCppSafeScriptingContext::exec(
             }
             vRuntimeRemoveAfter.clear();
         } else {
-            WSJCppLog::err(TAG, "Unknown token '" + sToken + "'  \n(" + pToken->getContextForLog() + ")");
+            WsjcppLog::err(TAG, "Unknown token '" + sToken + "'  \n(" + pToken->getContextForLog() + ")");
             return -1;
         }
     }
@@ -525,7 +525,7 @@ int WSJCppSafeScriptingContext::exec(
 
 // ---------------------------------------------------------------------
 
-bool WSJCppSafeScriptingContext::parseScript() {
+bool WsjcppSafeScriptingContext::parseScript() {
     m_vScriptTokens.clear();
     int n = 0;
     std::string sToken = "";
@@ -547,10 +547,10 @@ bool WSJCppSafeScriptingContext::parseScript() {
         } else if (n == 1 && ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '_')) {
             sToken += c;
         } else if (n == 1 && (c == ' ' || c == '\n')) {
-            m_vScriptTokens.push_back(new WSJCppSafeScriptingToken(sToken, m_sScriptFileName, nLine));
-            // WSJCppLog::info(TAG, "Token '" + sToken + "'");
+            m_vScriptTokens.push_back(new WsjcppSafeScriptingToken(sToken, m_sScriptFileName, nLine));
+            // WsjcppLog::info(TAG, "Token '" + sToken + "'");
             if (c == '\n') {
-                m_vScriptTokens.push_back(new WSJCppSafeScriptingToken("end", m_sScriptFileName, nLine));
+                m_vScriptTokens.push_back(new WsjcppSafeScriptingToken("end", m_sScriptFileName, nLine));
                 nLine++;
             }
             n = 0;
@@ -580,13 +580,13 @@ bool WSJCppSafeScriptingContext::parseScript() {
         } else if (n == 10 && c == '"') {
             sToken += c;
             n = 0;
-            m_vScriptTokens.push_back(new WSJCppSafeScriptingToken(sToken, m_sScriptFileName, nLine));
+            m_vScriptTokens.push_back(new WsjcppSafeScriptingToken(sToken, m_sScriptFileName, nLine));
         } else if (n == 10) {
             sToken += c;
         } else if (c == '\n') {
             int nSize = m_vScriptTokens.size();
             if (nSize > 0 && m_vScriptTokens[nSize-1]->getToken() != "end") {
-                m_vScriptTokens.push_back(new WSJCppSafeScriptingToken("end", m_sScriptFileName, nLine));
+                m_vScriptTokens.push_back(new WsjcppSafeScriptingToken("end", m_sScriptFileName, nLine));
             }
             n = 0;
             nLine++;
@@ -596,14 +596,14 @@ bool WSJCppSafeScriptingContext::parseScript() {
             std::string sError = "parseScript, Unknown token '";
             sError += c;
             sError += "' in a line: " + m_sScriptFileName + ":" + std::to_string(nLine);
-            WSJCppLog::err(TAG, sError);
+            WsjcppLog::err(TAG, sError);
             return false;
         }
     }
     if (n == 1) {
-        m_vScriptTokens.push_back(new WSJCppSafeScriptingToken(sToken, m_sScriptFileName, nLine));
-        m_vScriptTokens.push_back(new WSJCppSafeScriptingToken("end", m_sScriptFileName, nLine));
-        // WSJCppLog::info(TAG, "parseScript, Last Token '" + sToken + "'");
+        m_vScriptTokens.push_back(new WsjcppSafeScriptingToken(sToken, m_sScriptFileName, nLine));
+        m_vScriptTokens.push_back(new WsjcppSafeScriptingToken("end", m_sScriptFileName, nLine));
+        // WsjcppLog::info(TAG, "parseScript, Last Token '" + sToken + "'");
     }
     return true;
 }

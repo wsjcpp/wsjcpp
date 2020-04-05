@@ -36,10 +36,10 @@ concat content_header "#ifndef " ifndef_header "
 
 #include <wsjcpp_safe_scripting.h>
 
-class " class_name " : public WSJCppSafeScriptingProc {
+class " class_name " : public WsjcppSafeScriptingProc {
     public:
         " class_name "();
-        virtual bool exec(const std::vector<WSJCppSafeScriptingVariable *> &m_vArgs);
+        virtual bool exec(const std::vector<WsjcppSafeScriptingVariable *> &m_vArgs);
 };
 
 #endif // " ifndef_header
@@ -54,14 +54,14 @@ concat content_source  "
 // " class_name "
 
 " class_name "::" class_name "() 
-: WSJCppSafeScriptingProc(\"" proc_name "\") {
+: WsjcppSafeScriptingProc(\"" proc_name "\") {
 
 }
 
 // ---------------------------------------------------------------------
 
-bool " class_name "::exec(const std::vector<WSJCppSafeScriptingVariable *> &vArgs) {
-    WSJCppLog::err(TAG, \"Not implemented\");
+bool " class_name "::exec(const std::vector<WsjcppSafeScriptingVariable *> &vArgs) {
+    WsjcppLog::err(TAG, \"Not implemented\");
     return false;
 }
 "

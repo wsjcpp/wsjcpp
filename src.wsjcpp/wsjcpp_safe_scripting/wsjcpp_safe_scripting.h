@@ -7,9 +7,9 @@
 
 // ---------------------------------------------------------------------
 
-class WSJCppSafeScriptingVariable {
+class WsjcppSafeScriptingVariable {
     public:
-        WSJCppSafeScriptingVariable(const std::string &sValue);
+        WsjcppSafeScriptingVariable(const std::string &sValue);
         std::string getValue();
         void setValue(const std::string &sValue);
     private:
@@ -19,11 +19,11 @@ class WSJCppSafeScriptingVariable {
 
 // ---------------------------------------------------------------------
 
-class WSJCppSafeScriptingProc {
+class WsjcppSafeScriptingProc {
     public:
-        WSJCppSafeScriptingProc(const std::string &sProcName);
+        WsjcppSafeScriptingProc(const std::string &sProcName);
         std::string getName();
-        virtual bool exec(const std::vector<WSJCppSafeScriptingVariable *> &vArgs);
+        virtual bool exec(const std::vector<WsjcppSafeScriptingVariable *> &vArgs);
     protected:
         std::string TAG;
 
@@ -33,81 +33,81 @@ class WSJCppSafeScriptingProc {
 
 // ---------------------------------------------------------------------
 
-class WSJCppSafeScriptingProcLogInfo : public WSJCppSafeScriptingProc {
+class WsjcppSafeScriptingProcLogInfo : public WsjcppSafeScriptingProc {
     public:
-        WSJCppSafeScriptingProcLogInfo();
-        virtual bool exec(const std::vector<WSJCppSafeScriptingVariable *> &m_vArgs);
+        WsjcppSafeScriptingProcLogInfo();
+        virtual bool exec(const std::vector<WsjcppSafeScriptingVariable *> &m_vArgs);
 };
 
 // ---------------------------------------------------------------------
 
-class WSJCppSafeScriptingProcedureSetValue : public WSJCppSafeScriptingProc {
+class WsjcppSafeScriptingProcedureSetValue : public WsjcppSafeScriptingProc {
     public:
-        WSJCppSafeScriptingProcedureSetValue();
-        virtual bool exec(const std::vector<WSJCppSafeScriptingVariable *> &m_vArgs);
+        WsjcppSafeScriptingProcedureSetValue();
+        virtual bool exec(const std::vector<WsjcppSafeScriptingVariable *> &m_vArgs);
 };
 
 // ---------------------------------------------------------------------
 
-class WSJCppSafeScriptingProcedureConcat : public WSJCppSafeScriptingProc {
+class WsjcppSafeScriptingProcedureConcat : public WsjcppSafeScriptingProc {
     public:
-        WSJCppSafeScriptingProcedureConcat();
-        virtual bool exec(const std::vector<WSJCppSafeScriptingVariable *> &m_vArgs);
+        WsjcppSafeScriptingProcedureConcat();
+        virtual bool exec(const std::vector<WsjcppSafeScriptingVariable *> &m_vArgs);
 };
 
 // ---------------------------------------------------------------------
 
-class WSJCppSafeScriptingProcMakeDir : public WSJCppSafeScriptingProc {
+class WsjcppSafeScriptingProcMakeDir : public WsjcppSafeScriptingProc {
     public:
-        WSJCppSafeScriptingProcMakeDir();
-        virtual bool exec(const std::vector<WSJCppSafeScriptingVariable *> &m_vArgs);
+        WsjcppSafeScriptingProcMakeDir();
+        virtual bool exec(const std::vector<WsjcppSafeScriptingVariable *> &m_vArgs);
 };
 
 // ---------------------------------------------------------------------
 
-class WSJCppSafeScriptingProcNormalizeClassName : public WSJCppSafeScriptingProc {
+class WsjcppSafeScriptingProcNormalizeClassName : public WsjcppSafeScriptingProc {
     public:
-        WSJCppSafeScriptingProcNormalizeClassName();
-        virtual bool exec(const std::vector<WSJCppSafeScriptingVariable *> &m_vArgs);
+        WsjcppSafeScriptingProcNormalizeClassName();
+        virtual bool exec(const std::vector<WsjcppSafeScriptingVariable *> &m_vArgs);
 };
 
 // ---------------------------------------------------------------------
 
-class WSJCppSafeScriptingProcCamelCaseToSnakeCase : public WSJCppSafeScriptingProc {
+class WsjcppSafeScriptingProcCamelCaseToSnakeCase : public WsjcppSafeScriptingProc {
     public:
-        WSJCppSafeScriptingProcCamelCaseToSnakeCase();
-        virtual bool exec(const std::vector<WSJCppSafeScriptingVariable *> &m_vArgs);
+        WsjcppSafeScriptingProcCamelCaseToSnakeCase();
+        virtual bool exec(const std::vector<WsjcppSafeScriptingVariable *> &m_vArgs);
 };
 
 // ---------------------------------------------------------------------
 
-class WSJCppSafeScriptingProcToUpperCase : public WSJCppSafeScriptingProc {
+class WsjcppSafeScriptingProcToUpperCase : public WsjcppSafeScriptingProc {
     public:
-        WSJCppSafeScriptingProcToUpperCase();
-        virtual bool exec(const std::vector<WSJCppSafeScriptingVariable *> &m_vArgs);
+        WsjcppSafeScriptingProcToUpperCase();
+        virtual bool exec(const std::vector<WsjcppSafeScriptingVariable *> &m_vArgs);
 };
 
 // ---------------------------------------------------------------------
 
-class WSJCppSafeScriptingProcWriteFile : public WSJCppSafeScriptingProc {
+class WsjcppSafeScriptingProcWriteFile : public WsjcppSafeScriptingProc {
     public:
-        WSJCppSafeScriptingProcWriteFile();
-        virtual bool exec(const std::vector<WSJCppSafeScriptingVariable *> &m_vArgs);
+        WsjcppSafeScriptingProcWriteFile();
+        virtual bool exec(const std::vector<WsjcppSafeScriptingVariable *> &m_vArgs);
 };
 
 // ---------------------------------------------------------------------
 
-class WSJCppSafeScriptingProcCMakeListsTxtAppendWSJCpp : public WSJCppSafeScriptingProc {
+class WsjcppSafeScriptingProcCMakeListsTxtAppendWsjcpp : public WsjcppSafeScriptingProc {
     public:
-        WSJCppSafeScriptingProcCMakeListsTxtAppendWSJCpp();
-        virtual bool exec(const std::vector<WSJCppSafeScriptingVariable *> &m_vArgs);
+        WsjcppSafeScriptingProcCMakeListsTxtAppendWsjcpp();
+        virtual bool exec(const std::vector<WsjcppSafeScriptingVariable *> &m_vArgs);
 };
 
 // ---------------------------------------------------------------------
 
-class WSJCppSafeScriptingToken {
+class WsjcppSafeScriptingToken {
     public:
-        WSJCppSafeScriptingToken(
+        WsjcppSafeScriptingToken(
             const std::string &sToken, 
             const std::string &sScriptName, // TODO repalce to pointer of script context
             int nNumberOfLine
@@ -124,17 +124,17 @@ class WSJCppSafeScriptingToken {
 
 // ---------------------------------------------------------------------
 
-class WSJCppSafeScriptingContext {
+class WsjcppSafeScriptingContext {
     public:
-        WSJCppSafeScriptingContext();
-        ~WSJCppSafeScriptingContext();
+        WsjcppSafeScriptingContext();
+        ~WsjcppSafeScriptingContext();
 
-        WSJCppSafeScriptingVariable * addVariable(const std::string &sName);
-        WSJCppSafeScriptingVariable * getVariable(const std::string &sName);
+        WsjcppSafeScriptingVariable * addVariable(const std::string &sName);
+        WsjcppSafeScriptingVariable * getVariable(const std::string &sName);
         bool hasVariable(const std::string &sName);
         bool hasVar(const std::string &sName);
-        bool addProc(WSJCppSafeScriptingProc *pProcedure);
-        WSJCppSafeScriptingProc *getProc(const std::string &sName);
+        bool addProc(WsjcppSafeScriptingProc *pProcedure);
+        WsjcppSafeScriptingProc *getProc(const std::string &sName);
         bool hasProc(const std::string &sName);
         
         int exec(
@@ -149,11 +149,11 @@ class WSJCppSafeScriptingContext {
         std::string m_sScriptRootDir;
         std::string m_sScriptFileName;
         std::string m_sScriptContent;
-        std::vector<WSJCppSafeScriptingToken *> m_vScriptTokens;
+        std::vector<WsjcppSafeScriptingToken *> m_vScriptTokens;
         bool parseScript();
 
-        std::map<std::string, WSJCppSafeScriptingVariable *> m_vVariables;
-        std::map<std::string, WSJCppSafeScriptingProc *> m_vProcs;
+        std::map<std::string, WsjcppSafeScriptingVariable *> m_vVariables;
+        std::map<std::string, WsjcppSafeScriptingProc *> m_vProcs;
 };
 
 #endif // WSJCPP_SAFE_SCRIPTING_H

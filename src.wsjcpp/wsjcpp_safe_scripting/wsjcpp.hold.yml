@@ -1,5 +1,5 @@
 name: "wsjcpp-safe-scripting"
-version: "v0.0.1"
+version: "v0.1.0"
 cmake_minimum_required: "3.0"
 cmake_cxx_standard: "11"
 description: "C++ Safe Scripting"
@@ -20,7 +20,7 @@ keywords:
 
 dependencies:
   - name: "wsjcpp-core"
-    version: "v0.0.7"
+    version: "v0.1.0"
     url: "https://github.com/wsjcpp/wsjcpp-core:master"
     origin: "https://github.com/"
     installation-dir: "./src.wsjcpp/wsjcpp_core"
@@ -32,8 +32,8 @@ distribution:
   - source-file: "src/wsjcpp_safe_scripting.cpp"
     target-file: "wsjcpp_safe_scripting.cpp"
     type: "source-code"
-  - source-file: "scripts.wsjcpp/generate.WSJCppSafeScriptingProc"
-    target-file: "generate.WSJCppSafeScriptingProc"
+  - source-file: "scripts.wsjcpp/generate.WsjcppSafeScriptingProc"
+    target-file: "generate.WsjcppSafeScriptingProc"
     type: "safe-scripting-generate"
 
 unit-tests:
