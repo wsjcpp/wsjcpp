@@ -8,7 +8,7 @@
 #include <deque>
 #include <iostream>
 
-class WSJCppCore {
+class WsjcppCore {
     public:
         static bool init(
             int argc, char** argv, 
@@ -38,6 +38,7 @@ class WSJCppCore {
         static bool makeDir(const std::string &sDirname);
         static bool writeFile(const std::string &sFilename, const std::string &sContent);
         static bool readTextFile(const std::string &sFilename, std::string &sOutputContent);
+        static bool readFileToBuffer(const std::string &sFilename, char *pBuffer[], int &nBufferSize);
         static bool writeFile(const std::string &sFilename, const char *pBuffer, const int nBufferSize);
         static bool removeFile(const std::string &sFilename);
         static bool createEmptyFile(const std::string &sFilename);
@@ -49,6 +50,7 @@ class WSJCppCore {
         static std::string toUpper(const std::string& str);
         static void replaceAll(std::string& str, const std::string& from, const std::string& to);
         static std::vector<std::string> split(const std::string& sWhat, const std::string& sDelim);
+        static std::string join(const std::vector<std::string> &vWhat, const std::string& sDelim);
 
         static void initRandom();
         static std::string createUuid();
@@ -61,13 +63,13 @@ class WSJCppCore {
         static std::string encodeUriComponent(const std::string& sValue);
         static std::string decodeUriComponent(const std::string& sValue);
 
-        
+        static std::string getHumanSizeBytes(long nBytes);
 };
 
 
 // ---------------------------------------------------------------------
 
-enum WSJCppColorCode {
+enum WsjcppColorCode {
     FG_RED      = 31,
     FG_GREEN    = 32,
     FG_YELLOW   = 93,
@@ -81,19 +83,19 @@ enum WSJCppColorCode {
 
 // ---------------------------------------------------------------------
 
-class WSJCppColorModifier {
-    WSJCppColorCode code;
+class WsjcppColorModifier {
+    WsjcppColorCode code;
     public:
-        WSJCppColorModifier(WSJCppColorCode pCode) : code(pCode) {}
+        WsjcppColorModifier(WsjcppColorCode pCode) : code(pCode) {}
         friend std::ostream&
-        operator<<(std::ostream& os, const WSJCppColorModifier& mod) {
+        operator<<(std::ostream& os, const WsjcppColorModifier& mod) {
             return os << "\033[" << mod.code << "m";
         }
 };
 
 // ---------------------------------------------------------------------
 
-class WSJCppLog {
+class WsjcppLog {
     public:
         static std::string g_WSJCPP_LOG_DIR;
         static std::string g_WSJCPP_LOG_PREFIX_FILE;
@@ -114,7 +116,7 @@ class WSJCppLog {
         static void initGlobalVariables();
 
     private:
-        static void add(WSJCppColorModifier &clr, const std::string &sType, const std::string &sTag, const std::string &sMessage);
+        static void add(WsjcppColorModifier &clr, const std::string &sType, const std::string &sTag, const std::string &sMessage);
 };
 
 #endif // WSJCPP_CORE_H

@@ -3,7 +3,7 @@ cmake_cxx_standard: 11
 cmake_minimum_required: 3.0
 
 name: wsjcpp-core
-version: v0.0.7
+version: v0.1.0
 description: Basic Utils for wsjcpp
 issues: https://github.com/wsjcpp/wsjcpp-core/issues
 repositories:
@@ -62,3 +62,9 @@ unit-tests:
       description: "Test split function"
     - name: "CreateEmptyFile"
       description: "Test create empty file"
+    - name: "ReadFileToBuffer"
+      description: "test for readFileToBuffer"
+    - name: "Join"
+      description: "Test join function"
+    - name: "getHumanSizeBytes"
+      description: "Test function get human size in bytes"
