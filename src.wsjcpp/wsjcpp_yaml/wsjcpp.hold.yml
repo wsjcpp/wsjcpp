@@ -3,7 +3,7 @@ cmake_minimum_required: 3.0
 cmake_cxx_standard: 11
 
 name: wsjcpp-yaml
-version: v0.0.3
+version: v0.1.1
 description: Read/Write yaml files
 issues: https://github.com/wsjcpp/wsjcpp-yaml/issues
 
@@ -27,7 +27,7 @@ required-libraries:
 
 dependencies:
   - name: "wsjcpp-core"
-    version: "v0.0.4"
+    version: "v0.1.1"
     url: "https://github.com/wsjcpp/wsjcpp-core:master"
     origin: "https://github.com/"
     installation-dir: "./src.wsjcpp/wsjcpp_core"
@@ -35,11 +35,9 @@ dependencies:
 distribution:
   - source-file: src/wsjcpp_yaml.cpp
     target-file: wsjcpp_yaml.cpp
-    sha1: "610cca0e10d14157d50d822ca499c90a77a8e748"
     type: "source-code"
   - source-file: src/wsjcpp_yaml.h
     target-file: wsjcpp_yaml.h
-    sha1: "3d4b215e387978ec0aa0956a3d81d024334593f2"
     type: "source-code"
 
 unit-tests:

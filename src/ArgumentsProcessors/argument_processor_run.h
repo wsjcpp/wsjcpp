@@ -3,7 +3,7 @@
 
 #include <wsjcpp_arguments.h>
 
-class ArgumentProcessorRun : public WSJCppArgumentProcessor {
+class ArgumentProcessorRun : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorRun();
         
@@ -11,7 +11,7 @@ class ArgumentProcessorRun : public WSJCppArgumentProcessor {
         
 };
 
-class ArgumentProcessorRunUnitTests : public WSJCppArgumentProcessor {
+class ArgumentProcessorRunUnitTests : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorRunUnitTests();
         virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
@@ -20,7 +20,7 @@ class ArgumentProcessorRunUnitTests : public WSJCppArgumentProcessor {
         
 };
 
-class ArgumentProcessorRunClean : public WSJCppArgumentProcessor {
+class ArgumentProcessorRunClean : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorRunClean();
         virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
@@ -29,7 +29,7 @@ class ArgumentProcessorRunClean : public WSJCppArgumentProcessor {
         
 };
 
-class ArgumentProcessorRunBuild : public WSJCppArgumentProcessor {
+class ArgumentProcessorRunBuild : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorRunBuild();
         virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);

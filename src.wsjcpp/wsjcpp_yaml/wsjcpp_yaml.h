@@ -11,7 +11,7 @@
 
 // ---------------------------------------------------------------------
 
-enum WSJCppYAMLItemType {
+enum WsjcppYamlItemType {
     WSJCPP_YAML_ITEM_UNDEFINED,
     WSJCPP_YAML_ITEM_EMPTY,
     WSJCPP_YAML_ITEM_ARRAY,
@@ -21,10 +21,10 @@ enum WSJCppYAMLItemType {
 
 // ---------------------------------------------------------------------
 
-class WSJCppYAMLPlaceInFile {
+class WsjcppYamlPlaceInFile {
     public:
-        WSJCppYAMLPlaceInFile();
-        WSJCppYAMLPlaceInFile(const std::string &sFilename, int nNumberOfLine, const std::string &sLine);
+        WsjcppYamlPlaceInFile();
+        WsjcppYamlPlaceInFile(const std::string &sFilename, int nNumberOfLine, const std::string &sLine);
 
         std::string getFilename() const;
         void setFilename(const std::string &sFilename);
@@ -49,18 +49,18 @@ class WSJCppYAMLPlaceInFile {
 	Basic class for yaml tree
 */
 
-class WSJCppYAMLItem { // TODO: rename to node
+class WsjcppYamlItem { // TODO: rename to node
     public:
-        WSJCppYAMLItem(
-            WSJCppYAMLItem *pParent,
-            const WSJCppYAMLPlaceInFile &placeInFile,
-            WSJCppYAMLItemType nItemType
+        WsjcppYamlItem(
+            WsjcppYamlItem *pParent,
+            const WsjcppYamlPlaceInFile &placeInFile,
+            WsjcppYamlItemType nItemType
         );
-        ~WSJCppYAMLItem();
-        WSJCppYAMLItem *getParent();
+        ~WsjcppYamlItem();
+        WsjcppYamlItem *getParent();
 
-        WSJCppYAMLPlaceInFile getPlaceInFile();
-        void setPlaceInFile(const WSJCppYAMLPlaceInFile &placeInFile);
+        WsjcppYamlPlaceInFile getPlaceInFile();
+        void setPlaceInFile(const WsjcppYamlPlaceInFile &placeInFile);
 
         void setComment(const std::string &sComment);
         std::string getComment();
@@ -79,21 +79,21 @@ class WSJCppYAMLItem { // TODO: rename to node
 
         bool isMap();
         bool hasElement(const std::string &sName);
-        WSJCppYAMLItem *getElement(const std::string &sName);
-        bool setElement(const std::string &sName, WSJCppYAMLItem *pItem);
+        WsjcppYamlItem *getElement(const std::string &sName);
+        bool setElement(const std::string &sName, WsjcppYamlItem *pItem);
         bool removeElement(const std::string &sName);
         std::vector<std::string> getKeys();
 
         bool setElementValue(const std::string &sName, bool bHasNameQuotes, const std::string &sValue, bool bHasValueQuotes);
         bool createElementMap(const std::string &sName, bool bHasNameQuotes);
-        WSJCppYAMLItem *createElementMap();
+        WsjcppYamlItem *createElementMap();
         bool createElementArray(const std::string &sName, bool bHasNameQuotes);
 
         bool isArray();
         int getLength();
-        WSJCppYAMLItem *getElement(int i);
-        bool appendElement(WSJCppYAMLItem *pItem);
-        bool appendElementValue(const std::string &sValue, bool bHasNameQuotes);
+        WsjcppYamlItem *getElement(int i);
+        bool appendElement(WsjcppYamlItem *pItem);
+        bool appendElementValue(const std::string &sValue, bool bHasValueQuotes);
         bool removeElement(int i);
 
         bool isValue();
@@ -104,17 +104,17 @@ class WSJCppYAMLItem { // TODO: rename to node
         std::string toString(std::string sIntent = "");
         std::string getItemTypeAsString();
 
-        WSJCppYAMLItem &operator[](int idx) { return *(this->getElement(idx)); }
-        WSJCppYAMLItem &operator[](const std::string &sName) { return *(this->getElement(sName)); }
+        WsjcppYamlItem &operator[](int idx) { return *(this->getElement(idx)); }
+        WsjcppYamlItem &operator[](const std::string &sName) { return *(this->getElement(sName)); }
 
         std::string getForLogFormat();
 
     private:
         std::string TAG;
-        WSJCppYAMLItem *m_pParent;
-        WSJCppYAMLPlaceInFile m_placeInFile;
-        WSJCppYAMLItemType m_nItemType;
-        std::vector<WSJCppYAMLItem *> m_vObjects;
+        WsjcppYamlItem *m_pParent;
+        WsjcppYamlPlaceInFile m_placeInFile;
+        WsjcppYamlItemType m_nItemType;
+        std::vector<WsjcppYamlItem *> m_vObjects;
         std::string m_sValue; // if it is not array or map
         bool m_bValueHasDoubleQuotes;
         std::string m_sName;
@@ -124,7 +124,7 @@ class WSJCppYAMLItem { // TODO: rename to node
 
 // ---------------------------------------------------------------------
 
-enum WSJCppYAMLParserLineStates {
+enum WsjcppYamlParserLineStates {
     NO,
     VALUE,
     COMMENT,
@@ -134,10 +134,10 @@ enum WSJCppYAMLParserLineStates {
 
 // ---------------------------------------------------------------------
 
-class WSJCppYAMLParsebleLine {
+class WsjcppYamlParsebleLine {
     public:
-        WSJCppYAMLParsebleLine(int nLine);
-        WSJCppYAMLParsebleLine();
+        WsjcppYamlParsebleLine(int nLine);
+        WsjcppYamlParsebleLine();
         int getLineNumber();
 
         std::string getPrefix();
@@ -170,47 +170,47 @@ class WSJCppYAMLParsebleLine {
 
 // ---------------------------------------------------------------------
 
-class WSJCppYAMLParserStatus {
+class WsjcppYamlParserStatus {
     public:
         int nIntent;
-        WSJCppYAMLItem *pCurItem;
-        WSJCppYAMLParsebleLine line;
-        WSJCppYAMLPlaceInFile placeInFile;
+        WsjcppYamlItem *pCurItem;
+        WsjcppYamlParsebleLine line;
+        WsjcppYamlPlaceInFile placeInFile;
         void logUnknownLine(const std::string &sPrefix);
 };
 
 // ---------------------------------------------------------------------
 
-class WSJCppYAML {
+class WsjcppYaml {
     public:
-        WSJCppYAML();
-        ~WSJCppYAML();
+        WsjcppYaml();
+        ~WsjcppYaml();
         bool loadFromFile(const std::string &sFileName);
         bool saveToFile(const std::string &sFileName);
         bool loadFromString(const std::string &sBuffer);
         bool loadFromString(std::string &sBuffer);
         bool saveToString(std::string &sBuffer);
 
-        WSJCppYAMLItem *getRoot();
-        WSJCppYAMLItem &operator[](int idx) { return *(getRoot()->getElement(idx)); }
-        WSJCppYAMLItem &operator[](const std::string &sName) { return *(getRoot()->getElement(sName)); }
+        WsjcppYamlItem *getRoot();
+        WsjcppYamlItem &operator[](int idx) { return *(getRoot()->getElement(idx)); }
+        WsjcppYamlItem &operator[](const std::string &sName) { return *(getRoot()->getElement(sName)); }
 
     private:
         std::string TAG;
         
         std::vector<std::string> splitToLines(const std::string &sBuffer);
         bool parse(const std::string &sFileName, const std::string &sBuffer);
-        void process_sameIntent_hasName_emptyValue_arrayItem(WSJCppYAMLParserStatus &st);
-        void process_sameIntent_hasName_emptyValue_noArrayItem(WSJCppYAMLParserStatus &st);
-        void process_sameIntent_hasName_hasValue_arrayItem(WSJCppYAMLParserStatus &st);
-        void process_sameIntent_hasName_hasValue_noArrayItem(WSJCppYAMLParserStatus &st);
-        void process_sameIntent_emptyName_hasValue_arrayItem(WSJCppYAMLParserStatus &st);
-        void process_sameIntent_emptyName_hasValue_noArrayItem(WSJCppYAMLParserStatus &st);
-        void process_sameIntent_emptyName_emptyValue_arrayItem(WSJCppYAMLParserStatus &st);
-        void process_sameIntent_emptyName_emptyValue_noArrayItem(WSJCppYAMLParserStatus &st);
+        void process_sameIntent_hasName_emptyValue_arrayItem(WsjcppYamlParserStatus &st);
+        void process_sameIntent_hasName_emptyValue_noArrayItem(WsjcppYamlParserStatus &st);
+        void process_sameIntent_hasName_hasValue_arrayItem(WsjcppYamlParserStatus &st);
+        void process_sameIntent_hasName_hasValue_noArrayItem(WsjcppYamlParserStatus &st);
+        void process_sameIntent_emptyName_hasValue_arrayItem(WsjcppYamlParserStatus &st);
+        void process_sameIntent_emptyName_hasValue_noArrayItem(WsjcppYamlParserStatus &st);
+        void process_sameIntent_emptyName_emptyValue_arrayItem(WsjcppYamlParserStatus &st);
+        void process_sameIntent_emptyName_emptyValue_noArrayItem(WsjcppYamlParserStatus &st);
 
         std::vector<std::string> m_sLines;
-        WSJCppYAMLItem *m_pRoot;
+        WsjcppYamlItem *m_pRoot;
 };
 
 #endif // WSJCPP_YAML_H

@@ -22,7 +22,7 @@ dependencies:
     origin: "https://github.com/"
     installation-dir: "./src.wsjcpp/wsjcpp_core"
   - name: "wsjcpp-yaml"
-    version: "0.0.2"
+    version: "v0.1.1"
     url: "https://github.com/wsjcpp/wsjcpp-yaml:master"
     origin: "https://github.com/"
     installation-dir: "./src.wsjcpp/wsjcpp_yaml"

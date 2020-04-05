@@ -5,7 +5,7 @@
 REGISTRY_UNIT_TEST(UnitTestNormalizeUnitTestName)
 
 UnitTestNormalizeUnitTestName::UnitTestNormalizeUnitTestName()
-    : WSJCppUnitTestBase("UnitTestNormalizeUnitTestName") {
+    : WsjcppUnitTestBase("UnitTestNormalizeUnitTestName") {
 }// ---------------------------------------------------------------------
 
 void UnitTestNormalizeUnitTestName::init() {
@@ -15,7 +15,7 @@ void UnitTestNormalizeUnitTestName::init() {
 // ---------------------------------------------------------------------
 bool UnitTestNormalizeUnitTestName::run() {
     bool bTestSuccess = true;
-    WSJCppPackageManager pkg(".");
+    WsjcppPackageManager pkg(".");
     std::vector<std::pair<std::string, std::string>> tests;
     tests.push_back(std::pair<std::string, std::string>("UnitTest1", "UnitTest1"));
     tests.push_back(std::pair<std::string, std::string>("UnitTest1%%%$", "UnitTest1"));

@@ -3,7 +3,7 @@
 #include <wsjcpp_core.h>
 
 ArgumentProcessorUnitTests::ArgumentProcessorUnitTests() 
-: WSJCppArgumentProcessor("unit-tests", "manage unit-tests in package") {
+: WsjcppArgumentProcessor({"unit-tests"}, "manage unit-tests in package") {
     registryProcessor(new ArgumentProcessorUnitTestsCreate());
     registryProcessor(new ArgumentProcessorUnitTestsDelete());
     registryProcessor(new ArgumentProcessorUnitTestsEnable());
@@ -14,20 +14,20 @@ ArgumentProcessorUnitTests::ArgumentProcessorUnitTests()
 // ---------------------------------------------------------------------
 
 ArgumentProcessorUnitTestsCreate::ArgumentProcessorUnitTestsCreate() 
-: WSJCppArgumentProcessor("create", "create a new unit-test") {
+: WsjcppArgumentProcessor({"create"}, "create a new unit-test") {
 
 }
 
 // ---------------------------------------------------------------------
 
 int ArgumentProcessorUnitTestsCreate::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
-    WSJCppPackageManager pkg("./");
+    WsjcppPackageManager pkg("./");
     if (!pkg.load()) {
         return -1;
     }
 
     if (vSubParams.size() != 2) {
-        WSJCppLog::err(TAG, "Usage: <Name> <Description>");
+        WsjcppLog::err(TAG, "Usage: <Name> <Description>");
         return -1;
     }
     if (pkg.createUnitTest(vSubParams[0], vSubParams[1])) {
@@ -41,18 +41,18 @@ int ArgumentProcessorUnitTestsCreate::exec(const std::string &sProgramName, cons
 // ---------------------------------------------------------------------
 
 ArgumentProcessorUnitTestsEnable::ArgumentProcessorUnitTestsEnable() 
-: WSJCppArgumentProcessor("enable", "Enable unit-test") {
+: WsjcppArgumentProcessor({"enable"}, "Enable unit-test") {
 }
 
 // ---------------------------------------------------------------------
 
 int ArgumentProcessorUnitTestsEnable::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
-    WSJCppPackageManager pkg("./");
+    WsjcppPackageManager pkg("./");
     if (!pkg.load()) {
         return -1;
     }
     if (vSubParams.size() != 1) {
-        WSJCppLog::err(TAG, "Usage: <Name>");
+        WsjcppLog::err(TAG, "Usage: <Name>");
         return -1;
     }
     
@@ -67,19 +67,19 @@ int ArgumentProcessorUnitTestsEnable::exec(const std::string &sProgramName, cons
 // ---------------------------------------------------------------------
 
 ArgumentProcessorUnitTestsDisable::ArgumentProcessorUnitTestsDisable() 
-: WSJCppArgumentProcessor("disable", "Disable unit-test") {
+: WsjcppArgumentProcessor({"disable"}, "Disable unit-test") {
 }
 
 // ---------------------------------------------------------------------
 
 int ArgumentProcessorUnitTestsDisable::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
-    WSJCppPackageManager pkg("./");
+    WsjcppPackageManager pkg("./");
     if (!pkg.load()) {
         return -1;
     }
     
     if (vSubParams.size() != 1) {
-        WSJCppLog::err(TAG, "Usage: <Name>");
+        WsjcppLog::err(TAG, "Usage: <Name>");
         return -1;
     }
 
@@ -94,61 +94,62 @@ int ArgumentProcessorUnitTestsDisable::exec(const std::string &sProgramName, con
 // ---------------------------------------------------------------------
 
 ArgumentProcessorUnitTestsDelete::ArgumentProcessorUnitTestsDelete() 
-: WSJCppArgumentProcessor("delete", "Delete unit-test by name") {
+: WsjcppArgumentProcessor({"delete"}, "Delete unit-test by name") {
 
 }
 
 // ---------------------------------------------------------------------
 
 int ArgumentProcessorUnitTestsDelete::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
-    WSJCppPackageManager pkg("./");
+    WsjcppPackageManager pkg("./");
     if (!pkg.load()) {
         return -1;
     }
 
     if (vSubParams.size() != 1) {
-        WSJCppLog::err(TAG, "Usage: <Name>");
+        WsjcppLog::err(TAG, "Usage: <Name>");
         return -1;
     }
     std::string sUnitTestName = vSubParams[0];
-    std::vector<WSJCppPackageManagerUnitTest> vUnitTests = pkg.getListOfUnitTests();
+    std::vector<WsjcppPackageManagerUnitTest> vUnitTests = pkg.getListOfUnitTests();
     for (int i = 0; i < vUnitTests.size(); i++) {
-        WSJCppPackageManagerUnitTest ut = vUnitTests[i];
+        WsjcppPackageManagerUnitTest ut = vUnitTests[i];
         if (ut.getName() == sUnitTestName) {
             if (pkg.deleteUnitTest(vSubParams[0])) {
                 pkg.save();
-                WSJCppLog::ok(TAG, "Unit Test '" + sUnitTestName + "' removed successfully.");
+                WsjcppLog::ok(TAG, "Unit Test '" + sUnitTestName + "' removed successfully.");
                 return 0;
             } else {
-                WSJCppLog::err(TAG, "Could not delete unit-test with name '" + sUnitTestName + "'");
+                WsjcppLog::err(TAG, "Could not delete unit-test with name '" + sUnitTestName + "'");
                 return -1;
             }
         }
     }
-    WSJCppLog::err(TAG, "Unit test with name '" + sUnitTestName + "' did not found");
+    WsjcppLog::err(TAG, "Unit test with name '" + sUnitTestName + "' did not found");
     return -1;
 }
 
 // ---------------------------------------------------------------------
+// ArgumentProcessorUnitTestsList
 
 ArgumentProcessorUnitTestsList::ArgumentProcessorUnitTestsList() 
-: WSJCppArgumentProcessor("list", "list of unit-test") {
+: WsjcppArgumentProcessor({"list"}, "list of unit-test") {
 }
 
 // ---------------------------------------------------------------------
 
 int ArgumentProcessorUnitTestsList::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
-    WSJCppPackageManager pkg("./");
+    WsjcppPackageManager pkg("./");
     if (!pkg.load()) {
         return -1;
     }
     std::string sRes = "\nUnit Tests Cases:\n";
-    std::vector<WSJCppPackageManagerUnitTest> vUnitTests = pkg.getListOfUnitTests();
+    std::vector<WsjcppPackageManagerUnitTest> vUnitTests = pkg.getListOfUnitTests();
     for (int i = 0; i < vUnitTests.size(); i++) {
-      WSJCppPackageManagerUnitTest ut = vUnitTests[i];
+      WsjcppPackageManagerUnitTest ut = vUnitTests[i];
       sRes += "* " + ut.getName() + " - " + ut.getDescription() + "\n";
     }
-    WSJCppLog::info(TAG, sRes);
+    WsjcppLog::info(TAG, sRes);
     return 0;
 }
 

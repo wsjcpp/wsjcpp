@@ -5,9 +5,9 @@
 
 // ---------------------------------------------------------------------
 
-class WSJCppPackageManagerSafeScriptingGenerate {
+class WsjcppPackageManagerSafeScriptingGenerate {
     public:
-        WSJCppPackageManagerSafeScriptingGenerate();
+        WsjcppPackageManagerSafeScriptingGenerate();
         std::string getName() const;
         std::string getFullPath() const;
         std::string getModuleName() const;

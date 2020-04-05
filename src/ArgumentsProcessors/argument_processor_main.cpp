@@ -12,7 +12,7 @@
 #include <wsjcpp_core.h>
 
 ArgumentProcessorMain::ArgumentProcessorMain() 
-  : WSJCppArgumentProcessor("main", "C++ Source Package manager") {
+  : WsjcppArgumentProcessor({"main"}, "C++ Source Package manager") {
     registryProcessor(new ArgumentProcessorInit());
     registryProcessor(new ArgumentProcessorClean());
     registryProcessor(new ArgumentProcessorInfo());

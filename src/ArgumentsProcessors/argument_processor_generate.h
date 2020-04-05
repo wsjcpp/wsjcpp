@@ -3,7 +3,7 @@
 
 #include <wsjcpp_arguments.h>
 
-class ArgumentProcessorGenerate : public WSJCppArgumentProcessor {
+class ArgumentProcessorGenerate : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorGenerate();
         virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
@@ -12,7 +12,7 @@ class ArgumentProcessorGenerate : public WSJCppArgumentProcessor {
         
 };
 
-class ArgumentProcessorGenerateList : public WSJCppArgumentProcessor {
+class ArgumentProcessorGenerateList : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorGenerateList();
         virtual bool applySingleArgument(const std::string &sProgramName, const std::string &sArgumentName);
@@ -22,7 +22,7 @@ class ArgumentProcessorGenerateList : public WSJCppArgumentProcessor {
         bool m_bMore;
 };
 
-class ArgumentProcessorGenerateCreate : public WSJCppArgumentProcessor {
+class ArgumentProcessorGenerateCreate : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorGenerateCreate();
         virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
@@ -31,7 +31,7 @@ class ArgumentProcessorGenerateCreate : public WSJCppArgumentProcessor {
         
 };
 
-class ArgumentProcessorGenerateDelete : public WSJCppArgumentProcessor {
+class ArgumentProcessorGenerateDelete : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorGenerateDelete();
         virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);

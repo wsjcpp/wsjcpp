@@ -3,7 +3,7 @@
 
 #include <wsjcpp_arguments.h>
 
-class ArgumentProcessorUnitTests : public WSJCppArgumentProcessor {
+class ArgumentProcessorUnitTests : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorUnitTests();
         
@@ -13,7 +13,7 @@ class ArgumentProcessorUnitTests : public WSJCppArgumentProcessor {
 
 // ---------------------------------------------------------------------
 
-class ArgumentProcessorUnitTestsCreate : public WSJCppArgumentProcessor {
+class ArgumentProcessorUnitTestsCreate : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorUnitTestsCreate();
         virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
@@ -24,7 +24,7 @@ class ArgumentProcessorUnitTestsCreate : public WSJCppArgumentProcessor {
 
 // ---------------------------------------------------------------------
 
-class ArgumentProcessorUnitTestsDelete : public WSJCppArgumentProcessor {
+class ArgumentProcessorUnitTestsDelete : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorUnitTestsDelete();
         virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
@@ -35,7 +35,7 @@ class ArgumentProcessorUnitTestsDelete : public WSJCppArgumentProcessor {
 
 // ---------------------------------------------------------------------
 
-class ArgumentProcessorUnitTestsEnable : public WSJCppArgumentProcessor {
+class ArgumentProcessorUnitTestsEnable : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorUnitTestsEnable();
         virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
@@ -46,7 +46,7 @@ class ArgumentProcessorUnitTestsEnable : public WSJCppArgumentProcessor {
 
 // ---------------------------------------------------------------------
 
-class ArgumentProcessorUnitTestsDisable : public WSJCppArgumentProcessor {
+class ArgumentProcessorUnitTestsDisable : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorUnitTestsDisable();
         virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
@@ -55,7 +55,7 @@ class ArgumentProcessorUnitTestsDisable : public WSJCppArgumentProcessor {
         
 };
 
-class ArgumentProcessorUnitTestsList : public WSJCppArgumentProcessor {
+class ArgumentProcessorUnitTestsList : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorUnitTestsList();
         virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);

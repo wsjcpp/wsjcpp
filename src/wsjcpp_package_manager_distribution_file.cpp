@@ -2,26 +2,26 @@
 #include <wsjcpp_core.h>
 
 // ---------------------------------------------------------------------
-// WSJCppPackageManagerDistributionFile
+// WsjcppPackageManagerDistributionFile
 
-WSJCppPackageManagerDistributionFile::WSJCppPackageManagerDistributionFile() {
-    TAG = "WSJCppPackageManagerDistributionFile";
+WsjcppPackageManagerDistributionFile::WsjcppPackageManagerDistributionFile() {
+    TAG = "WsjcppPackageManagerDistributionFile";
 }
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManagerDistributionFile::fromYAML(WSJCppYAMLItem *pYamlDistributionFile, bool bHolded) {
+bool WsjcppPackageManagerDistributionFile::fromYAML(WsjcppYamlItem *pYamlDistributionFile, bool bHolded) {
     m_bHolded = bHolded;
     m_pYamlDistributionFile = pYamlDistributionFile;
     if (!m_pYamlDistributionFile->hasElement("source-file")) {
-        WSJCppLog::err(TAG, "Missing required field 'source-file' in " + m_pYamlDistributionFile->getForLogFormat());
+        WsjcppLog::err(TAG, "Missing required field 'source-file' in " + m_pYamlDistributionFile->getForLogFormat());
         return false; 
     } else {
         m_sSourceFile = m_pYamlDistributionFile->getElement("source-file")->getValue();
     }
 
     if (!m_pYamlDistributionFile->hasElement("target-file")) {
-        WSJCppLog::err(TAG, "Missing required field 'target-file' in " + m_pYamlDistributionFile->getForLogFormat());
+        WsjcppLog::err(TAG, "Missing required field 'target-file' in " + m_pYamlDistributionFile->getForLogFormat());
         return false; 
     } else {
         m_sTargetFile = m_pYamlDistributionFile->getElement("target-file")->getValue();
@@ -30,7 +30,7 @@ bool WSJCppPackageManagerDistributionFile::fromYAML(WSJCppYAMLItem *pYamlDistrib
     if (m_bHolded) {
         if (!m_pYamlDistributionFile->hasElement("sha1")) {
             m_pYamlDistributionFile->setElementValue("sha1", false, "", true);
-            // WSJCppLog::err(TAG, "Missing required field 'sha1' in " + m_pYamlDistributionFile->getForLogFormat());
+            // WsjcppLog::err(TAG, "Missing required field 'sha1' in " + m_pYamlDistributionFile->getForLogFormat());
             // return false; 
         } else {
             m_sSha1 = m_pYamlDistributionFile->getElement("sha1")->getValue();
@@ -40,14 +40,14 @@ bool WSJCppPackageManagerDistributionFile::fromYAML(WSJCppYAMLItem *pYamlDistrib
         
     } else {
         if (m_pYamlDistributionFile->hasElement("sha1")) {
-            WSJCppLog::warn(TAG, "Exccess field 'sha1' in " + m_pYamlDistributionFile->getForLogFormat());
+            WsjcppLog::warn(TAG, "Exccess field 'sha1' in " + m_pYamlDistributionFile->getForLogFormat());
         }
     }
 
     
 
     if (!m_pYamlDistributionFile->hasElement("type")) {
-        WSJCppLog::err(TAG, "Missing required field 'type' in " + m_pYamlDistributionFile->getForLogFormat());
+        WsjcppLog::err(TAG, "Missing required field 'type' in " + m_pYamlDistributionFile->getForLogFormat());
         return false; 
     } else {
         m_sType = m_pYamlDistributionFile->getElement("type")->getValue();
@@ -60,7 +60,7 @@ bool WSJCppPackageManagerDistributionFile::fromYAML(WSJCppYAMLItem *pYamlDistrib
 
 // ---------------------------------------------------------------------
 
-WSJCppYAMLItem *WSJCppPackageManagerDistributionFile::toYAML() {
+WsjcppYamlItem *WsjcppPackageManagerDistributionFile::toYAML() {
     m_pYamlDistributionFile->getElement("source-file")->setValue(m_sSourceFile, true);
     m_pYamlDistributionFile->getElement("target-file")->setValue(m_sTargetFile, true);
     m_pYamlDistributionFile->getElement("sha1")->setValue(m_sSha1, true);
@@ -70,48 +70,48 @@ WSJCppYAMLItem *WSJCppPackageManagerDistributionFile::toYAML() {
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManagerDistributionFile::getSourceFile() {
+std::string WsjcppPackageManagerDistributionFile::getSourceFile() {
     return m_sSourceFile;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManagerDistributionFile::getTargetFile() {
+std::string WsjcppPackageManagerDistributionFile::getTargetFile() {
     return m_sTargetFile;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManagerDistributionFile::getSha1() {
+std::string WsjcppPackageManagerDistributionFile::getSha1() {
     return m_sSha1;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManagerDistributionFile::getType() {
+std::string WsjcppPackageManagerDistributionFile::getType() {
     return m_sType;
 }
 
 // ---------------------------------------------------------------------
 
-void WSJCppPackageManagerDistributionFile::setSourceFile(const std::string &sSourceFile) {
+void WsjcppPackageManagerDistributionFile::setSourceFile(const std::string &sSourceFile) {
     m_sSourceFile = sSourceFile;
 }
 
 // ---------------------------------------------------------------------
 
-void WSJCppPackageManagerDistributionFile::setTargetFile(const std::string &sTargetFile) {
+void WsjcppPackageManagerDistributionFile::setTargetFile(const std::string &sTargetFile) {
     m_sTargetFile = sTargetFile;
 }
 
 // ---------------------------------------------------------------------
 
-void WSJCppPackageManagerDistributionFile::setSha1(const std::string &sSha1) {
+void WsjcppPackageManagerDistributionFile::setSha1(const std::string &sSha1) {
     m_sSha1 = sSha1;
 }
 
 // ---------------------------------------------------------------------
 
-void WSJCppPackageManagerDistributionFile::setType(const std::string &sType) {
+void WsjcppPackageManagerDistributionFile::setType(const std::string &sType) {
     m_sType = sType;
 }

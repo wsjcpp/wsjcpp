@@ -3,7 +3,7 @@
 
 #include <wsjcpp_arguments.h>
 
-class ArgumentProcessorMain : public WSJCppArgumentProcessor {
+class ArgumentProcessorMain : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorMain();
         virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);

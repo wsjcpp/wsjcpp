@@ -7,7 +7,7 @@
 // ArgumentProcessorGenerate
 
 ArgumentProcessorGenerate::ArgumentProcessorGenerate() 
-: WSJCppArgumentProcessor("generate", "Generate source code snippets/templates/examples") {
+: WsjcppArgumentProcessor({"generate"}, "Generate source code snippets/templates/examples") {
     registryProcessor(new ArgumentProcessorGenerateList());
 
     // registryProcessor(new ArgumentProcessorGenerateCreate());
@@ -17,20 +17,20 @@ ArgumentProcessorGenerate::ArgumentProcessorGenerate()
 // ---------------------------------------------------------------------
 
 int ArgumentProcessorGenerate::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
-    WSJCppPackageManager pkg("./");
+    WsjcppPackageManager pkg("./");
     if (!pkg.load()) {
         return -1;
     }
 
     if (vSubParams.size() == 0) {
-        WSJCppLog::err(TAG, "Expected name of components and arguments for script");
+        WsjcppLog::err(TAG, "Expected name of components and arguments for script");
         return -1;
     }
     std::string sComponentName = vSubParams[0];
 
     bool bFound = false;
-    WSJCppPackageManagerSafeScriptingGenerate gen;
-    std::vector<WSJCppPackageManagerSafeScriptingGenerate> vScripts = pkg.getListOfSafeScriptingGenerate();
+    WsjcppPackageManagerSafeScriptingGenerate gen;
+    std::vector<WsjcppPackageManagerSafeScriptingGenerate> vScripts = pkg.getListOfSafeScriptingGenerate();
     for (int i = 0; i < vScripts.size(); i++) {
         if (vScripts[i].getName() == sComponentName) {
             gen = vScripts[i];
@@ -39,19 +39,19 @@ int ArgumentProcessorGenerate::exec(const std::string &sProgramName, const std::
     }
 
     if (!bFound) {
-        WSJCppLog::err(TAG, "Not found component with name '" + sComponentName + "'");
+        WsjcppLog::err(TAG, "Not found component with name '" + sComponentName + "'");
         return -1;
     }
 
-    if (!WSJCppCore::fileExists(gen.getFullPath())) {
-        WSJCppLog::err(TAG, "File not found '" + gen.getFullPath() + "'");
+    if (!WsjcppCore::fileExists(gen.getFullPath())) {
+        WsjcppLog::err(TAG, "File not found '" + gen.getFullPath() + "'");
         return -1;
     }
 
     std::string sScriptContent;
-    WSJCppCore::readTextFile(gen.getFullPath(), sScriptContent);
+    WsjcppCore::readTextFile(gen.getFullPath(), sScriptContent);
 
-    WSJCppSafeScriptingContext scriptContext;
+    WsjcppSafeScriptingContext scriptContext;
     std::vector<std::string> vScriptArgs;
     for (int i = 0; i < vSubParams.size(); i++) {
         if (i != 0) {
@@ -60,7 +60,7 @@ int ArgumentProcessorGenerate::exec(const std::string &sProgramName, const std::
     }
 
     int nResult = scriptContext.exec(
-        WSJCppCore::getCurrentDirectory(), 
+        WsjcppCore::getCurrentDirectory(), 
         gen.getFullPath(), 
         sScriptContent,
         vScriptArgs
@@ -72,7 +72,7 @@ int ArgumentProcessorGenerate::exec(const std::string &sProgramName, const std::
 // ---------------------------------------------------------------------
 
 ArgumentProcessorGenerateList::ArgumentProcessorGenerateList() 
-: WSJCppArgumentProcessor("list", "List of defined templates") {
+: WsjcppArgumentProcessor({"list"}, "List of defined templates") {
     registrySingleArgument("--more", "More details");
     m_bMore = false;
 }
@@ -94,12 +94,12 @@ int ArgumentProcessorGenerateList::exec(
     const std::vector<std::string> &vSubParams
 ) {
 
-    WSJCppPackageManager pkg("./");
+    WsjcppPackageManager pkg("./");
     if (!pkg.load()) {
         return -1;
     }
 
-    std::vector<WSJCppPackageManagerSafeScriptingGenerate> vScripts = pkg.getListOfSafeScriptingGenerate();
+    std::vector<WsjcppPackageManagerSafeScriptingGenerate> vScripts = pkg.getListOfSafeScriptingGenerate();
 
     std::string sOutput = "";
 
@@ -117,7 +117,7 @@ int ArgumentProcessorGenerateList::exec(
                 "     script path: '" + vScripts[i].getFullPath() + "'\n";
         }
     }
-    WSJCppLog::info(TAG, sOutput);
+    WsjcppLog::info(TAG, sOutput);
     return 0;
 }
 
@@ -125,7 +125,7 @@ int ArgumentProcessorGenerateList::exec(
 // ArgumentProcessorGenerateCreate
 
 ArgumentProcessorGenerateCreate::ArgumentProcessorGenerateCreate() 
-: WSJCppArgumentProcessor("create", "Create new template") {
+: WsjcppArgumentProcessor({"create"}, "Create new template") {
 
 }
 
@@ -138,7 +138,7 @@ int ArgumentProcessorGenerateCreate::exec(const std::string &sProgramName, const
 // ---------------------------------------------------------------------
 
 ArgumentProcessorGenerateDelete::ArgumentProcessorGenerateDelete() 
-: WSJCppArgumentProcessor("delete", "Delete template") {
+: WsjcppArgumentProcessor({"delete"}, "Delete template") {
 
 }
 

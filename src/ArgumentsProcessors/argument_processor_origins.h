@@ -3,7 +3,7 @@
 
 #include <wsjcpp_arguments.h>
 
-class ArgumentProcessorOrigins : public WSJCppArgumentProcessor {
+class ArgumentProcessorOrigins : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorOrigins();
         
@@ -11,7 +11,7 @@ class ArgumentProcessorOrigins : public WSJCppArgumentProcessor {
         
 };
 
-class ArgumentProcessorOriginsAdd : public WSJCppArgumentProcessor {
+class ArgumentProcessorOriginsAdd : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorOriginsAdd();
         virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
@@ -20,7 +20,7 @@ class ArgumentProcessorOriginsAdd : public WSJCppArgumentProcessor {
         
 };
 
-class ArgumentProcessorOriginsRemove : public WSJCppArgumentProcessor {
+class ArgumentProcessorOriginsRemove : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorOriginsRemove();
         virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
@@ -29,7 +29,7 @@ class ArgumentProcessorOriginsRemove : public WSJCppArgumentProcessor {
         
 };
 
-class ArgumentProcessorOriginsList : public WSJCppArgumentProcessor {
+class ArgumentProcessorOriginsList : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorOriginsList();
         virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);

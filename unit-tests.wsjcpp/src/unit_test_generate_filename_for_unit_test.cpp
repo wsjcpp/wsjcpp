@@ -6,7 +6,7 @@
 REGISTRY_UNIT_TEST(UnitTestgenerateFilenameForUnitTest)
 
 UnitTestgenerateFilenameForUnitTest::UnitTestgenerateFilenameForUnitTest()
-    : WSJCppUnitTestBase("UnitTestgenerateFilenameForUnitTest") {
+    : WsjcppUnitTestBase("UnitTestgenerateFilenameForUnitTest") {
 }
 
 // ---------------------------------------------------------------------
@@ -19,7 +19,7 @@ void UnitTestgenerateFilenameForUnitTest::init() {
 bool UnitTestgenerateFilenameForUnitTest::run() {
     bool bTestSuccess = true;
     
-    WSJCppPackageManager pkg(".");
+    WsjcppPackageManager pkg(".");
     std::vector<std::pair<std::string, std::string>> tests;
     tests.push_back(std::pair<std::string, std::string>("SomeTest1", "unit_test_some_test1"));
     tests.push_back(std::pair<std::string, std::string>("Some2IpV4", "unit_test_some2_ip_v4"));

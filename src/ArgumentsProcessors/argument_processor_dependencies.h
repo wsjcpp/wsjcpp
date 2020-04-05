@@ -4,7 +4,7 @@
 #include <wsjcpp_arguments.h>
 #include <wsjcpp_package_manager.h>
 
-class ArgumentProcessorInstall : public WSJCppArgumentProcessor {
+class ArgumentProcessorInstall : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorInstall();
         virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
@@ -13,7 +13,7 @@ class ArgumentProcessorInstall : public WSJCppArgumentProcessor {
         std::string TAG;
 };
 
-class ArgumentProcessorReinstall : public WSJCppArgumentProcessor {
+class ArgumentProcessorReinstall : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorReinstall();
         virtual bool applySingleArgument(const std::string &sProgramName, const std::string &sArgumentName);
@@ -24,7 +24,7 @@ class ArgumentProcessorReinstall : public WSJCppArgumentProcessor {
         bool m_bReinstallAll;
 };
 
-class ArgumentProcessorUninstall : public WSJCppArgumentProcessor {
+class ArgumentProcessorUninstall : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorUninstall();
         virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
@@ -34,7 +34,7 @@ class ArgumentProcessorUninstall : public WSJCppArgumentProcessor {
         
 };
 
-class ArgumentProcessorList : public WSJCppArgumentProcessor {
+class ArgumentProcessorList : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorList();
         virtual bool applySingleArgument(const std::string &sProgramName, const std::string &sArgumentName);
@@ -44,13 +44,13 @@ class ArgumentProcessorList : public WSJCppArgumentProcessor {
         std::string TAG;
         bool m_bTree;
         std::string loadDependencies(
-            const WSJCppPackageManager &rootPackage, 
-            const WSJCppPackageManagerDependence &dep,
+            const WsjcppPackageManager &rootPackage, 
+            const WsjcppPackageManagerDependence &dep,
             const std::string &sIntent
         );
 };
 
-class ArgumentProcessorUpdate : public WSJCppArgumentProcessor {
+class ArgumentProcessorUpdate : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorUpdate();
         virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);

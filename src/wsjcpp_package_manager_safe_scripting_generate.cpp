@@ -2,44 +2,44 @@
 #include <wsjcpp_core.h>
 
 // ---------------------------------------------------------------------
-// WSJCppPackageManagerDistributionFile
+// WsjcppPackageManagerDistributionFile
 
-WSJCppPackageManagerSafeScriptingGenerate::WSJCppPackageManagerSafeScriptingGenerate() {
-    TAG = "WSJCppPackageManagerSafeScriptingGenerate";
+WsjcppPackageManagerSafeScriptingGenerate::WsjcppPackageManagerSafeScriptingGenerate() {
+    TAG = "WsjcppPackageManagerSafeScriptingGenerate";
 }
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManagerSafeScriptingGenerate::getName() const {
+std::string WsjcppPackageManagerSafeScriptingGenerate::getName() const {
     return m_sName;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManagerSafeScriptingGenerate::getFullPath() const {
+std::string WsjcppPackageManagerSafeScriptingGenerate::getFullPath() const {
     return m_sFullPath;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManagerSafeScriptingGenerate::getModuleName() const {
+std::string WsjcppPackageManagerSafeScriptingGenerate::getModuleName() const {
     return m_sModuleName;
 }
 
 // ---------------------------------------------------------------------
 
-void WSJCppPackageManagerSafeScriptingGenerate::setName(const std::string &sName) {
+void WsjcppPackageManagerSafeScriptingGenerate::setName(const std::string &sName) {
     m_sName = sName;
 }
 
 // ---------------------------------------------------------------------
 
-void WSJCppPackageManagerSafeScriptingGenerate::setFullPath(const std::string &sFullPath) {
+void WsjcppPackageManagerSafeScriptingGenerate::setFullPath(const std::string &sFullPath) {
     m_sFullPath = sFullPath;
 }
 
 // ---------------------------------------------------------------------
 
-void WSJCppPackageManagerSafeScriptingGenerate::setModuleName(const std::string &sModuleName) {
+void WsjcppPackageManagerSafeScriptingGenerate::setModuleName(const std::string &sModuleName) {
     m_sModuleName = sModuleName;
 }

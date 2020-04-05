@@ -41,21 +41,21 @@ int main(int argc, const char* argv[]) {
     std::string TAG = "MAIN";
     std::string appName = std::string(WSJCPP_NAME);
     std::string appVersion = std::string(WSJCPP_VERSION);
-    if (!WSJCppCore::dirExists(".wsjcpp")) {
-        WSJCppCore::makeDir(".wsjcpp");
+    if (!WsjcppCore::dirExists(".wsjcpp")) {
+        WsjcppCore::makeDir(".wsjcpp");
     }
-    if (!WSJCppCore::fileExists(".wsjcpp/.gitignore")) {
-        WSJCppCore::writeFile(".wsjcpp/.gitignore", "logs/*\ncache/*\n");
+    if (!WsjcppCore::fileExists(".wsjcpp/.gitignore")) {
+        WsjcppCore::writeFile(".wsjcpp/.gitignore", "logs/*\ncache/*\n");
     }
     std::string appLogPath = ".wsjcpp/logs";
-    if (!WSJCppCore::dirExists(appLogPath)) {
-        WSJCppCore::makeDir(appLogPath);
+    if (!WsjcppCore::dirExists(appLogPath)) {
+        WsjcppCore::makeDir(appLogPath);
     }
-    WSJCppLog::setPrefixLogFile("wsjcpp");
-    WSJCppLog::setLogDirectory(".wsjcpp/logs");
+    WsjcppLog::setPrefixLogFile("wsjcpp");
+    WsjcppLog::setLogDirectory(".wsjcpp/logs");
 
     ArgumentProcessorMain *pMain = new ArgumentProcessorMain();
-    WSJCppArguments prog(argc, argv, pMain);
+    WsjcppArguments prog(argc, argv, pMain);
     // std::cout << prog.help();
 
     std::vector<std::string> vArgs;
@@ -80,7 +80,7 @@ int main(int argc, const char* argv[]) {
             return -1;
         }
     
-        WSJCppPackageManager pkg(".");
+        WsjcppPackageManager pkg(".");
         if (!pkg.load()) {
             std::cout << "Could not load package info from current directory" << std::endl;
             return -1;

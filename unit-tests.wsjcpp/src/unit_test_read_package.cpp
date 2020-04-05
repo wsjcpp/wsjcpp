@@ -6,7 +6,7 @@
 REGISTRY_UNIT_TEST(UnitTestReadPackage)
 
 UnitTestReadPackage::UnitTestReadPackage()
-    : WSJCppUnitTestBase("UnitTestReadPackage") {
+    : WsjcppUnitTestBase("UnitTestReadPackage") {
 }
 
 // ---------------------------------------------------------------------
@@ -20,15 +20,15 @@ void UnitTestReadPackage::init() {
 bool UnitTestReadPackage::run() {
     
     std::string sFolder = "data/test-read-package";
-    WSJCppPackageManager pkg(sFolder);
+    WsjcppPackageManager pkg(sFolder);
     if (!pkg.load()) {
-        WSJCppLog::err(TAG, "Could not load from '" + sFolder + "'");
+        WsjcppLog::err(TAG, "Could not load from '" + sFolder + "'");
         return false;
     }
     bool bTestSuccess = true;
     compareS(bTestSuccess, "version", pkg.getVersion(), "v0.1.1a");
     compareS(bTestSuccess, "name", pkg.getName(), "wsjcpp-test-read-package");
-    compareS(bTestSuccess, "wsjcpp_version", pkg.getWSJCppVersion(), "v0.0.1");
+    compareS(bTestSuccess, "wsjcpp_version", pkg.getWsjcppVersion(), "v0.0.1");
     compareS(bTestSuccess, "cmake_minimum_required", pkg.getCMakeMinimumRequired(), "3.0");
     compareS(bTestSuccess, "cmake_cxx_standard", pkg.getCMakeCxxStandard(), "11");
     compareS(bTestSuccess, "description", pkg.getDescription(), "C++. Test Read Package");
@@ -41,36 +41,36 @@ bool UnitTestReadPackage::run() {
         compareS(bTestSuccess, "keyword_1", vKeywords[1], "test");
     }
 
-    std::vector<WSJCppPackageManagerRepository> vReps = pkg.getListOfRepositories();
+    std::vector<WsjcppPackageManagerRepository> vReps = pkg.getListOfRepositories();
     compareN(bTestSuccess, "vReps size", vReps.size(), 1);
     if (vReps.size() == 1) {
         compareS(bTestSuccess, "repository_0_address", vReps[0].getUrl(), "https://github.com/wsjcpp/wsjcpp");
         compareS(bTestSuccess, "repository_0_type", vReps[0].getType(), "main");
     }
 
-    std::vector<WSJCppPackageManagerUnitTest> vUnitTests = pkg.getListOfUnitTests();
+    std::vector<WsjcppPackageManagerUnitTest> vUnitTests = pkg.getListOfUnitTests();
     compareN(bTestSuccess, "vUnitTests size", vUnitTests.size(), 3);
     if (vUnitTests.size() == 3) {
-        WSJCppPackageManagerUnitTest unitTest0 = vUnitTests[0];
+        WsjcppPackageManagerUnitTest unitTest0 = vUnitTests[0];
         compareS(bTestSuccess, "unit_tests_0_name", unitTest0.getName(), "Test1");
         compareS(bTestSuccess, "unit_tests_0_description", unitTest0.getDescription(), "Test 1");
         compareB(bTestSuccess, "unit_tests_0_enabled", unitTest0.isEnabled(), true);
 
-        WSJCppPackageManagerUnitTest unitTest1 = vUnitTests[1];
+        WsjcppPackageManagerUnitTest unitTest1 = vUnitTests[1];
         compareS(bTestSuccess, "unit_tests_1_name", unitTest1.getName(), "Test2");
         compareS(bTestSuccess, "unit_tests_1_description", unitTest1.getDescription(), "Test 2");
         compareB(bTestSuccess, "unit_tests_1_enabled", unitTest1.isEnabled(), true);
 
-        WSJCppPackageManagerUnitTest unitTest2 = vUnitTests[2];
+        WsjcppPackageManagerUnitTest unitTest2 = vUnitTests[2];
         compareS(bTestSuccess, "unit_tests_2_name", unitTest2.getName(), "Test3");
         compareS(bTestSuccess, "unit_tests_2_description", unitTest2.getDescription(), "Test 3");
         compareB(bTestSuccess, "unit_tests_1_enabled", unitTest2.isEnabled(), false);
     }
 
-    std::vector<WSJCppPackageManagerAuthor> vAuthors = pkg.getListOfAuthors();
+    std::vector<WsjcppPackageManagerAuthor> vAuthors = pkg.getListOfAuthors();
     compareN(bTestSuccess, "vAuthors size", vAuthors.size(), 1);
     if (vAuthors.size() == 1) {
-        WSJCppPackageManagerAuthor author0 = vAuthors[0];
+        WsjcppPackageManagerAuthor author0 = vAuthors[0];
         compareS(bTestSuccess, "author_0_email", author0.getEmail(), "author@test.test");
         compareS(bTestSuccess, "author_0_name", author0.getName(), "Unit Tests");
         compareS(bTestSuccess, "author_0_full_name", author0.getFullAuthor(), "Unit Tests <author@test.test>");
@@ -81,9 +81,9 @@ required-pkg-config:
   - CURL
 */  
 
-    WSJCppLog::warn(TAG, "TODO check list of required-pkg-config");
+    WsjcppLog::warn(TAG, "TODO check list of required-pkg-config");
 
-    std::vector<WSJCppPackageManagerOrigin> vOrigins = pkg.getListOfOrigins();
+    std::vector<WsjcppPackageManagerOrigin> vOrigins = pkg.getListOfOrigins();
     compareN(bTestSuccess, "vOrigins size", vOrigins.size(), 2);
     if (vOrigins.size() == 2) {
         compareS(bTestSuccess, "origins_0_address", vOrigins[0].getAddress(), "https://sea-kg.com/wsjcpp-package-registry/");
@@ -92,7 +92,7 @@ required-pkg-config:
         compareS(bTestSuccess, "origins_1_type", vOrigins[1].getType(), "local-file-system");
     }
 
-    std::vector<WSJCppPackageManagerDistributionFile> vFiles = pkg.getListOfDistributionFiles();
+    std::vector<WsjcppPackageManagerDistributionFile> vFiles = pkg.getListOfDistributionFiles();
     compareN(bTestSuccess, "vFiles size", vFiles.size(), 2);
     if (vFiles.size() == 2) {
         compareS(bTestSuccess, "distribution_0_source_file", vFiles[0].getSourceFile(), "src/test.cpp");

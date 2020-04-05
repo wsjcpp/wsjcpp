@@ -5,7 +5,7 @@
 REGISTRY_UNIT_TEST(UnitTestInitPackage)
 
 UnitTestInitPackage::UnitTestInitPackage()
-    : WSJCppUnitTestBase("UnitTestInitPackage") {
+    : WsjcppUnitTestBase("UnitTestInitPackage") {
 }
 
 // ---------------------------------------------------------------------

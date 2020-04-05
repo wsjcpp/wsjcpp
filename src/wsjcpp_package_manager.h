@@ -9,12 +9,12 @@
 
 // ---------------------------------------------------------------------
 
-class WSJCppPackageManagerAuthor {
+class WsjcppPackageManagerAuthor {
     public:
-        WSJCppPackageManagerAuthor();
-        WSJCppPackageManagerAuthor(const std::string &sName, const std::string &sEmail);
-        bool fromYAML(WSJCppYAMLItem *pYamlAuthor);
-        WSJCppYAMLItem *toYAML();
+        WsjcppPackageManagerAuthor();
+        WsjcppPackageManagerAuthor(const std::string &sName, const std::string &sEmail);
+        bool fromYAML(WsjcppYamlItem *pYamlAuthor);
+        WsjcppYamlItem *toYAML();
 
         std::string getName();
         std::string getEmail(); 
@@ -24,16 +24,16 @@ class WSJCppPackageManagerAuthor {
         std::string TAG;
         std::string m_sName;
         std::string m_sEmail;
-        WSJCppYAMLItem *m_pYamlAuthor;
+        WsjcppYamlItem *m_pYamlAuthor;
 };
 
 // ---------------------------------------------------------------------
 
-class WSJCppPackageManagerOrigin {
+class WsjcppPackageManagerOrigin {
     public:
-        WSJCppPackageManagerOrigin();
-        bool fromYAML(WSJCppYAMLItem *pYaml);
-        WSJCppYAMLItem *toYAML();
+        WsjcppPackageManagerOrigin();
+        bool fromYAML(WsjcppYamlItem *pYaml);
+        WsjcppYamlItem *toYAML();
 
         std::string getAddress();
         std::string getType();
@@ -45,16 +45,16 @@ class WSJCppPackageManagerOrigin {
         std::string TAG;
         std::string m_sAddress;
         std::string m_sType;
-        WSJCppYAMLItem *m_pYamlOrigin;
+        WsjcppYamlItem *m_pYamlOrigin;
 };
 
 // ---------------------------------------------------------------------
 
-class WSJCppPackageManagerRepository {
+class WsjcppPackageManagerRepository {
     public:
-        WSJCppPackageManagerRepository();
-        WSJCppYAMLItem *toYAML();
-        bool fromYAML(WSJCppYAMLItem *pYaml);
+        WsjcppPackageManagerRepository();
+        WsjcppYamlItem *toYAML();
+        bool fromYAML(WsjcppYamlItem *pYaml);
         std::string getType();
         std::string getUrl();
 
@@ -62,16 +62,16 @@ class WSJCppPackageManagerRepository {
         std::string TAG;
         std::string m_sType;
         std::string m_sUrl;
-        WSJCppYAMLItem *m_pYamlRepository;
+        WsjcppYamlItem *m_pYamlRepository;
 };
 
 // ---------------------------------------------------------------------
 
-class WSJCppPackageManagerUnitTest {
+class WsjcppPackageManagerUnitTest {
     public:
-        WSJCppPackageManagerUnitTest();
-        WSJCppYAMLItem *toYAML();
-        bool fromYAML(WSJCppYAMLItem *pYaml);
+        WsjcppPackageManagerUnitTest();
+        WsjcppYamlItem *toYAML();
+        bool fromYAML(WsjcppYamlItem *pYaml);
         std::string getName();
         std::string getDescription();
         bool isEnabled();
@@ -84,14 +84,14 @@ class WSJCppPackageManagerUnitTest {
         std::string m_sName;
         std::string m_sDescription;
         bool m_bEnabled;
-        WSJCppYAMLItem *m_pYamlUnitTest;
+        WsjcppYamlItem *m_pYamlUnitTest;
 };
 
 // ---------------------------------------------------------------------
 
-class WSJCppPackageManagerDependence {
+class WsjcppPackageManagerDependence {
     public:
-        WSJCppPackageManagerDependence();
+        WsjcppPackageManagerDependence();
         std::string getInstallationDir() const;
         std::string getUrl() const;
         std::string getName() const;
@@ -104,8 +104,8 @@ class WSJCppPackageManagerDependence {
         void setInstallationDir(const std::string &sInstallationDir);
         void setOrigin(const std::string &sOrigin);
 
-        bool fromYAML(WSJCppYAMLItem *pYaml);
-        WSJCppYAMLItem *toYAML();
+        bool fromYAML(WsjcppYamlItem *pYaml);
+        WsjcppYamlItem *toYAML();
 
     private:
         std::string TAG;
@@ -114,15 +114,15 @@ class WSJCppPackageManagerDependence {
         std::string m_sName;
         std::string m_sVersion;
         std::string m_sOrigin;
-        WSJCppYAMLItem *m_pYamlDependece;
+        WsjcppYamlItem *m_pYamlDependece;
 };
 
 // ---------------------------------------------------------------------
 
-class WSJCppPackageManager {
+class WsjcppPackageManager {
     public:
-        WSJCppPackageManager(const std::string &sDir);
-        WSJCppPackageManager(const std::string &sDir, const std::string &sParentDir, bool bHolded);
+        WsjcppPackageManager(const std::string &sDir);
+        WsjcppPackageManager(const std::string &sDir, const std::string &sParentDir, bool bHolded);
         std::string getDir() const;
         bool isHolded() const;
         bool init();
@@ -137,10 +137,10 @@ class WSJCppPackageManager {
         bool createUnitTest(const std::string &sUnitTestName, const std::string &sUnitTestDescription);
         bool deleteUnitTest(const std::string &sUnitTestName);
         bool enableUnitTest(const std::string &sUnitTestName, bool bEnable);
-        std::vector<WSJCppPackageManagerUnitTest> getListOfUnitTests();
+        std::vector<WsjcppPackageManagerUnitTest> getListOfUnitTests();
 
         // safe-scripting-generate
-        std::vector<WSJCppPackageManagerSafeScriptingGenerate> getListOfSafeScriptingGenerate();
+        std::vector<WsjcppPackageManagerSafeScriptingGenerate> getListOfSafeScriptingGenerate();
 
         bool addOrigin(const std::string &sAddress);
         bool deleteOrigin(const std::string &sAddress);
@@ -153,16 +153,16 @@ class WSJCppPackageManager {
         void printAuthorsTree();
         bool addAuthor(const std::string &sName, const std::string &sEmail);
         bool removeAuthor(const std::string &sAuthor);
-        std::vector<WSJCppPackageManagerDistributionFile> getListOfDistributionFiles();
-        std::vector<WSJCppPackageManagerDependence> getListOfDependencies();
-        std::vector<WSJCppPackageManagerOrigin> getListOfOrigins();
-        std::vector<WSJCppPackageManagerAuthor> getListOfAuthors();
+        std::vector<WsjcppPackageManagerDistributionFile> getListOfDistributionFiles();
+        std::vector<WsjcppPackageManagerDependence> getListOfDependencies();
+        std::vector<WsjcppPackageManagerOrigin> getListOfOrigins();
+        std::vector<WsjcppPackageManagerAuthor> getListOfAuthors();
         std::vector<std::string> getListOfKeywords();
-        std::vector<WSJCppPackageManagerRepository> getListOfRepositories();
+        std::vector<WsjcppPackageManagerRepository> getListOfRepositories();
         
         std::string getName();
         std::string getVersion();
-        std::string getWSJCppVersion();
+        std::string getWsjcppVersion();
         std::string getDescription();
         std::string getCMakeCxxStandard();
         std::string getCMakeMinimumRequired();
@@ -182,15 +182,15 @@ class WSJCppPackageManager {
         bool isHttpPackage(const std::string &sPackage);
         bool isHttpsPackage(const std::string &sPackage);
 
-        void addDependency(WSJCppPackageManagerDependence &dep);
-        void updateDependency(WSJCppPackageManagerDependence &dep);
+        void addDependency(WsjcppPackageManagerDependence &dep);
+        void updateDependency(WsjcppPackageManagerDependence &dep);
 
         std::string prepareCacheSubFolderName(const std::string &sFilename);
-        bool downloadFromGithubToCache(const std::string &sPackage, WSJCppPackageManagerDependence &dep);
+        bool downloadFromGithubToCache(const std::string &sPackage, WsjcppPackageManagerDependence &dep);
         bool isInstalled(const std::string &sPackage);
-        bool installFromCache(const std::string &sPackage, const WSJCppPackageManagerDependence &dep);
+        bool installFromCache(const std::string &sPackage, const WsjcppPackageManagerDependence &dep);
         bool downloadFileOverHttps(const std::string &sUrl, const std::string &sPath);
-        void recursive_printAuthorsTree(std::vector<WSJCppPackageManagerDependence> &vDependencies);
+        void recursive_printAuthorsTree(std::vector<WsjcppPackageManagerDependence> &vDependencies);
         bool readFieldVersion();
         bool readFieldCMakeMinimumRequired();
         bool readFieldCMakeCxxStandard();
@@ -208,7 +208,7 @@ class WSJCppPackageManager {
         bool readFieldRequiredLibraries();
         bool readFieldRequiredPkgConfig();
 
-        void removeDependenciesFilesSafe(const WSJCppPackageManagerDependence &dep);
+        void removeDependenciesFilesSafe(const WsjcppPackageManagerDependence &dep);
         bool updateAutogeneratedFiles_CMakeListsTXT();
         bool updateAutogeneratedFiles_Dockerfiles();
         bool updateAutogeneratedFiles_Dockerfile_for_build();
@@ -229,8 +229,8 @@ class WSJCppPackageManager {
         std::string m_sParentDir;
         std::string m_sYamlFilename;
         std::string m_sYamlFullpath;
-        std::string m_sWSJCppCurrentVersion;
-        std::string m_sWSJCppVersion;
+        std::string m_sWsjcppCurrentVersion;
+        std::string m_sWsjcppVersion;
         std::string m_sDirWithSources;
         std::string m_sName;
         std::string m_sIssues;
@@ -240,12 +240,12 @@ class WSJCppPackageManager {
         std::string m_sCMakeCxxStandard;
         
         std::vector<std::string> m_vKeywords;
-        std::vector<WSJCppPackageManagerAuthor> m_vAuthors;
-        std::vector<WSJCppPackageManagerDependence> m_vDependencies;
-        std::vector<WSJCppPackageManagerDistributionFile> m_vDistributionFiles;
-        std::vector<WSJCppPackageManagerRepository> m_vRepositories;
-        std::vector<WSJCppPackageManagerUnitTest> m_vUnitTests;
-        std::vector<WSJCppPackageManagerOrigin> m_vOrigins;
+        std::vector<WsjcppPackageManagerAuthor> m_vAuthors;
+        std::vector<WsjcppPackageManagerDependence> m_vDependencies;
+        std::vector<WsjcppPackageManagerDistributionFile> m_vDistributionFiles;
+        std::vector<WsjcppPackageManagerRepository> m_vRepositories;
+        std::vector<WsjcppPackageManagerUnitTest> m_vUnitTests;
+        std::vector<WsjcppPackageManagerOrigin> m_vOrigins;
         std::vector<std::string> m_sRequiredLibraries;
         std::vector<std::string> m_sRequiredPkgConfig;
 
@@ -254,7 +254,7 @@ class WSJCppPackageManager {
         std::vector<std::string> m_sDockerPackagesRelease;
 
 
-        WSJCppYAML m_yamlPackageInfo;
+        WsjcppYaml m_yamlPackageInfo;
 };
 
 #endif // WSJCPP_PACKAGE_MANAGER_H

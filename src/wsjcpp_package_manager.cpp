@@ -12,16 +12,16 @@
 #include <sys/stat.h>
 
 // ---------------------------------------------------------------------
-// WSJCppPackageManagerAuthor
+// WsjcppPackageManagerAuthor
 
-WSJCppPackageManagerAuthor::WSJCppPackageManagerAuthor() {
+WsjcppPackageManagerAuthor::WsjcppPackageManagerAuthor() {
 
 }
 
 // ---------------------------------------------------------------------
 
-WSJCppPackageManagerAuthor::WSJCppPackageManagerAuthor(const std::string &sName, const std::string &sEmail) {
-    TAG = "WSJCppPackageManagerAuthor";
+WsjcppPackageManagerAuthor::WsjcppPackageManagerAuthor(const std::string &sName, const std::string &sEmail) {
+    TAG = "WsjcppPackageManagerAuthor";
     m_sName = sName;
     m_sEmail = sEmail;
     m_pYamlAuthor = nullptr;
@@ -29,25 +29,25 @@ WSJCppPackageManagerAuthor::WSJCppPackageManagerAuthor(const std::string &sName,
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManagerAuthor::getName() {
+std::string WsjcppPackageManagerAuthor::getName() {
     return m_sName;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManagerAuthor::getEmail() {
+std::string WsjcppPackageManagerAuthor::getEmail() {
     return m_sEmail;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManagerAuthor::getFullAuthor() {
+std::string WsjcppPackageManagerAuthor::getFullAuthor() {
     return m_sName + " <" + m_sEmail + ">";
 }
 
 // ---------------------------------------------------------------------
 
-WSJCppYAMLItem *WSJCppPackageManagerAuthor::toYAML() {
+WsjcppYamlItem *WsjcppPackageManagerAuthor::toYAML() {
     m_pYamlAuthor->getElement("name")->setValue(m_sName, true);
     m_pYamlAuthor->getElement("email")->setValue(m_sEmail, true);
     return m_pYamlAuthor;
@@ -55,18 +55,18 @@ WSJCppYAMLItem *WSJCppPackageManagerAuthor::toYAML() {
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManagerAuthor::fromYAML(WSJCppYAMLItem *pYamlAuthor) {
+bool WsjcppPackageManagerAuthor::fromYAML(WsjcppYamlItem *pYamlAuthor) {
     m_pYamlAuthor = pYamlAuthor;
     if (!m_pYamlAuthor->hasElement("name")) {
         // TODO prepare in yaml getOriginalLineForError()
-        WSJCppLog::err(TAG, "Missing required field 'name' in " + pYamlAuthor->getForLogFormat());
+        WsjcppLog::err(TAG, "Missing required field 'name' in " + pYamlAuthor->getForLogFormat());
         return false; 
     } else {
         m_sName = m_pYamlAuthor->getElement("name")->getValue();
     }
 
     if (!m_pYamlAuthor->hasElement("email")) {
-        WSJCppLog::err(TAG, "Missing required field 'email' in " + pYamlAuthor->getForLogFormat());
+        WsjcppLog::err(TAG, "Missing required field 'email' in " + pYamlAuthor->getForLogFormat());
         return false; 
     } else {
         m_sEmail = m_pYamlAuthor->getElement("email")->getValue();
@@ -75,33 +75,33 @@ bool WSJCppPackageManagerAuthor::fromYAML(WSJCppYAMLItem *pYamlAuthor) {
 }
 
 // ---------------------------------------------------------------------
-// WSJCppPackageManagerOrigin - server info class
+// WsjcppPackageManagerOrigin - server info class
 
-WSJCppPackageManagerOrigin::WSJCppPackageManagerOrigin() {
-    TAG = "WSJCppPackageManagerOrigin";
+WsjcppPackageManagerOrigin::WsjcppPackageManagerOrigin() {
+    TAG = "WsjcppPackageManagerOrigin";
     m_pYamlOrigin = nullptr;
 }
 
 // ---------------------------------------------------------------------
 
-WSJCppYAMLItem *WSJCppPackageManagerOrigin::toYAML() {
+WsjcppYamlItem *WsjcppPackageManagerOrigin::toYAML() {
     m_pYamlOrigin->setValue(m_sAddress, true);
     return m_pYamlOrigin;
 }
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManagerOrigin::fromYAML(WSJCppYAMLItem *pYaml) {
+bool WsjcppPackageManagerOrigin::fromYAML(WsjcppYamlItem *pYaml) {
     m_pYamlOrigin = pYaml;
     if (!m_pYamlOrigin->hasElement("address")) {
-        WSJCppLog::err(TAG, "Missing required field 'address' in " + m_pYamlOrigin->getForLogFormat());
+        WsjcppLog::err(TAG, "Missing required field 'address' in " + m_pYamlOrigin->getForLogFormat());
         return false; 
     } else {
         m_sAddress = m_pYamlOrigin->getElement("address")->getValue();
     }
 
     if (!m_pYamlOrigin->hasElement("type")) {
-        WSJCppLog::err(TAG, "Missing required field 'type' in " + m_pYamlOrigin->getForLogFormat());
+        WsjcppLog::err(TAG, "Missing required field 'type' in " + m_pYamlOrigin->getForLogFormat());
         return false; 
     } else {
         m_sType = m_pYamlOrigin->getElement("type")->getValue();
@@ -112,38 +112,38 @@ bool WSJCppPackageManagerOrigin::fromYAML(WSJCppYAMLItem *pYaml) {
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManagerOrigin::getAddress() {
+std::string WsjcppPackageManagerOrigin::getAddress() {
     return m_sAddress;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManagerOrigin::getType() {
+std::string WsjcppPackageManagerOrigin::getType() {
     return m_sType;
 }
 
 // ---------------------------------------------------------------------
 
-void WSJCppPackageManagerOrigin::setAddress(const std::string &sAddress) {
+void WsjcppPackageManagerOrigin::setAddress(const std::string &sAddress) {
     m_sAddress = sAddress;
 }
 
 // ---------------------------------------------------------------------
 
-void WSJCppPackageManagerOrigin::setType(const std::string &sType) {
+void WsjcppPackageManagerOrigin::setType(const std::string &sType) {
     m_sType = sType;
 }
 
 // ---------------------------------------------------------------------
-// WSJCppPackageManagerRepository - repository struct
+// WsjcppPackageManagerRepository - repository struct
 
-WSJCppPackageManagerRepository::WSJCppPackageManagerRepository() {
-    TAG = "WSJCppPackageManagerRepository";
+WsjcppPackageManagerRepository::WsjcppPackageManagerRepository() {
+    TAG = "WsjcppPackageManagerRepository";
 }
 
 // ---------------------------------------------------------------------
 
-WSJCppYAMLItem *WSJCppPackageManagerRepository::toYAML() {
+WsjcppYamlItem *WsjcppPackageManagerRepository::toYAML() {
     m_pYamlRepository->getElement("url")->setValue(m_sUrl, true);
     m_pYamlRepository->getElement("type")->setValue(m_sType, true);
     return m_pYamlRepository;
@@ -151,10 +151,10 @@ WSJCppYAMLItem *WSJCppPackageManagerRepository::toYAML() {
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManagerRepository::fromYAML(WSJCppYAMLItem *pYaml) {
+bool WsjcppPackageManagerRepository::fromYAML(WsjcppYamlItem *pYaml) {
     m_pYamlRepository = pYaml;
     if (!m_pYamlRepository->hasElement("type")) {
-        WSJCppLog::err(TAG, "Missing required field 'type' in " + m_pYamlRepository->getForLogFormat());
+        WsjcppLog::err(TAG, "Missing required field 'type' in " + m_pYamlRepository->getForLogFormat());
         return false; 
     } else {
         m_sType = m_pYamlRepository->getElement("type")->getValue();
@@ -162,7 +162,7 @@ bool WSJCppPackageManagerRepository::fromYAML(WSJCppYAMLItem *pYaml) {
 
     if (!m_pYamlRepository->hasElement("url")) {
         // TODO prepare in yaml getOriginalLineForError()
-        WSJCppLog::err(TAG, "Missing required field 'url' in " + m_pYamlRepository->getForLogFormat());
+        WsjcppLog::err(TAG, "Missing required field 'url' in " + m_pYamlRepository->getForLogFormat());
         return false; 
     } else {
         m_sUrl = m_pYamlRepository->getElement("url")->getValue();
@@ -172,27 +172,27 @@ bool WSJCppPackageManagerRepository::fromYAML(WSJCppYAMLItem *pYaml) {
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManagerRepository::getType() {
+std::string WsjcppPackageManagerRepository::getType() {
     return m_sType;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManagerRepository::getUrl() {
+std::string WsjcppPackageManagerRepository::getUrl() {
     return m_sUrl;
 }
 
 // ---------------------------------------------------------------------
-// WSJCppPackageManagerUnitTest - main class
+// WsjcppPackageManagerUnitTest - main class
 
-WSJCppPackageManagerUnitTest::WSJCppPackageManagerUnitTest() {
-    TAG = "WSJCppPackageManagerUnitTest";
+WsjcppPackageManagerUnitTest::WsjcppPackageManagerUnitTest() {
+    TAG = "WsjcppPackageManagerUnitTest";
     m_bEnabled = true; // default enbaled 
 }
 
 // ---------------------------------------------------------------------
 
-WSJCppYAMLItem *WSJCppPackageManagerUnitTest::toYAML() {
+WsjcppYamlItem *WsjcppPackageManagerUnitTest::toYAML() {
     m_pYamlUnitTest->getElement("url")->setValue(m_sName, true);
     m_pYamlUnitTest->getElement("type")->setValue(m_sDescription, true);
     m_pYamlUnitTest->getElement("enabled")->setValue(m_bEnabled ? "yes" : "no", true);
@@ -201,7 +201,7 @@ WSJCppYAMLItem *WSJCppPackageManagerUnitTest::toYAML() {
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManagerUnitTest::fromYAML(WSJCppYAMLItem *pYaml) {
+bool WsjcppPackageManagerUnitTest::fromYAML(WsjcppYamlItem *pYaml) {
     m_pYamlUnitTest = pYaml;
     std::vector<std::string> vKeys = m_pYamlUnitTest->getKeys();
     for (int i = 0; i < vKeys.size(); i++) {
@@ -213,7 +213,7 @@ bool WSJCppPackageManagerUnitTest::fromYAML(WSJCppYAMLItem *pYaml) {
         } else if (sKey == "enabled") {
             m_bEnabled = m_pYamlUnitTest->getElement("enabled")->getValue() == "yes";
         } else {
-            WSJCppLog::warn(TAG, "Excess field '" + sKey + "' in " + m_pYamlUnitTest->getForLogFormat());
+            WsjcppLog::warn(TAG, "Excess field '" + sKey + "' in " + m_pYamlUnitTest->getForLogFormat());
         }
     }
 
@@ -230,7 +230,7 @@ bool WSJCppPackageManagerUnitTest::fromYAML(WSJCppYAMLItem *pYaml) {
     for (int i = 0; i < vRequiredKeys.size(); i++) {
         std::string sKey = vRequiredKeys[i];
         if (!m_pYamlUnitTest->hasElement(sKey)) {
-            WSJCppLog::err(TAG, "Missing required field '" + sKey + "' in " + m_pYamlUnitTest->getForLogFormat());
+            WsjcppLog::err(TAG, "Missing required field '" + sKey + "' in " + m_pYamlUnitTest->getForLogFormat());
             bHasError = true;
         }
     }
@@ -239,51 +239,51 @@ bool WSJCppPackageManagerUnitTest::fromYAML(WSJCppYAMLItem *pYaml) {
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManagerUnitTest::getName() {
+std::string WsjcppPackageManagerUnitTest::getName() {
     return m_sName;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManagerUnitTest::getDescription() {
+std::string WsjcppPackageManagerUnitTest::getDescription() {
     return m_sDescription;
 }
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManagerUnitTest::isEnabled() {
+bool WsjcppPackageManagerUnitTest::isEnabled() {
     return m_bEnabled;
 }
 
 // ---------------------------------------------------------------------
 
-void WSJCppPackageManagerUnitTest::setName(const std::string &sName) {
+void WsjcppPackageManagerUnitTest::setName(const std::string &sName) {
     m_sName = sName;
 }
 
 // ---------------------------------------------------------------------
 
-void WSJCppPackageManagerUnitTest::setDescription(const std::string &sDescription) {
+void WsjcppPackageManagerUnitTest::setDescription(const std::string &sDescription) {
     m_sDescription = sDescription;
 }
 
 // ---------------------------------------------------------------------
 
-void WSJCppPackageManagerUnitTest::setEnabled(bool bEnabled) {
+void WsjcppPackageManagerUnitTest::setEnabled(bool bEnabled) {
     m_bEnabled = bEnabled;
 }
 
 // ---------------------------------------------------------------------
-// WSJCppPackageManager - main class
+// WsjcppPackageManager - main class
 
-WSJCppPackageManagerDependence::WSJCppPackageManagerDependence() {
-    TAG = "WSJCppPackageManagerDependence";
+WsjcppPackageManagerDependence::WsjcppPackageManagerDependence() {
+    TAG = "WsjcppPackageManagerDependence";
     m_pYamlDependece = nullptr;
 }
 
 // ---------------------------------------------------------------------
 
-WSJCppYAMLItem *WSJCppPackageManagerDependence::toYAML() {
+WsjcppYamlItem *WsjcppPackageManagerDependence::toYAML() {
     m_pYamlDependece->getElement("url")->setValue(m_sUrl, true);
     m_pYamlDependece->getElement("name")->setValue(m_sName, true);
     m_pYamlDependece->getElement("version")->setValue(m_sVersion, true);
@@ -294,31 +294,31 @@ WSJCppYAMLItem *WSJCppPackageManagerDependence::toYAML() {
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManagerDependence::fromYAML(WSJCppYAMLItem *pYaml) {
+bool WsjcppPackageManagerDependence::fromYAML(WsjcppYamlItem *pYaml) {
     m_pYamlDependece = pYaml;
     if (!m_pYamlDependece->hasElement("name")) {
-        WSJCppLog::err(TAG, "Missing required field 'name' in " + m_pYamlDependece->getForLogFormat());
+        WsjcppLog::err(TAG, "Missing required field 'name' in " + m_pYamlDependece->getForLogFormat());
         return false;
     } else {
         m_sName = m_pYamlDependece->getElement("name")->getValue();
     }
 
     if (!m_pYamlDependece->hasElement("version")) {
-        WSJCppLog::err(TAG, "Missing required field 'version' in " + m_pYamlDependece->getForLogFormat());
+        WsjcppLog::err(TAG, "Missing required field 'version' in " + m_pYamlDependece->getForLogFormat());
         return false; 
     } else {
         m_sVersion = m_pYamlDependece->getElement("version")->getValue();
     }
 
     if (!m_pYamlDependece->hasElement("url")) {
-        WSJCppLog::err(TAG, "Missing required field 'url' in " + m_pYamlDependece->getForLogFormat());
+        WsjcppLog::err(TAG, "Missing required field 'url' in " + m_pYamlDependece->getForLogFormat());
         return false; 
     } else {
         m_sUrl = m_pYamlDependece->getElement("url")->getValue();
     }
 
     if (!m_pYamlDependece->hasElement("installation-dir")) {
-        WSJCppLog::err(TAG, "Missing required field 'installation-dir' in " + m_pYamlDependece->getForLogFormat());
+        WsjcppLog::err(TAG, "Missing required field 'installation-dir' in " + m_pYamlDependece->getForLogFormat());
         return false; 
     } else {
         m_sInstallationDir = m_pYamlDependece->getElement("installation-dir")->getValue();
@@ -329,69 +329,69 @@ bool WSJCppPackageManagerDependence::fromYAML(WSJCppYAMLItem *pYaml) {
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManagerDependence::getInstallationDir() const {
+std::string WsjcppPackageManagerDependence::getInstallationDir() const {
     return m_sInstallationDir;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManagerDependence::getUrl() const {
+std::string WsjcppPackageManagerDependence::getUrl() const {
     return m_sUrl;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManagerDependence::getName() const {
+std::string WsjcppPackageManagerDependence::getName() const {
     return m_sName;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManagerDependence::getVersion() const {
+std::string WsjcppPackageManagerDependence::getVersion() const {
     return m_sVersion;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManagerDependence::getOrigin() const {
+std::string WsjcppPackageManagerDependence::getOrigin() const {
     return m_sOrigin;
 }
 
 // ---------------------------------------------------------------------
 
-void WSJCppPackageManagerDependence::setName(const std::string &sName) {
+void WsjcppPackageManagerDependence::setName(const std::string &sName) {
     m_sName = sName;
 }
 
 // ---------------------------------------------------------------------
 
-void WSJCppPackageManagerDependence::setVersion(const std::string &sVersion) {
+void WsjcppPackageManagerDependence::setVersion(const std::string &sVersion) {
     m_sVersion = sVersion;
 }
 
 // ---------------------------------------------------------------------
 
-void WSJCppPackageManagerDependence::setOrigin(const std::string &sOrigin) {
+void WsjcppPackageManagerDependence::setOrigin(const std::string &sOrigin) {
     m_sOrigin = sOrigin;
 }
 
 // ---------------------------------------------------------------------
 
-void WSJCppPackageManagerDependence::setUrl(const std::string &sUrl) {
+void WsjcppPackageManagerDependence::setUrl(const std::string &sUrl) {
     m_sUrl = sUrl;
 }
 
 // ---------------------------------------------------------------------
 
-void WSJCppPackageManagerDependence::setInstallationDir(const std::string &sInstallationDir) {
+void WsjcppPackageManagerDependence::setInstallationDir(const std::string &sInstallationDir) {
     m_sInstallationDir = sInstallationDir;
 }
 
 // ---------------------------------------------------------------------
-// WSJCppPackageManager - main class
+// WsjcppPackageManager - main class
 
-WSJCppPackageManager::WSJCppPackageManager(const std::string &sDir) {
-    TAG = "WSJCppPackageManager";
+WsjcppPackageManager::WsjcppPackageManager(const std::string &sDir) {
+    TAG = "WsjcppPackageManager";
     m_sDir = sDir;
     m_sDirWithSources = m_sDir + "/src.wsjcpp";
     m_sGithubPrefix = "https://github.com/";
@@ -401,16 +401,16 @@ WSJCppPackageManager::WSJCppPackageManager(const std::string &sDir) {
     m_sHttpPrefix = "http://"; // from some http://
     m_sHttpsPrefix = "https://";
     m_sYamlFilename = "wsjcpp.yml";
-    m_sWSJCppCurrentVersion = "v0.0.1";
-    m_sWSJCppVersion = m_sWSJCppCurrentVersion;
+    m_sWsjcppCurrentVersion = "v0.0.1";
+    m_sWsjcppVersion = m_sWsjcppCurrentVersion;
     m_bHolded = false;
     m_sIssues = "none";
 }
 
 // ---------------------------------------------------------------------
 
-WSJCppPackageManager::WSJCppPackageManager(const std::string &sDir, const std::string &sParentDir, bool bHolded) 
-: WSJCppPackageManager(sDir) {
+WsjcppPackageManager::WsjcppPackageManager(const std::string &sDir, const std::string &sParentDir, bool bHolded) 
+: WsjcppPackageManager(sDir) {
     m_sDirWithSources = m_sDir + "/src.wsjcpp";
     m_sYamlFilename = "wsjcpp.hold.yml";
     m_bHolded = true;
@@ -420,21 +420,21 @@ WSJCppPackageManager::WSJCppPackageManager(const std::string &sDir, const std::s
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManager::getDir() const {
+std::string WsjcppPackageManager::getDir() const {
     return m_sDir;
 }
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::isHolded() const {
+bool WsjcppPackageManager::isHolded() const {
     return m_bHolded;
 }
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::init() {
-    std::string sCurrentDirectory = WSJCppCore::getCurrentDirectory() + "/" + m_sDir;
-    sCurrentDirectory = WSJCppCore::doNormalizePath(sCurrentDirectory);
+bool WsjcppPackageManager::init() {
+    std::string sCurrentDirectory = WsjcppCore::getCurrentDirectory() + "/" + m_sDir;
+    sCurrentDirectory = WsjcppCore::doNormalizePath(sCurrentDirectory);
     if (sCurrentDirectory[sCurrentDirectory.length()-1] == '/') {
         sCurrentDirectory = sCurrentDirectory.substr(0, sCurrentDirectory.size()-1);
     }
@@ -442,7 +442,7 @@ bool WSJCppPackageManager::init() {
 
     // TODO check wsjcpp.yml
 
-    m_sName = WSJCppCore::extractFilename(sCurrentDirectory);
+    m_sName = WsjcppCore::extractFilename(sCurrentDirectory);
     m_yamlPackageInfo.getRoot()->setElementValue("name", false, m_sName, true);
 
     m_sVersion = "v0.0.1";
@@ -484,19 +484,19 @@ bool WSJCppPackageManager::init() {
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::save() {
+bool WsjcppPackageManager::save() {
     if (m_bHolded) {
-        WSJCppLog::throw_err(TAG, "wsjcpp is holded");
+        WsjcppLog::throw_err(TAG, "wsjcpp is holded");
         return false;
     }
 
-    if (!WSJCppCore::dirExists(m_sDirWithSources)) {
-        WSJCppCore::makeDir(m_sDirWithSources);
+    if (!WsjcppCore::dirExists(m_sDirWithSources)) {
+        WsjcppCore::makeDir(m_sDirWithSources);
     }
 
     std::string sGitkeepFile = m_sDirWithSources + "/.gitkeep";
-    if (!WSJCppCore::fileExists(sGitkeepFile)) {
-        WSJCppCore::writeFile(sGitkeepFile, ""); // TODO createEmptyFile
+    if (!WsjcppCore::fileExists(sGitkeepFile)) {
+        WsjcppCore::writeFile(sGitkeepFile, ""); // TODO createEmptyFile
     }
     m_yamlPackageInfo.saveToFile(m_sYamlFullpath);
     return true;
@@ -504,10 +504,10 @@ bool WSJCppPackageManager::save() {
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::load() {
+bool WsjcppPackageManager::load() {
     m_sYamlFullpath = m_sDir + "/" + m_sYamlFilename;
 
-    if (!WSJCppCore::fileExists(m_sYamlFullpath)) {
+    if (!WsjcppCore::fileExists(m_sYamlFullpath)) {
         std::cout << "ERROR: '" << m_sYamlFullpath << "' did not found" << std::endl;
         return false;
     }
@@ -519,7 +519,7 @@ bool WSJCppPackageManager::load() {
     std::vector<std::string> vKeys = m_yamlPackageInfo.getRoot()->getKeys();
     for (int i = 0; i < vKeys.size(); i++) {
         std::string sKey = vKeys[i];
-        // WSJCppLog::info(TAG, "Process option '" + sKey + "'");
+        // WsjcppLog::info(TAG, "Process option '" + sKey + "'");
         if (sKey == "version") {
             if (!readFieldVersion()) {
                 return false;
@@ -586,16 +586,16 @@ bool WSJCppPackageManager::load() {
             }
         } else if (sKey == "docker") {
             m_bHasDocker = true;
-            WSJCppLog::warn(TAG, "TODO read docker section");
+            WsjcppLog::warn(TAG, "TODO read docker section");
             // if (!readFieldRequiredPkgConfig()) {
             //    return false;
             // }
         } else {
-            WSJCppLog::warn(TAG, "Ignored option '" + sKey + "' in " + m_yamlPackageInfo.getRoot()->getForLogFormat());
+            WsjcppLog::warn(TAG, "Ignored option '" + sKey + "' in " + m_yamlPackageInfo.getRoot()->getForLogFormat());
         }
     }
 
-    // WSJCppLog::warn(TAG, "Loaded");
+    // WsjcppLog::warn(TAG, "Loaded");
     // TODO required-libraries
     // TODO required-pkg-config
     // TODO replace-dependencies
@@ -606,38 +606,38 @@ bool WSJCppPackageManager::load() {
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::addSourceFile(const std::string &sSourceFile, const std::string &sTargetFile, const std::string &sType) {
+bool WsjcppPackageManager::addSourceFile(const std::string &sSourceFile, const std::string &sTargetFile, const std::string &sType) {
     if (m_bHolded) {
-        WSJCppLog::err(TAG, "wsjcpp is holded");
+        WsjcppLog::err(TAG, "wsjcpp is holded");
         return false;
     }
 
-    if (!WSJCppCore::fileExists(sSourceFile)) {
-        WSJCppLog::err(TAG, "'" + sSourceFile + "' file does not exists");
+    if (!WsjcppCore::fileExists(sSourceFile)) {
+        WsjcppLog::err(TAG, "'" + sSourceFile + "' file does not exists");
         return false;
     }
-    std::vector<WSJCppPackageManagerDistributionFile>::iterator it;
+    std::vector<WsjcppPackageManagerDistributionFile>::iterator it;
     for (it = m_vDistributionFiles.begin(); it != m_vDistributionFiles.end(); ++it) {
         if (it->getSourceFile() == sSourceFile) {
-            WSJCppLog::err(TAG, "This package already contained file '" + sSourceFile + "'");
+            WsjcppLog::err(TAG, "This package already contained file '" + sSourceFile + "'");
             return false;
         }
     }
 
     std::string sContent = "";
-    if (!WSJCppCore::readTextFile(sSourceFile, sContent)) {
+    if (!WsjcppCore::readTextFile(sSourceFile, sContent)) {
         return false;
     }
 
-    WSJCppPackageManagerDistributionFile file;
+    WsjcppPackageManagerDistributionFile file;
     file.setSourceFile(sSourceFile);
     file.setTargetFile(sTargetFile);
     file.setType(sType);
     m_vDistributionFiles.push_back(file);
     
-    WSJCppYAMLItem *pDist = m_yamlPackageInfo.getRoot()->getElement("distribution");
-    WSJCppYAMLPlaceInFile pl;
-    WSJCppYAMLItem *pItem = new WSJCppYAMLItem(pDist, pl, WSJCppYAMLItemType::WSJCPP_YAML_ITEM_MAP);
+    WsjcppYamlItem *pDist = m_yamlPackageInfo.getRoot()->getElement("distribution");
+    WsjcppYamlPlaceInFile pl;
+    WsjcppYamlItem *pItem = new WsjcppYamlItem(pDist, pl, WsjcppYamlItemType::WSJCPP_YAML_ITEM_MAP);
     pItem->setElementValue("source-file", false, sSourceFile, true);
     pItem->setElementValue("target-file", false, sTargetFile, true);
     pItem->setElementValue("type", false, sType, true);
@@ -648,9 +648,9 @@ bool WSJCppPackageManager::addSourceFile(const std::string &sSourceFile, const s
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::removeSourceFile(const std::string &sSourceFile) {
+bool WsjcppPackageManager::removeSourceFile(const std::string &sSourceFile) {
     if (m_bHolded) {
-        WSJCppLog::err(TAG, "wsjcpp is holded");
+        WsjcppLog::err(TAG, "wsjcpp is holded");
         return false;
     }
     bool bResult = false;
@@ -663,10 +663,10 @@ bool WSJCppPackageManager::removeSourceFile(const std::string &sSourceFile) {
     }
     if (bResult) {
         bResult = false;
-        WSJCppYAMLItem *pDist = m_yamlPackageInfo.getRoot()->getElement("distribution");
+        WsjcppYamlItem *pDist = m_yamlPackageInfo.getRoot()->getElement("distribution");
         int nLen = pDist->getLength();
         for (int i = nLen-1; i >= 0; i--) {
-            WSJCppYAMLItem *pItem = pDist->getElement(i);
+            WsjcppYamlItem *pItem = pDist->getElement(i);
             if (pItem->getElement("source-file")->getValue() == sSourceFile) {
                 pDist->removeElement(i);
                 bResult = true;
@@ -675,7 +675,7 @@ bool WSJCppPackageManager::removeSourceFile(const std::string &sSourceFile) {
     }
 
     if (!bResult) {
-        WSJCppLog::err(TAG, "Distribution file '" + sSourceFile + "' cound not found in this package");
+        WsjcppLog::err(TAG, "Distribution file '" + sSourceFile + "' cound not found in this package");
     } else {
         updateAutogeneratedFiles();
     }
@@ -685,27 +685,27 @@ bool WSJCppPackageManager::removeSourceFile(const std::string &sSourceFile) {
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::updateSourceFile(const std::string &sSourceFile) {
+bool WsjcppPackageManager::updateSourceFile(const std::string &sSourceFile) {
     if (m_bHolded) {
-        WSJCppLog::err(TAG, "wsjcpp is holded");
+        WsjcppLog::err(TAG, "wsjcpp is holded");
         return false;
     }
 
-    if (!WSJCppCore::fileExists(sSourceFile)) {
-        WSJCppLog::err(TAG, "'" + sSourceFile + "' file does not exists");
+    if (!WsjcppCore::fileExists(sSourceFile)) {
+        WsjcppLog::err(TAG, "'" + sSourceFile + "' file does not exists");
         return false;
     }
 
     std::string sContent = "";
-    if (!WSJCppCore::readTextFile(sSourceFile, sContent)) {
+    if (!WsjcppCore::readTextFile(sSourceFile, sContent)) {
         return false;
     }
-    std::string sSha1 = WSJCppHashes::sha1_calc_hex(sContent);
+    std::string sSha1 = WsjcppHashes::sha1_calc_hex(sContent);
 
-    WSJCppLog::info(TAG, "'" + sSourceFile + "' some");
+    WsjcppLog::info(TAG, "'" + sSourceFile + "' some");
 
     bool bFound = false;
-    std::vector<WSJCppPackageManagerDistributionFile>::iterator it;
+    std::vector<WsjcppPackageManagerDistributionFile>::iterator it;
     for (it = m_vDistributionFiles.begin(); it != m_vDistributionFiles.end(); ++it) {
         if (it->getSourceFile() == sSourceFile) {
             it->setSha1(sSha1);
@@ -714,16 +714,16 @@ bool WSJCppPackageManager::updateSourceFile(const std::string &sSourceFile) {
     }
 
     if (!bFound) {
-        WSJCppLog::err(TAG, "'" + sSourceFile + "' file not found in list. Please add this before");
+        WsjcppLog::err(TAG, "'" + sSourceFile + "' file not found in list. Please add this before");
         return false;
     }
 
     if (bFound) {
         bFound = false;
-        WSJCppYAMLItem *pDist = m_yamlPackageInfo.getRoot()->getElement("distribution");
+        WsjcppYamlItem *pDist = m_yamlPackageInfo.getRoot()->getElement("distribution");
         int nLen = pDist->getLength();
         for (int i = nLen-1; i >= 0; i--) {
-            WSJCppYAMLItem *pItem = pDist->getElement(i);
+            WsjcppYamlItem *pItem = pDist->getElement(i);
             if (pItem->getElement("source-file")->getValue() == sSourceFile) {
                 pItem->getElement("sha1")->setValue(sSha1, true);
                 bFound = true;
@@ -736,34 +736,34 @@ bool WSJCppPackageManager::updateSourceFile(const std::string &sSourceFile) {
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::createUnitTest(const std::string &sUnitTestName, const std::string &sUnitTestDescription) {
+bool WsjcppPackageManager::createUnitTest(const std::string &sUnitTestName, const std::string &sUnitTestDescription) {
     if (m_bHolded) {
-        WSJCppLog::err(TAG, "wsjcpp is holded");
+        WsjcppLog::err(TAG, "wsjcpp is holded");
         return false;
     }
     std::string sName = normalizeUnitTestName(sUnitTestName, false);
     if (sName != sUnitTestName) {
-        WSJCppLog::warn(TAG, "UnitTest name was normalized '" + sUnitTestName + "' -> '" + sName + "'");
+        WsjcppLog::warn(TAG, "UnitTest name was normalized '" + sUnitTestName + "' -> '" + sName + "'");
     }
 
     for (int i = 0; i < m_vUnitTests.size(); i++) {
         if (m_vUnitTests[i].getName() == sName) {
-            WSJCppLog::err(TAG, "Unit test with name '" + sName + "' already exists");
+            WsjcppLog::err(TAG, "Unit test with name '" + sName + "' already exists");
             return false;
         }
     }
 
-    WSJCppPackageManagerUnitTest unitTest;
+    WsjcppPackageManagerUnitTest unitTest;
     unitTest.setName(sName);
     unitTest.setDescription(sUnitTestDescription);
     m_vUnitTests.push_back(unitTest);
     
     m_yamlPackageInfo.getRoot()->createElementMap("unit-tests", false);
-    WSJCppYAMLItem *pUnitTests = m_yamlPackageInfo.getRoot()->getElement("unit-tests");
+    WsjcppYamlItem *pUnitTests = m_yamlPackageInfo.getRoot()->getElement("unit-tests");
     pUnitTests->createElementArray("cases", false);
-    WSJCppYAMLItem *pCases = pUnitTests->getElement("cases");
+    WsjcppYamlItem *pCases = pUnitTests->getElement("cases");
 
-    WSJCppYAMLItem *pNewItem = pCases->createElementMap();
+    WsjcppYamlItem *pNewItem = pCases->createElementMap();
     pNewItem->setElementValue("name", false, sName, true);
     pNewItem->setElementValue("description", false, sUnitTestDescription, true);
 
@@ -781,14 +781,14 @@ bool WSJCppPackageManager::createUnitTest(const std::string &sUnitTestName, cons
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::deleteUnitTest(const std::string &sUnitTestName) {
+bool WsjcppPackageManager::deleteUnitTest(const std::string &sUnitTestName) {
     if (m_bHolded) {
-        WSJCppLog::err(TAG, "Package is holded");
+        WsjcppLog::err(TAG, "Package is holded");
         return false;
     }
 
     bool bFound = false;
-    std::vector<WSJCppPackageManagerUnitTest>::iterator it; 
+    std::vector<WsjcppPackageManagerUnitTest>::iterator it; 
     for (it = m_vUnitTests.begin(); it < m_vUnitTests.end(); ++it) {
         if (it->getName() == sUnitTestName) {
             bFound = true;
@@ -797,21 +797,21 @@ bool WSJCppPackageManager::deleteUnitTest(const std::string &sUnitTestName) {
         }
     }
     if (!bFound) {
-        WSJCppLog::err(TAG, "Not found unit-test with name '" + sUnitTestName + "'");
+        WsjcppLog::err(TAG, "Not found unit-test with name '" + sUnitTestName + "'");
         return false;    
     }
-    WSJCppYAMLItem *pItem = m_yamlPackageInfo["unit-tests"].getElement("cases");
+    WsjcppYamlItem *pItem = m_yamlPackageInfo["unit-tests"].getElement("cases");
     int nLength = pItem->getLength();
     for (int i = 0; i < nLength; i++) {
         if (pItem->getElement(i)->getElement("name")->getValue() == sUnitTestName) {
             std::string sBaseName = this->generateFilenameForUnitTest(sUnitTestName);
             std::string sFileHeader = "./unit-tests.wsjcpp/src/" + sBaseName + ".h";
             std::string sFileSource = "./unit-tests.wsjcpp/src/" + sBaseName + ".cpp";
-            if (WSJCppCore::fileExists(sFileHeader)) {
-                WSJCppCore::removeFile(sFileHeader);
+            if (WsjcppCore::fileExists(sFileHeader)) {
+                WsjcppCore::removeFile(sFileHeader);
             }
-            if (WSJCppCore::fileExists(sFileSource)) {
-                WSJCppCore::removeFile(sFileSource);
+            if (WsjcppCore::fileExists(sFileSource)) {
+                WsjcppCore::removeFile(sFileSource);
             }
             /*if (nLength == 1) {
                 return m_yamlPackageInfo.getRoot()->removeElement("unit-tests");
@@ -827,14 +827,14 @@ bool WSJCppPackageManager::deleteUnitTest(const std::string &sUnitTestName) {
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::enableUnitTest(const std::string &sUnitTestName, bool bEnable) {
+bool WsjcppPackageManager::enableUnitTest(const std::string &sUnitTestName, bool bEnable) {
     if (m_bHolded) {
-        WSJCppLog::err(TAG, "Package is holded");
+        WsjcppLog::err(TAG, "Package is holded");
         return false;
     }
 
     bool bFound = false;
-    std::vector<WSJCppPackageManagerUnitTest>::iterator it; 
+    std::vector<WsjcppPackageManagerUnitTest>::iterator it; 
     for (it = m_vUnitTests.begin(); it < m_vUnitTests.end(); ++it) {
         if (it->getName() == sUnitTestName) {
             it->setEnabled(bEnable);
@@ -843,10 +843,10 @@ bool WSJCppPackageManager::enableUnitTest(const std::string &sUnitTestName, bool
         }
     }
     if (!bFound) {
-        WSJCppLog::err(TAG, "Not found unit-test with name '" + sUnitTestName + "'");
+        WsjcppLog::err(TAG, "Not found unit-test with name '" + sUnitTestName + "'");
         return false;    
     }
-    WSJCppYAMLItem *pItem = m_yamlPackageInfo["unit-tests"].getElement("cases");
+    WsjcppYamlItem *pItem = m_yamlPackageInfo["unit-tests"].getElement("cases");
     int nLength = pItem->getLength();
     for (int i = 0; i < nLength; i++) {
         if (pItem->getElement(i)->getElement("name")->getValue() == sUnitTestName) {
@@ -859,22 +859,22 @@ bool WSJCppPackageManager::enableUnitTest(const std::string &sUnitTestName, bool
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::addOrigin(const std::string &sAddress) {
+bool WsjcppPackageManager::addOrigin(const std::string &sAddress) {
     if (m_bHolded) {
-        WSJCppLog::err(TAG, "Package is holded");
+        WsjcppLog::err(TAG, "Package is holded");
         return false;
     }
     // TODO check address format
     // TODO request online for type
     for (auto it = m_vOrigins.begin(); it != m_vOrigins.end(); ++it) {
         if (it->getAddress() == sAddress) {
-            WSJCppLog::err(TAG, "Error: Origin '" + sAddress + "' already defined.");
+            WsjcppLog::err(TAG, "Error: Origin '" + sAddress + "' already defined.");
             return false;
         }
     }
 
     std::string sOriginType = "package-registry";
-    WSJCppPackageManagerOrigin origin;
+    WsjcppPackageManagerOrigin origin;
     origin.setAddress(sAddress);
     origin.setType(sOriginType);
     m_vOrigins.push_back(origin);
@@ -883,9 +883,9 @@ bool WSJCppPackageManager::addOrigin(const std::string &sAddress) {
         m_yamlPackageInfo.getRoot()->createElementArray("origins", false);
     }
     
-    WSJCppYAMLItem *pOrigins = m_yamlPackageInfo.getRoot()->getElement("origins");
-    WSJCppYAMLPlaceInFile pl;
-    WSJCppYAMLItem *pNewItemMap = new WSJCppYAMLItem(pOrigins, pl, WSJCppYAMLItemType::WSJCPP_YAML_ITEM_MAP);
+    WsjcppYamlItem *pOrigins = m_yamlPackageInfo.getRoot()->getElement("origins");
+    WsjcppYamlPlaceInFile pl;
+    WsjcppYamlItem *pNewItemMap = new WsjcppYamlItem(pOrigins, pl, WsjcppYamlItemType::WSJCPP_YAML_ITEM_MAP);
     pNewItemMap->setElementValue("address", false, sAddress, true);
     pNewItemMap->setElementValue("type", false, sOriginType, true);
     pOrigins->appendElement(pNewItemMap);
@@ -894,26 +894,26 @@ bool WSJCppPackageManager::addOrigin(const std::string &sAddress) {
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::deleteOrigin(const std::string &sAddress) {
+bool WsjcppPackageManager::deleteOrigin(const std::string &sAddress) {
     if (m_bHolded) {
-        WSJCppLog::err(TAG, "wsjcpp is holded");
+        WsjcppLog::err(TAG, "wsjcpp is holded");
         return false;
     }
 
-    std::vector<WSJCppPackageManagerOrigin>::iterator it;
+    std::vector<WsjcppPackageManagerOrigin>::iterator it;
     for (it = m_vOrigins.begin(); it != m_vOrigins.end(); ++it) {
         if (it->getAddress() == sAddress) {
             m_vOrigins.erase(it);
             return true;
         }
     }
-    WSJCppLog::err(TAG, "Origin '" + sAddress + "' did not found." );
+    WsjcppLog::err(TAG, "Origin '" + sAddress + "' did not found." );
     return false;
 }
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::updateDependencies() {
+bool WsjcppPackageManager::updateDependencies() {
     if (m_bHolded) {
         std::cout << "ERROR: wsjcpp is holded" << std::endl;
         return false;
@@ -923,19 +923,19 @@ bool WSJCppPackageManager::updateDependencies() {
 
 // ---------------------------------------------------------------------
 
-void WSJCppPackageManager::verify() {
+void WsjcppPackageManager::verify() {
     std::vector<std::string> m_vVerified;
 
     // HERE verify current package
     
     for (auto it = m_vDependencies.begin(); it != m_vDependencies.end(); ++it) {
         if (m_bHolded) {
-            WSJCppPackageManager m(m_sParentDir + "/" + it->getName(), m_sParentDir, true);
+            WsjcppPackageManager m(m_sParentDir + "/" + it->getName(), m_sParentDir, true);
             if (m.load()) {
                 m.verify();
             }
         } else {
-            WSJCppPackageManager m(m_sDirWithSources + "/" + it->getName(), m_sDirWithSources, true);
+            WsjcppPackageManager m(m_sDirWithSources + "/" + it->getName(), m_sDirWithSources, true);
             if (m.load()) {
                 m.verify();
             }
@@ -946,18 +946,18 @@ void WSJCppPackageManager::verify() {
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::install(const std::string &sPackage) {
+bool WsjcppPackageManager::install(const std::string &sPackage) {
     if (m_bHolded) {
-        WSJCppLog::err(TAG, "Could not install package when holded");
+        WsjcppLog::err(TAG, "Could not install package when holded");
         return false;
     }
 
     if (isGitHubPackage(sPackage)) {
         if (isInstalled(sPackage)) {
-            WSJCppLog::err(TAG, "Package '" + sPackage + "' already installed");
+            WsjcppLog::err(TAG, "Package '" + sPackage + "' already installed");
             return false;
         }
-        WSJCppPackageManagerDependence dep;
+        WsjcppPackageManagerDependence dep;
         if (downloadFromGithubToCache(sPackage, dep)) {
             addDependency(dep);
             return installFromCache(sPackage, dep);
@@ -966,37 +966,37 @@ bool WSJCppPackageManager::install(const std::string &sPackage) {
         }
     } else if (isBitbucketPackage(sPackage)) {
         // TODO
-        WSJCppLog::err(TAG, "Could not install package from bitbucket - not implemented yet");
+        WsjcppLog::err(TAG, "Could not install package from bitbucket - not implemented yet");
         return false;
     } else if (isFilePackage(sPackage)) {
         // TODO
-        WSJCppLog::err(TAG, "Could not install package from file - not implemented yet");
+        WsjcppLog::err(TAG, "Could not install package from file - not implemented yet");
         return false;
     } else if (isHttpPackage(sPackage) || isHttpsPackage(sPackage)) {
         // TODO try find on different servers
-        WSJCppLog::err(TAG, "Could not install package from http(s) - not implemented yet");
+        WsjcppLog::err(TAG, "Could not install package from http(s) - not implemented yet");
         return false;
     }
 
-    WSJCppLog::err(TAG, "Could not install package from unknown source");
+    WsjcppLog::err(TAG, "Could not install package from unknown source");
     return false;
 }
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::reinstall(const std::string &sPackage) {
+bool WsjcppPackageManager::reinstall(const std::string &sPackage) {
     if (m_bHolded) {
-        WSJCppLog::err(TAG, "Could not reinstall package when holded");
+        WsjcppLog::err(TAG, "Could not reinstall package when holded");
         return false;
     }
 
     if (!isInstalled(sPackage)) {
-        WSJCppLog::err(TAG, "Package '" + sPackage + "' not installed");
+        WsjcppLog::err(TAG, "Package '" + sPackage + "' not installed");
         return false;
     }
 
     if (isGitHubPackage(sPackage)) {
-        WSJCppPackageManagerDependence dep;
+        WsjcppPackageManagerDependence dep;
         if (downloadFromGithubToCache(sPackage, dep)) {
             updateDependency(dep);
             return installFromCache(sPackage, dep);
@@ -1005,35 +1005,35 @@ bool WSJCppPackageManager::reinstall(const std::string &sPackage) {
         }
     } else if (isBitbucketPackage(sPackage)) {
         // TODO
-        WSJCppLog::err(TAG, "Could not reinstall package from bitbucket - not implemented yet");
+        WsjcppLog::err(TAG, "Could not reinstall package from bitbucket - not implemented yet");
         return false;
     } else if (isFilePackage(sPackage)) {
         // TODO
-        WSJCppLog::err(TAG, "Could not reinstall package from file - not implemented yet");
+        WsjcppLog::err(TAG, "Could not reinstall package from file - not implemented yet");
         return false;
     } else if (isHttpPackage(sPackage) || isHttpsPackage(sPackage)) {
         // TODO try find on different servers
-        WSJCppLog::err(TAG, "Could not reinstall package from http(s) - not implemented yet");
+        WsjcppLog::err(TAG, "Could not reinstall package from http(s) - not implemented yet");
         return false;
     }
 
-    WSJCppLog::err(TAG, "Could not install package from unknown source");
+    WsjcppLog::err(TAG, "Could not install package from unknown source");
     return false;
 }
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::uninstall(const std::string &sPackageUrl) {
+bool WsjcppPackageManager::uninstall(const std::string &sPackageUrl) {
     if (m_bHolded) {
-        WSJCppLog::err(TAG, "Could not reinstall package when holded");
+        WsjcppLog::err(TAG, "Could not reinstall package when holded");
         return false;
     }
 
     bool bResult = false;
-    std::vector<WSJCppPackageManagerDependence>::iterator it;
+    std::vector<WsjcppPackageManagerDependence>::iterator it;
     for (it = m_vDependencies.begin(); it != m_vDependencies.end(); ++it) {
         if (it->getUrl() == sPackageUrl) {
-            WSJCppPackageManagerDependence dep = *it;
+            WsjcppPackageManagerDependence dep = *it;
             removeDependenciesFilesSafe(dep);
             m_vDependencies.erase(it);
             bResult = true;
@@ -1041,13 +1041,13 @@ bool WSJCppPackageManager::uninstall(const std::string &sPackageUrl) {
         }
     }
     if (!bResult) {
-        WSJCppLog::err(TAG, "Package '" + sPackageUrl + "' did not installed");
+        WsjcppLog::err(TAG, "Package '" + sPackageUrl + "' did not installed");
         return false;
     }
-    WSJCppYAMLItem *pDeps = m_yamlPackageInfo.getRoot()->getElement("dependencies");
+    WsjcppYamlItem *pDeps = m_yamlPackageInfo.getRoot()->getElement("dependencies");
     int nLen = pDeps->getLength();
     for (int i = nLen-1; i >= 0; i--) {
-        WSJCppYAMLItem *pItemMap = pDeps->getElement(i);
+        WsjcppYamlItem *pItemMap = pDeps->getElement(i);
         if (sPackageUrl == pItemMap->getElement("url")->getValue()) {
             pDeps->removeElement(i);
         }
@@ -1061,46 +1061,46 @@ bool WSJCppPackageManager::uninstall(const std::string &sPackageUrl) {
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::isGitHubPackage(const std::string &sPackage) {
+bool WsjcppPackageManager::isGitHubPackage(const std::string &sPackage) {
     return sPackage.compare(0, m_sGithubPrefix.size(), m_sGithubPrefix) == 0;
 }
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::isBitbucketPackage(const std::string &sPackage) {
+bool WsjcppPackageManager::isBitbucketPackage(const std::string &sPackage) {
     return sPackage.compare(0, m_sBitbucketPrefix.size(), m_sBitbucketPrefix) == 0;
 }
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::isFilePackage(const std::string &sPackage) {
+bool WsjcppPackageManager::isFilePackage(const std::string &sPackage) {
     return sPackage.compare(0, m_sFilePrefix.size(), m_sFilePrefix) == 0;
 }
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::isHttpPackage(const std::string &sPackage) {
+bool WsjcppPackageManager::isHttpPackage(const std::string &sPackage) {
     return sPackage.compare(0, m_sHttpPrefix.size(), m_sHttpPrefix) == 0;
 }
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::isHttpsPackage(const std::string &sPackage) {
+bool WsjcppPackageManager::isHttpsPackage(const std::string &sPackage) {
     return sPackage.compare(0, m_sHttpsPrefix.size(), m_sHttpsPrefix) == 0;
 }
 
 // ---------------------------------------------------------------------
 
-void WSJCppPackageManager::addDependency(WSJCppPackageManagerDependence &dep) {
+void WsjcppPackageManager::addDependency(WsjcppPackageManagerDependence &dep) {
     m_vDependencies.push_back(dep);
-    WSJCppYAMLItem *pRoot = m_yamlPackageInfo.getRoot();
+    WsjcppYamlItem *pRoot = m_yamlPackageInfo.getRoot();
     if (!pRoot->hasElement("dependencies")) {
         pRoot->createElementArray("dependencies", false);
     }
 
-    WSJCppYAMLItem *pDeps = pRoot->getElement("dependencies");
-    WSJCppYAMLPlaceInFile pl;
-    WSJCppYAMLItem *pItem = new WSJCppYAMLItem(pDeps, pl, WSJCppYAMLItemType::WSJCPP_YAML_ITEM_MAP);
+    WsjcppYamlItem *pDeps = pRoot->getElement("dependencies");
+    WsjcppYamlPlaceInFile pl;
+    WsjcppYamlItem *pItem = new WsjcppYamlItem(pDeps, pl, WsjcppYamlItemType::WSJCPP_YAML_ITEM_MAP);
     // TODO add simplyfy method
     pItem->setElementValue("name", false, dep.getName(), true);
     pItem->setElementValue("version", false, dep.getVersion(), true);
@@ -1112,11 +1112,11 @@ void WSJCppPackageManager::addDependency(WSJCppPackageManagerDependence &dep) {
 
 // ---------------------------------------------------------------------
 
-void WSJCppPackageManager::updateDependency(WSJCppPackageManagerDependence &dep) {
-    WSJCppYAMLItem *pDeps = m_yamlPackageInfo.getRoot()->getElement("dependencies");
+void WsjcppPackageManager::updateDependency(WsjcppPackageManagerDependence &dep) {
+    WsjcppYamlItem *pDeps = m_yamlPackageInfo.getRoot()->getElement("dependencies");
     int nLen = pDeps->getLength();
     for (int i = 0; i < nLen; i++) {
-        WSJCppYAMLItem *pItem = pDeps->getElement(i);
+        WsjcppYamlItem *pItem = pDeps->getElement(i);
         std::string sUrl = pItem->getElement("url")->getValue();
         if (dep.getUrl() == sUrl) {
             pItem->getElement("version")->setValue(dep.getVersion(), true);
@@ -1130,7 +1130,7 @@ void WSJCppPackageManager::updateDependency(WSJCppPackageManagerDependence &dep)
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::downloadFromGithubToCache(const std::string &sPackage, WSJCppPackageManagerDependence &dep) {
+bool WsjcppPackageManager::downloadFromGithubToCache(const std::string &sPackage, WsjcppPackageManagerDependence &dep) {
 
     std::cout << "Download package from https://github.com/ ..." << std::endl;
 
@@ -1147,58 +1147,58 @@ bool WSJCppPackageManager::downloadFromGithubToCache(const std::string &sPackage
 
     std::string sWsjcppUrl = sWsjcppBaseUrl + "/wsjcpp.yml";
     std::string sCacheDir = m_sDir + "/.wsjcpp/cache";
-    if (!WSJCppCore::dirExists(sCacheDir)) {
-        WSJCppCore::makeDir(sCacheDir);
+    if (!WsjcppCore::dirExists(sCacheDir)) {
+        WsjcppCore::makeDir(sCacheDir);
     }
 
     std::string sCacheSubFolderName = sCacheDir + "/" + this->prepareCacheSubFolderName(sPackage);
 
-    if (!WSJCppCore::dirExists(sCacheSubFolderName)) {
-        WSJCppCore::makeDir(sCacheSubFolderName);
+    if (!WsjcppCore::dirExists(sCacheSubFolderName)) {
+        WsjcppCore::makeDir(sCacheSubFolderName);
     }
 
     std::string sDownloadedWsjCppYml = sCacheSubFolderName + "/wsjcpp.hold.yml";
 
     if (!this->downloadFileOverHttps(sWsjcppBaseUrl + "/wsjcpp.yml", sDownloadedWsjCppYml)) {
-        WSJCppLog::err(TAG, "Could not download " + sWsjcppBaseUrl);
+        WsjcppLog::err(TAG, "Could not download " + sWsjcppBaseUrl);
         // TODO remove from cache
         return false;
     }
 
-    WSJCppPackageManager pkg(sCacheSubFolderName, sCacheSubFolderName, true);
+    WsjcppPackageManager pkg(sCacheSubFolderName, sCacheSubFolderName, true);
     if (!pkg.load()) {
-        WSJCppLog::err(TAG, "Could not load " + sCacheSubFolderName);
+        WsjcppLog::err(TAG, "Could not load " + sCacheSubFolderName);
         return false;
     }
 
     // sources
-    std::vector<WSJCppPackageManagerDistributionFile> vSources = pkg.getListOfDistributionFiles();
+    std::vector<WsjcppPackageManagerDistributionFile> vSources = pkg.getListOfDistributionFiles();
     for (int i = 0; i < vSources.size(); i++) {
-        WSJCppPackageManagerDistributionFile src = vSources[i];
+        WsjcppPackageManagerDistributionFile src = vSources[i];
         std::string sDownloadedWsjCppSourceFrom = sWsjcppBaseUrl + "/" + src.getSourceFile();
         std::string sDownloadedWsjCppSourceTo = sCacheSubFolderName + "/" + src.getTargetFile();
 
-        WSJCppLog::info(TAG, "\n\t" + sDownloadedWsjCppSourceFrom + " \n\t-> \n\t" + sDownloadedWsjCppSourceTo + "\n\t[sha1:" + src.getSha1() + "]");
+        WsjcppLog::info(TAG, "\n\t" + sDownloadedWsjCppSourceFrom + " \n\t-> \n\t" + sDownloadedWsjCppSourceTo + "\n\t[sha1:" + src.getSha1() + "]");
         if (!this->downloadFileOverHttps(sDownloadedWsjCppSourceFrom, sDownloadedWsjCppSourceTo)) {
-            WSJCppLog::err(TAG, "Could not download " + sDownloadedWsjCppSourceFrom);
+            WsjcppLog::err(TAG, "Could not download " + sDownloadedWsjCppSourceFrom);
             // TODO remove from cache
             return false;
         }
         std::string sContent = "";
-        if (!WSJCppCore::readTextFile(sDownloadedWsjCppSourceTo, sContent)) {
-            WSJCppLog::err(TAG, "Could not read file " + sDownloadedWsjCppSourceTo);
+        if (!WsjcppCore::readTextFile(sDownloadedWsjCppSourceTo, sContent)) {
+            WsjcppLog::err(TAG, "Could not read file " + sDownloadedWsjCppSourceTo);
             return false;
         }
         // calculate sha1
-        std::string sSha1 = WSJCppHashes::sha1_calc_hex(sContent);
+        std::string sSha1 = WsjcppHashes::sha1_calc_hex(sContent);
         if (sSha1 != src.getSha1()) {
-            WSJCppLog::warn(TAG, "Expected sha1 '" + sSha1 + "', but got '" + src.getSha1() + "'");
+            WsjcppLog::warn(TAG, "Expected sha1 '" + sSha1 + "', but got '" + src.getSha1() + "'");
         }
     }
 
     std::string sInstallationDir = "./src.wsjcpp/" + this->prepareCacheSubFolderName(pkg.getName());
 
-    // WSJCppPackageManagerDependence dep;
+    // WsjcppPackageManagerDependence dep;
     dep.setName(pkg.getName());
     dep.setVersion(pkg.getVersion());
     dep.setUrl(sPackage);
@@ -1209,10 +1209,10 @@ bool WSJCppPackageManager::downloadFromGithubToCache(const std::string &sPackage
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::isInstalled(const std::string &sPackage) {
+bool WsjcppPackageManager::isInstalled(const std::string &sPackage) {
     // todo check in current dependencies
     for (int i = 0; i < m_vDependencies.size(); i++) {
-        WSJCppPackageManagerDependence dep = m_vDependencies[i];
+        WsjcppPackageManagerDependence dep = m_vDependencies[i];
         if (dep.getUrl() == sPackage) {
             return true;
         }
@@ -1222,20 +1222,20 @@ bool WSJCppPackageManager::isInstalled(const std::string &sPackage) {
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::installFromCache(const std::string &sPackage, const WSJCppPackageManagerDependence &dep) {
+bool WsjcppPackageManager::installFromCache(const std::string &sPackage, const WsjcppPackageManagerDependence &dep) {
     std::string sInstallationDir = dep.getInstallationDir();
     // TODO check path
-    if (!WSJCppCore::dirExists(sInstallationDir)) {
-        WSJCppCore::makeDir(sInstallationDir);
+    if (!WsjcppCore::dirExists(sInstallationDir)) {
+        WsjcppCore::makeDir(sInstallationDir);
     }
     
     std::string sCacheDir = m_sDir + "/.wsjcpp/cache"; // TODO sCacheDir must be init close with init m_sDir
     std::string sCacheSubFolderName = sCacheDir + "/" + this->prepareCacheSubFolderName(sPackage);
 
-    // TODO redesign to WSJCppCore::recoursiveCopyFiles
+    // TODO redesign to WsjcppCore::recoursiveCopyFiles
     // copy sources to installation dir
     // TODO copy only if sha1 equal!!!
-    std::vector<std::string> vFiles = WSJCppCore::listOfFiles(sCacheSubFolderName);
+    std::vector<std::string> vFiles = WsjcppCore::listOfFiles(sCacheSubFolderName);
     for (int i = 0; i < vFiles.size(); i++) {
         std::string sFrom = sCacheSubFolderName + "/" + vFiles[i];
         std::string sTo = sInstallationDir + "/" + vFiles[i];
@@ -1251,10 +1251,10 @@ bool WSJCppPackageManager::installFromCache(const std::string &sPackage, const W
 
 // ---------------------------------------------------------------------
 
-void WSJCppPackageManager::printAuthors() {
+void WsjcppPackageManager::printAuthors() {
     std::cout << "Authors (" << m_sName << ":" << m_sVersion << "): " << std::endl;
     for (int i = 0; i < m_vAuthors.size(); i++) {
-        WSJCppPackageManagerAuthor author = m_vAuthors[i];
+        WsjcppPackageManagerAuthor author = m_vAuthors[i];
         std::cout << " - " << author.getFullAuthor() << std::endl;
     }
     std::cout << std::endl;
@@ -1262,7 +1262,7 @@ void WSJCppPackageManager::printAuthors() {
 
 // ---------------------------------------------------------------------
 
-void WSJCppPackageManager::printAuthorsTree() {
+void WsjcppPackageManager::printAuthorsTree() {
     std::string sAuthors = "";
     for (int i = 0; i < m_vAuthors.size(); i++) {
         if (sAuthors.size() > 0) {
@@ -1278,51 +1278,51 @@ void WSJCppPackageManager::printAuthorsTree() {
 
 // ---------------------------------------------------------------------
 
-void WSJCppPackageManager::recursive_printAuthorsTree(std::vector<WSJCppPackageManagerDependence> &vDependencies) {
+void WsjcppPackageManager::recursive_printAuthorsTree(std::vector<WsjcppPackageManagerDependence> &vDependencies) {
     for (int i = 0; i < vDependencies.size(); i++) {
-        WSJCppPackageManagerDependence dep = vDependencies[i];
+        WsjcppPackageManagerDependence dep = vDependencies[i];
         std::string sInstalledDir = dep.getInstallationDir(); 
 
-        if (WSJCppCore::dirExists(dep.getInstallationDir())) {
-            WSJCppPackageManager subpkg(sInstalledDir, m_sDir, true);
-            WSJCppLog::info(TAG, "Loading package '" + sInstalledDir + "'");
+        if (WsjcppCore::dirExists(dep.getInstallationDir())) {
+            WsjcppPackageManager subpkg(sInstalledDir, m_sDir, true);
+            WsjcppLog::info(TAG, "Loading package '" + sInstalledDir + "'");
             if (subpkg.load()) {
                 subpkg.printAuthorsTree();
             } else {
-                WSJCppLog::err(TAG, "Could not load package.");
+                WsjcppLog::err(TAG, "Could not load package.");
             }
         } else {
-            WSJCppLog::err(TAG, "Not found installed dir: '" + sInstalledDir + "' for package: " + dep.getName() + ":" + dep.getVersion());
+            WsjcppLog::err(TAG, "Not found installed dir: '" + sInstalledDir + "' for package: " + dep.getName() + ":" + dep.getVersion());
         }
     }
 }
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::addAuthor(const std::string &sName, const std::string &sEmail) {
+bool WsjcppPackageManager::addAuthor(const std::string &sName, const std::string &sEmail) {
     bool bFoundAuthor = false;
     std::string sFullAuthor = sName + " <" + sEmail + ">";
     for (int i = 0; i < m_vAuthors.size(); i++) {
-        WSJCppPackageManagerAuthor author = m_vAuthors[i];
+        WsjcppPackageManagerAuthor author = m_vAuthors[i];
         if (author.getFullAuthor() == sFullAuthor) {
             bFoundAuthor = true;
         }
     }
     if (bFoundAuthor) {
-        WSJCppLog::err(TAG, "Author already exists");
+        WsjcppLog::err(TAG, "Author already exists");
         return false;
     }
 
-    WSJCppPackageManagerAuthor newAuthor(sName, sEmail);
+    WsjcppPackageManagerAuthor newAuthor(sName, sEmail);
     m_vAuthors.push_back(newAuthor);
 
     if (!m_yamlPackageInfo.getRoot()->hasElement("authors")) {
         m_yamlPackageInfo.getRoot()->createElementArray("authors", false);
     }
 
-    WSJCppYAMLItem *pItem = m_yamlPackageInfo.getRoot()->getElement("authors");
-    WSJCppYAMLPlaceInFile pl;
-    WSJCppYAMLItem *pNewItemMap = new WSJCppYAMLItem(pItem, pl, WSJCppYAMLItemType::WSJCPP_YAML_ITEM_MAP);
+    WsjcppYamlItem *pItem = m_yamlPackageInfo.getRoot()->getElement("authors");
+    WsjcppYamlPlaceInFile pl;
+    WsjcppYamlItem *pNewItemMap = new WsjcppYamlItem(pItem, pl, WsjcppYamlItemType::WSJCPP_YAML_ITEM_MAP);
     // pNewItem->setName(sName, false);
     // pItem->setElement(sName, pNewItem);
     pNewItemMap->setElementValue("name", false, sName, true);
@@ -1333,10 +1333,10 @@ bool WSJCppPackageManager::addAuthor(const std::string &sName, const std::string
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::removeAuthor(const std::string &sFullAuthor) {
-    std::vector<WSJCppPackageManagerAuthor> vNewAuthors;
+bool WsjcppPackageManager::removeAuthor(const std::string &sFullAuthor) {
+    std::vector<WsjcppPackageManagerAuthor> vNewAuthors;
     for (int i = 0; i < m_vAuthors.size(); i++) {
-        WSJCppPackageManagerAuthor author = m_vAuthors[i];
+        WsjcppPackageManagerAuthor author = m_vAuthors[i];
         if (author.getFullAuthor() != sFullAuthor) {
             vNewAuthors.push_back(author);
         }
@@ -1348,49 +1348,49 @@ bool WSJCppPackageManager::removeAuthor(const std::string &sFullAuthor) {
         }
         return true;
     }
-    WSJCppLog::err(TAG, "Not found this author");
+    WsjcppLog::err(TAG, "Not found this author");
     return false;
 }
 
 // ---------------------------------------------------------------------
 
-std::vector<WSJCppPackageManagerDistributionFile> WSJCppPackageManager::getListOfDistributionFiles() {
+std::vector<WsjcppPackageManagerDistributionFile> WsjcppPackageManager::getListOfDistributionFiles() {
     return m_vDistributionFiles;
 }
 
 // ---------------------------------------------------------------------
 
-std::vector<WSJCppPackageManagerDependence> WSJCppPackageManager::getListOfDependencies() {
+std::vector<WsjcppPackageManagerDependence> WsjcppPackageManager::getListOfDependencies() {
     return m_vDependencies;
 }
 
 // ---------------------------------------------------------------------
 
-std::vector<WSJCppPackageManagerUnitTest> WSJCppPackageManager::getListOfUnitTests() {
+std::vector<WsjcppPackageManagerUnitTest> WsjcppPackageManager::getListOfUnitTests() {
     return m_vUnitTests;
 }
 
 // ---------------------------------------------------------------------
 
-std::vector<WSJCppPackageManagerSafeScriptingGenerate> WSJCppPackageManager::getListOfSafeScriptingGenerate() {
-    std::vector<WSJCppPackageManagerSafeScriptingGenerate> vRet;
+std::vector<WsjcppPackageManagerSafeScriptingGenerate> WsjcppPackageManager::getListOfSafeScriptingGenerate() {
+    std::vector<WsjcppPackageManagerSafeScriptingGenerate> vRet;
 
     // from current package
-    std::vector<WSJCppPackageManagerDistributionFile> vFiles = this->getListOfDistributionFiles();
+    std::vector<WsjcppPackageManagerDistributionFile> vFiles = this->getListOfDistributionFiles();
     for (int i = 0; i < vFiles.size(); i++) {
-        WSJCppPackageManagerDistributionFile file = vFiles[i];
-        // WSJCppLog::warn(TAG, file.getTargetFile());
+        WsjcppPackageManagerDistributionFile file = vFiles[i];
+        // WsjcppLog::warn(TAG, file.getTargetFile());
         if (file.getType() == "safe-scripting-generate") {
-            WSJCppPackageManagerSafeScriptingGenerate gen;
+            WsjcppPackageManagerSafeScriptingGenerate gen;
             gen.setModuleName(this->getName());
             gen.setFullPath(file.getSourceFile());
             std::string sTargetName = file.getTargetFile();
-            std::vector<std::string> vSplit = WSJCppCore::split(sTargetName, ".");
+            std::vector<std::string> vSplit = WsjcppCore::split(sTargetName, ".");
             if (vSplit.size() != 2) {
-                WSJCppLog::err(TAG, "Wrong script name: '" + sTargetName + "' must like 'generate.ScriptName'");
+                WsjcppLog::err(TAG, "Wrong script name: '" + sTargetName + "' must like 'generate.ScriptName'");
             } else {
                 if (vSplit[0] != "generate") {
-                    WSJCppLog::err(TAG, "Wrong script name: '" + sTargetName + "' (left part must be 'generate.*')");
+                    WsjcppLog::err(TAG, "Wrong script name: '" + sTargetName + "' (left part must be 'generate.*')");
                 } else {
                     gen.setName(vSplit[1]);
                     vRet.push_back(gen);
@@ -1399,29 +1399,29 @@ std::vector<WSJCppPackageManagerSafeScriptingGenerate> WSJCppPackageManager::get
         }
     }
 
-    std::vector<WSJCppPackageManagerDependence> vDeps = this->getListOfDependencies();
+    std::vector<WsjcppPackageManagerDependence> vDeps = this->getListOfDependencies();
     for (int i = 0; i < vDeps.size(); i++) {
-        WSJCppPackageManagerDependence dep = vDeps[i];
+        WsjcppPackageManagerDependence dep = vDeps[i];
         std::string sInstallationDir = dep.getInstallationDir();
-        WSJCppPackageManager pkgHold(sInstallationDir, this->getDir(), true);
+        WsjcppPackageManager pkgHold(sInstallationDir, this->getDir(), true);
         if (!pkgHold.load()) {
-            WSJCppLog::err(TAG, "Could not load package from '" + sInstallationDir + "'");
+            WsjcppLog::err(TAG, "Could not load package from '" + sInstallationDir + "'");
             continue;
         }
-        std::vector<WSJCppPackageManagerDistributionFile> vFilesDep = pkgHold.getListOfDistributionFiles();
+        std::vector<WsjcppPackageManagerDistributionFile> vFilesDep = pkgHold.getListOfDistributionFiles();
         for (int n = 0; n < vFilesDep.size(); n++) {
-            WSJCppPackageManagerDistributionFile file = vFilesDep[n];
+            WsjcppPackageManagerDistributionFile file = vFilesDep[n];
             if (file.getType() == "safe-scripting-generate") {
-                WSJCppPackageManagerSafeScriptingGenerate gen;
+                WsjcppPackageManagerSafeScriptingGenerate gen;
                 gen.setModuleName(pkgHold.getName());
                 std::string sTargetName = file.getTargetFile();
                 gen.setFullPath(sInstallationDir + "/" + sTargetName);
-                std::vector<std::string> vSplit = WSJCppCore::split(sTargetName, ".");
+                std::vector<std::string> vSplit = WsjcppCore::split(sTargetName, ".");
                 if (vSplit.size() != 2) {
-                    WSJCppLog::err(TAG, "Wrong script name: '" + sTargetName + "' must like 'generate.ScriptName'");
+                    WsjcppLog::err(TAG, "Wrong script name: '" + sTargetName + "' must like 'generate.ScriptName'");
                 } else {
                     if (vSplit[0] != "generate") {
-                        WSJCppLog::err(TAG, "Wrong script name: '" + sTargetName + "' (left part must be 'generate.*')");
+                        WsjcppLog::err(TAG, "Wrong script name: '" + sTargetName + "' (left part must be 'generate.*')");
                     } else {
                         gen.setName(vSplit[1]);
                         vRet.push_back(gen);
@@ -1435,74 +1435,74 @@ std::vector<WSJCppPackageManagerSafeScriptingGenerate> WSJCppPackageManager::get
 
 // ---------------------------------------------------------------------
 
-std::vector<WSJCppPackageManagerOrigin> WSJCppPackageManager::getListOfOrigins() {
+std::vector<WsjcppPackageManagerOrigin> WsjcppPackageManager::getListOfOrigins() {
     return m_vOrigins;
 }
 
 // ---------------------------------------------------------------------
 
-std::vector<WSJCppPackageManagerAuthor> WSJCppPackageManager::getListOfAuthors() {
+std::vector<WsjcppPackageManagerAuthor> WsjcppPackageManager::getListOfAuthors() {
     return m_vAuthors;
 }
 
 // ---------------------------------------------------------------------
 
-std::vector<std::string> WSJCppPackageManager::getListOfKeywords() {
+std::vector<std::string> WsjcppPackageManager::getListOfKeywords() {
     return m_vKeywords;
 }
 
 // ---------------------------------------------------------------------
 
-std::vector<WSJCppPackageManagerRepository> WSJCppPackageManager::getListOfRepositories() {
+std::vector<WsjcppPackageManagerRepository> WsjcppPackageManager::getListOfRepositories() {
     return m_vRepositories;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManager::getName() {
+std::string WsjcppPackageManager::getName() {
     return m_sName;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManager::getVersion() {
+std::string WsjcppPackageManager::getVersion() {
     return m_sVersion;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManager::getWSJCppVersion() {
-    return m_sWSJCppVersion;
+std::string WsjcppPackageManager::getWsjcppVersion() {
+    return m_sWsjcppVersion;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManager::getDescription() {
+std::string WsjcppPackageManager::getDescription() {
     return m_sDescription;
 }
 
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManager::getCMakeCxxStandard() {
+std::string WsjcppPackageManager::getCMakeCxxStandard() {
     return m_sCMakeCxxStandard;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManager::getCMakeMinimumRequired() {
+std::string WsjcppPackageManager::getCMakeMinimumRequired() {
     return m_sCMakeMinimumRequired;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManager::getIssues() {
+std::string WsjcppPackageManager::getIssues() {
     return m_sIssues;
 }
 
 // ---------------------------------------------------------------------
 // TODO move to core like convertCammelCaseToSnakCase
-std::string WSJCppPackageManager::normalizeUnitTestName(const std::string &sUnitTestName, bool bSilent) {
+std::string WsjcppPackageManager::normalizeUnitTestName(const std::string &sUnitTestName, bool bSilent) {
     std::string sRet = ""; 
     for (int i = 0; i < sUnitTestName.size(); i++) {
         char c = sUnitTestName[i];
@@ -1510,7 +1510,7 @@ std::string WSJCppPackageManager::normalizeUnitTestName(const std::string &sUnit
             sRet += c;
         } else {
             if (!bSilent) {
-                WSJCppLog::warn(TAG, std::string("Ignored symbol in UnitTest Name") + c);
+                WsjcppLog::warn(TAG, std::string("Ignored symbol in UnitTest Name") + c);
             }
         }
     }
@@ -1519,7 +1519,7 @@ std::string WSJCppPackageManager::normalizeUnitTestName(const std::string &sUnit
 
 // ---------------------------------------------------------------------
 // TODO test for this
-std::string WSJCppPackageManager::generateFilenameForUnitTest(const std::string &sUnitTestName) {
+std::string WsjcppPackageManager::generateFilenameForUnitTest(const std::string &sUnitTestName) {
     std::string sName = normalizeUnitTestName(sUnitTestName, false);
     std::string sRet = "";
     for (int i = 0; i < sName.size(); i++) {
@@ -1533,7 +1533,7 @@ std::string WSJCppPackageManager::generateFilenameForUnitTest(const std::string 
         } else if (c >= '0' && c <= '9') {
             sRet += c;
         } else {
-            WSJCppLog::warn(TAG, std::string("Ignored ") + c);
+            WsjcppLog::warn(TAG, std::string("Ignored ") + c);
         }
     }
     return "unit_test_" + sRet;
@@ -1541,9 +1541,9 @@ std::string WSJCppPackageManager::generateFilenameForUnitTest(const std::string 
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::updateAutogeneratedFiles() {
+bool WsjcppPackageManager::updateAutogeneratedFiles() {
     if (m_bHolded) {
-        WSJCppLog::err(TAG, "Could not reinstall package when holded");
+        WsjcppLog::err(TAG, "Could not reinstall package when holded");
         return false;
     }
 
@@ -1566,7 +1566,7 @@ bool WSJCppPackageManager::updateAutogeneratedFiles() {
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManager::prepareCacheSubFolderName(const std::string &sPackage) {
+std::string WsjcppPackageManager::prepareCacheSubFolderName(const std::string &sPackage) {
     std::string ret = sPackage;
     std::string illegalChars = "\\/:?\"<>|.-";
     std::string::iterator it;
@@ -1585,14 +1585,14 @@ size_t CurlWrite_CallbackFunc_DataToFile(void *ptr, size_t size, size_t nmemb, F
     return written; 
 }
 
-bool WSJCppPackageManager::downloadFileOverHttps(const std::string &sUrl, const std::string &sPath) {
-    WSJCppLog::info(TAG, "sUrl: '" + sUrl + "'");
-    WSJCppLog::info(TAG, "sPath: '" + sPath + "'");
-    std::string sUserAgent = "wsjcpp/" + m_sWSJCppCurrentVersion;
+bool WsjcppPackageManager::downloadFileOverHttps(const std::string &sUrl, const std::string &sPath) {
+    WsjcppLog::info(TAG, "sUrl: '" + sUrl + "'");
+    WsjcppLog::info(TAG, "sPath: '" + sPath + "'");
+    std::string sUserAgent = "wsjcpp/" + m_sWsjcppCurrentVersion;
     CURL *curl;
     FILE *fp = fopen(sPath.c_str(),"wb"); 
     if (fp == NULL) { 
-        WSJCppLog::err(TAG, "Could not open file for write '" + sPath + "'"); 
+        WsjcppLog::err(TAG, "Could not open file for write '" + sPath + "'"); 
         return false;
     }
 
@@ -1611,7 +1611,7 @@ bool WSJCppPackageManager::downloadFileOverHttps(const std::string &sUrl, const 
         // curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
         res = curl_easy_perform(curl); 
         if (res != CURLE_OK) {
-            WSJCppLog::err(TAG, "Curl failed, reason  " + std::string(curl_easy_strerror(res))); 
+            WsjcppLog::err(TAG, "Curl failed, reason  " + std::string(curl_easy_strerror(res))); 
             // TODO remove file
             curl_easy_cleanup(curl);
             return false;
@@ -1619,7 +1619,7 @@ bool WSJCppPackageManager::downloadFileOverHttps(const std::string &sUrl, const 
             long response_code;
             curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &response_code);
             if (response_code != 200) {
-                WSJCppLog::info(TAG, "end " + std::to_string(response_code));
+                WsjcppLog::info(TAG, "end " + std::to_string(response_code));
                 // TODO remove file
                 curl_easy_cleanup(curl);
                 return false;
@@ -1635,9 +1635,9 @@ bool WSJCppPackageManager::downloadFileOverHttps(const std::string &sUrl, const 
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::readFieldVersion() {
+bool WsjcppPackageManager::readFieldVersion() {
     if (!m_yamlPackageInfo.getRoot()->hasElement("version")) {
-        WSJCppLog::err(TAG, "Missing required field 'version' in '" + m_sYamlFullpath + "'");
+        WsjcppLog::err(TAG, "Missing required field 'version' in '" + m_sYamlFullpath + "'");
         return false;
     }
     // TODO: check version format
@@ -1647,9 +1647,9 @@ bool WSJCppPackageManager::readFieldVersion() {
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::readFieldCMakeMinimumRequired() {
+bool WsjcppPackageManager::readFieldCMakeMinimumRequired() {
     if (!m_yamlPackageInfo.getRoot()->hasElement("cmake_minimum_required")) {
-        WSJCppLog::err(TAG, "Missing required field 'cmake_minimum_required' in '" + m_sYamlFullpath + "'");
+        WsjcppLog::err(TAG, "Missing required field 'cmake_minimum_required' in '" + m_sYamlFullpath + "'");
         return false;
     }
     // TODO: check cmake_version format
@@ -1659,9 +1659,9 @@ bool WSJCppPackageManager::readFieldCMakeMinimumRequired() {
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::readFieldCMakeCxxStandard() {
+bool WsjcppPackageManager::readFieldCMakeCxxStandard() {
     if (!m_yamlPackageInfo.getRoot()->hasElement("cmake_cxx_standard")) {
-        WSJCppLog::err(TAG, "Missing required field 'cmake_cxx_standard' in '" + m_sYamlFullpath + "'");
+        WsjcppLog::err(TAG, "Missing required field 'cmake_cxx_standard' in '" + m_sYamlFullpath + "'");
         return false;
     }
     // TODO: check cmake_cxx_standard format
@@ -1671,9 +1671,9 @@ bool WSJCppPackageManager::readFieldCMakeCxxStandard() {
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::readFieldName() {
+bool WsjcppPackageManager::readFieldName() {
     if (!m_yamlPackageInfo.getRoot()->hasElement("name")) {
-        WSJCppLog::err(TAG, "Missing required field 'name' in " + m_yamlPackageInfo.getRoot()->getForLogFormat());
+        WsjcppLog::err(TAG, "Missing required field 'name' in " + m_yamlPackageInfo.getRoot()->getForLogFormat());
         return false;
     }
     // TODO: check name format
@@ -1683,9 +1683,9 @@ bool WSJCppPackageManager::readFieldName() {
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::readFieldDescription() {
+bool WsjcppPackageManager::readFieldDescription() {
     if (!m_yamlPackageInfo.getRoot()->hasElement("description")) {
-        WSJCppLog::err(TAG, "Missing required field 'description' in '" + m_sYamlFullpath + "'");
+        WsjcppLog::err(TAG, "Missing required field 'description' in '" + m_sYamlFullpath + "'");
         return false;
     }
     m_sDescription = m_yamlPackageInfo["description"].getValue();
@@ -1694,24 +1694,24 @@ bool WSJCppPackageManager::readFieldDescription() {
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::readFieldWsjcppVersion() {    
+bool WsjcppPackageManager::readFieldWsjcppVersion() {    
     if (!m_yamlPackageInfo.getRoot()->hasElement("wsjcpp_version")) {
-        WSJCppLog::err(TAG, "Missing required field 'wsjcpp_version' in '" + m_sYamlFullpath + "'");
+        WsjcppLog::err(TAG, "Missing required field 'wsjcpp_version' in '" + m_sYamlFullpath + "'");
         return false;
     }
-    m_sWSJCppVersion = m_yamlPackageInfo["wsjcpp_version"].getValue();
+    m_sWsjcppVersion = m_yamlPackageInfo["wsjcpp_version"].getValue();
     // TODO version comparator 
-    // if (nWSJCppVersion > m_nWSJCppVersion) {
-        //   std::cout << "WARN: Please update your 'wsjcpp' to " << nWSJCppVersion << std::endl;
+    // if (nWsjcppVersion > m_nWsjcppVersion) {
+        //   std::cout << "WARN: Please update your 'wsjcpp' to " << nWsjcppVersion << std::endl;
     // }
     return true;
 }
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::readFieldIssues() {
+bool WsjcppPackageManager::readFieldIssues() {
     if (!m_yamlPackageInfo.getRoot()->hasElement("issues")) {
-        WSJCppLog::err(TAG, "Missing required field 'issues' in '" + m_sYamlFullpath + "'");
+        WsjcppLog::err(TAG, "Missing required field 'issues' in '" + m_sYamlFullpath + "'");
         return false;
     }
     m_sIssues = m_yamlPackageInfo["issues"].getValue();
@@ -1720,12 +1720,12 @@ bool WSJCppPackageManager::readFieldIssues() {
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::readFieldKeywords() {
+bool WsjcppPackageManager::readFieldKeywords() {
     if (!m_yamlPackageInfo.getRoot()->hasElement("keywords")) {
-        WSJCppLog::err(TAG, "Missing required field 'keywords' in '" + m_sYamlFullpath + "'");
+        WsjcppLog::err(TAG, "Missing required field 'keywords' in '" + m_sYamlFullpath + "'");
         return false;
     }
-    WSJCppYAMLItem itemKeywords = m_yamlPackageInfo["keywords"];
+    WsjcppYamlItem itemKeywords = m_yamlPackageInfo["keywords"];
     int nLength = itemKeywords.getLength();
     for (int i = 0; i < nLength; i++) {
         std::string sKeyword = itemKeywords[i].getValue();
@@ -1736,16 +1736,16 @@ bool WSJCppPackageManager::readFieldKeywords() {
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::readFieldAuthors() {
+bool WsjcppPackageManager::readFieldAuthors() {
     if (!m_yamlPackageInfo.getRoot()->hasElement("authors")) {
-        WSJCppLog::err(TAG, "Missing required field 'authors' in '" + m_sYamlFullpath + "'");
+        WsjcppLog::err(TAG, "Missing required field 'authors' in '" + m_sYamlFullpath + "'");
         return false;
     }
-    WSJCppYAMLItem itemAuthors = m_yamlPackageInfo["authors"];
+    WsjcppYamlItem itemAuthors = m_yamlPackageInfo["authors"];
     int nLength = itemAuthors.getLength();
     for (int i = 0; i < nLength; i++) {
-        WSJCppYAMLItem *pYamlAuthor = itemAuthors.getElement(i);
-        WSJCppPackageManagerAuthor author;
+        WsjcppYamlItem *pYamlAuthor = itemAuthors.getElement(i);
+        WsjcppPackageManagerAuthor author;
         author.fromYAML(pYamlAuthor);
         m_vAuthors.push_back(author);
     }
@@ -1754,16 +1754,16 @@ bool WSJCppPackageManager::readFieldAuthors() {
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::readFieldDistribution() {
+bool WsjcppPackageManager::readFieldDistribution() {
     if (!m_yamlPackageInfo.getRoot()->hasElement("distribution")) {
-        WSJCppLog::err(TAG, "Missing required field 'distribution' in '" + m_sYamlFullpath + "'");
+        WsjcppLog::err(TAG, "Missing required field 'distribution' in '" + m_sYamlFullpath + "'");
         return false;
     }
-    WSJCppYAMLItem itemDistribution = m_yamlPackageInfo["distribution"];
+    WsjcppYamlItem itemDistribution = m_yamlPackageInfo["distribution"];
     int nLength = itemDistribution.getLength();
     for (int i = 0; i < nLength; i++) {
-        WSJCppYAMLItem *pYamlSource = itemDistribution.getElement(i);
-        WSJCppPackageManagerDistributionFile source;
+        WsjcppYamlItem *pYamlSource = itemDistribution.getElement(i);
+        WsjcppPackageManagerDistributionFile source;
         source.fromYAML(pYamlSource, m_bHolded);
         m_vDistributionFiles.push_back(source);
     }
@@ -1772,16 +1772,16 @@ bool WSJCppPackageManager::readFieldDistribution() {
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::readFieldOrigins() {
+bool WsjcppPackageManager::readFieldOrigins() {
     if (!m_yamlPackageInfo.getRoot()->hasElement("origins")) {
-        WSJCppLog::err(TAG, "Missing required field 'origins' in '" + m_sYamlFullpath + "'");
+        WsjcppLog::err(TAG, "Missing required field 'origins' in '" + m_sYamlFullpath + "'");
         return false;
     }
-    WSJCppYAMLItem itemOrigins = m_yamlPackageInfo["origins"];
+    WsjcppYamlItem itemOrigins = m_yamlPackageInfo["origins"];
     int nLength = itemOrigins.getLength();
     for (int i = 0; i < nLength; i++) {
-        WSJCppYAMLItem *pYamlOrigins = itemOrigins.getElement(i);
-        WSJCppPackageManagerOrigin origin;
+        WsjcppYamlItem *pYamlOrigins = itemOrigins.getElement(i);
+        WsjcppPackageManagerOrigin origin;
         origin.fromYAML(pYamlOrigins);
         m_vOrigins.push_back(origin);
     }
@@ -1790,16 +1790,16 @@ bool WSJCppPackageManager::readFieldOrigins() {
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::readFieldDependencies() {
+bool WsjcppPackageManager::readFieldDependencies() {
     if (!m_yamlPackageInfo.getRoot()->hasElement("dependencies")) {
-        WSJCppLog::err(TAG, "Missing required field 'dependencies' in '" + m_sYamlFullpath + "'");
+        WsjcppLog::err(TAG, "Missing required field 'dependencies' in '" + m_sYamlFullpath + "'");
         return false;
     }
-    WSJCppYAMLItem itemDependencies = m_yamlPackageInfo["dependencies"];
+    WsjcppYamlItem itemDependencies = m_yamlPackageInfo["dependencies"];
     int nLength = itemDependencies.getLength();
     for (int i = 0; i < nLength; i++) {
-        WSJCppYAMLItem *pYamlDependence = itemDependencies.getElement(i);
-        WSJCppPackageManagerDependence dependence;
+        WsjcppYamlItem *pYamlDependence = itemDependencies.getElement(i);
+        WsjcppPackageManagerDependence dependence;
         dependence.fromYAML(pYamlDependence);
         m_vDependencies.push_back(dependence);
     }
@@ -1808,16 +1808,16 @@ bool WSJCppPackageManager::readFieldDependencies() {
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::readFieldRepositories() {
+bool WsjcppPackageManager::readFieldRepositories() {
     if (!m_yamlPackageInfo.getRoot()->hasElement("repositories")) {
-        WSJCppLog::err(TAG, "Missing required field 'repositories' in '" + m_sYamlFullpath + "'");
+        WsjcppLog::err(TAG, "Missing required field 'repositories' in '" + m_sYamlFullpath + "'");
         return false;
     }
-    WSJCppYAMLItem itemRepositories = m_yamlPackageInfo["repositories"];
+    WsjcppYamlItem itemRepositories = m_yamlPackageInfo["repositories"];
     int nLength = itemRepositories.getLength();
     for (int i = 0; i < nLength; i++) {
-        WSJCppYAMLItem *pYamlRepository = itemRepositories.getElement(i);
-        WSJCppPackageManagerRepository repository;
+        WsjcppYamlItem *pYamlRepository = itemRepositories.getElement(i);
+        WsjcppPackageManagerRepository repository;
         repository.fromYAML(pYamlRepository);
         m_vRepositories.push_back(repository);
     }
@@ -1826,23 +1826,23 @@ bool WSJCppPackageManager::readFieldRepositories() {
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::readFieldUnitTests() {
+bool WsjcppPackageManager::readFieldUnitTests() {
     if (!m_yamlPackageInfo.getRoot()->hasElement("unit-tests")) {
-        WSJCppLog::err(TAG, "Missing required field 'unit-tests' in '" + m_sYamlFullpath + "'");
+        WsjcppLog::err(TAG, "Missing required field 'unit-tests' in '" + m_sYamlFullpath + "'");
         return false;
     }
 
-    WSJCppYAMLItem itemUnitTests = m_yamlPackageInfo["unit-tests"];
+    WsjcppYamlItem itemUnitTests = m_yamlPackageInfo["unit-tests"];
     if (!itemUnitTests.hasElement("cases")) {
-        WSJCppLog::err(TAG, "Missing required field 'cases' in '" + m_sYamlFullpath + "' " + itemUnitTests.getForLogFormat());
+        WsjcppLog::err(TAG, "Missing required field 'cases' in '" + m_sYamlFullpath + "' " + itemUnitTests.getForLogFormat());
         return false;
     }
-    WSJCppYAMLItem itemCases = itemUnitTests["cases"];
+    WsjcppYamlItem itemCases = itemUnitTests["cases"];
 
     int nLength = itemCases.getLength();
     for (int i = 0; i < nLength; i++) {
-        WSJCppYAMLItem *pYamlCase = itemCases.getElement(i);
-        WSJCppPackageManagerUnitTest unitTest;
+        WsjcppYamlItem *pYamlCase = itemCases.getElement(i);
+        WsjcppPackageManagerUnitTest unitTest;
         unitTest.fromYAML(pYamlCase);
         m_vUnitTests.push_back(unitTest);
     }
@@ -1851,15 +1851,15 @@ bool WSJCppPackageManager::readFieldUnitTests() {
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::readFieldRequiredLibraries() {
+bool WsjcppPackageManager::readFieldRequiredLibraries() {
     if (!m_yamlPackageInfo.getRoot()->hasElement("required-libraries")) {
-        WSJCppLog::err(TAG, "Missing required field 'required-libraries' in '" + m_sYamlFullpath + "'");
+        WsjcppLog::err(TAG, "Missing required field 'required-libraries' in '" + m_sYamlFullpath + "'");
         return false;
     }
-    WSJCppYAMLItem itemRequiredLibraries = m_yamlPackageInfo["required-libraries"];
+    WsjcppYamlItem itemRequiredLibraries = m_yamlPackageInfo["required-libraries"];
     int nLength = itemRequiredLibraries.getLength();
     for (int i = 0; i < nLength; i++) {
-        WSJCppYAMLItem *pYamlRequredLibrary = itemRequiredLibraries.getElement(i);
+        WsjcppYamlItem *pYamlRequredLibrary = itemRequiredLibraries.getElement(i);
         std::string sRequiredLibrary = pYamlRequredLibrary->getValue();
         m_sRequiredLibraries.push_back(sRequiredLibrary);
     }
@@ -1868,15 +1868,15 @@ bool WSJCppPackageManager::readFieldRequiredLibraries() {
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::readFieldRequiredPkgConfig() {
+bool WsjcppPackageManager::readFieldRequiredPkgConfig() {
     if (!m_yamlPackageInfo.getRoot()->hasElement("required-pkg-config")) {
-        WSJCppLog::err(TAG, "Missing required field 'required-pkg-config' in '" + m_sYamlFullpath + "'");
+        WsjcppLog::err(TAG, "Missing required field 'required-pkg-config' in '" + m_sYamlFullpath + "'");
         return false;
     }
-    WSJCppYAMLItem itemRequiredPkgConfig = m_yamlPackageInfo["required-pkg-config"];
+    WsjcppYamlItem itemRequiredPkgConfig = m_yamlPackageInfo["required-pkg-config"];
     int nLength = itemRequiredPkgConfig.getLength();
     for (int i = 0; i < nLength; i++) {
-        WSJCppYAMLItem *pYamlRequredPkgConfig = itemRequiredPkgConfig.getElement(i);
+        WsjcppYamlItem *pYamlRequredPkgConfig = itemRequiredPkgConfig.getElement(i);
         std::string sRequiredPkgConfig = pYamlRequredPkgConfig->getValue();
         m_sRequiredPkgConfig.push_back(sRequiredPkgConfig);
     }
@@ -1885,44 +1885,44 @@ bool WSJCppPackageManager::readFieldRequiredPkgConfig() {
 
 // ---------------------------------------------------------------------
 
-void WSJCppPackageManager::removeDependenciesFilesSafe(const WSJCppPackageManagerDependence &dep) {
-    WSJCppPackageManager pkgDep(dep.getInstallationDir(), m_sDir, true);
+void WsjcppPackageManager::removeDependenciesFilesSafe(const WsjcppPackageManagerDependence &dep) {
+    WsjcppPackageManager pkgDep(dep.getInstallationDir(), m_sDir, true);
     if (pkgDep.load()) {
-        std::vector<WSJCppPackageManagerDistributionFile> vFiles = pkgDep.getListOfDistributionFiles();
+        std::vector<WsjcppPackageManagerDistributionFile> vFiles = pkgDep.getListOfDistributionFiles();
         int nRemovedFiles = 0;
         for (int i = 0; i < vFiles.size(); i++) {
-            WSJCppPackageManagerDistributionFile file = vFiles[i];
+            WsjcppPackageManagerDistributionFile file = vFiles[i];
             std::string sFilePath = dep.getInstallationDir() + "/" + file.getTargetFile();
-            if (!WSJCppCore::fileExists(sFilePath)) {
-                WSJCppLog::info(TAG, "Did not found file '" + sFilePath + "'");
+            if (!WsjcppCore::fileExists(sFilePath)) {
+                WsjcppLog::info(TAG, "Did not found file '" + sFilePath + "'");
             } else {
                 std::string sContent;
-                WSJCppCore::readTextFile(sFilePath, sContent);
-                std::string sSha1 = WSJCppHashes::sha1_calc_hex(sContent);
+                WsjcppCore::readTextFile(sFilePath, sContent);
+                std::string sSha1 = WsjcppHashes::sha1_calc_hex(sContent);
                 if (sSha1 != file.getSha1()) {
-                    WSJCppLog::warn(TAG, "Could not remove file '" + sFilePath + "', because maybe has local important changes. "
+                    WsjcppLog::warn(TAG, "Could not remove file '" + sFilePath + "', because maybe has local important changes. "
                         "\r\n  sha1 expected '" + file.getSha1() + "', but got '" + sSha1 + "'");
                 } else {
-                    if (WSJCppCore::removeFile(sFilePath)) {
+                    if (WsjcppCore::removeFile(sFilePath)) {
                         nRemovedFiles++;
-                        WSJCppLog::ok(TAG, "Successfully removed '" + sFilePath + "'");
+                        WsjcppLog::ok(TAG, "Successfully removed '" + sFilePath + "'");
                     }
                 }
             }
         }
         if (nRemovedFiles == vFiles.size()) {
             std::string sFilePath = dep.getInstallationDir() + "/wsjcpp.hold.yml";
-            if (WSJCppCore::removeFile(sFilePath)) {
+            if (WsjcppCore::removeFile(sFilePath)) {
                 nRemovedFiles++;
-                WSJCppLog::ok(TAG, "Successfully removed '" + sFilePath + "'");
+                WsjcppLog::ok(TAG, "Successfully removed '" + sFilePath + "'");
             } else {
-                WSJCppLog::warn(TAG, "Could not remove '" + sFilePath + "'");
+                WsjcppLog::warn(TAG, "Could not remove '" + sFilePath + "'");
             }
 
-            if (WSJCppCore::removeFile(dep.getInstallationDir())) {
-                WSJCppLog::ok(TAG, "Successfully removed directory '" + dep.getInstallationDir() + "'");
+            if (WsjcppCore::removeFile(dep.getInstallationDir())) {
+                WsjcppLog::ok(TAG, "Successfully removed directory '" + dep.getInstallationDir() + "'");
             } else {
-                WSJCppLog::warn(TAG, "Could not remove directory '" + dep.getInstallationDir() + "'");
+                WsjcppLog::warn(TAG, "Could not remove directory '" + dep.getInstallationDir() + "'");
             }
         }
     }
@@ -1930,9 +1930,9 @@ void WSJCppPackageManager::removeDependenciesFilesSafe(const WSJCppPackageManage
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::updateAutogeneratedFiles_CMakeListsTXT() {
+bool WsjcppPackageManager::updateAutogeneratedFiles_CMakeListsTXT() {
     std::string sCMakeListsTXT = ""
-        "# Automaticly generated by wsjcpp@" + m_sWSJCppCurrentVersion + "\n"
+        "# Automaticly generated by wsjcpp@" + m_sWsjcppCurrentVersion + "\n"
         "cmake_minimum_required(VERSION " + m_sCMakeMinimumRequired + ")\n"
         "\n"
         "add_definitions(-DWSJCPP_VERSION=\"" + m_sVersion + "\")\n"
@@ -1954,16 +1954,16 @@ bool WSJCppPackageManager::updateAutogeneratedFiles_CMakeListsTXT() {
     ;
 
     for (int i = 0; i < m_vDependencies.size(); i++) {
-        WSJCppPackageManagerDependence dep = m_vDependencies[i];
+        WsjcppPackageManagerDependence dep = m_vDependencies[i];
         std::string sInstDir = dep.getInstallationDir();
-        WSJCppPackageManager pkg(dep.getInstallationDir(), m_sDir, true);
+        WsjcppPackageManager pkg(dep.getInstallationDir(), m_sDir, true);
         if (pkg.load()) {
             sCMakeListsTXT += 
                 "# " + pkg.getName() + ":" + pkg.getVersion() + "\n"
                 "list (APPEND WSJCPP_INCLUDE_DIRS \"" + sInstDir + "/\")\n";
-            std::vector<WSJCppPackageManagerDistributionFile> vFiles = pkg.getListOfDistributionFiles();
+            std::vector<WsjcppPackageManagerDistributionFile> vFiles = pkg.getListOfDistributionFiles();
             for (int i = 0; i < vFiles.size(); i++) {
-                WSJCppPackageManagerDistributionFile file = vFiles[i];
+                WsjcppPackageManagerDistributionFile file = vFiles[i];
                 if (file.getType() == "source-code") {
                     sCMakeListsTXT += "list (APPEND WSJCPP_SOURCES \"" + sInstDir + "/" + file.getTargetFile() + "\")\n";
                 }
@@ -1998,13 +1998,13 @@ bool WSJCppPackageManager::updateAutogeneratedFiles_CMakeListsTXT() {
         sCMakeListsTXT += "\n";
     }
 
-    WSJCppCore::writeFile("./src.wsjcpp/CMakeLists.txt", sCMakeListsTXT);
+    WsjcppCore::writeFile("./src.wsjcpp/CMakeLists.txt", sCMakeListsTXT);
     return true;
 }
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::updateAutogeneratedFiles_Dockerfiles() {
+bool WsjcppPackageManager::updateAutogeneratedFiles_Dockerfiles() {
     if (!m_yamlPackageInfo.getRoot()->hasElement("docker")) {
         // Not need if docker section not defined
         return true;
@@ -2026,14 +2026,14 @@ bool WSJCppPackageManager::updateAutogeneratedFiles_Dockerfiles() {
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::updateAutogeneratedFiles_Dockerfile_for_build() {
+bool WsjcppPackageManager::updateAutogeneratedFiles_Dockerfile_for_build() {
     if (!m_yamlPackageInfo.getRoot()->hasElement("docker")) {
         // Not need if docker section not defined
         return true;
     }
 
     std::string sContent = 
-        "# Automaticly generated by wsjcpp@" + m_sWSJCppCurrentVersion + "\n"
+        "# Automaticly generated by wsjcpp@" + m_sWsjcppCurrentVersion + "\n"
         "# for-build " + m_sName + ":" + m_sVersion + "\n"
         "FROM debian:10\n"
     ;
@@ -2057,23 +2057,23 @@ bool WSJCppPackageManager::updateAutogeneratedFiles_Dockerfile_for_build() {
         "WORKDIR /root/sources\n"
     ;
 
-    if (!WSJCppCore::dirExists("./docker.for-build")) {
-        WSJCppCore::makeDir("./docker.for-build");
+    if (!WsjcppCore::dirExists("./docker.for-build")) {
+        WsjcppCore::makeDir("./docker.for-build");
     }
-    WSJCppCore::writeFile("./docker.for-build/Dockerfile", sContent);
+    WsjcppCore::writeFile("./docker.for-build/Dockerfile", sContent);
     return true;
 }
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::updateAutogeneratedFiles_Dockerfile_for_release() {
+bool WsjcppPackageManager::updateAutogeneratedFiles_Dockerfile_for_release() {
     if (!m_yamlPackageInfo.getRoot()->hasElement("docker")) {
         // Not need if docker section not defined
         return true;
     }
 
     std::string sContent = 
-        "# Automaticly generated by wsjcpp@" + m_sWSJCppCurrentVersion + "\n"
+        "# Automaticly generated by wsjcpp@" + m_sWsjcppCurrentVersion + "\n"
         "# for-release " + m_sName + ":" + m_sVersion + "\n"
         "FROM debian:10\n";
 
@@ -2100,21 +2100,21 @@ bool WSJCppPackageManager::updateAutogeneratedFiles_Dockerfile_for_release() {
         "\n"
         "WORKDIR /root/\n";
 
-    if (!WSJCppCore::dirExists("./docker.for-release")) {
-        WSJCppCore::makeDir("./docker.for-release");
+    if (!WsjcppCore::dirExists("./docker.for-release")) {
+        WsjcppCore::makeDir("./docker.for-release");
     }
-    WSJCppCore::writeFile("./docker.for-release/Dockerfile", sContent);
+    WsjcppCore::writeFile("./docker.for-release/Dockerfile", sContent);
     return true;
 }
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::updateAutogeneratedFiles_Dockerfile_release() {
+bool WsjcppPackageManager::updateAutogeneratedFiles_Dockerfile_release() {
     if (!m_yamlPackageInfo.getRoot()->hasElement("docker")) {
         // Not need if docker section not defined
         return true;
     }
-    WSJCppYAMLItem *pItem = m_yamlPackageInfo.getRoot()->getElement("docker");
+    WsjcppYamlItem *pItem = m_yamlPackageInfo.getRoot()->getElement("docker");
     if (!pItem->hasElement("release")) {
         // Do nothing if docker/release section not defined
         return true;
@@ -2122,7 +2122,7 @@ bool WSJCppPackageManager::updateAutogeneratedFiles_Dockerfile_release() {
 
     // if has docker/release
     std::string sContent = 
-        "# Automaticly generated by wsjcpp@" + m_sWSJCppCurrentVersion + "\n"
+        "# Automaticly generated by wsjcpp@" + m_sWsjcppCurrentVersion + "\n"
         "# for-release " + m_sName + ":" + m_sVersion + "\n"
         "FROM " + m_sName + "-for-build:latest\n"
         "\n"
@@ -2143,25 +2143,25 @@ bool WSJCppPackageManager::updateAutogeneratedFiles_Dockerfile_release() {
     // TODO command
     // CMD wsjcpp start
 
-    WSJCppCore::writeFile("./Dockerfile", sContent);
+    WsjcppCore::writeFile("./Dockerfile", sContent);
     return true;
 }
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::updateAutogeneratedFiles_UnitTests() {
+bool WsjcppPackageManager::updateAutogeneratedFiles_UnitTests() {
     std::string sUnitTestsDir = "./unit-tests.wsjcpp";
-    if (!WSJCppCore::dirExists(sUnitTestsDir)) {
-        WSJCppCore::makeDir(sUnitTestsDir);
+    if (!WsjcppCore::dirExists(sUnitTestsDir)) {
+        WsjcppCore::makeDir(sUnitTestsDir);
     }
-    if (!WSJCppCore::dirExists(sUnitTestsDir)) {
-        WSJCppLog::err(TAG, "Could not create " + sUnitTestsDir + " directory");
+    if (!WsjcppCore::dirExists(sUnitTestsDir)) {
+        WsjcppLog::err(TAG, "Could not create " + sUnitTestsDir + " directory");
         return false;
     }
     
     std::string sCMakeListsCustomTXTPath = sUnitTestsDir + "/CMakeLists.user-custom.txt";
-    if (!WSJCppCore::fileExists(sCMakeListsCustomTXTPath)) {
-        WSJCppCore::writeFile(sCMakeListsCustomTXTPath, "## You can here write some custom includes\n");
+    if (!WsjcppCore::fileExists(sCMakeListsCustomTXTPath)) {
+        WsjcppCore::writeFile(sCMakeListsCustomTXTPath, "## You can here write some custom includes\n");
     }
 
     std::string sGitignore = 
@@ -2174,11 +2174,11 @@ bool WSJCppPackageManager::updateAutogeneratedFiles_UnitTests() {
         "*.swp\n"
     ;
         
-    WSJCppCore::writeFile(sUnitTestsDir + "/.gitignore", sGitignore);
-    WSJCppCore::writeFile(sUnitTestsDir + "/build_simple.sh", this->getSampleForBuildSimpleSh());
+    WsjcppCore::writeFile(sUnitTestsDir + "/.gitignore", sGitignore);
+    WsjcppCore::writeFile(sUnitTestsDir + "/build_simple.sh", this->getSampleForBuildSimpleSh());
 
     std::string sCMakeListsTXT = ""
-        "# Automaticly generated by wsjcpp@" + m_sWSJCppCurrentVersion + "\n"
+        "# Automaticly generated by wsjcpp@" + m_sWsjcppCurrentVersion + "\n"
         "cmake_minimum_required(VERSION " + m_sCMakeMinimumRequired + ")\n"
         "\n"
         "project(unit-tests C CXX)\n"
@@ -2202,21 +2202,21 @@ bool WSJCppPackageManager::updateAutogeneratedFiles_UnitTests() {
     ;
 
     for (int i = 0; i < m_vDependencies.size(); i++) {
-        WSJCppPackageManagerDependence dep = m_vDependencies[i];
+        WsjcppPackageManagerDependence dep = m_vDependencies[i];
         std::string sInstDir = dep.getInstallationDir();
-        WSJCppPackageManager pkg(dep.getInstallationDir(), m_sDir, true);
+        WsjcppPackageManager pkg(dep.getInstallationDir(), m_sDir, true);
         if (pkg.load()) {
             sCMakeListsTXT += 
                 "# " + pkg.getName() + ":" + pkg.getVersion() + "\n"
                 "list (APPEND WSJCPP_INCLUDE_DIRS \""
-                    + WSJCppCore::doNormalizePath("../" + sInstDir + "/") 
+                    + WsjcppCore::doNormalizePath("../" + sInstDir + "/") 
                     + "\")\n";
-            std::vector<WSJCppPackageManagerDistributionFile> vFiles = pkg.getListOfDistributionFiles();
+            std::vector<WsjcppPackageManagerDistributionFile> vFiles = pkg.getListOfDistributionFiles();
             for (int i = 0; i < vFiles.size(); i++) {
-                WSJCppPackageManagerDistributionFile file = vFiles[i];
+                WsjcppPackageManagerDistributionFile file = vFiles[i];
                 if (file.getType() == "source-code" || file.getType() == "unit-tests") {
                     sCMakeListsTXT += "list (APPEND WSJCPP_SOURCES \""
-                        + WSJCppCore::doNormalizePath("../" + sInstDir + "/" + file.getTargetFile()) 
+                        + WsjcppCore::doNormalizePath("../" + sInstDir + "/" + file.getTargetFile()) 
                         + "\")\n";
                 }
             }
@@ -2228,10 +2228,10 @@ bool WSJCppPackageManager::updateAutogeneratedFiles_UnitTests() {
         "# " + m_sName + ":" + m_sVersion + "\n"
         "list (APPEND WSJCPP_INCLUDE_DIRS \"../src\")\n";
     for (int i = 0; i < m_vDistributionFiles.size(); i++) {
-        WSJCppPackageManagerDistributionFile file = m_vDistributionFiles[i];
+        WsjcppPackageManagerDistributionFile file = m_vDistributionFiles[i];
         if (file.getType() == "source-code" || file.getType() == "unit-tests") {
             sCMakeListsTXT += "list (APPEND WSJCPP_SOURCES \""
-                + WSJCppCore::doNormalizePath("../" + file.getSourceFile())
+                + WsjcppCore::doNormalizePath("../" + file.getSourceFile())
                 + "\")\n";
         }
     }
@@ -2243,30 +2243,30 @@ bool WSJCppPackageManager::updateAutogeneratedFiles_UnitTests() {
 
     // list of unit-tests files
     for (int i = 0; i < m_vUnitTests.size(); i++) {
-        WSJCppPackageManagerUnitTest ut = m_vUnitTests[i];
+        WsjcppPackageManagerUnitTest ut = m_vUnitTests[i];
         std::string sUnitTestName = ut.getName();
         if (!ut.isEnabled()) {
-            WSJCppLog::warn(TAG, "Ignored '" + sUnitTestName + "' - unit-test disabled");
+            WsjcppLog::warn(TAG, "Ignored '" + sUnitTestName + "' - unit-test disabled");
             continue;
         }
         std::string sName = normalizeUnitTestName(sUnitTestName, false);
         std::string sBaseName = this->generateFilenameForUnitTest(sName);
         std::string sFileHeader = "./unit-tests.wsjcpp/src/" + sBaseName + ".h";
         std::string sFileSource = "./unit-tests.wsjcpp/src/" + sBaseName + ".cpp";
-        if (WSJCppCore::fileExists(sFileHeader)) {
+        if (WsjcppCore::fileExists(sFileHeader)) {
             sCMakeListsTXT += "list (APPEND WSJCPP_SOURCES \""
-                + WSJCppCore::doNormalizePath("../" + sFileHeader)
+                + WsjcppCore::doNormalizePath("../" + sFileHeader)
                 + "\")\n";
         } else {
-            WSJCppLog::warn(TAG, "Ignored '" + sFileHeader + "' - file did not exists");
+            WsjcppLog::warn(TAG, "Ignored '" + sFileHeader + "' - file did not exists");
         }
 
-        if (WSJCppCore::fileExists(sFileSource)) {
+        if (WsjcppCore::fileExists(sFileSource)) {
             sCMakeListsTXT += "list (APPEND WSJCPP_SOURCES \""
-                + WSJCppCore::doNormalizePath("../" + sFileSource)
+                + WsjcppCore::doNormalizePath("../" + sFileSource)
                 + "\")\n";
         } else {
-            WSJCppLog::warn(TAG, "Ignored '" + sFileSource + "' - file did not exists");
+            WsjcppLog::warn(TAG, "Ignored '" + sFileSource + "' - file did not exists");
         }
     }
     sCMakeListsTXT += "\n";
@@ -2317,34 +2317,34 @@ bool WSJCppPackageManager::updateAutogeneratedFiles_UnitTests() {
         "        /usr/bin\n"
         ")\n\n";
 
-    WSJCppCore::writeFile(sUnitTestsDir + "/CMakeLists.txt", sCMakeListsTXT);
+    WsjcppCore::writeFile(sUnitTestsDir + "/CMakeLists.txt", sCMakeListsTXT);
     return true;
 }
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::updateAutogenerateFileUnitTestHeader(const std::string &sUnitTestName) {
+bool WsjcppPackageManager::updateAutogenerateFileUnitTestHeader(const std::string &sUnitTestName) {
     std::string sName = normalizeUnitTestName(sUnitTestName, false);
     if (sName != sUnitTestName) {
-        WSJCppLog::warn(TAG, "UnitTest name was normalized '" + sUnitTestName + "' -> '" + sName + "'");
+        WsjcppLog::warn(TAG, "UnitTest name was normalized '" + sUnitTestName + "' -> '" + sName + "'");
     }
-    if (!WSJCppCore::dirExists("./unit-tests.wsjcpp")) {
-        WSJCppCore::makeDir("./unit-tests.wsjcpp");
+    if (!WsjcppCore::dirExists("./unit-tests.wsjcpp")) {
+        WsjcppCore::makeDir("./unit-tests.wsjcpp");
     }
-    if (!WSJCppCore::dirExists("./unit-tests.wsjcpp/src/")) {
-        WSJCppCore::makeDir("./unit-tests.wsjcpp/src/");
+    if (!WsjcppCore::dirExists("./unit-tests.wsjcpp/src/")) {
+        WsjcppCore::makeDir("./unit-tests.wsjcpp/src/");
     }
-    if (!WSJCppCore::dirExists("./unit-tests.wsjcpp/src/")) {
-        WSJCppLog::err(TAG, "Directory does not exists './unit-tests.wsjcpp/src/'");
+    if (!WsjcppCore::dirExists("./unit-tests.wsjcpp/src/")) {
+        WsjcppLog::err(TAG, "Directory does not exists './unit-tests.wsjcpp/src/'");
         return false;
     }
     std::string sBaseName = this->generateFilenameForUnitTest(sName);
     std::string sFileHeader = "./unit-tests.wsjcpp/src/" + sBaseName + ".h";
-    if (WSJCppCore::fileExists(sFileHeader)) {
-        WSJCppLog::err(TAG, "File already exists: '" + sFileHeader + "'");
+    if (WsjcppCore::fileExists(sFileHeader)) {
+        WsjcppLog::err(TAG, "File already exists: '" + sFileHeader + "'");
         return false;
     } else {
-        std::string sDefine = WSJCppCore::toUpper(sBaseName + "_H");
+        std::string sDefine = WsjcppCore::toUpper(sBaseName + "_H");
         std::string sContent = ""
             "#ifndef " + sDefine + "\n"
             "#define " + sDefine + "\n"
@@ -2352,7 +2352,7 @@ bool WSJCppPackageManager::updateAutogenerateFileUnitTestHeader(const std::strin
             "#include <wsjcpp_unit_tests.h>\n"
             "\n"
             "// Description: TODO\n"
-            "class UnitTest" + sName + " : public WSJCppUnitTestBase {\n"
+            "class UnitTest" + sName + " : public WsjcppUnitTestBase {\n"
             "    public:\n"
             "        UnitTest" + sName + "();\n"
             "        virtual void init();\n"
@@ -2360,33 +2360,33 @@ bool WSJCppPackageManager::updateAutogenerateFileUnitTestHeader(const std::strin
             "};\n"
             "\n"
             "#endif // " + sDefine + "\n";
-        WSJCppCore::writeFile(sFileHeader, sContent);
+        WsjcppCore::writeFile(sFileHeader, sContent);
     }
     return true;
 }
 
 // ---------------------------------------------------------------------
 
-bool WSJCppPackageManager::updateAutogenerateFileUnitTestSource(const std::string &sUnitTestName) {
+bool WsjcppPackageManager::updateAutogenerateFileUnitTestSource(const std::string &sUnitTestName) {
     std::string sName = normalizeUnitTestName(sUnitTestName, false);
     if (sName != sUnitTestName) {
-        WSJCppLog::warn(TAG, "UnitTest name was normalized '" + sUnitTestName + "' -> '" + sName + "'");
+        WsjcppLog::warn(TAG, "UnitTest name was normalized '" + sUnitTestName + "' -> '" + sName + "'");
     }
-    if (!WSJCppCore::dirExists("./unit-tests.wsjcpp")) {
-        WSJCppCore::makeDir("./unit-tests.wsjcpp");
+    if (!WsjcppCore::dirExists("./unit-tests.wsjcpp")) {
+        WsjcppCore::makeDir("./unit-tests.wsjcpp");
     }
-    if (!WSJCppCore::dirExists("./unit-tests.wsjcpp/src/")) {
-        WSJCppCore::makeDir("./unit-tests.wsjcpp/src/");
+    if (!WsjcppCore::dirExists("./unit-tests.wsjcpp/src/")) {
+        WsjcppCore::makeDir("./unit-tests.wsjcpp/src/");
     }
-    if (!WSJCppCore::dirExists("./unit-tests.wsjcpp/src/")) {
-        WSJCppLog::err(TAG, "Directory does not exists './unit-tests.wsjcpp/src/'");
+    if (!WsjcppCore::dirExists("./unit-tests.wsjcpp/src/")) {
+        WsjcppLog::err(TAG, "Directory does not exists './unit-tests.wsjcpp/src/'");
         return false;
     }
 
     std::string sBaseName = this->generateFilenameForUnitTest(sName);
     std::string sFileSource = "./unit-tests.wsjcpp/src/" + sBaseName + ".cpp";
-    if (WSJCppCore::fileExists(sFileSource)) {
-        WSJCppLog::err(TAG, "File already exists: '" + sFileSource + "'");
+    if (WsjcppCore::fileExists(sFileSource)) {
+        WsjcppLog::err(TAG, "File already exists: '" + sFileSource + "'");
         return false;
     } else {
         std::string sContent = ""
@@ -2398,7 +2398,7 @@ bool WSJCppPackageManager::updateAutogenerateFileUnitTestSource(const std::strin
             "REGISTRY_UNIT_TEST(UnitTest" + sName + ")\n"
             "\n"
             "UnitTest" + sName + "::UnitTest" + sName + "()\n"
-            "    : WSJCppUnitTestBase(\"UnitTest" + sName + "\") {\n"
+            "    : WsjcppUnitTestBase(\"UnitTest" + sName + "\") {\n"
             "}\n"
             "\n"
             "// ---------------------------------------------------------------------\n"
@@ -2415,14 +2415,14 @@ bool WSJCppPackageManager::updateAutogenerateFileUnitTestSource(const std::strin
             "    return bTestSuccess;\n"
             "}\n";
         
-        WSJCppCore::writeFile(sFileSource, sContent);
+        WsjcppCore::writeFile(sFileSource, sContent);
     }
     return true;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WSJCppPackageManager::getSampleForBuildSimpleSh() {
+std::string WsjcppPackageManager::getSampleForBuildSimpleSh() {
     return
         "#!/bin/bash\n"
         "\n"

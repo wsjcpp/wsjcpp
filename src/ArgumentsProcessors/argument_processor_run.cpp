@@ -2,7 +2,7 @@
 #include "wsjcpp_package_manager.h"
 
 ArgumentProcessorRun::ArgumentProcessorRun() 
-  : WSJCppArgumentProcessor("run", "run clean/build/unit-tests scripts") {
+  : WsjcppArgumentProcessor({"run"}, "run clean/build/unit-tests scripts") {
       registryProcessor(new ArgumentProcessorRunUnitTests());
       registryProcessor(new ArgumentProcessorRunClean());
       registryProcessor(new ArgumentProcessorRunBuild());
@@ -11,7 +11,7 @@ ArgumentProcessorRun::ArgumentProcessorRun()
 // ---------------------------------------------------------------------
 
 ArgumentProcessorRunUnitTests::ArgumentProcessorRunUnitTests() 
-  : WSJCppArgumentProcessor("unit-tests", "do build and run unit-tests") {
+  : WsjcppArgumentProcessor({"unit-tests"}, "do build and run unit-tests") {
 
 }
 
@@ -24,7 +24,7 @@ int ArgumentProcessorRunUnitTests::exec(const std::string &sProgramName, const s
 // ---------------------------------------------------------------------
 
 ArgumentProcessorRunClean::ArgumentProcessorRunClean() 
-  : WSJCppArgumentProcessor("clean", "do run clean.sh script") {
+  : WsjcppArgumentProcessor({"clean"}, "do run clean.sh script") {
 
 }
 
@@ -37,7 +37,7 @@ int ArgumentProcessorRunClean::exec(const std::string &sProgramName, const std::
 // ---------------------------------------------------------------------
 
 ArgumentProcessorRunBuild::ArgumentProcessorRunBuild() 
-  : WSJCppArgumentProcessor("build", "do run 'build_simple.sh' script") {
+  : WsjcppArgumentProcessor({"build"}, "do run 'build_simple.sh' script") {
 
 }
 

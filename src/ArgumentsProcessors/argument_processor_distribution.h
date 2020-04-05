@@ -3,7 +3,7 @@
 
 #include <wsjcpp_arguments.h>
 
-class ArgumentProcessorDistribution : public WSJCppArgumentProcessor {
+class ArgumentProcessorDistribution : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorDistribution();
         
@@ -13,7 +13,7 @@ class ArgumentProcessorDistribution : public WSJCppArgumentProcessor {
 
 // ---------------------------------------------------------------------
 
-class ArgumentProcessorDistributionList : public WSJCppArgumentProcessor {
+class ArgumentProcessorDistributionList : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorDistributionList();
         virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
@@ -24,7 +24,7 @@ class ArgumentProcessorDistributionList : public WSJCppArgumentProcessor {
 
 // ---------------------------------------------------------------------
 
-class ArgumentProcessorDistributionAdd : public WSJCppArgumentProcessor {
+class ArgumentProcessorDistributionAdd : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorDistributionAdd();
         virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
@@ -35,7 +35,7 @@ class ArgumentProcessorDistributionAdd : public WSJCppArgumentProcessor {
 
 // ---------------------------------------------------------------------
 
-class ArgumentProcessorDistributionRemove : public WSJCppArgumentProcessor {
+class ArgumentProcessorDistributionRemove : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorDistributionRemove();
         virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
@@ -46,7 +46,7 @@ class ArgumentProcessorDistributionRemove : public WSJCppArgumentProcessor {
 
 // ---------------------------------------------------------------------
 
-class ArgumentProcessorDistributionUpdate : public WSJCppArgumentProcessor {
+class ArgumentProcessorDistributionUpdate : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorDistributionUpdate();
         virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);

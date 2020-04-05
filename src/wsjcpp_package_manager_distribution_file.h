@@ -7,11 +7,11 @@
 
 // ---------------------------------------------------------------------
 
-class WSJCppPackageManagerDistributionFile {
+class WsjcppPackageManagerDistributionFile {
     public:
-        WSJCppPackageManagerDistributionFile();
-        bool fromYAML(WSJCppYAMLItem *pYamlDistributionFile, bool bHolded);
-        WSJCppYAMLItem *toYAML();
+        WsjcppPackageManagerDistributionFile();
+        bool fromYAML(WsjcppYamlItem *pYamlDistributionFile, bool bHolded);
+        WsjcppYamlItem *toYAML();
 
         std::string getSourceFile();
         std::string getTargetFile();
@@ -29,7 +29,7 @@ class WSJCppPackageManagerDistributionFile {
         std::string m_sTargetFile;
         std::string m_sSha1;
         std::string m_sType;
-        WSJCppYAMLItem *m_pYamlDistributionFile;
+        WsjcppYamlItem *m_pYamlDistributionFile;
         bool m_bHolded;
 };
 
