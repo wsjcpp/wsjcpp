@@ -5,9 +5,9 @@
 #include <vector>
 #include <map>
 
-class WSJCppArgumentSingle {
+class WsjcppArgumentSingle {
     public:
-        WSJCppArgumentSingle(const std::string &sName, const std::string &sDescription);
+        WsjcppArgumentSingle(const std::string &sName, const std::string &sDescription);
         std::string getName();
         std::string getDescription();
         std::string help(const std::string &sProgramName, const std::string &sPrefix);
@@ -20,9 +20,9 @@ class WSJCppArgumentSingle {
 
 // ---------------------------------------------------------------------
 
-class WSJCppArgumentParameter {
+class WsjcppArgumentParameter {
     public:
-        WSJCppArgumentParameter(const std::string &sName, const std::string &sDescription);
+        WsjcppArgumentParameter(const std::string &sName, const std::string &sDescription);
         std::string getName();
         std::string getDescription();
         std::string getValue();
@@ -38,20 +38,20 @@ class WSJCppArgumentParameter {
 
 // ---------------------------------------------------------------------
 
-class WSJCppArgumentProcessor {
+class WsjcppArgumentProcessor {
     public:
-        WSJCppArgumentProcessor(const std::string &sName, const std::string &sDescription);
-        WSJCppArgumentProcessor(const std::vector<std::string> &vNames, const std::string &sDescription);
-        std::string getName();
+        WsjcppArgumentProcessor(const std::vector<std::string> &vNames, const std::string &sDescription);
+        const std::vector<std::string> &getNames();
+        std::string getNamesAsString();
         std::string getDescription();
 
-        void registryProcessor(WSJCppArgumentProcessor *p);
+        void registryProcessor(WsjcppArgumentProcessor *p);
         void registryExample(const std::string &sExample);
         void registrySingleArgument(const std::string &sArgumentName, const std::string &sDescription);
         void registryParameterArgument(const std::string &sArgumentName, const std::string &sDescription);
-        WSJCppArgumentProcessor *findRegisteredProcessor(const std::string &sArgumentName);
-        WSJCppArgumentSingle *findRegisteredSingleArgument(const std::string &sArgumentName);
-        WSJCppArgumentParameter *findRegisteredParameterArgument(const std::string &sArgumentName);
+        WsjcppArgumentProcessor *findRegisteredProcessor(const std::string &sArgumentName);
+        WsjcppArgumentSingle *findRegisteredSingleArgument(const std::string &sArgumentName);
+        WsjcppArgumentParameter *findRegisteredParameterArgument(const std::string &sArgumentName);
 
         bool hasRegisteredArgumentName(const std::string &sArgumentName);
 
@@ -67,20 +67,19 @@ class WSJCppArgumentProcessor {
         std::string TAG;
 
     private:
-        std::string m_sName;
-        std::vector<std::string> vNames;
+        std::vector<std::string> m_vNames;
         std::string m_sDescription;
-        std::vector<WSJCppArgumentProcessor *> m_vProcessors;
-        std::vector<WSJCppArgumentSingle *> m_vSingleArguments;
-        std::vector<WSJCppArgumentParameter *> m_vParameterArguments;
+        std::vector<WsjcppArgumentProcessor *> m_vProcessors;
+        std::vector<WsjcppArgumentSingle *> m_vSingleArguments;
+        std::vector<WsjcppArgumentParameter *> m_vParameterArguments;
         std::vector<std::string> m_vExamples;
 };
 
 // ---------------------------------------------------------------------
 
-class WSJCppArgumentsSpliter {
+class WsjcppArgumentsSpliter {
     public:
-        WSJCppArgumentsSpliter(WSJCppArgumentProcessor *pArgumentProcessor, const std::vector<std::string> &vParams);
+        WsjcppArgumentsSpliter(WsjcppArgumentProcessor *pArgumentProcessor, const std::vector<std::string> &vParams);
         std::vector<std::string> getSingleAgruments();
         std::vector<std::string> getParamsArguments();
 
@@ -93,30 +92,30 @@ class WSJCppArgumentsSpliter {
 
 // ---------------------------------------------------------------------
 
-class WSJCppArguments {
+class WsjcppArguments {
     public:
-        WSJCppArguments(int argc, const char* argv[], WSJCppArgumentProcessor *pRoot);
+        WsjcppArguments(int argc, const char* argv[], WsjcppArgumentProcessor *pRoot);
+        ~WsjcppArguments();
         int exec();
         std::string help();
 
     private:
-        WSJCppArgumentProcessor *m_pRoot;
+        WsjcppArgumentProcessor *m_pRoot;
         std::vector<std::string> extractSingleAndParameterArguments(
-            WSJCppArgumentProcessor *pArgumentProcessor, 
+            WsjcppArgumentProcessor *pArgumentProcessor, 
             const std::vector<std::string> &vArguments,
-            std::vector<WSJCppArgumentSingle *> &vSingleArguments,
-            std::vector<WSJCppArgumentParameter *> &vParameterArguments
+            std::vector<WsjcppArgumentSingle *> &vSingleArguments,
+            std::vector<WsjcppArgumentParameter *> &vParameterArguments
         );
-        int recursiveExec(WSJCppArgumentProcessor *pArgumentProcessor, std::vector<std::string> &vSubArguments);
+        int recursiveExec(WsjcppArgumentProcessor *pArgumentProcessor, std::vector<std::string> &vSubArguments);
 
         std::string TAG;
         std::vector<std::string> m_vArguments;
         std::string m_sProgramName;
-        std::vector<WSJCppArgumentProcessor *> m_vProcessors;
+        std::vector<WsjcppArgumentProcessor *> m_vProcessors;
 };
 
 // ---------------------------------------------------------------------
 
 #endif // WSJCPP_ARGUMENTS_H
-
 

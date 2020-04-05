@@ -26,11 +26,6 @@ dependencies:
     url: "https://github.com/wsjcpp/wsjcpp-yaml:master"
     origin: "https://github.com/"
     installation-dir: "./src.wsjcpp/wsjcpp_yaml"
-  - name: "wsjcpp/wsjcpp-arguments"
-    version: "v0.0.1"
-    url: "https://github.com/wsjcpp/wsjcpp-arguments:master"
-    origin: "https://github.com/"
-    installation-dir: "./src.wsjcpp/wsjcpp_wsjcpp_arguments"
   - name: "wsjcpp-hashes"
     version: "v0.1.0"
     url: "https://github.com/wsjcpp/wsjcpp-hashes:master"
@@ -41,6 +36,11 @@ dependencies:
     url: "https://github.com/wsjcpp/wsjcpp-safe-scripting:master"
     origin: "https://github.com/"
     installation-dir: "./src.wsjcpp/wsjcpp_safe_scripting"
+  - name: "wsjcpp-arguments"
+    version: "v0.1.0"
+    url: "https://github.com/wsjcpp/wsjcpp-arguments:master"
+    origin: "https://github.com/"
+    installation-dir: "./src.wsjcpp/wsjcpp_arguments"
 
 # build-dependencies:
 

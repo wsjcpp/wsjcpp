@@ -32,11 +32,6 @@ list (APPEND WSJCPP_INCLUDE_DIRS "../src.wsjcpp/wsjcpp_yaml/")
 list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_yaml/wsjcpp_yaml.cpp")
 list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_yaml/wsjcpp_yaml.h")
 
-# wsjcpp/wsjcpp-arguments:v0.0.1
-list (APPEND WSJCPP_INCLUDE_DIRS "../src.wsjcpp/wsjcpp_wsjcpp_arguments/")
-list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_wsjcpp_arguments/wsjcpp_arguments.cpp")
-list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_wsjcpp_arguments/wsjcpp_arguments.h")
-
 # wsjcpp-hashes:v0.1.0
 list (APPEND WSJCPP_INCLUDE_DIRS "../src.wsjcpp/wsjcpp_hashes/")
 list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_hashes/md5.cpp")
@@ -50,6 +45,11 @@ list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_hashes/wsjcpp_hashes.h")
 list (APPEND WSJCPP_INCLUDE_DIRS "../src.wsjcpp/wsjcpp_safe_scripting/")
 list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_safe_scripting/wsjcpp_safe_scripting.h")
 list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_safe_scripting/wsjcpp_safe_scripting.cpp")
+
+# wsjcpp-arguments:v0.1.0
+list (APPEND WSJCPP_INCLUDE_DIRS "../src.wsjcpp/wsjcpp_arguments/")
+list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_arguments/wsjcpp_arguments.cpp")
+list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_arguments/wsjcpp_arguments.h")
 
 # wsjcpp:v0.0.2
 list (APPEND WSJCPP_INCLUDE_DIRS "../src")
