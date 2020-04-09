@@ -7,9 +7,8 @@
 // ArgumentProcessorGenerate
 
 ArgumentProcessorGenerate::ArgumentProcessorGenerate() 
-: WsjcppArgumentProcessor({"generate"}, "Generate source code snippets/templates/examples") {
+: WsjcppArgumentProcessor({"generate", "gen"}, "Generate source code snippets/templates/examples") {
     registryProcessor(new ArgumentProcessorGenerateList());
-
     // registryProcessor(new ArgumentProcessorGenerateCreate());
     // registryProcessor(new ArgumentProcessorGenerateDelete());
 }
@@ -104,20 +103,20 @@ int ArgumentProcessorGenerateList::exec(
     std::string sOutput = "";
 
     if (vScripts.size() == 0) {
-        sOutput = "\n Components not found ";
+        sOutput = "\n Generates not found ";
     } else {
-        sOutput = "\n\n Components: \n";
+        sOutput = "\n Generates: \n";
     }
 
     for (int i = 0; i < vScripts.size(); i++) {
-        sOutput += " - " + vScripts[i].getName() + "\n";
+        sOutput += " - wsjcpp generate " + vScripts[i].getName() + " YourClassName\n";
         if (m_bMore) {
             sOutput += 
                 "     from package: '" + vScripts[i].getModuleName() + "' \n"
                 "     script path: '" + vScripts[i].getFullPath() + "'\n";
         }
     }
-    WsjcppLog::info(TAG, sOutput);
+    std::cout << sOutput << std::endl;
     return 0;
 }
 

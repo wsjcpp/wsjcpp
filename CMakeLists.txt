@@ -4,6 +4,9 @@ project(wsjcpp)
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/src.wsjcpp/CMakeLists.txt)
 
+#### BEGIN_WSJCPP_APPEND
+#### END_WSJCPP_APPEND
+
 set(CMAKE_CXX_STANDARD 11)
 set(EXECUTABLE_OUTPUT_PATH ${wsjcpp_SOURCE_DIR})
 
@@ -26,6 +29,8 @@ list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_distribu
 list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_distribution.h")
 list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_run.cpp")
 list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_run.h")
+list (APPEND WSJCPP_SOURCES "./src/ArgumentsProcessors/argument_processor_scan.h")
+list (APPEND WSJCPP_SOURCES "./src/ArgumentsProcessors/argument_processor_scan.cpp")
 list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_unit_tests.cpp")
 list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_unit_tests.h")
 list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_generate.cpp")
@@ -36,6 +41,8 @@ list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_basic.h"
 list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_basic.cpp")
 list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_origins.h")
 list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_origins.cpp")
+list (APPEND WSJCPP_SOURCES "./src/ArgumentsProcessors/argument_processor_prepare.h")
+list (APPEND WSJCPP_SOURCES "./src/ArgumentsProcessors/argument_processor_prepare.cpp")
 
 list (APPEND WSJCPP_SOURCES "src/main.cpp")
 

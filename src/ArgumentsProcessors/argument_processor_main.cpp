@@ -6,6 +6,8 @@
 #include "argument_processor_distribution.h"
 #include "argument_processor_basic.h"
 #include "argument_processor_origins.h"
+#include "argument_processor_scan.h"
+#include "argument_processor_prepare.h"
 
 #include <wsjcpp_package_manager.h>
 #include <iostream>
@@ -13,20 +15,22 @@
 
 ArgumentProcessorMain::ArgumentProcessorMain() 
   : WsjcppArgumentProcessor({"main"}, "C++ Source Package manager") {
+    registryProcessor(new ArgumentProcessorVersion());
+    registryProcessor(new ArgumentProcessorInfo());
     registryProcessor(new ArgumentProcessorInit());
     registryProcessor(new ArgumentProcessorClean());
-    registryProcessor(new ArgumentProcessorInfo());
-    registryProcessor(new ArgumentProcessorVersion());
+    registryProcessor(new ArgumentProcessorScan());
     registryProcessor(new ArgumentProcessorInstall());
     registryProcessor(new ArgumentProcessorReinstall());
     registryProcessor(new ArgumentProcessorUninstall());
     registryProcessor(new ArgumentProcessorList());
     registryProcessor(new ArgumentProcessorUpdate());
     registryProcessor(new ArgumentProcessorDistribution());
-    registryProcessor(new ArgumentProcessorRun());
+    // registryProcessor(new ArgumentProcessorRun());
     registryProcessor(new ArgumentProcessorGenerate());
     registryProcessor(new ArgumentProcessorUnitTests());
-    registryProcessor(new ArgumentProcessorOrigins());
+    // registryProcessor(new ArgumentProcessorOrigins());
+    registryProcessor(new ArgumentProcessorPrepare());
 }
 
 // ---------------------------------------------------------------------
