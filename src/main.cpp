@@ -63,13 +63,20 @@ int main(int argc, const char* argv[]) {
     for (int i = 0; i < argc; i++) {
         vArgs.push_back(std::string(argv[i]));
     }
+    
+    if (vArgs.size() > 0 && vArgs[1] == "help") {
+        std::cout << prog.help();
+    }
 
     // printHelp(vArgs);
     int nResult = prog.exec();
     if (nResult != 0) {
         // print help
-        std::cout << "Try exec help" << std::endl;
-        std::cout << prog.help();
+        std::cout 
+            << "Try exec 'wsjcpp help' for more information"
+            << std::endl
+            << std::endl
+        ;
     }
     return nResult;
 

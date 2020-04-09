@@ -3,7 +3,7 @@
 #include <wsjcpp_core.h>
 
 ArgumentProcessorUnitTests::ArgumentProcessorUnitTests() 
-: WsjcppArgumentProcessor({"unit-tests"}, "manage unit-tests in package") {
+: WsjcppArgumentProcessor({"unit-tests", "ut"}, "manage unit-tests in package") {
     registryProcessor(new ArgumentProcessorUnitTestsCreate());
     registryProcessor(new ArgumentProcessorUnitTestsDelete());
     registryProcessor(new ArgumentProcessorUnitTestsEnable());

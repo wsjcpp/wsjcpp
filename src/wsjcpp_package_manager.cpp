@@ -401,7 +401,7 @@ WsjcppPackageManager::WsjcppPackageManager(const std::string &sDir) {
     m_sHttpPrefix = "http://"; // from some http://
     m_sHttpsPrefix = "https://";
     m_sYamlFilename = "wsjcpp.yml";
-    m_sWsjcppCurrentVersion = "v0.0.1";
+    m_sWsjcppCurrentVersion = "v0.1.2";
     m_sWsjcppVersion = m_sWsjcppCurrentVersion;
     m_bHolded = false;
     m_sIssues = "none";
