@@ -18,4 +18,10 @@ class ArgumentProcessorPrepareTravis : public WsjcppArgumentProcessor {
         virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
 };
 
+class ArgumentProcessorPrepareHomebrew : public WsjcppArgumentProcessor {
+    public:
+        ArgumentProcessorPrepareHomebrew();
+        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
+};
+
 #endif // ARGUMENT_PROCESSOR_PREPARE_H
