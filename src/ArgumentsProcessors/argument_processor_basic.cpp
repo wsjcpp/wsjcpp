@@ -235,6 +235,7 @@ int ArgumentProcessorClean::exec(const std::string &sProgramName, const std::vec
 }
 
 // ---------------------------------------------------------------------
+// ArgumentProcessorVersion
 
 ArgumentProcessorVersion::ArgumentProcessorVersion() 
 : WsjcppArgumentProcessor({"version"}, "Current version of wsjcpp") {
