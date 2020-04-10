@@ -12,4 +12,16 @@ class ArgumentProcessorResources : public WsjcppArgumentProcessor {
         virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
 };
 
+class ArgumentProcessorResourcesAdd : public WsjcppArgumentProcessor {
+    public:
+        ArgumentProcessorResourcesAdd();
+
+        virtual bool applySingleArgument(const std::string &sProgramName, const std::string &sArgumentName);
+        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
+
+    private:
+        bool m_bText;
+        bool m_bBinary;
+};
+
 #endif // ARGUMENT_PROCESSOR_RESOURCES_H
