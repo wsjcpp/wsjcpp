@@ -5,6 +5,7 @@ project(wsjcpp)
 include(${CMAKE_CURRENT_SOURCE_DIR}/src.wsjcpp/CMakeLists.txt)
 
 #### BEGIN_WSJCPP_APPEND
+
 #### END_WSJCPP_APPEND
 
 set(CMAKE_CXX_STANDARD 11)
@@ -43,6 +44,8 @@ list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_origins.
 list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_origins.cpp")
 list (APPEND WSJCPP_SOURCES "./src/ArgumentsProcessors/argument_processor_prepare.h")
 list (APPEND WSJCPP_SOURCES "./src/ArgumentsProcessors/argument_processor_prepare.cpp")
+list (APPEND WSJCPP_SOURCES "./src/ArgumentsProcessors/argument_processor_resources.h")
+list (APPEND WSJCPP_SOURCES "./src/ArgumentsProcessors/argument_processor_resources.cpp")
 
 list (APPEND WSJCPP_SOURCES "src/main.cpp")
 
