@@ -5,7 +5,9 @@ project(wsjcpp)
 include(${CMAKE_CURRENT_SOURCE_DIR}/src.wsjcpp/CMakeLists.txt)
 
 #### BEGIN_WSJCPP_APPEND
-
+list (APPEND WSJCPP_INCLUDE_DIRS "src/resources.wsjcpp")
+list (APPEND WSJCPP_SOURCES "src/resources.wsjcpp/build_simple_sh_path311e3d.h")
+list (APPEND WSJCPP_SOURCES "src/resources.wsjcpp/build_simple_sh_path311e3d.cpp")
 #### END_WSJCPP_APPEND
 
 set(CMAKE_CXX_STANDARD 11)
