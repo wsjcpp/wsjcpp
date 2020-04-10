@@ -2,6 +2,7 @@
 #include "argument_processor_resources.h"
 #include <wsjcpp_core.h>
 #include <wsjcpp_package_manager.h>
+#include <wsjcpp_hashes.h>
 
 // ---------------------------------------------------------------------
 // ArgumentProcessorResources
@@ -130,6 +131,27 @@ int ArgumentProcessorResourcesAdd::exec(const std::string &sProgramName, const s
     if (!WsjcppCore::dirExists(sDirResources)) {
         WsjcppCore::makeDir(sDirResources);
     }
+
+    std::string sFilenameNormalized = "";
+    for (int i = 0; i < sFilepath.size(); i++) {
+        char c = sFilepath[i];
+        if (
+            (c >= 'A' && c <= 'Z') 
+            || (c >= 'a' && c <= 'z')
+            || (c >= '0' && c <= '9')
+        ) {
+            sFilenameNormalized += c;
+        } else {
+            sFilenameNormalized += '_';
+        }
+    }
+    std::string sMd5 = WsjcppHashes::md5_calc_hex(sFilepath);
+    sMd5 = sMd5.substr(0,6);
+    sFilenameNormalized += "_path" + sMd5;
+    std::cout << sFilenameNormalized << std::endl;
+
+    // TODO generate *.cpp and *.h files
+    // TODO add to wsjcpp.yml
 
     return -1;
 }
