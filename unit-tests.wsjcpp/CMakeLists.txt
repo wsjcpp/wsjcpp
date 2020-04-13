@@ -56,11 +56,13 @@ list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_arguments/wsjcpp_arguments.h")
 # wsjcpp:v0.1.2
 list (APPEND WSJCPP_INCLUDE_DIRS "../src")
 list (APPEND WSJCPP_SOURCES "../src/wsjcpp_package_manager_distribution_file.cpp")
-list (APPEND WSJCPP_SOURCES "../src/wsjcpp_package_manager_distribution_file.h")
+list (APPEND WSJCPP_SOURCES "../src/wsjcpp_package_manager_resource_file.h")
 list (APPEND WSJCPP_SOURCES "../src/wsjcpp_package_manager_safe_scripting_generate.cpp")
 list (APPEND WSJCPP_SOURCES "../src/wsjcpp_package_manager_safe_scripting_generate.h")
 list (APPEND WSJCPP_SOURCES "../src/wsjcpp_package_manager.cpp")
 list (APPEND WSJCPP_SOURCES "../src/wsjcpp_package_manager.h")
+list (APPEND WSJCPP_SOURCES "../src/wsjcpp_package_manager_author.h")
+list (APPEND WSJCPP_SOURCES "../src/wsjcpp_package_manager_author.cpp")
 
 # unit-tests
 list (APPEND WSJCPP_INCLUDE_DIRS "src")

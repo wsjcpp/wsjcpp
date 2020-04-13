@@ -12,69 +12,6 @@
 #include <sys/stat.h>
 
 // ---------------------------------------------------------------------
-// WsjcppPackageManagerAuthor
-
-WsjcppPackageManagerAuthor::WsjcppPackageManagerAuthor() {
-
-}
-
-// ---------------------------------------------------------------------
-
-WsjcppPackageManagerAuthor::WsjcppPackageManagerAuthor(const std::string &sName, const std::string &sEmail) {
-    TAG = "WsjcppPackageManagerAuthor";
-    m_sName = sName;
-    m_sEmail = sEmail;
-    m_pYamlAuthor = nullptr;
-}
-
-// ---------------------------------------------------------------------
-
-std::string WsjcppPackageManagerAuthor::getName() {
-    return m_sName;
-}
-
-// ---------------------------------------------------------------------
-
-std::string WsjcppPackageManagerAuthor::getEmail() {
-    return m_sEmail;
-}
-
-// ---------------------------------------------------------------------
-
-std::string WsjcppPackageManagerAuthor::getFullAuthor() {
-    return m_sName + " <" + m_sEmail + ">";
-}
-
-// ---------------------------------------------------------------------
-
-WsjcppYamlItem *WsjcppPackageManagerAuthor::toYAML() {
-    m_pYamlAuthor->getElement("name")->setValue(m_sName, true);
-    m_pYamlAuthor->getElement("email")->setValue(m_sEmail, true);
-    return m_pYamlAuthor;
-}
-
-// ---------------------------------------------------------------------
-
-bool WsjcppPackageManagerAuthor::fromYAML(WsjcppYamlItem *pYamlAuthor) {
-    m_pYamlAuthor = pYamlAuthor;
-    if (!m_pYamlAuthor->hasElement("name")) {
-        // TODO prepare in yaml getOriginalLineForError()
-        WsjcppLog::err(TAG, "Missing required field 'name' in " + pYamlAuthor->getForLogFormat());
-        return false; 
-    } else {
-        m_sName = m_pYamlAuthor->getElement("name")->getValue();
-    }
-
-    if (!m_pYamlAuthor->hasElement("email")) {
-        WsjcppLog::err(TAG, "Missing required field 'email' in " + pYamlAuthor->getForLogFormat());
-        return false; 
-    } else {
-        m_sEmail = m_pYamlAuthor->getElement("email")->getValue();
-    }
-    return true;
-}
-
-// ---------------------------------------------------------------------
 // WsjcppPackageManagerOrigin - server info class
 
 WsjcppPackageManagerOrigin::WsjcppPackageManagerOrigin() {

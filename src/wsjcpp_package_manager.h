@@ -4,29 +4,10 @@
 
 #include <string>
 #include <wsjcpp_yaml.h>
+#include "wsjcpp_package_manager_author.h"
 #include "wsjcpp_package_manager_safe_scripting_generate.h"
 #include "wsjcpp_package_manager_distribution_file.h"
 #include "wsjcpp_package_manager_resource_file.h"
-
-// ---------------------------------------------------------------------
-
-class WsjcppPackageManagerAuthor {
-    public:
-        WsjcppPackageManagerAuthor();
-        WsjcppPackageManagerAuthor(const std::string &sName, const std::string &sEmail);
-        bool fromYAML(WsjcppYamlItem *pYamlAuthor);
-        WsjcppYamlItem *toYAML();
-
-        std::string getName();
-        std::string getEmail(); 
-        std::string getFullAuthor(); 
-
-    private:
-        std::string TAG;
-        std::string m_sName;
-        std::string m_sEmail;
-        WsjcppYamlItem *m_pYamlAuthor;
-};
 
 // ---------------------------------------------------------------------
 

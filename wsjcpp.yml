@@ -51,6 +51,7 @@ repositories:
 authors:
   - name: "Evgenii Sopov"
     email: "mrseakg@gmail.com" # add validate email format
+    web: "https://sea-kg.com"
 
 origins:
   - address: "https://sea-kg.com/wsjcpp-package-registry/"
@@ -78,6 +79,12 @@ distribution:
     target-file: "wsjcpp_package_manager.h"
     type: "source-code"
   
+  - source-file: "src/wsjcpp_package_manager_author.h"
+    target-file: "wsjcpp_package_manager_author.h"
+    type: "source-code"
+  - source-file: "src/wsjcpp_package_manager_author.cpp"
+    target-file: "wsjcpp_package_manager_author.cpp"
+    type: "source-code"
 unit-tests:
   cases:
     - name: "NormalizeUnitTestName"
@@ -96,4 +103,3 @@ resources:
     pack-as: "text"
     modified: 1565359053
     sha1: "01af063d6f69d212dc443ed8afce828855f040a2"
-    

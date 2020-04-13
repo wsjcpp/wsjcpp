@@ -19,6 +19,8 @@ set(EXECUTABLE_OUTPUT_PATH ${wsjcpp_SOURCE_DIR})
 list (APPEND WSJCPP_INCLUDE_DIRS "src")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/ArgumentsProcessors")
 
+list (APPEND WSJCPP_SOURCES "src/wsjcpp_package_manager_author.cpp")
+list (APPEND WSJCPP_SOURCES "src/wsjcpp_package_manager_author.h")
 list (APPEND WSJCPP_SOURCES "src/wsjcpp_package_manager_distribution_file.cpp")
 list (APPEND WSJCPP_SOURCES "src/wsjcpp_package_manager_distribution_file.h")
 list (APPEND WSJCPP_SOURCES "src/wsjcpp_package_manager_resource_file.cpp")
