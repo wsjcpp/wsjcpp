@@ -576,6 +576,11 @@ bool WsjcppPackageManager::addSourceFile(const std::string &sSourceFile, const s
     file.setType(sType);
     m_vDistributionFiles.push_back(file);
     
+    WsjcppYamlItem *pRoot = m_yamlPackageInfo.getRoot();
+    if (!pRoot->hasElement("distribution")) {
+        pRoot->createElementArray("distribution", false);
+    }
+
     WsjcppYamlItem *pDist = m_yamlPackageInfo.getRoot()->getElement("distribution");
     WsjcppYamlPlaceInFile pl;
     WsjcppYamlItem *pItem = new WsjcppYamlItem(pDist, pl, WsjcppYamlItemType::WSJCPP_YAML_ITEM_MAP);
