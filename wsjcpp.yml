@@ -5,6 +5,7 @@ name: wsjcpp
 version: v0.1.2
 description: C++ Source Package manager
 issues: https://github.com/wsjcpp/wsjcpp/issues # TODO add validate
+# web-site: "http://wsjcpp.org"
 keywords:
   - "c++"
   - "sources"
@@ -51,7 +52,7 @@ repositories:
 authors:
   - name: "Evgenii Sopov"
     email: "mrseakg@gmail.com" # add validate email format
-    web: "https://sea-kg.com"
+    web-site: "https://sea-kg.com"
 
 origins:
   - address: "https://sea-kg.com/wsjcpp-package-registry/"

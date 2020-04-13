@@ -12,13 +12,15 @@ class WsjcppPackageManagerAuthor {
         WsjcppYamlItem *toYAML();
 
         std::string getName();
-        std::string getEmail(); 
+        std::string getEmail();
+        std::string getWebSite();
         std::string getFullAuthor(); 
 
     private:
         std::string TAG;
         std::string m_sName;
         std::string m_sEmail;
+        std::string m_sWebSite;
         WsjcppYamlItem *m_pYamlAuthor;
 };
 

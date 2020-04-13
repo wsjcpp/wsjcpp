@@ -35,6 +35,12 @@ std::string WsjcppPackageManagerAuthor::getEmail() {
 
 // ---------------------------------------------------------------------
 
+std::string WsjcppPackageManagerAuthor::getWebSite() {
+    return m_sWebSite;
+}
+
+// ---------------------------------------------------------------------
+
 std::string WsjcppPackageManagerAuthor::getFullAuthor() {
     return m_sName + " <" + m_sEmail + ">";
 }
@@ -44,6 +50,7 @@ std::string WsjcppPackageManagerAuthor::getFullAuthor() {
 WsjcppYamlItem *WsjcppPackageManagerAuthor::toYAML() {
     m_pYamlAuthor->getElement("name")->setValue(m_sName, true);
     m_pYamlAuthor->getElement("email")->setValue(m_sEmail, true);
+    m_pYamlAuthor->getElement("web-site")->setValue(m_sWebSite, true);
     return m_pYamlAuthor;
 }
 
@@ -69,6 +76,8 @@ bool WsjcppPackageManagerAuthor::fromYAML(WsjcppYamlItem *pYamlAuthor) {
             m_sName = m_pYamlAuthor->getElement("name")->getValue();
         } else if (sKey == "email") {
             m_sEmail = m_pYamlAuthor->getElement("email")->getValue();
+        } else if (sKey == "web-site") {
+            m_sWebSite = m_pYamlAuthor->getElement("web-site")->getValue();
         } else {
             WsjcppLog::warn(TAG, "Excess field '" + sKey + "' in " + pYamlAuthor->getElement(sKey)->getForLogFormat());
         }
