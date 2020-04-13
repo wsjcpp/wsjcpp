@@ -64,8 +64,8 @@ distribution:
   - source-file: "src/wsjcpp_package_manager_distribution_file.cpp"
     target-file: "wsjcpp_package_manager_distribution_file.cpp"
     type: "source-code"
-  - source-file: "src/wsjcpp_package_manager_resource_file.h"
-    target-file: "wsjcpp_package_manager_resource_file.h"
+  - source-file: "src/wsjcpp_package_manager_distribution_file.h"
+    target-file: "wsjcpp_package_manager_distribution_file.h"
     type: "source-code"
   - source-file: "src/wsjcpp_package_manager_safe_scripting_generate.cpp"
     target-file: "wsjcpp_package_manager_safe_scripting_generate.cpp"
@@ -84,6 +84,12 @@ distribution:
     type: "source-code"
   - source-file: "src/wsjcpp_package_manager_author.cpp"
     target-file: "wsjcpp_package_manager_author.cpp"
+    type: "source-code"
+  - source-file: "src/wsjcpp_package_manager_resource_file.cpp"
+    target-file: "wsjcpp_package_manager_resource_file.cpp"
+    type: "source-code"
+  - source-file: "src/wsjcpp_package_manager_resource_file.h"
+    target-file: "wsjcpp_package_manager_resource_file.h"
     type: "source-code"
 
 unit-tests:
