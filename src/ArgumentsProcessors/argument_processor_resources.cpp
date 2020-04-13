@@ -3,6 +3,8 @@
 #include <wsjcpp_core.h>
 #include <wsjcpp_package_manager.h>
 #include <wsjcpp_hashes.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 // ---------------------------------------------------------------------
 // ArgumentProcessorResources
@@ -87,6 +89,13 @@ int ArgumentProcessorResourcesAdd::exec(const std::string &sProgramName, const s
             << std::endl
             << std::endl;
         return -1; 
+    }
+
+    struct stat result;
+    if(stat(sFilepath.c_str(), &result)==0)
+    {
+        auto mod_time = result.st_mtime;
+        std::cout << "mod_time: " << mod_time << std::endl;
     }
 
     std::string sFileExt = sFilepath.substr(sFilepath.find_last_of(".") + 1);
@@ -259,8 +268,6 @@ int ArgumentProcessorResourcesAdd::exec(const std::string &sProgramName, const s
             "} //::buffer() \n"
             "\n";
     }
-
-    
 
     WsjcppCore::writeFile( sDirResources + "/" + sFilenameNormalized + ".cpp", sSourceContent);
 

@@ -62,8 +62,8 @@ distribution:
   - source-file: "src/wsjcpp_package_manager_distribution_file.cpp"
     target-file: "wsjcpp_package_manager_distribution_file.cpp"
     type: "source-code"
-  - source-file: "src/wsjcpp_package_manager_distribution_file.h"
-    target-file: "wsjcpp_package_manager_distribution_file.h"
+  - source-file: "src/wsjcpp_package_manager_resource_file.h"
+    target-file: "wsjcpp_package_manager_resource_file.h"
     type: "source-code"
   - source-file: "src/wsjcpp_package_manager_safe_scripting_generate.cpp"
     target-file: "wsjcpp_package_manager_safe_scripting_generate.cpp"
@@ -89,3 +89,11 @@ unit-tests:
       enabled: "no"
     - name: "ReadPackage"
       description: "Test for read package"
+
+resources:
+  - filepath: "build_simple.sh"
+    filesize: 74
+    pack-as: "text"
+    modified: 1565359053
+    sha1: "01af063d6f69d212dc443ed8afce828855f040a2"
+    

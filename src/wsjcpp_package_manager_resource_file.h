@@ -1,0 +1,39 @@
+#ifndef WSJCPP_PACKAGE_MANAGER_RESOURCE_FILE_H
+#define WSJCPP_PACKAGE_MANAGER_RESOURCE_FILE_H
+
+#include <string>
+#include <wsjcpp_yaml.h>
+
+
+// ---------------------------------------------------------------------
+
+class WsjcppPackageManagerResourceFile {
+    public:
+        WsjcppPackageManagerResourceFile();
+        bool fromYAML(WsjcppYamlItem *pYamlDistributionFile, bool bHolded);
+        WsjcppYamlItem *toYAML();
+
+        std::string getFilepath();
+        long getFilesize();
+        std::string getSha1();
+        std::string getPackAs();
+        long getModified();
+
+        void setFilepath(const std::string &sFilepath);
+        void setFilesize(long nFilesize);
+        void setSha1(const std::string &sSha1);
+        void setPackAs(const std::string &sPackAs);
+        void setModified(long nModified);
+
+    private:
+        std::string TAG;
+        std::string m_sFilepath;
+        long m_nFilesize;
+        std::string m_sSha1;
+        std::string m_sPackAs;
+        long m_nModified;
+        WsjcppYamlItem *m_pYamlResourceFile;
+        bool m_bHolded;
+};
+
+#endif // WSJCPP_PACKAGE_MANAGER_RESOURCE_FILE_H

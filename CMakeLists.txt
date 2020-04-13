@@ -21,6 +21,8 @@ list (APPEND WSJCPP_INCLUDE_DIRS "src/ArgumentsProcessors")
 
 list (APPEND WSJCPP_SOURCES "src/wsjcpp_package_manager_distribution_file.cpp")
 list (APPEND WSJCPP_SOURCES "src/wsjcpp_package_manager_distribution_file.h")
+list (APPEND WSJCPP_SOURCES "src/wsjcpp_package_manager_resource_file.cpp")
+list (APPEND WSJCPP_SOURCES "src/wsjcpp_package_manager_resource_file.h")
 list (APPEND WSJCPP_SOURCES "src/wsjcpp_package_manager_safe_scripting_generate.cpp")
 list (APPEND WSJCPP_SOURCES "src/wsjcpp_package_manager_safe_scripting_generate.h")
 list (APPEND WSJCPP_SOURCES "src/wsjcpp_package_manager.cpp")

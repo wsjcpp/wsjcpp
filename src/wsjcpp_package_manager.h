@@ -6,6 +6,7 @@
 #include <wsjcpp_yaml.h>
 #include "wsjcpp_package_manager_safe_scripting_generate.h"
 #include "wsjcpp_package_manager_distribution_file.h"
+#include "wsjcpp_package_manager_resource_file.h"
 
 // ---------------------------------------------------------------------
 
@@ -159,6 +160,7 @@ class WsjcppPackageManager {
         std::vector<WsjcppPackageManagerAuthor> getListOfAuthors();
         std::vector<std::string> getListOfKeywords();
         std::vector<WsjcppPackageManagerRepository> getListOfRepositories();
+        // std::vector<WsjcppPackageManagerResourceFile> getListOfResourceFiles();
         
         std::string getName();
         std::string getVersion();
@@ -246,6 +248,7 @@ class WsjcppPackageManager {
         std::vector<WsjcppPackageManagerRepository> m_vRepositories;
         std::vector<WsjcppPackageManagerUnitTest> m_vUnitTests;
         std::vector<WsjcppPackageManagerOrigin> m_vOrigins;
+        std::vector<WsjcppPackageManagerResourceFile> m_vResourceFiles;
         std::vector<std::string> m_sRequiredLibraries;
         std::vector<std::string> m_sRequiredPkgConfig;
 
