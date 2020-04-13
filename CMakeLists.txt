@@ -16,8 +16,12 @@ set(EXECUTABLE_OUTPUT_PATH ${wsjcpp_SOURCE_DIR})
 list (APPEND WSJCPP_INCLUDE_DIRS "src")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/ArgumentsProcessors")
 
+list (APPEND WSJCPP_SOURCES "src/wsjcpp_package_manager_author.cpp")
+list (APPEND WSJCPP_SOURCES "src/wsjcpp_package_manager_author.h")
 list (APPEND WSJCPP_SOURCES "src/wsjcpp_package_manager_distribution_file.cpp")
 list (APPEND WSJCPP_SOURCES "src/wsjcpp_package_manager_distribution_file.h")
+list (APPEND WSJCPP_SOURCES "src/wsjcpp_package_manager_resource_file.cpp")
+list (APPEND WSJCPP_SOURCES "src/wsjcpp_package_manager_resource_file.h")
 list (APPEND WSJCPP_SOURCES "src/wsjcpp_package_manager_safe_scripting_generate.cpp")
 list (APPEND WSJCPP_SOURCES "src/wsjcpp_package_manager_safe_scripting_generate.h")
 list (APPEND WSJCPP_SOURCES "src/wsjcpp_package_manager.cpp")
@@ -43,6 +47,8 @@ list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_origins.
 list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_origins.cpp")
 list (APPEND WSJCPP_SOURCES "./src/ArgumentsProcessors/argument_processor_prepare.h")
 list (APPEND WSJCPP_SOURCES "./src/ArgumentsProcessors/argument_processor_prepare.cpp")
+list (APPEND WSJCPP_SOURCES "./src/ArgumentsProcessors/argument_processor_resources.h")
+list (APPEND WSJCPP_SOURCES "./src/ArgumentsProcessors/argument_processor_resources.cpp")
 
 list (APPEND WSJCPP_SOURCES "src/main.cpp")
 
