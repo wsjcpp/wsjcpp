@@ -13,11 +13,11 @@ class WsjcppPackageManagerResourceFile {
         bool fromYAML(WsjcppYamlItem *pYamlResourceFile, bool bHolded);
         WsjcppYamlItem *toYAML();
 
-        std::string getFilepath();
-        long getFilesize();
-        std::string getSha1();
-        std::string getPackAs();
-        long getModified();
+        std::string getFilepath() const;
+        long getFilesize() const;
+        std::string getSha1() const;
+        std::string getPackAs() const;
+        long getModified() const;
 
         void setFilepath(const std::string &sFilepath);
         void setFilesize(long nFilesize);

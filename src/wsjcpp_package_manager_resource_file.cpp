@@ -86,31 +86,31 @@ WsjcppYamlItem *WsjcppPackageManagerResourceFile::toYAML() {
 
 // ---------------------------------------------------------------------
 
-std::string WsjcppPackageManagerResourceFile::getFilepath() {
+std::string WsjcppPackageManagerResourceFile::getFilepath() const {
     return m_sFilepath;
 }
 
 // ---------------------------------------------------------------------
 
-long WsjcppPackageManagerResourceFile::getFilesize() {
+long WsjcppPackageManagerResourceFile::getFilesize() const {
     return m_nFilesize;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WsjcppPackageManagerResourceFile::getSha1() {
+std::string WsjcppPackageManagerResourceFile::getSha1() const {
     return m_sSha1;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WsjcppPackageManagerResourceFile::getPackAs() {
+std::string WsjcppPackageManagerResourceFile::getPackAs() const {
     return m_sPackAs;
 }
 
 // ---------------------------------------------------------------------
 
-long WsjcppPackageManagerResourceFile::getModified() {
+long WsjcppPackageManagerResourceFile::getModified() const {
     return m_nModified;
 }
 
