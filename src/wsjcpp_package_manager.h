@@ -141,7 +141,7 @@ class WsjcppPackageManager {
         std::vector<WsjcppPackageManagerAuthor> getListOfAuthors();
         std::vector<std::string> getListOfKeywords();
         std::vector<WsjcppPackageManagerRepository> getListOfRepositories();
-        // std::vector<WsjcppPackageManagerResourceFile> getListOfResourceFiles();
+        std::vector<WsjcppPackageManagerResourceFile> getListOfResourceFiles();
         
         std::string getName();
         std::string getVersion();

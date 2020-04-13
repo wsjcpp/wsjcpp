@@ -1400,6 +1400,12 @@ std::vector<WsjcppPackageManagerRepository> WsjcppPackageManager::getListOfRepos
 
 // ---------------------------------------------------------------------
 
+std::vector<WsjcppPackageManagerResourceFile> WsjcppPackageManager::getListOfResourceFiles() {
+    return m_vResourceFiles;
+}
+
+// ---------------------------------------------------------------------
+
 std::string WsjcppPackageManager::getName() {
     return m_sName;
 }

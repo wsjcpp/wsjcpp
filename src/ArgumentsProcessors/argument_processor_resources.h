@@ -3,6 +3,8 @@
 
 #include <wsjcpp_arguments.h>
 
+// ---------------------------------------------------------------------
+
 class ArgumentProcessorResources : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorResources();
@@ -11,6 +13,21 @@ class ArgumentProcessorResources : public WsjcppArgumentProcessor {
         virtual bool applySingleArgument(const std::string &sProgramName, const std::string &sArgumentName);
         virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
 };
+
+// ---------------------------------------------------------------------
+
+class ArgumentProcessorResourcesList : public WsjcppArgumentProcessor {
+    public:
+        ArgumentProcessorResourcesList();
+
+        virtual bool applySingleArgument(const std::string &sProgramName, const std::string &sArgumentName);
+        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
+
+    private:
+        bool m_bMore;
+};
+
+// ---------------------------------------------------------------------
 
 class ArgumentProcessorResourcesAdd : public WsjcppArgumentProcessor {
     public:

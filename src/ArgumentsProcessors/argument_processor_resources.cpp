@@ -15,6 +15,7 @@ ArgumentProcessorResources::ArgumentProcessorResources()
     // registrySingleArgument("--single", "What exactly do this single param?");
     // registryParameterArgument("-param", "What need this param?");
     // registryExample("here example of command");
+    registryProcessor(new ArgumentProcessorResourcesList());
     registryProcessor(new ArgumentProcessorResourcesAdd());
 }
 
@@ -41,6 +42,82 @@ bool ArgumentProcessorResources::applyParameterArgument(
 int ArgumentProcessorResources::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
     WsjcppLog::err(TAG, "Not implemented");
     return -1; 
+}
+
+
+// ---------------------------------------------------------------------
+// ArgumentProcessorResourcesAdd
+
+ArgumentProcessorResourcesList::ArgumentProcessorResourcesList() 
+: WsjcppArgumentProcessor({"list", "ls"}, "Pack files to c++ code") {
+    TAG = "ArgumentProcessorResources";
+    registrySingleArgument("--more", "More information about resource file");
+    m_bMore = false;
+}
+
+// ---------------------------------------------------------------------
+
+bool ArgumentProcessorResourcesList::applySingleArgument(const std::string &sProgramName, const std::string &sArgumentName) {
+    if (sArgumentName == "--more") {
+        m_bMore = true;
+        return true;
+    }
+    return false;
+}
+
+// ---------------------------------------------------------------------
+
+int ArgumentProcessorResourcesList::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+    WsjcppPackageManager pkg(".");
+    if (!pkg.load()) {
+        std::cout 
+            << std::endl
+            << "ERROR: Could not load package info from current directory"
+            << std::endl
+            << std::endl
+        ;
+        return -1;
+    }
+    std::vector<WsjcppPackageManagerResourceFile> vList = pkg.getListOfResourceFiles();
+    
+    if (vList.size() == 0) {
+        std::cout
+            << "resource not found. "
+            << std::endl
+            << std::endl
+            << "   For add please use a command: "
+            << "   " << sProgramName << " resources add <path>"
+            << std::endl
+            << std::endl;
+    } else {
+        std::cout 
+            << std::endl
+            << "resources: "
+            << std::endl;
+        for (int i = 0; i < vList.size(); i++) {
+            WsjcppPackageManagerResourceFile resFile = vList[i];
+            // TODO check exists / size / modified / sha1 
+            if (!m_bMore) {
+                std::cout << " - " << resFile.getFilepath() << " (size: " << resFile.getFilesize() << " bytes)" << std::endl;
+            } else {
+                std::cout
+                    << "  - filepath: " << resFile.getFilepath()
+                    << std::endl
+                    << "    filesize: " << resFile.getFilesize()
+                    << std::endl
+                    << "    pack-as: " << resFile.getPackAs()
+                    << std::endl
+                    << "    sha1: " << resFile.getSha1()
+                    << std::endl
+                    << "    modified: " << WsjcppCore::formatTimeUTC(resFile.getModified())
+                    << std::endl
+                ;
+            }
+        }
+        std::cout
+            << std::endl;
+    }
+    return 0;
 }
 
 // ---------------------------------------------------------------------
