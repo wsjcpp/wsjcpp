@@ -29,6 +29,14 @@ class ArgumentProcessorResourcesList : public WsjcppArgumentProcessor {
 
 // ---------------------------------------------------------------------
 
+class ArgumentProcessorResourcesRemove : public WsjcppArgumentProcessor {
+    public:
+        ArgumentProcessorResourcesRemove();
+        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
+};
+
+// ---------------------------------------------------------------------
+
 class ArgumentProcessorResourcesAdd : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorResourcesAdd();

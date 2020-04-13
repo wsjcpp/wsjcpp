@@ -135,6 +135,9 @@ class WsjcppPackageManager {
         void printAuthorsTree();
         bool addAuthor(const std::string &sName, const std::string &sEmail);
         bool removeAuthor(const std::string &sAuthor);
+        bool addResource(const WsjcppPackageManagerResourceFile &resourceFile);
+        bool removeResource(const std::string &sFilepath);
+
         std::vector<WsjcppPackageManagerDistributionFile> getListOfDistributionFiles();
         std::vector<WsjcppPackageManagerDependence> getListOfDependencies();
         std::vector<WsjcppPackageManagerOrigin> getListOfOrigins();

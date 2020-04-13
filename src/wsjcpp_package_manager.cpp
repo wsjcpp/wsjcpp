@@ -1295,6 +1295,53 @@ bool WsjcppPackageManager::removeAuthor(const std::string &sFullAuthor) {
 
 // ---------------------------------------------------------------------
 
+bool WsjcppPackageManager::addResource(const WsjcppPackageManagerResourceFile &resourceFile) {
+    WsjcppLog::warn(TAG, "Not implemented"); // TODO addResource
+    return false;
+}
+
+// ---------------------------------------------------------------------
+
+bool WsjcppPackageManager::removeResource(const std::string &sFilepath) {
+
+    if (!m_yamlPackageInfo.getRoot()->hasElement("resources")) {
+        WsjcppLog::warn(TAG, "reousrces not found in wsjcpp.yml");
+        return false;
+    }
+    WsjcppYamlItem *pResources = m_yamlPackageInfo.getRoot()->getElement("resources");
+    int nLen = pResources->getLength();
+    bool bFound = false;
+    for (int i = 0; i < nLen; i++) {
+        WsjcppYamlItem *pResource = pResources->getElement(i);
+        if (pResource->getElement("filepath")->getValue() == sFilepath) {
+            pResources->removeElement(i);
+            break;
+        }
+    }
+    if (nLen == 1 && bFound) {
+        m_yamlPackageInfo.getRoot()->removeElement("resources");
+    }
+
+    std::vector<WsjcppPackageManagerResourceFile> vNewFiles;
+    for (int i = 0; i < m_vResourceFiles.size(); i++) {
+        WsjcppPackageManagerResourceFile resFile = m_vResourceFiles[i];
+        if (resFile.getFilepath() != sFilepath) {
+            vNewFiles.push_back(resFile);
+        }
+    }
+    if (vNewFiles.size() != m_vResourceFiles.size()) {
+        m_vResourceFiles.clear();
+        for (int i = 0; i < vNewFiles.size(); i++) {
+            m_vResourceFiles.push_back(vNewFiles[i]);
+        }
+        return true;
+    }
+    WsjcppLog::err(TAG, "Not found this resource");
+    return false;
+}
+
+// ---------------------------------------------------------------------
+
 std::vector<WsjcppPackageManagerDistributionFile> WsjcppPackageManager::getListOfDistributionFiles() {
     return m_vDistributionFiles;
 }
