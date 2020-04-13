@@ -79,13 +79,13 @@ distribution:
   - source-file: "src/wsjcpp_package_manager.h"
     target-file: "wsjcpp_package_manager.h"
     type: "source-code"
-  
   - source-file: "src/wsjcpp_package_manager_author.h"
     target-file: "wsjcpp_package_manager_author.h"
     type: "source-code"
   - source-file: "src/wsjcpp_package_manager_author.cpp"
     target-file: "wsjcpp_package_manager_author.cpp"
     type: "source-code"
+
 unit-tests:
   cases:
     - name: "NormalizeUnitTestName"

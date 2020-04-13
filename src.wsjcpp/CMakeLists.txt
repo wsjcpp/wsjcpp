@@ -48,6 +48,11 @@ list (APPEND WSJCPP_INCLUDE_DIRS "./src.wsjcpp/wsjcpp_arguments/")
 list (APPEND WSJCPP_SOURCES "./src.wsjcpp/wsjcpp_arguments/wsjcpp_arguments.cpp")
 list (APPEND WSJCPP_SOURCES "./src.wsjcpp/wsjcpp_arguments/wsjcpp_arguments.h")
 
+# resources.wsjcpp
+list (APPEND WSJCPP_INCLUDE_DIRS "../src-resources.wsjcpp/")
+list (APPEND WSJCPP_SOURCES "../src-resources.wsjcpp/build_simple_sh_path311e3d.h")
+list (APPEND WSJCPP_SOURCES "../src-resources.wsjcpp/build_simple_sh_path311e3d.cpp")
+
 # required-libraries
 list (APPEND WSJCPP_LIBRARIES "-lpthread")
 

@@ -210,7 +210,7 @@ int ArgumentProcessorResourcesAdd::exec(const std::string &sProgramName, const s
     }
 
     struct stat result;
-    if(stat(sFilepath.c_str(), &result)==0)
+    if (stat(sFilepath.c_str(), &result)==0)
     {
         auto mod_time = result.st_mtime;
         std::cout << "mod_time: " << mod_time << std::endl;
@@ -254,6 +254,7 @@ int ArgumentProcessorResourcesAdd::exec(const std::string &sProgramName, const s
         return -1;
     }
 
+    // TODO moved to generateResourceCppFileBasename
     std::string sDirResources = "./src/resources.wsjcpp";
     if (!WsjcppCore::dirExists(sDirResources)) {
         WsjcppCore::makeDir(sDirResources);
