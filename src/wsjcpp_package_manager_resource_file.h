@@ -10,7 +10,7 @@
 class WsjcppPackageManagerResourceFile {
     public:
         WsjcppPackageManagerResourceFile();
-        bool fromYAML(WsjcppYamlItem *pYamlDistributionFile, bool bHolded);
+        bool fromYAML(WsjcppYamlItem *pYamlResourceFile, bool bHolded);
         WsjcppYamlItem *toYAML();
 
         std::string getFilepath();
@@ -27,13 +27,13 @@ class WsjcppPackageManagerResourceFile {
 
     private:
         std::string TAG;
+        bool m_bHolded;
         std::string m_sFilepath;
         long m_nFilesize;
         std::string m_sSha1;
         std::string m_sPackAs;
         long m_nModified;
         WsjcppYamlItem *m_pYamlResourceFile;
-        bool m_bHolded;
 };
 
 #endif // WSJCPP_PACKAGE_MANAGER_RESOURCE_FILE_H

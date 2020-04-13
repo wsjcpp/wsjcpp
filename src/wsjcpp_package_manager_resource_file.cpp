@@ -11,16 +11,36 @@ WsjcppPackageManagerResourceFile::WsjcppPackageManagerResourceFile() {
     m_sSha1 = "sha1";
     m_sPackAs = "binary";
     m_nModified = 0;
+    m_bHolded = false;
 }
 
 // ---------------------------------------------------------------------
 
 bool WsjcppPackageManagerResourceFile::fromYAML(WsjcppYamlItem *pYamlDistributionFile, bool bHolded) {
-    m_bHolded = bHolded;
     m_pYamlResourceFile = pYamlDistributionFile;
-
+    m_bHolded = bHolded;
     if (!m_pYamlResourceFile->hasElement("filepath")) {
         WsjcppLog::err(TAG, "Missing required field 'filepath' in " + m_pYamlResourceFile->getForLogFormat());
+        return false; 
+    }
+
+    if (!m_pYamlResourceFile->hasElement("filesize")) {
+        WsjcppLog::err(TAG, "Missing required field 'filesize' in " + m_pYamlResourceFile->getForLogFormat());
+        return false; 
+    }
+
+    if (!m_pYamlResourceFile->hasElement("sha1")) {
+        WsjcppLog::err(TAG, "Missing required field 'sha1' in " + m_pYamlResourceFile->getForLogFormat());
+        return false; 
+    }
+
+    if (!m_pYamlResourceFile->hasElement("pack-as")) {
+        WsjcppLog::err(TAG, "Missing required field 'pack-as' in " + m_pYamlResourceFile->getForLogFormat());
+        return false;
+    }
+
+    if (!m_pYamlResourceFile->hasElement("modified")) {
+        WsjcppLog::err(TAG, "Missing required field 'modified' in " + m_pYamlResourceFile->getForLogFormat());
         return false; 
     }
 
@@ -29,47 +49,27 @@ bool WsjcppPackageManagerResourceFile::fromYAML(WsjcppYamlItem *pYamlDistributio
         std::string sKey = vKeys[i];
         if (sKey == "filepath") {
             m_sFilepath = m_pYamlResourceFile->getElement("filepath")->getValue();
-            if (!WsjcppCore::fileExists(m_sFilepath)) {
+            if (!m_bHolded && !WsjcppCore::fileExists(m_sFilepath)) {
                 WsjcppLog::warn(TAG, "File resource '" + m_sFilepath + "' did not exists in " + m_pYamlResourceFile->getForLogFormat());
             }
+        } else if (sKey == "filesize") {
+            std::string sFileSize = m_pYamlResourceFile->getElement("filesize")->getValue();
+            m_nFilesize = std::atoi(sFileSize.c_str());
+        } else if (sKey == "sha1") {
+            m_sSha1 = m_pYamlResourceFile->getElement("sha1")->getValue();
+        } else if (sKey == "pack-as") {
+            m_sPackAs = m_pYamlResourceFile->getElement("pack-as")->getValue();
+            if (m_sPackAs != "text" && m_sPackAs != "binary") {
+                WsjcppLog::err(TAG, "Field 'pack-as' must contains 'text' or 'binary' in " + m_pYamlResourceFile->getForLogFormat());
+                return false;
+            }
+        } else if (sKey == "modified") {
+            std::string sModified = m_pYamlResourceFile->getElement("modified")->getValue();
+            m_nModified = std::atoi(sModified.c_str());
+        } else {
+            WsjcppLog::warn(TAG, "Excess field '" + sKey + "' in " + m_pYamlResourceFile->getElement(sKey)->getForLogFormat());
         }
     }
-
-    if (!m_pYamlResourceFile->hasElement("filesize")) {
-        WsjcppLog::err(TAG, "Missing required field 'filesize' in " + m_pYamlResourceFile->getForLogFormat());
-        return false; 
-    } else {
-        std::string sFileSize = m_pYamlResourceFile->getElement("filesize")->getValue();
-        m_nFilesize = std::atoi(sFileSize.c_str());
-    }
-    
-    if (!m_pYamlResourceFile->hasElement("sha1")) {
-        m_pYamlResourceFile->setElementValue("sha1", false, "", true);
-        WsjcppLog::err(TAG, "Missing required field 'sha1' in " + m_pYamlResourceFile->getForLogFormat());
-        return false; 
-    } else {
-        m_sSha1 = m_pYamlResourceFile->getElement("sha1")->getValue();
-    }
-
-    if (!m_pYamlResourceFile->hasElement("pack-as")) {
-        WsjcppLog::err(TAG, "Missing required field 'pack-as' in " + m_pYamlResourceFile->getForLogFormat());
-        return false;
-    } else {
-        m_sPackAs = m_pYamlResourceFile->getElement("pack-as")->getValue();
-        if (m_sPackAs != "text" && m_sPackAs != "binary") {
-            WsjcppLog::err(TAG, "Field 'pack-as' must contains 'text' or 'binary' in " + m_pYamlResourceFile->getForLogFormat());
-            return false;
-        }
-    }
-
-    if (!m_pYamlResourceFile->hasElement("modified")) {
-        WsjcppLog::err(TAG, "Missing required field 'modified' in " + m_pYamlResourceFile->getForLogFormat());
-        return false; 
-    } else {
-        std::string sModified = m_pYamlResourceFile->getElement("modified")->getValue();
-        m_nModified = std::atoi(sModified.c_str());
-    }
-
     return true;
 }
 

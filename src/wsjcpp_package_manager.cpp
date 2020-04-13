@@ -509,6 +509,10 @@ bool WsjcppPackageManager::load() {
             if (!readFieldRepositories()) {
                 return false;
             }
+        } else if (sKey == "resources") {
+            if (!readFieldResources()) {
+                return false;
+            }
         } else if (sKey == "unit-tests") {
             if (!readFieldUnitTests()) {
                 return false;
@@ -1757,6 +1761,24 @@ bool WsjcppPackageManager::readFieldRepositories() {
         WsjcppPackageManagerRepository repository;
         repository.fromYAML(pYamlRepository);
         m_vRepositories.push_back(repository);
+    }
+    return true;
+}
+
+// ---------------------------------------------------------------------
+
+bool WsjcppPackageManager::readFieldResources() {
+    if (!m_yamlPackageInfo.getRoot()->hasElement("resources")) {
+        // skip
+        return true;
+    }
+    WsjcppYamlItem itemResourceFiles = m_yamlPackageInfo["resources"];
+    int nLength = itemResourceFiles.getLength();
+    for (int i = 0; i < nLength; i++) {
+        WsjcppYamlItem *pYamlResourceFile = itemResourceFiles.getElement(i);
+        WsjcppPackageManagerResourceFile resource;
+        resource.fromYAML(pYamlResourceFile, m_bHolded);
+        m_vResourceFiles.push_back(resource);
     }
     return true;
 }
