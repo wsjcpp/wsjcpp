@@ -153,11 +153,11 @@ int ArgumentProcessorUninstall::exec(const std::string &sProgramName, const std:
 // ---------------------------------------------------------------------
 
 ArgumentProcessorList::ArgumentProcessorList() 
-  : WsjcppArgumentProcessor({"list"}, "Show list of dependencies") {
+  : WsjcppArgumentProcessor({"list", "ls"}, "Show list of dependencies") {
       TAG = "ArgumentProcessorList";
       registrySingleArgument("--tree", "Tree");
-      registryExample("from github source `./wsjcpp list");
-      registryExample("from github source `./wsjcpp list --tree`");
+      registryExample("from github source `./wsjcpp ls`");
+      registryExample("from github source `./wsjcpp ls --tree`");
       m_bTree = false;
 }
 

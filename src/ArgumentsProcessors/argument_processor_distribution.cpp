@@ -14,7 +14,7 @@ ArgumentProcessorDistribution::ArgumentProcessorDistribution()
 // ---------------------------------------------------------------------
 
 ArgumentProcessorDistributionList::ArgumentProcessorDistributionList() 
-  : WsjcppArgumentProcessor({"list"}, "Distribution list files") {
+  : WsjcppArgumentProcessor({"list", "ls"}, "Distribution list files") {
 
 }
 
