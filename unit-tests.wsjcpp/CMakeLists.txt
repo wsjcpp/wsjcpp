@@ -66,6 +66,11 @@ list (APPEND WSJCPP_SOURCES "../src/wsjcpp_package_manager_author.cpp")
 list (APPEND WSJCPP_SOURCES "../src/wsjcpp_package_manager_resource_file.cpp")
 list (APPEND WSJCPP_SOURCES "../src/wsjcpp_package_manager_resource_file.h")
 
+# resources.wsjcpp
+list (APPEND WSJCPP_INCLUDE_DIRS "../src-resources.wsjcpp/")
+list (APPEND WSJCPP_SOURCES "../src-resources.wsjcpp/build_simple_sh_path311e3d.h")
+list (APPEND WSJCPP_SOURCES "../src-resources.wsjcpp/build_simple_sh_path311e3d.cpp")
+
 # unit-tests
 list (APPEND WSJCPP_INCLUDE_DIRS "src")
 list (APPEND WSJCPP_SOURCES "../unit-tests.wsjcpp/src/unit_test_normalize_unit_test_name.h")

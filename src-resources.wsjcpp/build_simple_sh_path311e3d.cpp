@@ -8,7 +8,12 @@ const std::string &RES_build_simple_sh_path311e3d::getFilename() {
     static const std::string s = "build_simple.sh";
     return s;
 }
+// ---------------------------------------------------------------------
 
+const std::string &RES_build_simple_sh_path311e3d::getPackAs() {
+    static const std::string s = "text";
+    return s;
+}
 // ---------------------------------------------------------------------
 
 const int RES_build_simple_sh_path311e3d::getBufferSize() {
