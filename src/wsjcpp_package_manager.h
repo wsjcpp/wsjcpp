@@ -128,7 +128,7 @@ class WsjcppPackageManager {
         bool deleteOrigin(const std::string &sAddress);
         bool updateDependencies();
         void verify();
-        bool install(const std::string &sPackageUrl);
+        bool install(const std::string &sPackageUrl, std::string &sError);
         bool reinstall(const std::string &sPackageUrl);
         bool uninstall(const std::string &sPackageUrl);
         void printAuthors();

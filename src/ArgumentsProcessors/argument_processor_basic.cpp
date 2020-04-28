@@ -93,7 +93,8 @@ int ArgumentProcessorInit::exec(const std::string &sProgramName, const std::vect
         return -1;
     }
     pkg.save();
-    if (pkg.install("https://github.com/wsjcpp/wsjcpp-core:master")) {
+    std::string sError;
+    if (pkg.install("https://github.com/wsjcpp/wsjcpp-core:master", sError)) {
         pkg.save();
     }
     std::string sBuildSimplaShPath = sPath + "/build_simple.sh";

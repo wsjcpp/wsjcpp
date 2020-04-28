@@ -896,7 +896,7 @@ void WsjcppPackageManager::verify() {
 
 // ---------------------------------------------------------------------
 
-bool WsjcppPackageManager::install(const std::string &sPackage) {
+bool WsjcppPackageManager::install(const std::string &sPackage, std::string &sError) {
     if (m_bHolded) {
         WsjcppLog::err(TAG, "Could not install package when holded");
         return false;
@@ -904,7 +904,7 @@ bool WsjcppPackageManager::install(const std::string &sPackage) {
 
     if (isGitHubPackage(sPackage)) {
         if (isInstalled(sPackage)) {
-            WsjcppLog::err(TAG, "Package '" + sPackage + "' already installed");
+            sError = "Already installed.";
             return false;
         }
         WsjcppPackageManagerDependence dep;
@@ -912,23 +912,23 @@ bool WsjcppPackageManager::install(const std::string &sPackage) {
             addDependency(dep);
             return installFromCache(sPackage, dep);
         } else {
+            sError = "Could not download package";
             return false;
         }
     } else if (isBitbucketPackage(sPackage)) {
         // TODO
-        WsjcppLog::err(TAG, "Could not install package from bitbucket - not implemented yet");
+        sError = "Could not install package from bitbucket - not implemented yet";
         return false;
     } else if (isFilePackage(sPackage)) {
         // TODO
-        WsjcppLog::err(TAG, "Could not install package from file - not implemented yet");
+        sError = "Could not install package from file system - not implemented yet";
         return false;
     } else if (isHttpPackage(sPackage) || isHttpsPackage(sPackage)) {
         // TODO try find on different servers
-        WsjcppLog::err(TAG, "Could not install package from http(s) - not implemented yet");
+        sError = "Could not install package from http(s) - not implemented yet";
         return false;
     }
-
-    WsjcppLog::err(TAG, "Could not install package from unknown source");
+    sError = "Could not install package from unknown source";
     return false;
 }
 
