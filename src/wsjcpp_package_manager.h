@@ -129,8 +129,8 @@ class WsjcppPackageManager {
         bool updateDependencies();
         void verify();
         bool install(const std::string &sPackageUrl, std::string &sError);
-        bool reinstall(const std::string &sPackageUrl);
-        bool uninstall(const std::string &sPackageUrl);
+        bool reinstall(const std::string &sPackageUrl, std::string &sError);
+        bool uninstall(const std::string &sPackageUrl, std::string &sError);
         void printAuthors();
         void printAuthorsTree();
         bool addAuthor(const std::string &sName, const std::string &sEmail);
@@ -174,6 +174,7 @@ class WsjcppPackageManager {
         std::string generateResourceCppFileBasename(const std::string &sFilepath);
         std::string prepareCacheSubFolderName(const std::string &sFilename);
         bool downloadFromGithubToCache(const std::string &sPackage, WsjcppPackageManagerDependence &dep);
+        bool downloadFromHttpToCache(const std::string &sPackage, WsjcppPackageManagerDependence &dep, std::string &sError);
         bool isInstalled(const std::string &sPackage);
         bool installFromCache(const std::string &sPackage, const WsjcppPackageManagerDependence &dep);
         bool downloadFileOverHttps(const std::string &sUrl, const std::string &sPath);

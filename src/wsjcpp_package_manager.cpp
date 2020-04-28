@@ -902,16 +902,15 @@ bool WsjcppPackageManager::install(const std::string &sPackage, std::string &sEr
         return false;
     }
 
+    if (isInstalled(sPackage)) {
+        sError = "Already installed.";
+        return false;
+    }
+
+    WsjcppPackageManagerDependence dep;
+
     if (isGitHubPackage(sPackage)) {
-        if (isInstalled(sPackage)) {
-            sError = "Already installed.";
-            return false;
-        }
-        WsjcppPackageManagerDependence dep;
-        if (downloadFromGithubToCache(sPackage, dep)) {
-            addDependency(dep);
-            return installFromCache(sPackage, dep);
-        } else {
+        if (!downloadFromGithubToCache(sPackage, dep)) {
             sError = "Could not download package";
             return false;
         }
@@ -924,17 +923,21 @@ bool WsjcppPackageManager::install(const std::string &sPackage, std::string &sEr
         sError = "Could not install package from file system - not implemented yet";
         return false;
     } else if (isHttpPackage(sPackage) || isHttpsPackage(sPackage)) {
-        // TODO try find on different servers
-        sError = "Could not install package from http(s) - not implemented yet";
+        if (!downloadFromHttpToCache(sPackage, dep, sError)) {
+            return false;
+        }
+    } else {
+        sError = "Could not install package from unknown source";
         return false;
     }
-    sError = "Could not install package from unknown source";
-    return false;
+    
+    addDependency(dep);
+    return installFromCache(sPackage, dep);
 }
 
 // ---------------------------------------------------------------------
 
-bool WsjcppPackageManager::reinstall(const std::string &sPackage) {
+bool WsjcppPackageManager::reinstall(const std::string &sPackage, std::string &sError) {
     if (m_bHolded) {
         WsjcppLog::err(TAG, "Could not reinstall package when holded");
         return false;
@@ -945,12 +948,11 @@ bool WsjcppPackageManager::reinstall(const std::string &sPackage) {
         return false;
     }
 
+    WsjcppPackageManagerDependence dep;
+
+    // cleanup cache before
     if (isGitHubPackage(sPackage)) {
-        WsjcppPackageManagerDependence dep;
-        if (downloadFromGithubToCache(sPackage, dep)) {
-            updateDependency(dep);
-            return installFromCache(sPackage, dep);
-        } else {
+        if (!downloadFromGithubToCache(sPackage, dep)) {
             return false;
         }
     } else if (isBitbucketPackage(sPackage)) {
@@ -962,18 +964,21 @@ bool WsjcppPackageManager::reinstall(const std::string &sPackage) {
         WsjcppLog::err(TAG, "Could not reinstall package from file - not implemented yet");
         return false;
     } else if (isHttpPackage(sPackage) || isHttpsPackage(sPackage)) {
-        // TODO try find on different servers
-        WsjcppLog::err(TAG, "Could not reinstall package from http(s) - not implemented yet");
+        if (!downloadFromHttpToCache(sPackage, dep, sError)) {
+            return false;
+        }
+    } else {
+        WsjcppLog::err(TAG, "Could not install package from unknown source");
         return false;
     }
 
-    WsjcppLog::err(TAG, "Could not install package from unknown source");
-    return false;
+    updateDependency(dep);
+    return installFromCache(sPackage, dep);
 }
 
 // ---------------------------------------------------------------------
 
-bool WsjcppPackageManager::uninstall(const std::string &sPackageUrl) {
+bool WsjcppPackageManager::uninstall(const std::string &sPackageUrl, std::string &sError) {
     if (m_bHolded) {
         WsjcppLog::err(TAG, "Could not reinstall package when holded");
         return false;
@@ -1154,6 +1159,72 @@ bool WsjcppPackageManager::downloadFromGithubToCache(const std::string &sPackage
     dep.setUrl(sPackage);
     dep.setInstallationDir(sInstallationDir);
     dep.setOrigin("https://github.com/");
+    return true;
+}
+
+// ---------------------------------------------------------------------
+
+bool WsjcppPackageManager::downloadFromHttpToCache(const std::string &sPackage, WsjcppPackageManagerDependence &dep, std::string &sError) {
+
+    std::cout << "Download package from " << sPackage << " ..." << std::endl;
+   
+    std::string sWsjcppBaseUrl = sPackage;
+    std::string sCacheDir = m_sDir + "/.wsjcpp/cache";
+    if (!WsjcppCore::dirExists(sCacheDir)) {
+        WsjcppCore::makeDir(sCacheDir);
+    }
+
+    std::string sCacheSubFolderName = sCacheDir + "/" + this->prepareCacheSubFolderName(sPackage);
+
+    if (!WsjcppCore::dirExists(sCacheSubFolderName)) {
+        WsjcppCore::makeDir(sCacheSubFolderName);
+    }
+
+    std::string sDownloadedWsjCppYml = sCacheSubFolderName + "/wsjcpp.hold.yml";
+
+    if (!this->downloadFileOverHttps(sWsjcppBaseUrl + "/wsjcpp.yml", sDownloadedWsjCppYml)) {
+        sError = "Could not download " + sWsjcppBaseUrl;
+        // TODO remove from cache
+        return false;
+    }
+
+    WsjcppPackageManager pkg(sCacheSubFolderName, sCacheSubFolderName, true);
+    if (!pkg.load()) {
+        sError = "Could not load " + sCacheSubFolderName;
+        return false;
+    }
+
+    // sources
+    std::vector<WsjcppPackageManagerDistributionFile> vSources = pkg.getListOfDistributionFiles();
+    for (int i = 0; i < vSources.size(); i++) {
+        WsjcppPackageManagerDistributionFile src = vSources[i];
+        std::string sDownloadedWsjCppSourceFrom = sWsjcppBaseUrl + "/" + src.getSourceFile();
+        std::string sDownloadedWsjCppSourceTo = sCacheSubFolderName + "/" + src.getTargetFile();
+
+        WsjcppLog::info(TAG, "\n\t" + sDownloadedWsjCppSourceFrom + " \n\t-> \n\t" + sDownloadedWsjCppSourceTo + "\n\t[sha1:" + src.getSha1() + "]");
+        if (!this->downloadFileOverHttps(sDownloadedWsjCppSourceFrom, sDownloadedWsjCppSourceTo)) {
+            sError = "Could not download " + sDownloadedWsjCppSourceFrom;
+            // TODO remove from cache
+            return false;
+        }
+        std::string sContent = "";
+        if (!WsjcppCore::readTextFile(sDownloadedWsjCppSourceTo, sContent)) {
+            sError = "Could not read file " + sDownloadedWsjCppSourceTo;
+            return false;
+        }
+        // TODO set calculated sha1
+        // std::string sSha1 = WsjcppHashes::sha1_calc_hex(sContent);
+        // src.setSha1(sSha1);
+    }
+
+    std::string sInstallationDir = "./src.wsjcpp/" + this->prepareCacheSubFolderName(pkg.getName());
+
+    // WsjcppPackageManagerDependence dep;
+    dep.setName(pkg.getName());
+    dep.setVersion(pkg.getVersion());
+    dep.setUrl(sPackage);
+    dep.setInstallationDir(sInstallationDir);
+    dep.setOrigin("https://github.com/"); // TODO remove "package-name/version"
     return true;
 }
 
