@@ -11,6 +11,7 @@ ArgumentProcessorPrepare::ArgumentProcessorPrepare()
     TAG = "ArgumentProcessorPrepare";
     registryProcessor(new ArgumentProcessorPrepareTravis());
     registryProcessor(new ArgumentProcessorPrepareHomebrew());
+    registryProcessor(new ArgumentProcessorPrepareDockerfile());
 }
 
 // ---------------------------------------------------------------------
@@ -223,5 +224,119 @@ int ArgumentProcessorPrepareHomebrew::exec(const std::string &sProgramName, cons
         << std::endl
     ;
 
+    return 0;
+}
+
+
+// ---------------------------------------------------------------------
+// ArgumentProcessorPrepareDockerfile
+
+ArgumentProcessorPrepareDockerfile::ArgumentProcessorPrepareDockerfile() 
+: WsjcppArgumentProcessor({"dockerfile"}, "Prepare sample of Dockerfile for build and publish current project") {
+    TAG = "ArgumentProcessorPrepareDockerfile";
+}
+
+// ---------------------------------------------------------------------
+
+int ArgumentProcessorPrepareDockerfile::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+    WsjcppPackageManager pkg(".");
+    if (!pkg.load()) {
+        std::cout 
+            << std::endl
+            << "ERROR: Could not load package info from current directory"
+            << std::endl
+            << std::endl
+        ;
+        return -1;
+    }
+
+    std::string sMainRepository = "";
+    std::vector<WsjcppPackageManagerRepository> repos = pkg.getListOfRepositories();
+    for (int i = 0; i < repos.size(); i++) {
+        if (repos[i].getType() == "main") {
+            sMainRepository = repos[i].getUrl();
+        }
+    }
+
+    if (sMainRepository == "") {
+        std::cout 
+            << std::endl
+            << "ERROR: Could not find main repository in wsjcpp.yml"
+            << std::endl
+            << std::endl
+        ;
+        return -1;
+    }
+    // TODO just call merge ignorefile for .gtiignore and for .dockerignore
+    std::string sContentDockerignore = 
+        ".wsjcpp/*\n"
+        ".vscode/*\n"
+        ".DS_Store/*\n"
+        "tmp/*\n"
+        "unit-tests.wsjcpp/*\n"
+    ;
+
+    std::string sContentDockerfile = 
+        "# " + pkg.getName() + "@" + pkg.getVersion() + "\n"
+        "FROM debian:10\n"
+        "\n"
+        "# install build requiremenets\n"
+        "RUN apt update && apt install -y --no-install-recommends \\\n"
+        "  build-essential \\\n"
+        "  make \\\n"
+        "  cmake \\\n"
+        "  gcc \\\n"
+        "  g++ \\\n"
+        "  pkg-config \\\n"
+        "  git-core \n"
+        "\n"
+        "COPY . /root/source-code\n"
+        "RUN cd /root/src \\\n"
+        "  && mkdir -p tmp.docker \\\n"
+        "  && cd tmp.docker \\\n"
+        "  && cmake .. \\\n"
+        "  && make \n"
+        "\n"
+        "\n"
+        "# now do release image \n"
+        "FROM debian:10\n"
+        " # LABEL \"maintainer\"=\"Maintainer Name <mantainer@mail>\"\n"
+        " # LABEL \"repository\"=\"https://maintainer repository\"\n"
+        "\n"
+        "RUN apt-get update && apt-get install -y \\\n"
+        "  locales \n"
+        "\n"
+        "# fix for libcurl (on send mail)\n"
+        "RUN sed -i -e \"s/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/\" /etc/locale.gen && \\\n"
+        "    echo 'LANG=\"en_US.UTF-8\"'>/etc/default/locale && \\\n"
+        "    dpkg-reconfigure --frontend=noninteractive locales && \\\n"
+        "    update-locale LANG=en_US.UTF-8\n"
+        "\n"
+        "COPY --from=0 /root/source-code/" +  pkg.getName() + " /usr/bin/" +  pkg.getName() + "\n"
+        "RUN mkdir -p /root/app \\\n"
+        "\n"
+        "WORKDIR /root/app\n"
+        "\n"
+        "# if need: expose tcp port of service\n"
+        "# EXPOSE 1234 4613 7080\n"
+        "\n"
+        "CMD " +  pkg.getName() + " start\n"
+    ;
+
+    if (!WsjcppCore::fileExists("Dockerfile")) {
+        WsjcppCore::writeFile("./Dockerfile", sContentDockerfile);
+        std::cout << "Dockerfile: created" << std::endl;
+    } else {
+        std::cout << "Dockerfile: skipped already exists" << std::endl;
+    }
+
+    if (!WsjcppCore::fileExists(".dockerignore")) {
+        WsjcppCore::writeFile("./.dockerignore", sContentDockerignore);
+        std::cout << ".dockerignore: created" << std::endl;
+    } else {
+        std::cout << ".dockerignore: skipped already exists" << std::endl;
+    }
+
+    std::cout << std::endl;
     return 0;
 }
