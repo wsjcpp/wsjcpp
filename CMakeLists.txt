@@ -15,6 +15,8 @@ set(EXECUTABLE_OUTPUT_PATH ${wsjcpp_SOURCE_DIR})
 # include header dirs
 list (APPEND WSJCPP_INCLUDE_DIRS "src")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/ArgumentsProcessors")
+list (APPEND WSJCPP_INCLUDE_DIRS "src/Downloaders")
+
 
 list (APPEND WSJCPP_SOURCES "src/wsjcpp_package_manager_author.cpp")
 list (APPEND WSJCPP_SOURCES "src/wsjcpp_package_manager_author.h")
@@ -26,6 +28,11 @@ list (APPEND WSJCPP_SOURCES "src/wsjcpp_package_manager_safe_scripting_generate.
 list (APPEND WSJCPP_SOURCES "src/wsjcpp_package_manager_safe_scripting_generate.h")
 list (APPEND WSJCPP_SOURCES "src/wsjcpp_package_manager.cpp")
 list (APPEND WSJCPP_SOURCES "src/wsjcpp_package_manager.h")
+
+list (APPEND WSJCPP_SOURCES "./src/Downloaders/wsjcpp_package_downloader_base.h")
+list (APPEND WSJCPP_SOURCES "./src/Downloaders/wsjcpp_package_downloader_base.cpp")
+list (APPEND WSJCPP_SOURCES "./src/Downloaders/wsjcpp_package_downloader_gitlab.h")
+list (APPEND WSJCPP_SOURCES "./src/Downloaders/wsjcpp_package_downloader_gitlab.cpp")
 
 list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_dependencies.cpp")
 list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_dependencies.h")
