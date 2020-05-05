@@ -32,33 +32,18 @@ int ArgumentProcessorDistributionList::exec(const std::string &sProgramName, con
         // printHelp(vArgs);
         return -1;
     }
-    std::string sList = "\r\nDistribution list:\r\n";
+    std::cout << std::endl << "Distribution list:" << std::endl;
     std::vector<WsjcppPackageManagerDistributionFile> files = pkg.getListOfDistributionFiles();
     
     for (int i = 0; i < files.size(); i++) {
+        std::cout << "    - ";
         WsjcppPackageManagerDistributionFile file = files[i];
-        sList += "   ";
         if (!WsjcppCore::fileExists(file.getSourceFile())) {
-            WsjcppLog::err(TAG, "File did not exists '" + file.getSourceFile() + "'");
-            sList += "[did not exists] ";
-        } else {
-            std::string sContent;
-            if (WsjcppCore::readTextFile(file.getSourceFile(), sContent)) {
-                std::string sSha1 = WsjcppHashes::sha1_calc_hex(sContent);
-                if (sSha1 != file.getSha1()) {
-                    sList += "[wrong sha1] ";
-                    WsjcppLog::warn(TAG, "Did not match sha1 for file '" + file.getSourceFile() + "'. expected '" + sSha1 + "', but got '" + file.getSha1() + "'");
-                }
-            }
+            std::cout << "[did not exists]";
         }
-        sList += 
-            file.getType() + ": '" 
-            + file.getSourceFile() 
-            + "' -> '"
-            + file.getTargetFile()
-            + "' (sha1: " + file.getSha1() + ")" + "\r\n";
+        std::cout <<  file.getType() << ": '" 
+            << file.getSourceFile() << "' -> '" << file.getTargetFile() << std::endl;
     }
-    WsjcppLog::info(TAG, sList);
     return 0;
 }
 
