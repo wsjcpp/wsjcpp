@@ -34,8 +34,8 @@ size_t CurlWrite_CallbackFunc_DataToFile(void *ptr, size_t size, size_t nmemb, F
 
 bool WsjcppPackageDownloaderBase::downloadFileOverHttps(const std::string &sUrl, const std::string &sPath) {
     std::string TAG = "downloadFileOverHttps";
-    WsjcppLog::info(TAG, "sUrl: '" + sUrl + "'");
-    WsjcppLog::info(TAG, "sPath: '" + sPath + "'");
+    // WsjcppLog::info(TAG, "sUrl: '" + sUrl + "'");
+    // WsjcppLog::info(TAG, "sPath: '" + sPath + "'");
     std::string sUserAgent = "wsjcpp/" + std::string(WSJCPP_APP_VERSION);
     CURL *curl;
     FILE *fp = fopen(sPath.c_str(),"wb"); 
