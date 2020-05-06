@@ -2,7 +2,7 @@
 
 [![Build Status](https://api.travis-ci.com/wsjcpp/wsjcpp.svg?branch=master)](https://travis-ci.com/wsjcpp/wsjcpp) [![Docker Pulls](https://img.shields.io/docker/pulls/sea5kg/wsjcpp.svg)](https://hub.docker.com/r/sea5kg/wsjcpp/) [![Github Stars](https://img.shields.io/github/stars/wsjcpp/wsjcpp.svg?label=github%20%E2%98%85)](https://github.com/wsjcpp/wsjcpp) [![Github Stars](https://img.shields.io/github/contributors/wsjcpp/wsjcpp.svg)](https://github.com/wsjcpp/wsjcpp) [![Github Forks](https://img.shields.io/github/forks/wsjcpp/wsjcpp.svg?label=github%20forks)](https://github.com/wsjcpp/wsjcpp/network/members)
 
-Yet one... C++ Source Package Manager
+Yet another... C++ Source Package Manager
 
 Official site: [http://wsjcpp.org/](http://wsjcpp.org/)
 

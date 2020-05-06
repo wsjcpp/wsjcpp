@@ -93,7 +93,8 @@ int ArgumentProcessorInit::exec(const std::string &sProgramName, const std::vect
         return -1;
     }
     pkg.save();
-    if (pkg.install("https://github.com/wsjcpp/wsjcpp-core:master")) {
+    std::string sError;
+    if (pkg.install("https://github.com/wsjcpp/wsjcpp-core:master", sError)) {
         pkg.save();
     }
     std::string sBuildSimplaShPath = sPath + "/build_simple.sh";
@@ -119,7 +120,7 @@ int ArgumentProcessorInit::exec(const std::string &sProgramName, const std::vect
             "int main(int argc, const char* argv[]) {\n"
             "    std::string TAG = \"MAIN\";\n"
             "    std::string appName = std::string(WSJCPP_NAME);\n"
-            "    std::string appVersion = std::string(WSJCPP_VERSION);\n"
+            "    std::string appVersion = std::string(WSJCPP_APP_VERSION);\n"
             "    if (!WsjcppCore::dirExists(\".logs\")) {\n"
             "        WsjcppCore::makeDir(\".logs\");\n"
             "    }\n"
@@ -246,8 +247,8 @@ ArgumentProcessorVersion::ArgumentProcessorVersion()
 
 int ArgumentProcessorVersion::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
     // TODO move to default arguments
-    std::cout << "Application: " << std::string(WSJCPP_NAME) << std::endl;
-    std::cout << "Version: " << std::string(WSJCPP_VERSION) << std::endl;
+    std::cout << "Application: " << std::string(WSJCPP_APP_NAME) << std::endl;
+    std::cout << "Version: " << std::string(WSJCPP_APP_VERSION) << std::endl;
     return 0;
 }
 

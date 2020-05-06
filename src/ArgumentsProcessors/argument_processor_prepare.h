@@ -24,4 +24,10 @@ class ArgumentProcessorPrepareHomebrew : public WsjcppArgumentProcessor {
         virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
 };
 
+class ArgumentProcessorPrepareDockerfile : public WsjcppArgumentProcessor {
+    public:
+        ArgumentProcessorPrepareDockerfile();
+        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
+};
+
 #endif // ARGUMENT_PROCESSOR_PREPARE_H
