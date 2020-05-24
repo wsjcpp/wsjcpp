@@ -133,7 +133,7 @@ int ArgumentProcessorUnitTestsDelete::exec(const std::string &sProgramName, cons
 // ArgumentProcessorUnitTestsList
 
 ArgumentProcessorUnitTestsList::ArgumentProcessorUnitTestsList() 
-: WsjcppArgumentProcessor({"list"}, "list of unit-test") {
+: WsjcppArgumentProcessor({"list", "ls"}, "List of unit-test") {
 }
 
 // ---------------------------------------------------------------------
