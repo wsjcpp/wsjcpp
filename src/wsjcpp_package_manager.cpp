@@ -947,15 +947,11 @@ bool WsjcppPackageManager::installFromCache(const std::string &sPackage, const W
 
     // TODO redesign to WsjcppCore::recoursiveCopyFiles
     // copy sources to installation dir
-    // TODO copy only if sha1 equal!!!
     std::vector<std::string> vFiles = WsjcppCore::listOfFiles(sCacheSubFolderName);
     for (int i = 0; i < vFiles.size(); i++) {
         std::string sFrom = sCacheSubFolderName + "/" + vFiles[i];
         std::string sTo = sInstallationDir + "/" + vFiles[i];
-	// TODO move to wsjcpp-core
-        std::ifstream  src(sFrom, std::ios::binary);
-        std::ofstream  dst(sTo,   std::ios::binary);
-        dst << src.rdbuf();
+        WsjcppCore::copyFile(sFrom, sTo);
     }
     // TODO install all dependencies
     // TODO update src.wsjcpp/
