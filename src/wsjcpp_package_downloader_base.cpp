@@ -45,6 +45,7 @@ bool WsjcppPackageDownloaderBase::downloadFileOverHttps(const std::string &sUrl,
     }
 
     CURLcode res;
+    long response_code = 0;
     curl = curl_easy_init(); 
     if (curl) { 
         // curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L); //only for https
@@ -61,24 +62,20 @@ bool WsjcppPackageDownloaderBase::downloadFileOverHttps(const std::string &sUrl,
         if (res != CURLE_OK) {
             WsjcppLog::err(TAG, "Curl failed, reason  " + std::string(curl_easy_strerror(res))); 
             // TODO remove file
-            curl_easy_cleanup(curl);
-            return false;
         } else {
-            long response_code;
             curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &response_code);
             if (response_code != 200) {
                 WsjcppLog::info(TAG, "end " + std::to_string(response_code));
                 // TODO remove file
-                curl_easy_cleanup(curl);
-                return false;
             }
         }
 
         // always cleanup
         curl_easy_cleanup(curl); 
-        fclose(fp);
     }
-    return true;
+
+    fclose(fp);
+    return res == CURLE_OK && response_code == 200;
 }
 
 // ---------------------------------------------------------------------
