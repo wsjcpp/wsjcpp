@@ -10,7 +10,6 @@ class WsjcppArgumentSingle {
         WsjcppArgumentSingle(const std::string &sName, const std::string &sDescription);
         std::string getName();
         std::string getDescription();
-        std::string help(const std::string &sProgramName, const std::string &sPrefix);
 
     private:
         std::string TAG;
@@ -22,16 +21,21 @@ class WsjcppArgumentSingle {
 
 class WsjcppArgumentParameter {
     public:
-        WsjcppArgumentParameter(const std::string &sName, const std::string &sDescription);
+        WsjcppArgumentParameter(
+            const std::string &sName, 
+            const std::string &sValueName, 
+            const std::string &sDescription
+        );
         std::string getName();
+        std::string getValueName();
         std::string getDescription();
         std::string getValue();
         void setValue(const std::string &sValue);
-        std::string help(const std::string &sProgramName, const std::string &sPrefix);
 
     private:
         std::string TAG;
         std::string m_sName;
+        std::string m_sValueName;
         std::string m_sValue;
         std::string m_sDescription;
 };
@@ -40,34 +44,46 @@ class WsjcppArgumentParameter {
 
 class WsjcppArgumentProcessor {
     public:
-        WsjcppArgumentProcessor(const std::vector<std::string> &vNames, const std::string &sDescription);
+        WsjcppArgumentProcessor(
+            const std::vector<std::string> &vNames, 
+            const std::string &sShortDescription,
+            const std::string &sDescription
+        );
         const std::vector<std::string> &getNames();
         std::string getNamesAsString();
+        std::string getShortDescription();
         std::string getDescription();
 
         void registryProcessor(WsjcppArgumentProcessor *p);
         void registryExample(const std::string &sExample);
         void registrySingleArgument(const std::string &sArgumentName, const std::string &sDescription);
-        void registryParameterArgument(const std::string &sArgumentName, const std::string &sDescription);
+        void registryParameterArgument(
+            const std::string &sArgumentName, 
+            const std::string &sArgumentValueName,
+            const std::string &sDescription
+        );
         WsjcppArgumentProcessor *findRegisteredProcessor(const std::string &sArgumentName);
         WsjcppArgumentSingle *findRegisteredSingleArgument(const std::string &sArgumentName);
         WsjcppArgumentParameter *findRegisteredParameterArgument(const std::string &sArgumentName);
 
         bool hasRegisteredArgumentName(const std::string &sArgumentName);
-
-        std::string help(const std::string &sProgramName, const std::string &sPrefix);
         
         bool getValueOfParam(const std::string &sArgumentName);
+        int help(
+            const std::vector<std::string> &vRoutes, 
+            const std::vector<std::string> &vSubParams
+        );
 
         virtual bool applySingleArgument(const std::string &sProgramName, const std::string &sArgumentName);
         virtual bool applyParameterArgument(const std::string &sProgramName, const std::string &sArgumentName, const std::string &sValue);
-        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
+        virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams);
 
     protected:
         std::string TAG;
 
     private:
         std::vector<std::string> m_vNames;
+        std::string m_sShortDescription;
         std::string m_sDescription;
         std::vector<WsjcppArgumentProcessor *> m_vProcessors;
         std::vector<WsjcppArgumentSingle *> m_vSingleArguments;
@@ -97,7 +113,6 @@ class WsjcppArguments {
         WsjcppArguments(int argc, const char* argv[], WsjcppArgumentProcessor *pRoot);
         ~WsjcppArguments();
         int exec();
-        std::string help();
 
     private:
         WsjcppArgumentProcessor *m_pRoot;
@@ -107,7 +122,11 @@ class WsjcppArguments {
             std::vector<WsjcppArgumentSingle *> &vSingleArguments,
             std::vector<WsjcppArgumentParameter *> &vParameterArguments
         );
-        int recursiveExec(WsjcppArgumentProcessor *pArgumentProcessor, std::vector<std::string> &vSubArguments);
+        int recursiveExec(
+            WsjcppArgumentProcessor *pArgumentProcessor, 
+            std::vector<std::string> &vRoutes,
+            std::vector<std::string> &vSubArguments
+        );
 
         std::string TAG;
         std::vector<std::string> m_vArguments;

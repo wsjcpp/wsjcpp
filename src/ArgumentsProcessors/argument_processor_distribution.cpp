@@ -4,7 +4,7 @@
 #include <wsjcpp_hashes.h>
 
 ArgumentProcessorDistribution::ArgumentProcessorDistribution() 
-  : WsjcppArgumentProcessor({"distribution", "dist"}, "Files which will distribute with current source package") {
+  : WsjcppArgumentProcessor({"distribution", "dist"}, "Distribution files from this source package", "Files which will distribute with current source package") {
       registryProcessor(new ArgumentProcessorDistributionList());
       registryProcessor(new ArgumentProcessorDistributionAdd());
       registryProcessor(new ArgumentProcessorDistributionRemove());
@@ -14,13 +14,13 @@ ArgumentProcessorDistribution::ArgumentProcessorDistribution()
 // ---------------------------------------------------------------------
 
 ArgumentProcessorDistributionList::ArgumentProcessorDistributionList() 
-  : WsjcppArgumentProcessor({"list", "ls"}, "Distribution list files") {
+  : WsjcppArgumentProcessor({"list", "ls"}, "Distribution list files", "Distribution list files") {
 
 }
 
 // ---------------------------------------------------------------------
 
-int ArgumentProcessorDistributionList::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int ArgumentProcessorDistributionList::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     WsjcppPackageManager pkg(".");
     if (!pkg.load()) {
         WsjcppLog::err(TAG, "Could not load package info from current directory");
@@ -50,12 +50,12 @@ int ArgumentProcessorDistributionList::exec(const std::string &sProgramName, con
 // ---------------------------------------------------------------------
 
 ArgumentProcessorDistributionAdd::ArgumentProcessorDistributionAdd() 
-  : WsjcppArgumentProcessor({"add"}, "Add file to distribution list") {
+  : WsjcppArgumentProcessor({"add"}, "Add distribution file", "Add file to distribution list") {
 }
 
 // ---------------------------------------------------------------------
 
-int ArgumentProcessorDistributionAdd::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int ArgumentProcessorDistributionAdd::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     WsjcppPackageManager pkg(".");
     if (!pkg.load()) {
         WsjcppLog::err(TAG, "Could not load package info from current directory");
@@ -89,13 +89,13 @@ int ArgumentProcessorDistributionAdd::exec(const std::string &sProgramName, cons
 // ---------------------------------------------------------------------
 
 ArgumentProcessorDistributionRemove::ArgumentProcessorDistributionRemove() 
-  : WsjcppArgumentProcessor({"remove"}, "Remove file from distribution list") {
+  : WsjcppArgumentProcessor({"remove"}, "Remove distribution file", "Remove file from distribution list") {
 
 }
 
 // ---------------------------------------------------------------------
 
-int ArgumentProcessorDistributionRemove::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int ArgumentProcessorDistributionRemove::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     WsjcppPackageManager pkg(".");
     if (!pkg.load()) {
         WsjcppLog::err(TAG, "Could not load package info from current directory");
@@ -124,7 +124,7 @@ int ArgumentProcessorDistributionRemove::exec(const std::string &sProgramName, c
 // ---------------------------------------------------------------------
 
 ArgumentProcessorDistributionUpdate::ArgumentProcessorDistributionUpdate() 
-  : WsjcppArgumentProcessor({"update"}, "Update sha1 in distribution list") {
+  : WsjcppArgumentProcessor({"update"}, "Update sha1 in distribution list", "Update sha1 in distribution list") {
       registrySingleArgument("--all", "update sha1 in all");
       registryExample("from github source `./wsjcpp distribution update src/module.cpp`");
       registryExample("from github source `./wsjcpp distribution update --all`");
@@ -143,7 +143,7 @@ bool ArgumentProcessorDistributionUpdate::applySingleArgument(const std::string 
 
 // ---------------------------------------------------------------------
 
-int ArgumentProcessorDistributionUpdate::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int ArgumentProcessorDistributionUpdate::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     WsjcppPackageManager pkg(".");
     if (!pkg.load()) {
         WsjcppLog::err(TAG, "Could not load package info from current directory");

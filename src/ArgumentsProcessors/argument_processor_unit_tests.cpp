@@ -3,7 +3,7 @@
 #include <wsjcpp_core.h>
 
 ArgumentProcessorUnitTests::ArgumentProcessorUnitTests() 
-: WsjcppArgumentProcessor({"unit-tests", "ut"}, "manage unit-tests in package") {
+: WsjcppArgumentProcessor({"unit-tests", "ut"}, "manage unit-tests in package", "manage unit-tests in package") {
     registryProcessor(new ArgumentProcessorUnitTestsCreate());
     registryProcessor(new ArgumentProcessorUnitTestsDelete());
     registryProcessor(new ArgumentProcessorUnitTestsEnable());
@@ -14,13 +14,13 @@ ArgumentProcessorUnitTests::ArgumentProcessorUnitTests()
 // ---------------------------------------------------------------------
 
 ArgumentProcessorUnitTestsCreate::ArgumentProcessorUnitTestsCreate() 
-: WsjcppArgumentProcessor({"create"}, "create a new unit-test") {
+: WsjcppArgumentProcessor({"create"}, "Create a new unit-test", "Create a new unit-test") {
 
 }
 
 // ---------------------------------------------------------------------
 
-int ArgumentProcessorUnitTestsCreate::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int ArgumentProcessorUnitTestsCreate::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     WsjcppPackageManager pkg("./");
     if (!pkg.load()) {
         return -1;
@@ -41,12 +41,12 @@ int ArgumentProcessorUnitTestsCreate::exec(const std::string &sProgramName, cons
 // ---------------------------------------------------------------------
 
 ArgumentProcessorUnitTestsEnable::ArgumentProcessorUnitTestsEnable() 
-: WsjcppArgumentProcessor({"enable"}, "Enable unit-test") {
+: WsjcppArgumentProcessor({"enable"}, "Enable unit-test", "Enable unit-test") {
 }
 
 // ---------------------------------------------------------------------
 
-int ArgumentProcessorUnitTestsEnable::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int ArgumentProcessorUnitTestsEnable::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     WsjcppPackageManager pkg("./");
     if (!pkg.load()) {
         return -1;
@@ -67,12 +67,12 @@ int ArgumentProcessorUnitTestsEnable::exec(const std::string &sProgramName, cons
 // ---------------------------------------------------------------------
 
 ArgumentProcessorUnitTestsDisable::ArgumentProcessorUnitTestsDisable() 
-: WsjcppArgumentProcessor({"disable"}, "Disable unit-test") {
+: WsjcppArgumentProcessor({"disable"}, "Disable unit-test", "Disable unit-test") {
 }
 
 // ---------------------------------------------------------------------
 
-int ArgumentProcessorUnitTestsDisable::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int ArgumentProcessorUnitTestsDisable::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     WsjcppPackageManager pkg("./");
     if (!pkg.load()) {
         return -1;
@@ -94,13 +94,13 @@ int ArgumentProcessorUnitTestsDisable::exec(const std::string &sProgramName, con
 // ---------------------------------------------------------------------
 
 ArgumentProcessorUnitTestsDelete::ArgumentProcessorUnitTestsDelete() 
-: WsjcppArgumentProcessor({"delete"}, "Delete unit-test by name") {
+: WsjcppArgumentProcessor({"delete"}, "Delete unit-test by name", "Delete unit-test by name") {
 
 }
 
 // ---------------------------------------------------------------------
 
-int ArgumentProcessorUnitTestsDelete::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int ArgumentProcessorUnitTestsDelete::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     WsjcppPackageManager pkg("./");
     if (!pkg.load()) {
         return -1;
@@ -133,12 +133,12 @@ int ArgumentProcessorUnitTestsDelete::exec(const std::string &sProgramName, cons
 // ArgumentProcessorUnitTestsList
 
 ArgumentProcessorUnitTestsList::ArgumentProcessorUnitTestsList() 
-: WsjcppArgumentProcessor({"list", "ls"}, "List of unit-test") {
+: WsjcppArgumentProcessor({"list", "ls"}, "List of unit-test", "List of unit-test") {
 }
 
 // ---------------------------------------------------------------------
 
-int ArgumentProcessorUnitTestsList::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int ArgumentProcessorUnitTestsList::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     WsjcppPackageManager pkg("./");
     if (!pkg.load()) {
         return -1;

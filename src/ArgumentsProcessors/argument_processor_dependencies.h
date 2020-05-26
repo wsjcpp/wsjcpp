@@ -7,7 +7,7 @@
 class ArgumentProcessorInstall : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorInstall();
-        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
+        virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams);
         
     private:
         std::string TAG;
@@ -17,7 +17,7 @@ class ArgumentProcessorReinstall : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorReinstall();
         virtual bool applySingleArgument(const std::string &sProgramName, const std::string &sArgumentName);
-        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
+        virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams);
 
     private:
         std::string TAG;
@@ -27,7 +27,7 @@ class ArgumentProcessorReinstall : public WsjcppArgumentProcessor {
 class ArgumentProcessorUninstall : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorUninstall();
-        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
+        virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams);
 
     private:
         std::string TAG;
@@ -38,7 +38,7 @@ class ArgumentProcessorList : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorList();
         virtual bool applySingleArgument(const std::string &sProgramName, const std::string &sArgumentName);
-        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
+        virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams);
 
     private:
         std::string TAG;
@@ -53,7 +53,7 @@ class ArgumentProcessorList : public WsjcppArgumentProcessor {
 class ArgumentProcessorUpdate : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorUpdate();
-        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
+        virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams);
 
     private:
         std::string TAG;

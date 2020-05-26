@@ -3,7 +3,7 @@
 #include <wsjcpp_core.h>
 
 ArgumentProcessorOrigins::ArgumentProcessorOrigins() 
-: WsjcppArgumentProcessor({"origins"}, "list of servers with colelction packages") {
+: WsjcppArgumentProcessor({"origins"}, "list of registry with packages", "list of servers with colelction packages") {
     registryProcessor(new ArgumentProcessorOriginsAdd());
     registryProcessor(new ArgumentProcessorOriginsRemove());
     registryProcessor(new ArgumentProcessorOriginsList());
@@ -12,13 +12,13 @@ ArgumentProcessorOrigins::ArgumentProcessorOrigins()
 // ---------------------------------------------------------------------
 
 ArgumentProcessorOriginsAdd::ArgumentProcessorOriginsAdd() 
-: WsjcppArgumentProcessor({"add"}, "add a new origin") {
+: WsjcppArgumentProcessor({"add"}, "add a new origin", "add a new origin") {
 
 }
 
 // ---------------------------------------------------------------------
 
-int ArgumentProcessorOriginsAdd::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int ArgumentProcessorOriginsAdd::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     WsjcppPackageManager pkg("./");
     if (!pkg.load()) {
         return -1;
@@ -39,13 +39,13 @@ int ArgumentProcessorOriginsAdd::exec(const std::string &sProgramName, const std
 // ---------------------------------------------------------------------
 
 ArgumentProcessorOriginsRemove::ArgumentProcessorOriginsRemove() 
-: WsjcppArgumentProcessor({"reomve"}, "Remove origin") {
+: WsjcppArgumentProcessor({"reomve"}, "Remove origin", "Remove origin") {
 
 }
 
 // ---------------------------------------------------------------------
 
-int ArgumentProcessorOriginsRemove::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int ArgumentProcessorOriginsRemove::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     WsjcppPackageManager pkg("./");
     if (!pkg.load()) {
         return -1;
@@ -77,12 +77,12 @@ int ArgumentProcessorOriginsRemove::exec(const std::string &sProgramName, const 
 // ---------------------------------------------------------------------
 
 ArgumentProcessorOriginsList::ArgumentProcessorOriginsList() 
-: WsjcppArgumentProcessor({"list"}, "list of origns") {
+: WsjcppArgumentProcessor({"list"}, "List of origns", "list of origns") {
 }
 
 // ---------------------------------------------------------------------
 
-int ArgumentProcessorOriginsList::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int ArgumentProcessorOriginsList::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     WsjcppPackageManager pkg("./");
     if (!pkg.load()) {
         return -1;

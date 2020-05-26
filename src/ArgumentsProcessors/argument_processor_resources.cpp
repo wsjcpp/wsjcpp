@@ -10,7 +10,7 @@
 // ArgumentProcessorResources
 
 ArgumentProcessorResources::ArgumentProcessorResources() 
-: WsjcppArgumentProcessor({"resources", "res"}, "Pack files to c++ code") {
+: WsjcppArgumentProcessor({"resources", "res"}, "Pack files to c++ code", "Pack files to c++ code") {
     TAG = "ArgumentProcessorResources";
     // registrySingleArgument("--single", "What exactly do this single param?");
     // registryParameterArgument("-param", "What need this param?");
@@ -41,7 +41,7 @@ bool ArgumentProcessorResources::applyParameterArgument(
 
 // ---------------------------------------------------------------------
 
-int ArgumentProcessorResources::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int ArgumentProcessorResources::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     WsjcppLog::err(TAG, "Not implemented");
     return -1; 
 }
@@ -50,7 +50,7 @@ int ArgumentProcessorResources::exec(const std::string &sProgramName, const std:
 // ArgumentProcessorResourcesList
 
 ArgumentProcessorResourcesList::ArgumentProcessorResourcesList() 
-: WsjcppArgumentProcessor({"list", "ls"}, "List of pack files") {
+: WsjcppArgumentProcessor({"list", "ls"}, "List of pack files", "List of pack files") {
     TAG = "ArgumentProcessorResourcesList";
     registrySingleArgument("--more", "More information about resource file");
     m_bMore = false;
@@ -68,7 +68,7 @@ bool ArgumentProcessorResourcesList::applySingleArgument(const std::string &sPro
 
 // ---------------------------------------------------------------------
 
-int ArgumentProcessorResourcesList::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int ArgumentProcessorResourcesList::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     WsjcppPackageManager pkg(".");
     if (!pkg.load()) {
         std::cout 
@@ -87,7 +87,7 @@ int ArgumentProcessorResourcesList::exec(const std::string &sProgramName, const 
             << std::endl
             << std::endl
             << "   For add please use a command: "
-            << "   " << sProgramName << " resources add <path>"
+            << "   " << vRoutes[0] << " resources add <path>"
             << std::endl
             << std::endl;
     } else {
@@ -125,13 +125,13 @@ int ArgumentProcessorResourcesList::exec(const std::string &sProgramName, const 
 // ArgumentProcessorResourcesRemove
 
 ArgumentProcessorResourcesRemove::ArgumentProcessorResourcesRemove() 
-: WsjcppArgumentProcessor({"remove", "rm"}, "Remove resource (only c++ code, original file will be not touched)") {
+: WsjcppArgumentProcessor({"remove", "rm"}, "Remove resource", "Remove resource (only c++ code, original file will be not touched)") {
     TAG = "ArgumentProcessorResourcesRemove";
 }
 
 // ---------------------------------------------------------------------
 
-int ArgumentProcessorResourcesRemove::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int ArgumentProcessorResourcesRemove::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     WsjcppPackageManager pkg(".");
     if (!pkg.load()) {
         std::cout 
@@ -165,7 +165,7 @@ int ArgumentProcessorResourcesRemove::exec(const std::string &sProgramName, cons
 // ArgumentProcessorResourcesAdd
 
 ArgumentProcessorResourcesAdd::ArgumentProcessorResourcesAdd() 
-: WsjcppArgumentProcessor({"add"}, "Pack files to c++ code") {
+: WsjcppArgumentProcessor({"add"}, "Pack files to c++ code", "Pack files to c++ code") {
     TAG = "ArgumentProcessorResources";
     registrySingleArgument("--text", "Pack resources like text");
     registrySingleArgument("--binary", "Pack resources like binary");
@@ -189,7 +189,7 @@ bool ArgumentProcessorResourcesAdd::applySingleArgument(const std::string &sProg
 
 // ---------------------------------------------------------------------
 
-int ArgumentProcessorResourcesAdd::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int ArgumentProcessorResourcesAdd::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     if (vSubParams.size() != 1) {
         std::cout 
             << std::endl

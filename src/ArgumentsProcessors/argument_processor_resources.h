@@ -11,7 +11,7 @@ class ArgumentProcessorResources : public WsjcppArgumentProcessor {
 
         virtual bool applyParameterArgument(const std::string &sProgramName, const std::string &sArgumentName, const std::string &sValue);
         virtual bool applySingleArgument(const std::string &sProgramName, const std::string &sArgumentName);
-        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
+        virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams);
 };
 
 // ---------------------------------------------------------------------
@@ -21,7 +21,7 @@ class ArgumentProcessorResourcesList : public WsjcppArgumentProcessor {
         ArgumentProcessorResourcesList();
 
         virtual bool applySingleArgument(const std::string &sProgramName, const std::string &sArgumentName);
-        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
+        virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams);
 
     private:
         bool m_bMore;
@@ -32,7 +32,7 @@ class ArgumentProcessorResourcesList : public WsjcppArgumentProcessor {
 class ArgumentProcessorResourcesRemove : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorResourcesRemove();
-        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
+        virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams);
 };
 
 // ---------------------------------------------------------------------
@@ -42,7 +42,7 @@ class ArgumentProcessorResourcesAdd : public WsjcppArgumentProcessor {
         ArgumentProcessorResourcesAdd();
 
         virtual bool applySingleArgument(const std::string &sProgramName, const std::string &sArgumentName);
-        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
+        virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams);
 
     private:
         bool m_bText;

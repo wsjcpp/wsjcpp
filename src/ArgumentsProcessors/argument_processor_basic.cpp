@@ -3,13 +3,13 @@
 #include <wsjcpp_core.h>
 
 ArgumentProcessorInfo::ArgumentProcessorInfo() 
-: WsjcppArgumentProcessor({"info"}, "information about package") {
+: WsjcppArgumentProcessor({"info"}, "Information about package", "Information about package") {
       
 }
 
 // ---------------------------------------------------------------------
 
-int ArgumentProcessorInfo::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int ArgumentProcessorInfo::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     WsjcppPackageManager pkg(".");
     if (!pkg.load()) {
         WsjcppLog::err(TAG, "Could not load package info from current directory");
@@ -73,13 +73,13 @@ int ArgumentProcessorInfo::exec(const std::string &sProgramName, const std::vect
 // ---------------------------------------------------------------------
 
 ArgumentProcessorInit::ArgumentProcessorInit() 
-: WsjcppArgumentProcessor({"init"}, "Init package in current directory") {
+: WsjcppArgumentProcessor({"init"}, "Init package in current directory", "Init package in current directory") {
       
 }
 
 // ---------------------------------------------------------------------
 
-int ArgumentProcessorInit::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int ArgumentProcessorInit::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
 
     if (vSubParams.size() != 1) {
         WsjcppLog::err(TAG, "Expected path to project");
@@ -174,13 +174,13 @@ int ArgumentProcessorInit::exec(const std::string &sProgramName, const std::vect
 // ---------------------------------------------------------------------
 
 ArgumentProcessorClean::ArgumentProcessorClean() 
-: WsjcppArgumentProcessor({"clean"}, "Clean all packages and files for wsjcpp") {
+: WsjcppArgumentProcessor({"clean"}, "Clean all packages and files for wsjcpp", "Clean all packages and files for wsjcpp") {
       
 }
 
 // ---------------------------------------------------------------------
 
-int ArgumentProcessorClean::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int ArgumentProcessorClean::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     std::vector<std::string> vRemoveFiles;
     vRemoveFiles.push_back("wsjcpp.yml");
     std::vector<std::string> vRemoveFolders;
@@ -239,13 +239,13 @@ int ArgumentProcessorClean::exec(const std::string &sProgramName, const std::vec
 // ArgumentProcessorVersion
 
 ArgumentProcessorVersion::ArgumentProcessorVersion() 
-: WsjcppArgumentProcessor({"version"}, "Current version of wsjcpp") {
+: WsjcppArgumentProcessor({"version"}, "Current version of wsjcpp", "Current version of wsjcpp") {
       
 }
 
 // ---------------------------------------------------------------------
 
-int ArgumentProcessorVersion::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int ArgumentProcessorVersion::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     // TODO move to default arguments
     std::cout << "Application: " << std::string(WSJCPP_APP_NAME) << std::endl;
     std::cout << "Version: " << std::string(WSJCPP_APP_VERSION) << std::endl;

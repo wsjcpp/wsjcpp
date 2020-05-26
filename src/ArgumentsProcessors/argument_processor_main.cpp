@@ -15,7 +15,7 @@
 #include <wsjcpp_core.h>
 
 ArgumentProcessorMain::ArgumentProcessorMain() 
-  : WsjcppArgumentProcessor({"main"}, "C++ Source Package manager") {
+  : WsjcppArgumentProcessor({"main"}, "C++ Source Package Manager", "C++ Source Package Manager") {
     registryProcessor(new ArgumentProcessorVersion());
     registryProcessor(new ArgumentProcessorInfo());
     registryProcessor(new ArgumentProcessorInit());
@@ -37,7 +37,7 @@ ArgumentProcessorMain::ArgumentProcessorMain()
 
 // ---------------------------------------------------------------------
 
-int ArgumentProcessorMain::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int ArgumentProcessorMain::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     return -1;
 }
 

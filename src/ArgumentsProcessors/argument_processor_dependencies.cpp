@@ -7,20 +7,21 @@
 // ArgumentProcessorInstall
 
 ArgumentProcessorInstall::ArgumentProcessorInstall() 
-  : WsjcppArgumentProcessor({"install", "i"}, "Install a source package from any sources (will be install deps)") {
+  : WsjcppArgumentProcessor({"install", "i"}, "Install source package", "Install a source package from any sources (will be install deps)") {
       TAG = "ArgumentProcessorInstall";
-    registryExample("from github source `wsjcpp install 'https://github.com/wsjcpp/json:v3.7.0'`");
-    registryExample("from github source `wsjcpp install 'https://github.com/wsjcpp/json:develop'`");
-    // registryExample("from local system `wsjcpp install 'file:///usr/share/some_package'`");
-    // registryExample("from local system `wsjcpp install author/package_name`"); - try find in origns and install latest version
-    // registryExample("from local system `wsjcpp install package_name`"); - try find in origns
-    // registryExample("from http(s) `wsjcpp install 'https://wsjcpp.org/source-packages/pkgname'`");
-    // registryExample("from http(s) `wsjcpp install 'https://wsjcpp.org/source-packages/example/v3.0.0'`");
+    registryExample("from github.com source `wsjcpp install https://github.com/nlohmann/json:develop`");
+    registryExample("from gitlab.com source `wsjcpp install https://gitlab.com/wsjcpp/example-wsjcpp-package-gitlab:master`");
+    registryExample("from bitbucket.org source `wsjcpp install https://bitbucket.org/wsjcpp/example-wsjcpp-package-bitbucket:master`");
+    registryExample("from https source `wsjcpp install wsjcpp install https://wsjcpp.org/packages/example/v0.0.1/`");
+    
+    // TODO registryExample("from local system `wsjcpp install 'file:///usr/share/some_package'`");
+    // TODO registryExample("from local system `wsjcpp install author/package_name`"); - try find in origns and install latest version
+    // TODO registryExample("from local system `wsjcpp install package_name`"); - try find in origns
 }
 
 // ---------------------------------------------------------------------
 
-int ArgumentProcessorInstall::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int ArgumentProcessorInstall::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     WsjcppPackageManager pkg(".");
     if (!pkg.load()) {
         WsjcppLog::err(TAG, "Could not load package info from current directory");
@@ -70,7 +71,7 @@ int ArgumentProcessorInstall::exec(const std::string &sProgramName, const std::v
 // ArgumentProcessorReinstall
 
 ArgumentProcessorReinstall::ArgumentProcessorReinstall() 
-  : WsjcppArgumentProcessor({"reinstall", "re"}, "Reinstall a source package (will be replaced all sources)") {
+  : WsjcppArgumentProcessor({"reinstall", "re"}, "Reinstall a source package", "Reinstall a source package (will be replaced all sources)") {
       TAG = "ArgumentProcessorReinstall";
       registrySingleArgument("--all", "reinstall all");
       registryExample("from github source `wsjcpp reinstall 'https://github.com/wsjcpp/json:develop'`");
@@ -91,7 +92,7 @@ bool ArgumentProcessorReinstall::applySingleArgument(const std::string &sProgram
 
 // ---------------------------------------------------------------------
 
-int ArgumentProcessorReinstall::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int ArgumentProcessorReinstall::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     WsjcppPackageManager pkg(".");
     if (!pkg.load()) {
         WsjcppLog::err(TAG, "Could not load package info from current directory");
@@ -151,7 +152,7 @@ int ArgumentProcessorReinstall::exec(const std::string &sProgramName, const std:
 // ArgumentProcessorUninstall
 
 ArgumentProcessorUninstall::ArgumentProcessorUninstall() 
-  : WsjcppArgumentProcessor({"uninstall"}, "Uninstall source package (!will be removed sources)") {
+  : WsjcppArgumentProcessor({"uninstall"}, "Uninstall source package", "Uninstall source package (!will be removed sources)") {
       TAG = "ArgumentProcessorUninstall";
       registryExample("uninstall by full url `./wsjcpp uninstall 'https://github.com/wsjcpp/json:develop'`");
       registryExample("uninstall by name `./wsjcpp uninstall 'nlohmann/json'`");
@@ -159,7 +160,7 @@ ArgumentProcessorUninstall::ArgumentProcessorUninstall()
 
 // ---------------------------------------------------------------------
 
-int ArgumentProcessorUninstall::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int ArgumentProcessorUninstall::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     WsjcppPackageManager pkg(".");
     if (!pkg.load()) {
         WsjcppLog::err(TAG, "Could not load package info from current directory");
@@ -190,7 +191,7 @@ int ArgumentProcessorUninstall::exec(const std::string &sProgramName, const std:
 // ArgumentProcessorList
 
 ArgumentProcessorList::ArgumentProcessorList() 
-  : WsjcppArgumentProcessor({"list", "ls"}, "Show list of dependencies") {
+  : WsjcppArgumentProcessor({"list", "ls"}, "Show list of dependencies", "Show list of dependencies") {
       TAG = "ArgumentProcessorList";
       registrySingleArgument("--tree", "Tree");
       registryExample("from github source `./wsjcpp ls`");
@@ -210,7 +211,7 @@ bool ArgumentProcessorList::applySingleArgument(const std::string &sProgramName,
 
 // ---------------------------------------------------------------------
 
-int ArgumentProcessorList::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int ArgumentProcessorList::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     WsjcppPackageManager pkg(".");
     if (!pkg.load()) {
         WsjcppLog::err(TAG, "Could not load package info from current directory");
@@ -263,13 +264,13 @@ std::string ArgumentProcessorList::loadDependencies(
 // ArgumentProcessorUpdate
 
 ArgumentProcessorUpdate::ArgumentProcessorUpdate() 
-  : WsjcppArgumentProcessor({"update"}, "Update all auto-generated files") {
+  : WsjcppArgumentProcessor({"update"}, "Update auto-generated files", "Update all auto-generated files") {
       TAG = "ArgumentProcessorUpdate";
 }
 
 // ---------------------------------------------------------------------
 
-int ArgumentProcessorUpdate::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int ArgumentProcessorUpdate::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     WsjcppPackageManager pkg(".");
     if (!pkg.load()) {
         WsjcppLog::err(TAG, "Could not load package info from current directory");

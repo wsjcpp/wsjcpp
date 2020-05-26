@@ -42,7 +42,7 @@ class " class_name " : public WsjcppArgumentProcessor {
 
         virtual bool applyParameterArgument(const std::string &sProgramName, const std::string &sArgumentName, const std::string &sValue);
         virtual bool applySingleArgument(const std::string &sProgramName, const std::string &sArgumentName);
-        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
+        virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams);
 };
 
 #endif // " ifndef_header
@@ -60,7 +60,7 @@ concat content_source  "
 : WsjcppArgumentProcessor({\"" argument_processor_name "\"}, \"TODO description\") {
     TAG = \"" class_name "\";
     // registrySingleArgument(\"--single\", \"What exactly do this single param?\");
-    // registryParameterArgument(\"-param\", \"What need this param?\");
+    // registryParameterArgument(\"-param\", \"N\", \"What need this param?\");
     // registryExample(\"here example of command\");
     // registryProcessor(new ArgumentProcessorOtherProcessor());
 }
@@ -85,7 +85,7 @@ bool " class_name "::applyParameterArgument(
 
 // ---------------------------------------------------------------------
 
-int " class_name "::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int " class_name "::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     WsjcppLog::err(TAG, \"Not implemented\");
     return -1; 
 }

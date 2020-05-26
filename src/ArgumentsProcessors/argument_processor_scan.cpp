@@ -7,7 +7,7 @@
 // ArgumentProcessorScan
 
 ArgumentProcessorScan::ArgumentProcessorScan() 
-: WsjcppArgumentProcessor({"scan"}, "Scan the code") {
+: WsjcppArgumentProcessor({"scan"}, "Scan the code", "Scan the code") {
     TAG = "ArgumentProcessorScan";
     registryProcessor(new ArgumentProcessorScanTodo());
     // registrySingleArgument("--single", "What exactly do this single param?");
@@ -36,7 +36,7 @@ bool ArgumentProcessorScan::applyParameterArgument(
 
 // ---------------------------------------------------------------------
 
-int ArgumentProcessorScan::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int ArgumentProcessorScan::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     WsjcppLog::err(TAG, "Not implemented");
     return -1; 
 }
@@ -45,13 +45,13 @@ int ArgumentProcessorScan::exec(const std::string &sProgramName, const std::vect
 // ArgumentProcessorScanTodo
 
 ArgumentProcessorScanTodo::ArgumentProcessorScanTodo() 
-: WsjcppArgumentProcessor({"todo"}, "Search in code all TODOs") {
+: WsjcppArgumentProcessor({"todo"}, "Search in code all TODOs", "Search in code all TODOs") {
       
 }
 
 // ---------------------------------------------------------------------
 
-int ArgumentProcessorScanTodo::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int ArgumentProcessorScanTodo::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     
     std::vector<std::string> vFoundFiles;
 

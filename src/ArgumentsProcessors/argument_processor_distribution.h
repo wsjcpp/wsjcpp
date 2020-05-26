@@ -16,7 +16,7 @@ class ArgumentProcessorDistribution : public WsjcppArgumentProcessor {
 class ArgumentProcessorDistributionList : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorDistributionList();
-        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
+        virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams);
         
     private:
         
@@ -27,7 +27,7 @@ class ArgumentProcessorDistributionList : public WsjcppArgumentProcessor {
 class ArgumentProcessorDistributionAdd : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorDistributionAdd();
-        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
+        virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams);
         
     private:
         
@@ -38,7 +38,7 @@ class ArgumentProcessorDistributionAdd : public WsjcppArgumentProcessor {
 class ArgumentProcessorDistributionRemove : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorDistributionRemove();
-        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
+        virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams);
         
     private:
         
@@ -49,7 +49,7 @@ class ArgumentProcessorDistributionRemove : public WsjcppArgumentProcessor {
 class ArgumentProcessorDistributionUpdate : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorDistributionUpdate();
-        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
+        virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams);
         virtual bool applySingleArgument(const std::string &sProgramName, const std::string &sArgumentName);
     private:
         bool m_bUpdateAll;
