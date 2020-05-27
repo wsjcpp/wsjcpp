@@ -34,9 +34,13 @@ bool WsjcppPackageDownloaderHttp::downloadToCache(
     std::string sWsjcppBaseUrl = sPackage;
 
     std::string sDownloadedWsjCppYml = sCacheDir + "/wsjcpp.hold.yml";
+    std::string sDownloadedWsjCppYml2 = sCacheDir + "/wsjcpp.yml";
     if (!WsjcppPackageDownloaderBase::downloadFileOverHttps(sWsjcppBaseUrl + "/wsjcpp.yml", sDownloadedWsjCppYml)) {
         sError = "Could not download " + sWsjcppBaseUrl;
-        // TODO remove from cache
+        return false;
+    }
+    if (!WsjcppPackageDownloaderBase::downloadFileOverHttps(sWsjcppBaseUrl + "/wsjcpp.yml", sDownloadedWsjCppYml2)) {
+        sError = "Could not download " + sWsjcppBaseUrl;
         return false;
     }
 
@@ -56,7 +60,6 @@ bool WsjcppPackageDownloaderHttp::downloadToCache(
         WsjcppLog::info(TAG, "\n\t" + sDownloadedWsjCppSourceFrom + " \n\t-> \n\t" + sDownloadedWsjCppSourceTo + "\n\t[sha1:" + src.getSha1() + "]");
         if (!WsjcppPackageDownloaderBase::downloadFileOverHttps(sDownloadedWsjCppSourceFrom, sDownloadedWsjCppSourceTo)) {
             sError = "Could not download " + sDownloadedWsjCppSourceFrom;
-            // TODO remove from cache
             return false;
         }
         std::string sContent = "";

@@ -62,7 +62,6 @@ bool WsjcppPackageDownloaderGitlab::downloadToCache(
         std::cout << "Downloading '" << sDownloadedWsjCppSourceFrom << "' -> '" << sDownloadedWsjCppSourceTo << "' ... " << std::endl;
         if (!WsjcppPackageDownloaderBase::downloadFileOverHttps(sDownloadedWsjCppSourceFrom, sDownloadedWsjCppSourceTo)) {
             WsjcppLog::err(TAG, "Could not download " + sDownloadedWsjCppSourceFrom);
-            // TODO remove from cache
             return false;
         }
         std::cout << "OK" << std::endl;

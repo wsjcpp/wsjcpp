@@ -27,11 +27,9 @@ bool WsjcppPackageDownloaders::downloadToCache(
     std::string &sError
 ) {
     // prepare directory with cache
-    // TODO cleanup folder before download
     for (int i = 0; m_vDownloaders.size(); i++) {
         WsjcppPackageDownloaderBase *pDownloader = m_vDownloaders[i];
         if (pDownloader->canDownload(sPackage)) {
-            // TODO remove from cache if could not download
             return pDownloader->downloadToCache(sPackage, sCacheDir, dep, sError);
         }
     }

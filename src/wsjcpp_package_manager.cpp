@@ -788,7 +788,7 @@ bool WsjcppPackageManager::install(const std::string &sPackage, std::string &sEr
         return false;
     }
 
-    std::cout << "Try download package from " << sPackage << " ..." << std::endl;
+    std::cout << "Try downloading package from " << sPackage << " ..." << std::endl;
    
     std::string sWsjcppBaseUrl = sPackage;
     std::string sCacheDir = m_sDir + "/.wsjcpp/cache";
@@ -803,6 +803,7 @@ bool WsjcppPackageManager::install(const std::string &sPackage, std::string &sEr
 
     WsjcppPackageManagerDependence dep;
     if (!m_pDownloaders->downloadToCache(sPackage, sCacheSubFolderName, dep, sError)) {
+        WsjcppCore::recoursiveRemoveDir(sCacheSubFolderName);
         return false;
     }
 
