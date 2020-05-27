@@ -70,7 +70,7 @@ int ArgumentProcessorScanTodo::exec(const std::vector<std::string> &vRoutes, con
             vScanDirs.push_back(sNewDir);
         }
 
-        std::vector<std::string> vFiles = WsjcppCore::listOfFiles(sDir);
+        std::vector<std::string> vFiles = WsjcppCore::getListOfFiles(sDir);
         for (int i = 0; i < vFiles.size(); i++) {
             vFoundFiles.push_back(WsjcppCore::doNormalizePath(sDir + "/" + vFiles[i]));
         }

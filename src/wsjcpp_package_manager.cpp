@@ -948,7 +948,7 @@ bool WsjcppPackageManager::installFromCache(const std::string &sPackage, const W
 
     // TODO redesign to WsjcppCore::recoursiveCopyFiles
     // copy sources to installation dir
-    std::vector<std::string> vFiles = WsjcppCore::listOfFiles(sCacheSubFolderName);
+    std::vector<std::string> vFiles = WsjcppCore::getListOfFiles(sCacheSubFolderName);
     for (int i = 0; i < vFiles.size(); i++) {
         std::string sFrom = sCacheSubFolderName + "/" + vFiles[i];
         std::string sTo = sInstallationDir + "/" + vFiles[i];

@@ -196,7 +196,7 @@ int ArgumentProcessorClean::exec(const std::vector<std::string> &vRoutes, const 
         if (WsjcppCore::dirExists(sFolder)) {
             WsjcppLog::info(TAG, "'" + sFolder + "' - scan folder");
             vRemoveFolders.push_back(sFolder);
-            std::vector<std::string> vFiles = WsjcppCore::listOfFiles(sFolder);
+            std::vector<std::string> vFiles = WsjcppCore::getListOfFiles(sFolder);
             for (int i = 0; i < vFiles.size(); i++) {
                 vRemoveFiles.push_back( sFolder + "/" + vFiles[i]);
             }
