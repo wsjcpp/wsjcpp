@@ -79,3 +79,28 @@ bool WsjcppPackageDownloaderBase::downloadFileOverHttps(const std::string &sUrl,
 }
 
 // ---------------------------------------------------------------------
+
+bool WsjcppPackageDownloaderBase::prepareCacheSubdirForFile(const std::string &sCacheDir, const std::string &sFilePath, std::string &sError) {
+    std::vector<std::string> vSubdirs = WsjcppCore::split(sFilePath, "/");
+    vSubdirs.pop_back(); // remove filename
+    std::string sPath = WsjcppCore::doNormalizePath(sCacheDir);
+    for (int x = 0; x < vSubdirs.size(); x++) {
+        if (vSubdirs[x] == ".") {
+            continue; // skip
+        }
+        if (vSubdirs[x] == "..") {
+            sError = "Source file path must not contains '..' in path";
+            return false;
+        }
+        sPath = WsjcppCore::doNormalizePath(sPath + "/" + vSubdirs[x]);
+        if (!WsjcppCore::dirExists(sPath)) {
+            if (!WsjcppCore::makeDir(sPath)) {
+                sError = "Could not create dir: '" + sPath + "'";
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+// ---------------------------------------------------------------------

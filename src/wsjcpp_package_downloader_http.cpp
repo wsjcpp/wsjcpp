@@ -1,6 +1,7 @@
 
 #include "wsjcpp_package_downloader_http.h"
 #include <wsjcpp_core.h>
+#include <wsjcpp_hashes.h>
 #include <wsjcpp_package_manager.h>
 
 // ---------------------------------------------------------------------
@@ -33,18 +34,13 @@ bool WsjcppPackageDownloaderHttp::downloadToCache(
    
     std::string sWsjcppBaseUrl = sPackage;
 
-    std::string sDownloadedWsjCppYml = sCacheDir + "/wsjcpp.hold.yml";
     std::string sDownloadedWsjCppYml2 = sCacheDir + "/wsjcpp.yml";
-    if (!WsjcppPackageDownloaderBase::downloadFileOverHttps(sWsjcppBaseUrl + "/wsjcpp.yml", sDownloadedWsjCppYml)) {
-        sError = "Could not download " + sWsjcppBaseUrl;
-        return false;
-    }
     if (!WsjcppPackageDownloaderBase::downloadFileOverHttps(sWsjcppBaseUrl + "/wsjcpp.yml", sDownloadedWsjCppYml2)) {
         sError = "Could not download " + sWsjcppBaseUrl;
         return false;
     }
 
-    WsjcppPackageManager pkg(sCacheDir, sCacheDir, true);
+    WsjcppPackageManager pkg(sCacheDir);
     if (!pkg.load()) {
         sError = "Could not load " + sCacheDir;
         return false;
@@ -54,32 +50,56 @@ bool WsjcppPackageDownloaderHttp::downloadToCache(
     std::vector<WsjcppPackageManagerDistributionFile> vSources = pkg.getListOfDistributionFiles();
     for (int i = 0; i < vSources.size(); i++) {
         WsjcppPackageManagerDistributionFile src = vSources[i];
-        std::string sDownloadedWsjCppSourceFrom = sWsjcppBaseUrl + "/" + src.getSourceFile();
-        std::string sDownloadedWsjCppSourceTo = sCacheDir + "/" + src.getTargetFile();
+        std::cout << "  - " << src.getSourceFile() << ": " << std::endl;
+        if (!WsjcppPackageDownloaderBase::prepareCacheSubdirForFile(sCacheDir, src.getSourceFile(), sError)) {
+            return false;
+        }
 
-        WsjcppLog::info(TAG, "\n\t" + sDownloadedWsjCppSourceFrom + " \n\t-> \n\t" + sDownloadedWsjCppSourceTo + "\n\t[sha1:" + src.getSha1() + "]");
+        std::string sDownloadedWsjCppSourceFrom = sWsjcppBaseUrl + "/" + src.getSourceFile();
+        std::string sDownloadedWsjCppSourceTo = sCacheDir + "/" + src.getSourceFile();
+        
+        std::cout
+            << "    Downloading file from '" << sDownloadedWsjCppSourceFrom << "'" << " to '" << sDownloadedWsjCppSourceTo << "'."
+            << std::endl;
+
         if (!WsjcppPackageDownloaderBase::downloadFileOverHttps(sDownloadedWsjCppSourceFrom, sDownloadedWsjCppSourceTo)) {
             sError = "Could not download " + sDownloadedWsjCppSourceFrom;
             return false;
+        } else {
+            std::cout  
+                << "    Completed." << std::endl;
         }
+
         std::string sContent = "";
         if (!WsjcppCore::readTextFile(sDownloadedWsjCppSourceTo, sContent)) {
             sError = "Could not read file " + sDownloadedWsjCppSourceTo;
             return false;
         }
-        // TODO set calculated sha1
         // std::string sSha1 = WsjcppHashes::sha1_calc_hex(sContent);
         // src.setSha1(sSha1);
+        if (!pkg.updateSourceFile(src.getSourceFile())) {
+            sError = "Could not download " + sDownloadedWsjCppSourceFrom;
+            return false;
+        }
     }
+    pkg.save();
 
     std::string sInstallationDir = "./src.wsjcpp/" + WsjcppPackageDownloaderBase::prepareCacheSubFolderName(pkg.getName());
 
-    // WsjcppPackageManagerDependence dep;
     dep.setName(pkg.getName());
     dep.setVersion(pkg.getVersion());
     dep.setUrl(sPackage);
     dep.setInstallationDir(sInstallationDir);
-    dep.setOrigin("https://github.com/"); // TODO remove "package-name/version"
+
+    // remove package/version from url
+    std::vector<std::string> vSubdirs = WsjcppCore::split(sPackage, "/");
+    if (vSubdirs[vSubdirs.size()-1] == "") {
+        vSubdirs.pop_back();
+    }
+    vSubdirs.pop_back(); // version
+    vSubdirs.pop_back(); // package-name
+    std::string sOrigin = WsjcppCore::join(vSubdirs, "/");
+    dep.setOrigin(sOrigin);
     return true;
 }
 

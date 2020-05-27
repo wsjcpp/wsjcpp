@@ -16,7 +16,8 @@ class WsjcppPackageDownloaderBase {
         ) = 0;
         static std::string prepareCacheSubFolderName(const std::string &sPackage);
         static bool downloadFileOverHttps(const std::string &sUrl, const std::string &sPath);
-
+        // TODO move to core like a 'mkdir -p'
+        static bool prepareCacheSubdirForFile(const std::string &sCacheDir, const std::string &sFilePath, std::string &sError);
     protected:
         std::string TAG;
         
