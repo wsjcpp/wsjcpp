@@ -12,7 +12,7 @@ ArgumentProcessorInstall::ArgumentProcessorInstall()
     registryExample("from github.com source `wsjcpp install https://github.com/nlohmann/json:develop`");
     registryExample("from gitlab.com source `wsjcpp install https://gitlab.com/wsjcpp/example-wsjcpp-package-gitlab:master`");
     registryExample("from bitbucket.org source `wsjcpp install https://bitbucket.org/wsjcpp/example-wsjcpp-package-bitbucket:master`");
-    registryExample("from https source `wsjcpp install wsjcpp install https://wsjcpp.org/packages/example/v0.0.1/`");
+    registryExample("from https source `wsjcpp install wsjcpp install https://wsjcpp.org/packages/example-wsjcpp-package-https/v0.0.1/`");
     
     // TODO registryExample("from local system `wsjcpp install 'file:///usr/share/some_package'`");
     // TODO registryExample("from local system `wsjcpp install author/package_name`"); - try find in origns and install latest version
