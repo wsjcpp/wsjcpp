@@ -1,0 +1,24 @@
+name: "example-wsjcpp-package-localfs"
+version: "v0.0.1"
+cmake_minimum_required: "3.0"
+cmake_cxx_standard: "11"
+description: "Example package wsjcpp"
+
+authors:
+  - name: "Evgenii Sopov"
+    email: "mrseakg@gmail.com"
+
+origins:
+  - address: "http://wsjcpp.org/packages/"
+    type: "package-registry"
+
+keywords:
+  - "c++"
+
+distribution:
+  - source-file: "src/example_wsjcpp_package_localfs.cpp"
+    target-file: "example_wsjcpp_package_localfs.cpp"
+    type: "source-code"
+  - source-file: "src/example_wsjcpp_package_localfs.h"
+    target-file: "example_wsjcpp_package_localfs.h"
+    type: "source-code"

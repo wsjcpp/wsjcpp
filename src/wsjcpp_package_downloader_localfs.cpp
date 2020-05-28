@@ -13,6 +13,7 @@ WsjcppPackageDownloaderLocalFs::WsjcppPackageDownloaderLocalFs()
     m_sFilePrefix = "file://";
     m_sFileLinuxPrefix = "/";
     m_sFileLinuxPrefix2 = "../";
+    m_sFileLinuxPrefix3 = "./";
 }
 
 // ---------------------------------------------------------------------
@@ -21,7 +22,9 @@ bool WsjcppPackageDownloaderLocalFs::canDownload(const std::string &sPackage) {
     return 
         sPackage.compare(0, m_sFilePrefix.size(), m_sFilePrefix) == 0
         || sPackage.compare(0, m_sFileLinuxPrefix.size(), m_sFileLinuxPrefix) == 0
-        || sPackage.compare(0, m_sFileLinuxPrefix2.size(), m_sFileLinuxPrefix2) == 0;
+        || sPackage.compare(0, m_sFileLinuxPrefix2.size(), m_sFileLinuxPrefix2) == 0
+        || sPackage.compare(0, m_sFileLinuxPrefix3.size(), m_sFileLinuxPrefix3) == 0
+    ;
 }
 
 // ---------------------------------------------------------------------
