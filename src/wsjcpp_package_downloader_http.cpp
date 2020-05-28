@@ -75,9 +75,7 @@ bool WsjcppPackageDownloaderHttp::downloadToCache(
             sError = "Could not read file " + sDownloadedWsjCppSourceTo;
             return false;
         }
-        // std::string sSha1 = WsjcppHashes::sha1_calc_hex(sContent);
-        // src.setSha1(sSha1);
-        if (!pkg.updateSourceFile(src.getSourceFile())) {
+        if (!pkg.updateSourceFile(src.getSourceFile(), false)) {
             sError = "Could not download " + sDownloadedWsjCppSourceFrom;
             return false;
         }

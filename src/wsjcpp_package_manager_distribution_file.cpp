@@ -27,24 +27,19 @@ bool WsjcppPackageManagerDistributionFile::fromYAML(WsjcppYamlItem *pYamlDistrib
         m_sTargetFile = m_pYamlDistributionFile->getElement("target-file")->getValue();
     }
 
+    if (m_pYamlDistributionFile->hasElement("sha1")) {
+        m_sSha1 = m_pYamlDistributionFile->getElement("sha1")->getValue();
+    }
+
     if (m_bHolded) {
         if (!m_pYamlDistributionFile->hasElement("sha1")) {
             m_pYamlDistributionFile->setElementValue("sha1", false, "", true);
-            // WsjcppLog::err(TAG, "Missing required field 'sha1' in " + m_pYamlDistributionFile->getForLogFormat());
+            // TODO WsjcppLog::err(TAG, "Missing required field 'sha1' in " + m_pYamlDistributionFile->getForLogFormat());
             // return false; 
         } else {
             m_sSha1 = m_pYamlDistributionFile->getElement("sha1")->getValue();
         }
-
-        // TODO calculate sha1 and check
-        
-    } else {
-        if (m_pYamlDistributionFile->hasElement("sha1")) {
-            WsjcppLog::warn(TAG, "Exccess field 'sha1' in " + m_pYamlDistributionFile->getForLogFormat());
-        }
     }
-
-    
 
     if (!m_pYamlDistributionFile->hasElement("type")) {
         WsjcppLog::err(TAG, "Missing required field 'type' in " + m_pYamlDistributionFile->getForLogFormat());

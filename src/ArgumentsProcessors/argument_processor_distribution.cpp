@@ -155,7 +155,7 @@ int ArgumentProcessorDistributionUpdate::exec(const std::vector<std::string> &vR
         int nCounter = 0;
         for (int i = 0; i < vFiles.size(); i++) {
             WsjcppPackageManagerDistributionFile file = vFiles[i];
-            if (pkg.updateSourceFile(file.getSourceFile())) {
+            if (pkg.updateSourceFile(file.getSourceFile(), true)) {
                 nCounter++;
             }
         }
@@ -165,7 +165,7 @@ int ArgumentProcessorDistributionUpdate::exec(const std::vector<std::string> &vR
         }
     } else if (!m_bUpdateAll && vSubParams.size() == 1) {
         sSourceFile = vSubParams[0];
-        if (pkg.updateSourceFile(sSourceFile)) {
+        if (pkg.updateSourceFile(sSourceFile, true)) {
             pkg.save();
             std::cout << "Updated." << std::endl;
         } else {

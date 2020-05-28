@@ -19,6 +19,8 @@ class WsjcppPackageDownloaderLocalFs : public WsjcppPackageDownloaderBase {
         std::string TAG;
         std::string m_sName;
         std::string m_sFilePrefix;
+        std::string m_sFileLinuxPrefix;
+        std::string m_sFileLinuxPrefix2;
 };
 
 #endif // WSJCPP_PACKAGE_DOWNLOADER_LOCALFS_H

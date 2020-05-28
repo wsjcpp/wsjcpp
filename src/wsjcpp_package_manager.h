@@ -85,7 +85,7 @@ class WsjcppPackageManager {
         void printFiles();
         bool addSourceFile(const std::string &sSourceFile, const std::string &sTargetFile, const std::string &sType);
         bool removeSourceFile(const std::string &sSourceFile);
-        bool updateSourceFile(const std::string &sSourceFile);
+        bool updateSourceFile(const std::string &sSourceFile, bool bAutoUpdate);
         
         // unit-tests
         bool createUnitTest(const std::string &sUnitTestName, const std::string &sUnitTestDescription);
