@@ -100,17 +100,7 @@ bool WsjcppPackageDownloaderLocalFs::downloadToCache(
     dep.setVersion(pkg.getVersion());
     dep.setUrl(sPackage);
     dep.setInstallationDir(sInstallationDir);
-
-    // remove package/version from url
-    std::vector<std::string> vSubdirs = WsjcppCore::split(sPackage, "/");
-    if (vSubdirs[vSubdirs.size()-1] == "") {
-        vSubdirs.pop_back();
-    }
-    vSubdirs.pop_back(); // version
-    vSubdirs.pop_back(); // package-name
-    std::string sOrigin = WsjcppCore::join(vSubdirs, "/");
-    dep.setOrigin(sOrigin);
-
+    dep.setOrigin("localfs");
     return true;
 }
 
