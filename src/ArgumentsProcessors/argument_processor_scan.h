@@ -19,4 +19,11 @@ class ArgumentProcessorScanTodo : public WsjcppArgumentProcessor {
     private: 
 };
 
+class ArgumentProcessorScanUniqLines : public WsjcppArgumentProcessor {
+    public:
+        ArgumentProcessorScanUniqLines();
+        virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) override;
+    private: 
+};
+
 #endif // ARGUMENT_PROCESSOR_SCAN_H

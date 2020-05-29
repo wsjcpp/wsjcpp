@@ -885,7 +885,6 @@ bool WsjcppPackageManager::uninstall(const std::string &sPackageUrl, std::string
         } else if (sPackageUrl == pItemMap->getElement("name")->getValue()) {
             pDeps->removeElement(i);
         }
-
     }
 
     // TODO remove none defined sub-requirements
