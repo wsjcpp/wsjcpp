@@ -1154,7 +1154,7 @@ bool WsjcppPackageManager::addResource(const std::string &sFilepath, const std::
 bool WsjcppPackageManager::removeResource(const std::string &sFilepath) {
 
     if (!m_yamlPackageInfo.getRoot()->hasElement("resources")) {
-        WsjcppLog::warn(TAG, "reousrces not found in wsjcpp.yml");
+        WsjcppLog::warn(TAG, "resources not found in wsjcpp.yml");
         return false;
     }
     WsjcppYamlItem *pResources = m_yamlPackageInfo.getRoot()->getElement("resources");
@@ -1164,6 +1164,7 @@ bool WsjcppPackageManager::removeResource(const std::string &sFilepath) {
         WsjcppYamlItem *pResource = pResources->getElement(i);
         if (pResource->getElement("filepath")->getValue() == sFilepath) {
             pResources->removeElement(i);
+
             break;
         }
     }
@@ -1204,6 +1205,26 @@ bool WsjcppPackageManager::removeResource(const std::string &sFilepath) {
         return true;
     }
     WsjcppLog::err(TAG, "Not found this resource");
+    return false;
+}
+
+// ---------------------------------------------------------------------
+
+bool WsjcppPackageManager::hasResource(const std::string &sFilepath) {
+    if (!m_yamlPackageInfo.getRoot()->hasElement("resources")) {
+        WsjcppLog::warn(TAG, "resources not found in wsjcpp.yml");
+        return false;
+    }
+    WsjcppYamlItem *pResources = m_yamlPackageInfo.getRoot()->getElement("resources");
+    int nLen = pResources->getLength();
+    bool bFound = false;
+    // TODO WsjcppYaml findArrayElementWhereHas("filepath", sValue);
+    for (int i = 0; i < nLen; i++) {
+        WsjcppYamlItem *pResource = pResources->getElement(i);
+        if (pResource->getElement("filepath")->getValue() == sFilepath) {
+            return true;
+        }
+    }
     return false;
 }
 

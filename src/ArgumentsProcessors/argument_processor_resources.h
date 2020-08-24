@@ -49,4 +49,14 @@ class ArgumentProcessorResourcesAdd : public WsjcppArgumentProcessor {
         bool m_bBinary;
 };
 
+
+// ---------------------------------------------------------------------
+
+class ArgumentProcessorResourcesUpdate : public WsjcppArgumentProcessor {
+    public:
+        ArgumentProcessorResourcesUpdate();
+
+        virtual bool applySingleArgument(const std::string &sProgramName, const std::string &sArgumentName);
+        virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams);
+};
 #endif // ARGUMENT_PROCESSOR_RESOURCES_H
