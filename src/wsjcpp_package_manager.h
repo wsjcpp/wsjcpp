@@ -110,6 +110,7 @@ class WsjcppPackageManager {
         bool addResource(const std::string &sFilepath, const std::string &sPackAs);
         bool removeResource(const std::string &sFilepath);
         bool hasResource(const std::string &sFilepath);
+        std::string detectTypeOfResource(const std::string &sFilepath);
 
         std::vector<WsjcppPackageManagerDistributionFile> getListOfDistributionFiles();
         std::vector<WsjcppPackageManagerDependence> getListOfDependencies();

@@ -1230,6 +1230,26 @@ bool WsjcppPackageManager::hasResource(const std::string &sFilepath) {
 
 // ---------------------------------------------------------------------
 
+std::string WsjcppPackageManager::detectTypeOfResource(const std::string &sFilepath) {
+    std::string arrTextExt[] = {
+        "js", "svg", "html", "conf", "sh",
+        "yml", "txt", "gitignore", "h", "cpp", "cmake",
+        "make", "hpp", "log"
+    };
+    int arrTextExtSize = sizeof(arrTextExt)/sizeof(arrTextExt[0]);
+    std::string sFileExt = sFilepath.substr(sFilepath.find_last_of(".") + 1);
+    sFileExt = WsjcppCore::toLower(sFileExt);
+    
+    for (int i = 0; i < arrTextExtSize; i++) {
+        if (sFileExt == arrTextExt[i]) {
+            return "text";
+        }
+    }
+    return "binary";
+}
+
+// ---------------------------------------------------------------------
+
 std::vector<WsjcppPackageManagerDistributionFile> WsjcppPackageManager::getListOfDistributionFiles() {
     return m_vDistributionFiles;
 }
