@@ -108,7 +108,7 @@ ArgumentProcessorScanUniqLines::ArgumentProcessorScanUniqLines()
 
 // ---------------------------------------------------------------------
 
-/*struct ScanUniqCodeLine {
+struct ScanUniqCodeLine {
     ScanUniqCodeLine(
         const std::string &sFileName,
         int nNumberOfLine,
@@ -116,7 +116,8 @@ ArgumentProcessorScanUniqLines::ArgumentProcessorScanUniqLines()
     ) {
 
     }
-};*/
+    std::vector<std::string> vFiles;
+};
 
 int ArgumentProcessorScanUniqLines::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     
