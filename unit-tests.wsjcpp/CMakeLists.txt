@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.0)
 
 project(unit-tests C CXX)
-add_definitions(-DWSJCPP_APP_VERSION="ut-v0.1.6")
+add_definitions(-DWSJCPP_APP_VERSION="ut-v0.1.7")
 add_definitions(-DWSJCPP_APP_NAME="unit-tests-wsjcpp")
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
@@ -53,7 +53,7 @@ list (APPEND WSJCPP_INCLUDE_DIRS "../src.wsjcpp/wsjcpp_arguments/")
 list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_arguments/wsjcpp_arguments.cpp")
 list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_arguments/wsjcpp_arguments.h")
 
-# wsjcpp:v0.1.6
+# wsjcpp:v0.1.7
 list (APPEND WSJCPP_INCLUDE_DIRS "../src")
 list (APPEND WSJCPP_SOURCES "../src/wsjcpp_package_manager_distribution_file.cpp")
 list (APPEND WSJCPP_SOURCES "../src/wsjcpp_package_manager_distribution_file.h")
@@ -95,9 +95,6 @@ list (APPEND WSJCPP_SOURCES "../unit-tests.wsjcpp/src/unit_test_generate_filenam
 list (APPEND WSJCPP_SOURCES "../unit-tests.wsjcpp/src/unit_test_generate_filename_for_unit_test.cpp")
 list (APPEND WSJCPP_SOURCES "../unit-tests.wsjcpp/src/unit_test_read_package.h")
 list (APPEND WSJCPP_SOURCES "../unit-tests.wsjcpp/src/unit_test_read_package.cpp")
-
-# required-libraries
-list (APPEND WSJCPP_LIBRARIES "-lpthread")
 
 # required-pkg-config
 ############################
