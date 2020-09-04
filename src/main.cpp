@@ -63,10 +63,6 @@ int main(int argc, const char* argv[]) {
     for (int i = 0; i < argc; i++) {
         vArgs.push_back(std::string(argv[i]));
     }
-    
-    if (vArgs.size() > 0 && vArgs[1] == "help") {
-        std::cout << prog.help();
-    }
 
     // printHelp(vArgs);
     int nResult = prog.exec();

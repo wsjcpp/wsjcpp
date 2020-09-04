@@ -14,7 +14,7 @@ class ArgumentProcessorOrigins : public WsjcppArgumentProcessor {
 class ArgumentProcessorOriginsAdd : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorOriginsAdd();
-        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
+        virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams);
         
     private:
         
@@ -23,7 +23,7 @@ class ArgumentProcessorOriginsAdd : public WsjcppArgumentProcessor {
 class ArgumentProcessorOriginsRemove : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorOriginsRemove();
-        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
+        virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams);
         
     private:
         
@@ -32,7 +32,7 @@ class ArgumentProcessorOriginsRemove : public WsjcppArgumentProcessor {
 class ArgumentProcessorOriginsList : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorOriginsList();
-        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
+        virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams);
         
     private:
         

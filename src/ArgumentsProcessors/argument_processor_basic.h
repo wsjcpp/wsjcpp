@@ -6,7 +6,7 @@
 class ArgumentProcessorInfo : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorInfo();
-        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
+        virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams);
     private:
         
 };
@@ -14,7 +14,7 @@ class ArgumentProcessorInfo : public WsjcppArgumentProcessor {
 class ArgumentProcessorInit : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorInit();
-        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
+        virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams);
     private:
         
 };
@@ -22,7 +22,7 @@ class ArgumentProcessorInit : public WsjcppArgumentProcessor {
 class ArgumentProcessorClean : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorClean();
-        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
+        virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams);
     private:
         
 };
@@ -30,7 +30,7 @@ class ArgumentProcessorClean : public WsjcppArgumentProcessor {
 class ArgumentProcessorVersion : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorVersion();
-        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) override;
+        virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) override;
     private: 
 };
 

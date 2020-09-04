@@ -6,7 +6,7 @@
 class ArgumentProcessorGenerate : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorGenerate();
-        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
+        virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams);
 
     private:
         
@@ -16,7 +16,7 @@ class ArgumentProcessorGenerateList : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorGenerateList();
         virtual bool applySingleArgument(const std::string &sProgramName, const std::string &sArgumentName);
-        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
+        virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams);
         
     private:
         bool m_bMore;
@@ -25,7 +25,7 @@ class ArgumentProcessorGenerateList : public WsjcppArgumentProcessor {
 class ArgumentProcessorGenerateCreate : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorGenerateCreate();
-        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
+        virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams);
         
     private:
         
@@ -34,7 +34,7 @@ class ArgumentProcessorGenerateCreate : public WsjcppArgumentProcessor {
 class ArgumentProcessorGenerateDelete : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorGenerateDelete();
-        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
+        virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams);
         
     private:
         

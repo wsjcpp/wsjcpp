@@ -7,7 +7,7 @@
 // ArgumentProcessorPrepare
 
 ArgumentProcessorPrepare::ArgumentProcessorPrepare() 
-: WsjcppArgumentProcessor({"prepare"}, "Preparing some files and packages for another systems") {
+: WsjcppArgumentProcessor({"prepare"}, "Preparing some files and packages for another systems", "Preparing some files and packages for another systems") {
     TAG = "ArgumentProcessorPrepare";
     registryProcessor(new ArgumentProcessorPrepareTravis());
     registryProcessor(new ArgumentProcessorPrepareHomebrew());
@@ -34,7 +34,7 @@ bool ArgumentProcessorPrepare::applyParameterArgument(
 
 // ---------------------------------------------------------------------
 
-int ArgumentProcessorPrepare::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int ArgumentProcessorPrepare::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     WsjcppLog::err(TAG, "Not implemented");
     return -1; 
 }
@@ -43,13 +43,13 @@ int ArgumentProcessorPrepare::exec(const std::string &sProgramName, const std::v
 // ArgumentProcessorPrepareTravis
 
 ArgumentProcessorPrepareTravis::ArgumentProcessorPrepareTravis() 
-: WsjcppArgumentProcessor({"travis"}, "Prepare .travis.yml - Control file for Travis CI System") {
+: WsjcppArgumentProcessor({"travis"}, "Prepare sample .travis.yml", "Prepare .travis.yml - Control file for Travis CI System") {
     TAG = "ArgumentProcessorPrepareTravis";
 }
 
 // ---------------------------------------------------------------------
 
-int ArgumentProcessorPrepareTravis::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int ArgumentProcessorPrepareTravis::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     if (WsjcppCore::fileExists(".travis.yml")) {
         std::cout 
             << std::endl
@@ -115,13 +115,13 @@ int ArgumentProcessorPrepareTravis::exec(const std::string &sProgramName, const 
 // ArgumentProcessorPrepareHomebrew
 
 ArgumentProcessorPrepareHomebrew::ArgumentProcessorPrepareHomebrew() 
-: WsjcppArgumentProcessor({"homebrew"}, "Prepare specific file for homebrew - Package Manager for MacOS") {
+: WsjcppArgumentProcessor({"homebrew"}, "Prepare sample for homebrew", "Prepare specific file for homebrew - Package Manager for MacOS") {
     TAG = "ArgumentProcessorPrepareTravis";
 }
 
 // ---------------------------------------------------------------------
 
-int ArgumentProcessorPrepareHomebrew::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int ArgumentProcessorPrepareHomebrew::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     WsjcppPackageManager pkg(".");
     if (!pkg.load()) {
         std::cout 
@@ -232,13 +232,13 @@ int ArgumentProcessorPrepareHomebrew::exec(const std::string &sProgramName, cons
 // ArgumentProcessorPrepareDockerfile
 
 ArgumentProcessorPrepareDockerfile::ArgumentProcessorPrepareDockerfile() 
-: WsjcppArgumentProcessor({"dockerfile"}, "Prepare sample of Dockerfile for build and publish current project") {
+: WsjcppArgumentProcessor({"dockerfile"}, "Prepare sample of Dockerfile", "Prepare sample of Dockerfile for build and publish current project") {
     TAG = "ArgumentProcessorPrepareDockerfile";
 }
 
 // ---------------------------------------------------------------------
 
-int ArgumentProcessorPrepareDockerfile::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int ArgumentProcessorPrepareDockerfile::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     WsjcppPackageManager pkg(".");
     if (!pkg.load()) {
         std::cout 

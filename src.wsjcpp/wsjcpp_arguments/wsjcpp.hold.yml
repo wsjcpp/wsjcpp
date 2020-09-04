@@ -3,7 +3,7 @@ cmake_cxx_standard: 11
 cmake_minimum_required: 3.0
 
 name: wsjcpp-arguments
-version: v0.1.0
+version: v0.2.0
 description: Helpful parser for parsing application arguments
 issues: https://github.com/wsjcpp/wsjcpp-arguments/issues
 

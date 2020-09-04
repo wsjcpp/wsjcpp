@@ -9,13 +9,20 @@ class ArgumentProcessorScan : public WsjcppArgumentProcessor {
 
         virtual bool applyParameterArgument(const std::string &sProgramName, const std::string &sArgumentName, const std::string &sValue);
         virtual bool applySingleArgument(const std::string &sProgramName, const std::string &sArgumentName);
-        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
+        virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams);
 };
 
 class ArgumentProcessorScanTodo : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorScanTodo();
-        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) override;
+        virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) override;
+    private: 
+};
+
+class ArgumentProcessorScanUniqLines : public WsjcppArgumentProcessor {
+    public:
+        ArgumentProcessorScanUniqLines();
+        virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) override;
     private: 
 };
 

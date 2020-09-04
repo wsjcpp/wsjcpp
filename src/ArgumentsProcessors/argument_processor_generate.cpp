@@ -7,7 +7,7 @@
 // ArgumentProcessorGenerate
 
 ArgumentProcessorGenerate::ArgumentProcessorGenerate() 
-: WsjcppArgumentProcessor({"generate", "gen"}, "Generate source code snippets/templates/examples") {
+: WsjcppArgumentProcessor({"generate", "gen"}, "Generate source code snippets/templates/examples", "Generate source code snippets/templates/examples") {
     registryProcessor(new ArgumentProcessorGenerateList());
     // registryProcessor(new ArgumentProcessorGenerateCreate());
     // registryProcessor(new ArgumentProcessorGenerateDelete());
@@ -15,7 +15,7 @@ ArgumentProcessorGenerate::ArgumentProcessorGenerate()
 
 // ---------------------------------------------------------------------
 
-int ArgumentProcessorGenerate::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int ArgumentProcessorGenerate::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     WsjcppPackageManager pkg("./");
     if (!pkg.load()) {
         return -1;
@@ -71,7 +71,7 @@ int ArgumentProcessorGenerate::exec(const std::string &sProgramName, const std::
 // ---------------------------------------------------------------------
 
 ArgumentProcessorGenerateList::ArgumentProcessorGenerateList() 
-: WsjcppArgumentProcessor({"list"}, "List of defined templates") {
+: WsjcppArgumentProcessor({"list", "ls"}, "List of defined templates", "List of defined templates") {
     registrySingleArgument("--more", "More details");
     m_bMore = false;
 }
@@ -89,7 +89,7 @@ bool ArgumentProcessorGenerateList::applySingleArgument(const std::string &sProg
 // ---------------------------------------------------------------------
 
 int ArgumentProcessorGenerateList::exec(
-    const std::string &sProgramName, 
+    const std::vector<std::string> &vRoutes, 
     const std::vector<std::string> &vSubParams
 ) {
 
@@ -124,26 +124,26 @@ int ArgumentProcessorGenerateList::exec(
 // ArgumentProcessorGenerateCreate
 
 ArgumentProcessorGenerateCreate::ArgumentProcessorGenerateCreate() 
-: WsjcppArgumentProcessor({"create"}, "Create new template") {
+: WsjcppArgumentProcessor({"create"}, "Create new template", "Create new template") {
 
 }
 
 // ---------------------------------------------------------------------
 
-int ArgumentProcessorGenerateCreate::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int ArgumentProcessorGenerateCreate::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     return -1;
 }
 
 // ---------------------------------------------------------------------
 
 ArgumentProcessorGenerateDelete::ArgumentProcessorGenerateDelete() 
-: WsjcppArgumentProcessor({"delete"}, "Delete template") {
+: WsjcppArgumentProcessor({"delete"}, "Delete template", "Delete template") {
 
 }
 
 // ---------------------------------------------------------------------
 
-int ArgumentProcessorGenerateDelete::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int ArgumentProcessorGenerateDelete::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     return -1;
 }
 

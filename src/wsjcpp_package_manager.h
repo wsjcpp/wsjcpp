@@ -85,7 +85,7 @@ class WsjcppPackageManager {
         void printFiles();
         bool addSourceFile(const std::string &sSourceFile, const std::string &sTargetFile, const std::string &sType);
         bool removeSourceFile(const std::string &sSourceFile);
-        bool updateSourceFile(const std::string &sSourceFile);
+        bool updateSourceFile(const std::string &sSourceFile, bool bAutoUpdate);
         
         // unit-tests
         bool createUnitTest(const std::string &sUnitTestName, const std::string &sUnitTestDescription);
@@ -109,6 +109,8 @@ class WsjcppPackageManager {
         bool removeAuthor(const std::string &sAuthor);
         bool addResource(const std::string &sFilepath, const std::string &sPackAs);
         bool removeResource(const std::string &sFilepath);
+        bool hasResource(const std::string &sFilepath);
+        std::string detectTypeOfResource(const std::string &sFilepath);
 
         std::vector<WsjcppPackageManagerDistributionFile> getListOfDistributionFiles();
         std::vector<WsjcppPackageManagerDependence> getListOfDependencies();

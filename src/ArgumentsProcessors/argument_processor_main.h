@@ -6,7 +6,7 @@
 class ArgumentProcessorMain : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorMain();
-        virtual int exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams);
+        virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams);
         
     private:
         

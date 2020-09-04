@@ -10,6 +10,7 @@ class WsjcppResourceFile {
     public:
         WsjcppResourceFile();
         virtual const std::string &getFilename() = 0;
+        virtual const std::string &getPackAs() = 0;
         virtual const int getBufferSize() = 0;
         virtual const char *getBuffer() = 0;
 };

@@ -2,7 +2,7 @@
 #include "wsjcpp_package_manager.h"
 
 ArgumentProcessorRun::ArgumentProcessorRun() 
-  : WsjcppArgumentProcessor({"run"}, "run clean/build/unit-tests scripts") {
+  : WsjcppArgumentProcessor({"run"}, "Run basic scripts", "run clean/build/unit-tests scripts") {
       registryProcessor(new ArgumentProcessorRunUnitTests());
       registryProcessor(new ArgumentProcessorRunClean());
       registryProcessor(new ArgumentProcessorRunBuild());
@@ -11,39 +11,39 @@ ArgumentProcessorRun::ArgumentProcessorRun()
 // ---------------------------------------------------------------------
 
 ArgumentProcessorRunUnitTests::ArgumentProcessorRunUnitTests() 
-  : WsjcppArgumentProcessor({"unit-tests"}, "do build and run unit-tests") {
+  : WsjcppArgumentProcessor({"unit-tests"}, "Build and run unit-tests", "Build and run unit-tests") {
 
 }
 
 // ---------------------------------------------------------------------
 
-int ArgumentProcessorRunUnitTests::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int ArgumentProcessorRunUnitTests::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     return -1;
 }
 
 // ---------------------------------------------------------------------
 
 ArgumentProcessorRunClean::ArgumentProcessorRunClean() 
-  : WsjcppArgumentProcessor({"clean"}, "do run clean.sh script") {
+  : WsjcppArgumentProcessor({"clean"}, "Run clean script", "do run clean.sh script") {
 
 }
 
 // ---------------------------------------------------------------------
 
-int ArgumentProcessorRunClean::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int ArgumentProcessorRunClean::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     return -1;
 }
 
 // ---------------------------------------------------------------------
 
 ArgumentProcessorRunBuild::ArgumentProcessorRunBuild() 
-  : WsjcppArgumentProcessor({"build"}, "do run 'build_simple.sh' script") {
+  : WsjcppArgumentProcessor({"build"}, "run build.sh script", "do run 'build_simple.sh' script") {
 
 }
 
 // ---------------------------------------------------------------------
 
-int ArgumentProcessorRunBuild::exec(const std::string &sProgramName, const std::vector<std::string> &vSubParams) {
+int ArgumentProcessorRunBuild::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     return -1;
 }
 
