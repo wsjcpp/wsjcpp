@@ -9,7 +9,7 @@
 #include <ctype.h>
 #include <sys/stat.h>
 #include <wsjcpp_resources_manager.h>
-
+#include <regex>
 
 // ---------------------------------------------------------------------
 // WsjcppPackageManagerOrigin - server info class
@@ -1374,7 +1374,10 @@ std::string WsjcppPackageManager::getVersion() {
 // ---------------------------------------------------------------------
 
 bool WsjcppPackageManager::setVersion(const std::string& sVersion) {
-    // TODO validate version
+    if (!this->validateVersionFormat(sVersion)) {
+        WsjcppLog::err(TAG, "'version' has invalid format, try change to like 'v0.0.1'");
+        return false;
+    }
     m_sVersion = sVersion;
     m_yamlPackageInfo.getRoot()->setElementValue("version", false, m_sVersion, false);
     return true;
@@ -1508,8 +1511,11 @@ bool WsjcppPackageManager::readFieldVersion() {
         WsjcppLog::err(TAG, "Missing required field 'version' in '" + m_sYamlFullpath + "'");
         return false;
     }
-    // TODO: check version format
     m_sVersion = m_yamlPackageInfo["version"].getValue();
+    if (!this->validateVersionFormat(m_sVersion)) {
+        WsjcppLog::err(TAG, "Field 'version' has invalid format, try change to 'v0.0.1'");
+        return false;
+    }
     return true;
 }
 
@@ -2482,3 +2488,11 @@ std::string WsjcppPackageManager::getSampleForBuildSimpleSh() {
 }
 
 // ---------------------------------------------------------------------
+
+bool WsjcppPackageManager::validateVersionFormat(const std::string &sVersion) {
+    std::regex rxVersion("v\\d*\\.\\d*\\.\\d*");
+    if (std::regex_match(sVersion, rxVersion)) {
+        return true;
+    }
+    return false;
+}
