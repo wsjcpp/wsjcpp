@@ -58,6 +58,8 @@ list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_unit_tes
 list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_unit_tests.h")
 list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_generate.cpp")
 list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_generate.h")
+list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_change.cpp")
+list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_change.h")
 list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_main.cpp")
 list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_main.h")
 list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_basic.h")

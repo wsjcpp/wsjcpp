@@ -122,6 +122,7 @@ class WsjcppPackageManager {
         
         std::string getName();
         std::string getVersion();
+        bool setVersion(const std::string& sVersion);
         std::string getWsjcppVersion();
         std::string getDescription();
         std::string getCMakeCxxStandard();

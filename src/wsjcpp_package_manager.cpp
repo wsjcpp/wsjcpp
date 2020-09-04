@@ -1373,6 +1373,15 @@ std::string WsjcppPackageManager::getVersion() {
 
 // ---------------------------------------------------------------------
 
+bool WsjcppPackageManager::setVersion(const std::string& sVersion) {
+    // TODO validate version
+    m_sVersion = sVersion;
+    m_yamlPackageInfo.getRoot()->setElementValue("version", false, m_sVersion, false);
+    return true;
+}
+
+// ---------------------------------------------------------------------
+
 std::string WsjcppPackageManager::getWsjcppVersion() {
     return m_sWsjcppVersion;
 }
