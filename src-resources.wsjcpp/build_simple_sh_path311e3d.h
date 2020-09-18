@@ -4,10 +4,10 @@
 
 class RES_build_simple_sh_path311e3d : public WsjcppResourceFile { 
     public:
-        virtual const std::string &getFilename();
-        virtual const std::string &getPackAs();
-        virtual const int getBufferSize();
-        virtual const char *getBuffer();
+        virtual const std::string &getFilename() const;
+        virtual const std::string &getPackAs() const;
+        virtual int getBufferSize() const;
+        virtual const char *getBuffer() const;
 };
 
 

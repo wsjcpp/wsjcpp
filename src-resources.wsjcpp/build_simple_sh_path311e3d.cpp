@@ -4,25 +4,25 @@
 
 REGISTRY_WSJCPP_RESOURCE_FILE(RES_build_simple_sh_path311e3d)
 
-const std::string &RES_build_simple_sh_path311e3d::getFilename() {
+const std::string &RES_build_simple_sh_path311e3d::getFilename() const {
     static const std::string s = "build_simple.sh";
     return s;
 }
 // ---------------------------------------------------------------------
 
-const std::string &RES_build_simple_sh_path311e3d::getPackAs() {
+const std::string &RES_build_simple_sh_path311e3d::getPackAs() const {
     static const std::string s = "text";
     return s;
 }
 // ---------------------------------------------------------------------
 
-const int RES_build_simple_sh_path311e3d::getBufferSize() {
+int RES_build_simple_sh_path311e3d::getBufferSize() const {
     return 74;
 }
 
 // ---------------------------------------------------------------------
 
-const char *RES_build_simple_sh_path311e3d::getBuffer() {
+const char *RES_build_simple_sh_path311e3d::getBuffer() const {
     static const std::string sRet = "" // size: 74
         "#!/bin/bash\n"
         "\n"

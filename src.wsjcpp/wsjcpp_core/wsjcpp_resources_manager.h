@@ -9,10 +9,10 @@
 class WsjcppResourceFile {
     public:
         WsjcppResourceFile();
-        virtual const std::string &getFilename() = 0;
-        virtual const std::string &getPackAs() = 0;
-        virtual const int getBufferSize() = 0;
-        virtual const char *getBuffer() = 0;
+        virtual const std::string &getFilename() const = 0;
+        virtual const std::string &getPackAs() const = 0;
+        virtual int getBufferSize() const = 0;
+        virtual const char *getBuffer() const = 0;
 };
 
 extern std::vector<WsjcppResourceFile*> *g_pWsjcppResourceFiles;
