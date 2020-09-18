@@ -84,8 +84,8 @@ list (APPEND WSJCPP_SOURCES "../src/wsjcpp_package_downloader_localfs.h")
 
 # resources.wsjcpp
 list (APPEND WSJCPP_INCLUDE_DIRS "../src-resources.wsjcpp/")
-list (APPEND WSJCPP_SOURCES "../src-resources.wsjcpp/build_simple_sh_path311e3d.h")
-list (APPEND WSJCPP_SOURCES "../src-resources.wsjcpp/build_simple_sh_path311e3d.cpp")
+list (APPEND WSJCPP_SOURCES "../src-resources.wsjcpp/__build_simple_sh_pathd79e07.h")
+list (APPEND WSJCPP_SOURCES "../src-resources.wsjcpp/__build_simple_sh_pathd79e07.cpp")
 
 # unit-tests
 list (APPEND WSJCPP_INCLUDE_DIRS "src")

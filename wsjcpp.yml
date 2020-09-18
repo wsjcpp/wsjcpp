@@ -150,8 +150,8 @@ unit-tests:
       description: "Test for read package"
 
 resources:
-  - filepath: "build_simple.sh"
-    filesize: 74
-    pack-as: "text"
-    modified: 1574699271
+  - filepath: "./build_simple.sh"
+    filesize: 77
+    pack-as: "binary"
+    modified: 1600401759
     sha1: ""
