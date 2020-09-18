@@ -13,9 +13,11 @@ keywords:
 required-pkg-config:
   - CURL
 
+# "https://github.com/wsjcpp/wsjcpp-core:master"
+
 dependencies:
   - name: "wsjcpp-core"
-    version: "v0.2.0"
+    version: "v0.2.1"
     url: "https://github.com/wsjcpp/wsjcpp-core:master"
     origin: "https://github.com/"
     installation-dir: "./src.wsjcpp/wsjcpp_core"
@@ -39,6 +41,7 @@ dependencies:
     url: "https://github.com/wsjcpp/wsjcpp-arguments:master"
     origin: "https://github.com/"
     installation-dir: "./src.wsjcpp/wsjcpp_arguments"
+
 
 # build-dependencies:
 

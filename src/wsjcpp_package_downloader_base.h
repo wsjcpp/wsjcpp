@@ -7,6 +7,7 @@
 class WsjcppPackageDownloaderBase {
     public:
         WsjcppPackageDownloaderBase(const std::string &sName);
+        std::string getName();
         virtual bool canDownload(const std::string &sPackage) = 0;
         virtual bool downloadToCache(
             const std::string &sPackage,

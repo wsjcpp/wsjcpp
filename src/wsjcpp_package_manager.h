@@ -77,6 +77,7 @@ class WsjcppPackageManager {
     public:
         WsjcppPackageManager(const std::string &sDir);
         WsjcppPackageManager(const std::string &sDir, const std::string &sParentDir, bool bHolded);
+        ~WsjcppPackageManager();
         std::string getDir() const;
         bool isHolded() const;
         bool init();
@@ -101,6 +102,12 @@ class WsjcppPackageManager {
         bool updateDependencies();
         void verify();
         bool install(const std::string &sPackageUrl, std::string &sError);
+        bool checkInstalledPackage(
+            const std::string &sPackage,
+            std::vector<std::string> &vFilesInstalled,
+            std::string &sPackageUrl,
+            std::string &sError
+        );
         bool reinstall(const std::string &sPackageUrl, std::string &sError);
         bool uninstall(const std::string &sPackageUrl, std::string &sError);
         void printAuthors();

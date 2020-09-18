@@ -20,19 +20,64 @@ WsjcppPackageDownloaders::WsjcppPackageDownloaders() {
 
 // ---------------------------------------------------------------------
 
+WsjcppPackageDownloaders::~WsjcppPackageDownloaders() {
+    for (int i = 0; i < m_vDownloaders.size(); i++) {
+        delete m_vDownloaders[i];
+    }
+}
+
+// ---------------------------------------------------------------------
+
 bool WsjcppPackageDownloaders::downloadToCache(
-    const std::string &sPackage,
-    const std::string &sCacheDir,
+    const std::string &sPackageUrl,
+    const std::string &sCurrentPackageDir,
     WsjcppPackageManagerDependence &dep,
     std::string &sError
 ) {
-    // prepare directory with cache
-    for (int i = 0; m_vDownloaders.size(); i++) {
-        WsjcppPackageDownloaderBase *pDownloader = m_vDownloaders[i];
-        if (pDownloader->canDownload(sPackage)) {
-            return pDownloader->downloadToCache(sPackage, sCacheDir, dep, sError);
+    std::string sCacheDir = sCurrentPackageDir + "/.wsjcpp";
+    if (!WsjcppCore::dirExists(sCacheDir)) {
+        if (!WsjcppCore::makeDir(sCacheDir)) {
+            sError = "Could not create dir: '" + sCacheDir + "'";
+            return false;
         }
     }
+    sCacheDir = sCacheDir + "/cache";
+    if (!WsjcppCore::dirExists(sCacheDir)) {
+        if (!WsjcppCore::makeDir(sCacheDir)) {
+            sError = "Could not create dir: '" + sCacheDir + "'";
+            return false;
+        }
+    }
+
+    sCacheDir = sCacheDir + "/" + WsjcppPackageDownloaderBase::prepareCacheSubFolderName(sPackageUrl);
+    
+    if (WsjcppCore::dirExists(sCacheDir)) {
+        if (!WsjcppCore::recoursiveRemoveDir(sCacheDir)) {
+            sError = "Could not recoursive remove dir: '" + sCacheDir + "'";
+            return false;
+        }
+    }
+
+    if (!WsjcppCore::dirExists(sCacheDir)) {
+        if (!WsjcppCore::makeDir(sCacheDir)) {
+            sError = "Could not create dir: '" + sCacheDir + "'";
+            return false;
+        }
+    }
+
+    // prepare directory with cache
+    for (int i = 0; i < m_vDownloaders.size(); i++) {
+        WsjcppPackageDownloaderBase *pDownloader = m_vDownloaders[i];
+        if (pDownloader->canDownload(sPackageUrl)) {
+            bool bResult = pDownloader->downloadToCache(sPackageUrl, sCacheDir, dep, sError);
+            if (!bResult) {
+                WsjcppCore::recoursiveRemoveDir(sCacheDir);
+            }
+            return bResult;
+        }
+    }
+ 
+    sError = "Could not understand where can find package '" + sPackageUrl + "'";
     return false;
 }
 
