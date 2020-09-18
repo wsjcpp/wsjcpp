@@ -21,30 +21,39 @@ distribution:
   - source-file: src/wsjcpp_core.cpp
     target-file: wsjcpp_core.cpp
     type: "source-code"
+    sha1: "1fd9bdf641a5a743dd5deeece86a93a2735bd1b5"
   - source-file: src/wsjcpp_core.h
     target-file: wsjcpp_core.h
-    type: "source-code" # todo must be header-file
+    type: "source-code"
+    sha1: "e993dd9f07d1c00baeffa874c42a7753b67bb43b"
   - source-file: "src/wsjcpp_unit_tests.cpp"
     target-file: "wsjcpp_unit_tests.cpp"
     type: "unit-tests"
+    sha1: "6dea9de74ffa756310045885bc3d3469ab0a57c7"
   - source-file: "src/wsjcpp_unit_tests.h"
     target-file: "wsjcpp_unit_tests.h"
     type: "unit-tests"
+    sha1: "aebc53cbfe9fe3d42c30451475b3415a2df82da6"
   - source-file: "src/wsjcpp_unit_tests_main.cpp"
     target-file: "wsjcpp_unit_tests_main.cpp"
     type: "unit-tests"
+    sha1: "388ae269b325c5e161f6c3a5c598575714a4bffc"
   - source-file: "scripts.wsjcpp/generate.WsjcppUnitTest"
     target-file: "generate.WsjcppUnitTest"
     type: "safe-scripting-generate"
+    sha1: "a70db2e6bd84beccde421aaf4a8f6d33f7345a98"
   - source-file: "scripts.wsjcpp/generate.Class"
     target-file: "generate.Class"
     type: "safe-scripting-generate"
+    sha1: "de1799907c685d606b93e08b821b540c2faa2db1"
   - source-file: "src/wsjcpp_resources_manager.h"
     target-file: "wsjcpp_resources_manager.h"
     type: "source-code"
+    sha1: "6d8b6e72b5892913913d6b6ac37d0969d0c82273"
   - source-file: "src/wsjcpp_resources_manager.cpp"
     target-file: "wsjcpp_resources_manager.cpp"
     type: "source-code"
+    sha1: "a3f0dc0640a609a6a80f1c3cc83451e10336cb43"
 
 unit-tests:
   cases:
