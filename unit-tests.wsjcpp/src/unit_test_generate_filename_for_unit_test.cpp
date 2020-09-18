@@ -1,7 +1,17 @@
-#include "unit_test_generate_filename_for_unit_test.h"
+#include <wsjcpp_unit_tests.h>
 #include <vector>
-#include <wsjcpp_core.h>
 #include <wsjcpp_package_manager.h>
+
+// ---------------------------------------------------------------------
+// UnitTestgenerateFilenameForUnitTest
+
+class UnitTestgenerateFilenameForUnitTest : public WsjcppUnitTestBase {
+    public:
+        UnitTestgenerateFilenameForUnitTest();
+        virtual bool doBeforeTest() override;
+        virtual void executeTest() override;
+        virtual bool doAfterTest() override;
+};
 
 REGISTRY_WSJCPP_UNIT_TEST(UnitTestgenerateFilenameForUnitTest)
 
@@ -11,12 +21,13 @@ UnitTestgenerateFilenameForUnitTest::UnitTestgenerateFilenameForUnitTest()
 
 // ---------------------------------------------------------------------
 
-void UnitTestgenerateFilenameForUnitTest::init() {
+bool UnitTestgenerateFilenameForUnitTest::doBeforeTest() {
     // nothing
+    return true;
 }
 
 // ---------------------------------------------------------------------
-bool UnitTestgenerateFilenameForUnitTest::run() {
+void UnitTestgenerateFilenameForUnitTest::executeTest() {
     bool bTestSuccess = true;
     
     WsjcppPackageManager pkg(".");
@@ -27,10 +38,15 @@ bool UnitTestgenerateFilenameForUnitTest::run() {
         std::string sName = pkg.normalizeUnitTestName(tests[i].first, true);
         std::string sGotBaseName = pkg.generateFilenameForUnitTest(sName);
         std::string sExpectedBaseName = tests[i].second;
-        compareS(bTestSuccess, sName, sGotBaseName, sExpectedBaseName);
+        compare(sName, sGotBaseName, sExpectedBaseName);
         std::string sData;
         
     }
-    return bTestSuccess;
 }
 
+// ---------------------------------------------------------------------
+
+bool UnitTestgenerateFilenameForUnitTest::doAfterTest() {
+    // nothing
+    return true;
+}

@@ -1,6 +1,16 @@
-#include "unit_test_test_some.h"
+#include <wsjcpp_unit_tests.h>
 #include <vector>
-#include <wsjcpp_core.h>
+
+// ---------------------------------------------------------------------
+// UnitTestTestSome
+
+class UnitTestTestSome : public UnitTestBase {
+    public:
+        UnitTestTestSome();
+        virtual bool doBeforeTest() override;
+        virtual void executeTest() override;
+        virtual bool doAfterTest() override;
+};
 
 REGISTRY_WSJCPP_UNIT_TEST(UnitTestTestSome)
 
@@ -10,15 +20,20 @@ UnitTestTestSome::UnitTestTestSome()
 
 // ---------------------------------------------------------------------
 
-void UnitTestTestSome::init() {
+bool UnitTestTestSome::doBeforeTest() {
     // nothing
+    return true;
 }
 
 // ---------------------------------------------------------------------
 
-bool UnitTestTestSome::run() {
-    bool bTestSuccess = true;
-    compareB(bTestSuccess, "Not implemented", true, false);
-    return bTestSuccess;
+void UnitTestTestSome::executeTest() {
+    compare("Not implemented", true, false);
 }
 
+// ---------------------------------------------------------------------
+
+bool UnitTestTestSome::doAfterTest() {
+    // nothing
+    return true;
+}

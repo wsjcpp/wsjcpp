@@ -2,7 +2,7 @@ wsjcpp_version: v0.0.1
 cmake_minimum_required: 3.0
 cmake_cxx_standard: 11
 name: wsjcpp-test-read-package
-version: v0.1.1a
+version: v0.1.1
 description: C++. Test Read Package
 issues: "https://github.com/wsjcpp/wsjcpp/issues"
 keywords:
