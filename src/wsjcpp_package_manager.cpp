@@ -9,6 +9,7 @@
 #include <ctype.h>
 #include <sys/stat.h>
 #include <regex>
+#include <wsjcpp_safe_scripting.h>
 
 // ---------------------------------------------------------------------
 // WsjcppPackageManagerOrigin - server info class
@@ -588,6 +589,7 @@ bool WsjcppPackageManager::createUnitTest(const std::string &sUnitTestName, cons
         WsjcppLog::err(TAG, "wsjcpp is holded");
         return false;
     }
+
     std::string sName = normalizeUnitTestName(sUnitTestName, false);
     if (sName != sUnitTestName) {
         WsjcppLog::warn(TAG, "UnitTest name was normalized '" + sUnitTestName + "' -> '" + sName + "'");
@@ -599,6 +601,43 @@ bool WsjcppPackageManager::createUnitTest(const std::string &sUnitTestName, cons
             return false;
         }
     }
+
+    // first find generate file by generate.WsjcppUnitTest.wsjcpp-script
+    std::string sWsjcppUnitTestScriptFilePath = "";
+    std::vector<WsjcppPackageManagerSafeScriptingGenerate> vScripts = getListOfSafeScriptingGenerate();
+    for (int i = 0; i < vScripts.size(); i++) {
+        if (vScripts[i].getName() == "WsjcppUnitTest") {
+            sWsjcppUnitTestScriptFilePath = vScripts[i].getFullPath();
+        }
+    }
+
+    if (sWsjcppUnitTestScriptFilePath == "") {
+        WsjcppLog::err(TAG, "Not found 'generate.WsjcppUnitTest.wsjcpp-script', porabble try install 'wsjcpp-core' package.");
+        return false;
+    }
+
+    // TODO redesign WsjcppCore::makeDirPath
+    std::string sUnitTestsFolder = WsjcppCore::doNormalizePath(m_sDir + "/unit-tests.wsjcpp");
+    if (!WsjcppCore::dirExists(sUnitTestsFolder)) {
+        if (!WsjcppCore::makeDir(sUnitTestsFolder)) {
+            WsjcppLog::err(TAG, "Could not create '" + sUnitTestsFolder + "'");
+            return false;
+        }
+    }
+    sUnitTestsFolder = sUnitTestsFolder + "/src";
+    if (!WsjcppCore::dirExists(sUnitTestsFolder)) {
+        if (!WsjcppCore::makeDir(sUnitTestsFolder)) {
+            WsjcppLog::err(TAG, "Could not create '" + sUnitTestsFolder + "'");
+            return false;
+        }
+    }
+
+    if (!WsjcppCore::dirExists("./unit-tests.wsjcpp/src/")) {
+        WsjcppLog::err(TAG, "Directory does not exists './unit-tests.wsjcpp/src/'");
+        return false;
+    }
+
+    std::string sUnitTestFilepathSources = sUnitTestsFolder + "/" + this->generateFilenameForUnitTest(sUnitTestName) + ".cpp";
 
     WsjcppPackageManagerUnitTest unitTest;
     unitTest.setName(sName);
@@ -614,11 +653,25 @@ bool WsjcppPackageManager::createUnitTest(const std::string &sUnitTestName, cons
     pNewItem->setElementValue("name", false, sName, true);
     pNewItem->setElementValue("description", false, sUnitTestDescription, true);
 
-    if (!updateAutogenerateFileUnitTestHeader(sName)) {
+    WsjcppSafeScriptingContext scriptContext;
+    std::vector<std::string> vScriptArgs;
+    vScriptArgs.push_back("UnitTest" + sName);
+    vScriptArgs.push_back(sUnitTestFilepathSources);
+
+    std::string sScriptContent;
+    if (!WsjcppCore::readTextFile(sWsjcppUnitTestScriptFilePath, sScriptContent)) {
+        WsjcppLog::err(TAG, "Could not read file: '" + sWsjcppUnitTestScriptFilePath + "");
         return false;
     }
 
-    if (!updateAutogenerateFileUnitTestSource(sName)) {
+    int nResult = scriptContext.exec(
+        m_sDir, 
+        sWsjcppUnitTestScriptFilePath, 
+        sScriptContent,
+        vScriptArgs
+    );
+
+    if (nResult != 0) {
         return false;
     }
 
@@ -634,29 +687,30 @@ bool WsjcppPackageManager::deleteUnitTest(const std::string &sUnitTestName) {
         return false;
     }
 
+    std::string sName = normalizeUnitTestName(sUnitTestName, false);
+    if (sName != sUnitTestName) {
+        WsjcppLog::warn(TAG, "UnitTest name was normalized '" + sUnitTestName + "' -> '" + sName + "'");
+    }
+
     bool bFound = false;
     std::vector<WsjcppPackageManagerUnitTest>::iterator it; 
     for (it = m_vUnitTests.begin(); it < m_vUnitTests.end(); ++it) {
-        if (it->getName() == sUnitTestName) {
+        if (it->getName() == sName) {
             bFound = true;
             m_vUnitTests.erase(it);
             break;
         }
     }
     if (!bFound) {
-        WsjcppLog::err(TAG, "Not found unit-test with name '" + sUnitTestName + "'");
+        WsjcppLog::err(TAG, "Not found unit-test with name '" + sName + "'");
         return false;    
     }
     WsjcppYamlItem *pItem = m_yamlPackageInfo["unit-tests"].getElement("cases");
     int nLength = pItem->getLength();
     for (int i = 0; i < nLength; i++) {
-        if (pItem->getElement(i)->getElement("name")->getValue() == sUnitTestName) {
+        if (pItem->getElement(i)->getElement("name")->getValue() == sName) {
             std::string sBaseName = this->generateFilenameForUnitTest(sUnitTestName);
-            std::string sFileHeader = "./unit-tests.wsjcpp/src/" + sBaseName + ".h";
-            std::string sFileSource = "./unit-tests.wsjcpp/src/" + sBaseName + ".cpp";
-            if (WsjcppCore::fileExists(sFileHeader)) {
-                WsjcppCore::removeFile(sFileHeader);
-            }
+            std::string sFileSource = WsjcppCore::doNormalizePath(m_sDir + "/unit-tests.wsjcpp/src/" + sBaseName + ".cpp");
             if (WsjcppCore::fileExists(sFileSource)) {
                 WsjcppCore::removeFile(sFileSource);
             }
@@ -1057,14 +1111,14 @@ bool WsjcppPackageManager::installFromCache(const std::string &sPackage, const W
         return true;
     } else if (WsjcppCore::fileExists(sCacheWsjcppYml)) {
         
-
         WsjcppPackageManager pkg(sCacheDir);
         if (!pkg.load()) {
+            WsjcppLog::err(TAG, "Could not load package from copy " + sCacheDir);
             return false;
         }
 
-
         if (!WsjcppCore::copyFile(sCacheWsjcppYml, sInstallationDir + "/wsjcpp.hold.yml")) {
+            WsjcppLog::err(TAG, "Could not copy " + sCacheWsjcppYml + " -> " + sInstallationDir + "/wsjcpp.hold.yml");
             return false;
         }
 
@@ -1360,28 +1414,14 @@ std::vector<WsjcppPackageManagerSafeScriptingGenerate> WsjcppPackageManager::get
         WsjcppPackageManagerDistributionFile file = vFiles[i];
         // WsjcppLog::warn(TAG, file.getTargetFile());
         if (file.getType() == "safe-scripting-generate") {
-            WsjcppPackageManagerSafeScriptingGenerate gen;
-            gen.setModuleName(this->getName());
-            gen.setFullPath(file.getSourceFile());
-            std::string sTargetName = file.getTargetFile();
-            std::vector<std::string> vSplit = WsjcppCore::split(sTargetName, ".");
-            if (vSplit.size() != 2) {
-                WsjcppLog::err(TAG, "Wrong script name: '" + sTargetName + "' must like 'generate.ScriptName'");
-            } else {
-                if (vSplit[0] != "generate") {
-                    WsjcppLog::err(TAG, "Wrong script name: '" + sTargetName + "' (left part must be 'generate.*')");
-                } else {
-                    gen.setName(vSplit[1]);
-                    vRet.push_back(gen);
-                }
-            }     
+            append(vRet, file.getSourceFile(), this->getName(), file.getTargetFile());
         }
     }
 
     std::vector<WsjcppPackageManagerDependence> vDeps = this->getListOfDependencies();
     for (int i = 0; i < vDeps.size(); i++) {
         WsjcppPackageManagerDependence dep = vDeps[i];
-        std::string sInstallationDir = dep.getInstallationDir();
+        std::string sInstallationDir = WsjcppCore::doNormalizePath(m_sDir + "/" + dep.getInstallationDir());
         WsjcppPackageManager pkgHold(sInstallationDir, this->getDir(), true);
         if (!pkgHold.load()) {
             WsjcppLog::err(TAG, "Could not load package from '" + sInstallationDir + "'");
@@ -1391,23 +1431,9 @@ std::vector<WsjcppPackageManagerSafeScriptingGenerate> WsjcppPackageManager::get
         for (int n = 0; n < vFilesDep.size(); n++) {
             WsjcppPackageManagerDistributionFile file = vFilesDep[n];
             if (file.getType() == "safe-scripting-generate") {
-                WsjcppPackageManagerSafeScriptingGenerate gen;
-                gen.setModuleName(pkgHold.getName());
-                std::string sTargetName = file.getTargetFile();
-                gen.setFullPath(sInstallationDir + "/" + sTargetName);
-                std::vector<std::string> vSplit = WsjcppCore::split(sTargetName, ".");
-                if (vSplit.size() != 2) {
-                    WsjcppLog::err(TAG, "Wrong script name: '" + sTargetName + "' must like 'generate.ScriptName'");
-                } else {
-                    if (vSplit[0] != "generate") {
-                        WsjcppLog::err(TAG, "Wrong script name: '" + sTargetName + "' (left part must be 'generate.*')");
-                    } else {
-                        gen.setName(vSplit[1]);
-                        vRet.push_back(gen);
-                    }
-                }
+                append(vRet, sInstallationDir + "/" + file.getTargetFile(), pkgHold.getName(), file.getTargetFile());
             }
-        }        
+        }
     }
     return vRet;
 }
@@ -1503,11 +1529,17 @@ std::string WsjcppPackageManager::normalizeUnitTestName(const std::string &sUnit
     std::string sRet = ""; 
     for (int i = 0; i < sUnitTestName.size(); i++) {
         char c = sUnitTestName[i];
-        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9')) {
+        if (i == 0 && c >= '0' && c <= '9') {
+            if (!bSilent) {
+                WsjcppLog::warn(TAG, std::string("First symbol could not be number"));
+            }
+        } else if (i == 0 && c >= 'a' && c <= 'z') {
+            sRet += char(c - 32); // capitalize first char
+        } else if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9')) {
             sRet += c;
         } else {
             if (!bSilent) {
-                WsjcppLog::warn(TAG, std::string("Ignored symbol in UnitTest Name") + c);
+                WsjcppLog::warn(TAG, std::string("Ignored symbol in UnitTest Name '") + c + "'");
             }
         }
     }
@@ -2253,15 +2285,7 @@ bool WsjcppPackageManager::updateAutogeneratedFiles_UnitTests() {
         }
         std::string sName = normalizeUnitTestName(sUnitTestName, false);
         std::string sBaseName = this->generateFilenameForUnitTest(sName);
-        std::string sFileHeader = "./unit-tests.wsjcpp/src/" + sBaseName + ".h";
         std::string sFileSource = "./unit-tests.wsjcpp/src/" + sBaseName + ".cpp";
-        if (WsjcppCore::fileExists(sFileHeader)) {
-            sCMakeListsTXT += "list (APPEND WSJCPP_SOURCES \""
-                + WsjcppCore::doNormalizePath("../" + sFileHeader)
-                + "\")\n";
-        } else {
-            WsjcppLog::warn(TAG, "Ignored '" + sFileHeader + "' - file did not exists");
-        }
 
         if (WsjcppCore::fileExists(sFileSource)) {
             sCMakeListsTXT += "list (APPEND WSJCPP_SOURCES \""
@@ -2462,7 +2486,7 @@ bool WsjcppPackageManager::updateAutogeneratedFiles_Resources() {
 }
 
 // ---------------------------------------------------------------------
-
+/*
 bool WsjcppPackageManager::updateAutogenerateFileUnitTestHeader(const std::string &sUnitTestName) {
     std::string sName = normalizeUnitTestName(sUnitTestName, false);
     if (sName != sUnitTestName) {
@@ -2559,7 +2583,7 @@ bool WsjcppPackageManager::updateAutogenerateFileUnitTestSource(const std::strin
     }
     return true;
 }
-
+*/
 // ---------------------------------------------------------------------
 
 std::string WsjcppPackageManager::getSampleForBuildSimpleSh() {
@@ -2578,6 +2602,37 @@ bool WsjcppPackageManager::validateVersionFormat(const std::string &sVersion) {
     std::regex rxVersion("v\\d*\\.\\d*\\.\\d*");
     if (std::regex_match(sVersion, rxVersion)) {
         return true;
+    }
+    return false;
+}
+
+// ---------------------------------------------------------------------
+
+bool WsjcppPackageManager::append(
+    std::vector<WsjcppPackageManagerSafeScriptingGenerate> &vRet,
+    const std::string &sSourceFile,
+    const std::string &sModuleFile,
+    const std::string &sTargetName
+) {
+    WsjcppPackageManagerSafeScriptingGenerate gen;
+    gen.setModuleName(sModuleFile);
+    gen.setFullPath(sSourceFile);
+    std::vector<std::string> vSplit = WsjcppCore::split(sTargetName, ".");
+    if (vSplit.size() != 3) {
+        WsjcppLog::err(TAG, "Wrong script name: '" + sTargetName + "' must like 'generate.ScriptName.wsjcpp-script'");
+        return false;
+    } else {
+        if (vSplit[0] != "generate") {
+            WsjcppLog::err(TAG, "Wrong script name: '" + sTargetName + "' (left part must be 'generate.*')");
+            return false;
+        } else if (vSplit[2] != "wsjcpp-script") {
+            WsjcppLog::err(TAG, "Wrong script name: '" + sTargetName + "' (right part must be '*.wsjcpp-script')");
+            return false;
+        } else {
+            gen.setName(vSplit[1]);
+            vRet.push_back(gen);
+            return true;
+        }
     }
     return false;
 }

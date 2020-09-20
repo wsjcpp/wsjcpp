@@ -87,11 +87,8 @@ list (APPEND WSJCPP_SOURCES "../src-resources.wsjcpp/__build_simple_sh_pathd79e0
 
 # unit-tests
 list (APPEND WSJCPP_INCLUDE_DIRS "src")
-list (APPEND WSJCPP_SOURCES "../unit-tests.wsjcpp/src/unit_test_normalize_unit_test_name.h")
 list (APPEND WSJCPP_SOURCES "../unit-tests.wsjcpp/src/unit_test_normalize_unit_test_name.cpp")
-list (APPEND WSJCPP_SOURCES "../unit-tests.wsjcpp/src/unit_test_generate_filename_for_unit_test.h")
 list (APPEND WSJCPP_SOURCES "../unit-tests.wsjcpp/src/unit_test_generate_filename_for_unit_test.cpp")
-list (APPEND WSJCPP_SOURCES "../unit-tests.wsjcpp/src/unit_test_read_package.h")
 list (APPEND WSJCPP_SOURCES "../unit-tests.wsjcpp/src/unit_test_read_package.cpp")
 
 # required-pkg-config

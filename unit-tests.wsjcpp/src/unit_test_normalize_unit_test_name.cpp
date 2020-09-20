@@ -40,7 +40,7 @@ void UnitTestNormalizeUnitTestName::executeTest() {
         std::string sName = tests[i].first;
         std::string sExpectedName = tests[i].second;
         std::string sGotName = pkg.normalizeUnitTestName(sName, true);
-        compareS(sName, sGotName, sExpectedName);
+        compare(sName, sGotName, sExpectedName);
         std::string sData;
     }
 }

@@ -119,19 +119,14 @@ int ArgumentProcessorUnitTestsDelete::exec(const std::vector<std::string> &vRout
         return -1;
     }
     std::string sUnitTestName = vSubParams[0];
-    std::vector<WsjcppPackageManagerUnitTest> vUnitTests = pkg.getListOfUnitTests();
-    for (int i = 0; i < vUnitTests.size(); i++) {
-        WsjcppPackageManagerUnitTest ut = vUnitTests[i];
-        if (ut.getName() == sUnitTestName) {
-            if (pkg.deleteUnitTest(vSubParams[0])) {
-                pkg.save();
-                WsjcppLog::ok(TAG, "Unit Test '" + sUnitTestName + "' removed successfully.");
-                return 0;
-            } else {
-                WsjcppLog::err(TAG, "Could not delete unit-test with name '" + sUnitTestName + "'");
-                return -1;
-            }
-        }
+
+    if (pkg.deleteUnitTest(vSubParams[0])) {
+        pkg.save();
+        WsjcppLog::ok(TAG, "Unit Test '" + sUnitTestName + "' removed successfully.");
+        return 0;
+    } else {
+        WsjcppLog::err(TAG, "Could not delete unit-test with name '" + sUnitTestName + "'");
+        return -1;
     }
     WsjcppLog::err(TAG, "Unit test with name '" + sUnitTestName + "' did not found");
     return -1;
