@@ -873,7 +873,7 @@ bool WsjcppPackageManager::install(const std::string &sPackage, std::string &sEr
     }
 
     addDependency(dep);
-    return installFromCache(sPackage, dep);
+    return installFromCache(sPackage, dep, sError);
 }
 
 // ---------------------------------------------------------------------
@@ -976,17 +976,22 @@ bool WsjcppPackageManager::reinstall(const std::string &sPackage, std::string &s
         return false;
     }
 
+    // download package to cache
     WsjcppPackageManagerDependence dep;
     if (!m_pDownloaders->downloadToCache(sPackageUrl, m_sDir, dep, sError)) {
         return false;
     }
 
+    // remove old files
     for (int i = 0; i < vTodoRemoveFiles.size(); i++) {
-        WsjcppCore::removeFile(vTodoRemoveFiles[i]);
+        if (!WsjcppCore::removeFile(vTodoRemoveFiles[i])) {
+            sError = "Could not remove '" + vTodoRemoveFiles[i] + "'";
+            return false;
+        }
     }
 
     updateDependency(dep);
-    return installFromCache(sPackage, dep);
+    return installFromCache(sPackageUrl, dep, sError);
 }
 
 // ---------------------------------------------------------------------
@@ -1082,7 +1087,11 @@ bool WsjcppPackageManager::isInstalled(const std::string &sPackage) {
 
 // ---------------------------------------------------------------------
 
-bool WsjcppPackageManager::installFromCache(const std::string &sPackage, const WsjcppPackageManagerDependence &dep) {
+bool WsjcppPackageManager::installFromCache(
+    const std::string &sPackageUrl,
+    const WsjcppPackageManagerDependence &dep,
+    std::string &sError
+) {
     std::string sInstallationDir = WsjcppCore::doNormalizePath(m_sDir + "/" + dep.getInstallationDir());
 
     if (!WsjcppCore::dirExists(sInstallationDir)) {
@@ -1090,7 +1099,7 @@ bool WsjcppPackageManager::installFromCache(const std::string &sPackage, const W
     }
     
     std::string sCacheDir = m_sDir + "/.wsjcpp/cache";
-    sCacheDir = sCacheDir + "/" + WsjcppPackageDownloaderBase::prepareCacheSubFolderName(sPackage);
+    sCacheDir = sCacheDir + "/" + WsjcppPackageDownloaderBase::prepareCacheSubFolderName(sPackageUrl);
     std::string sCacheWsjcppHoldYml = sCacheDir + "/wsjcpp.hold.yml";
     std::string sCacheWsjcppYml = sCacheDir + "/wsjcpp.yml";
 
@@ -1103,6 +1112,7 @@ bool WsjcppPackageManager::installFromCache(const std::string &sPackage, const W
             std::string sFrom = sCacheDir + "/" + vFiles[i];
             std::string sTo = sInstallationDir + "/" + vFiles[i];
             if (!WsjcppCore::copyFile(sFrom, sTo)) {
+                sError = "Could not copy file '" + sFrom + "' to '" + sTo + "'";
                 return false;
             }
         }
@@ -1113,12 +1123,12 @@ bool WsjcppPackageManager::installFromCache(const std::string &sPackage, const W
         
         WsjcppPackageManager pkg(sCacheDir);
         if (!pkg.load()) {
-            WsjcppLog::err(TAG, "Could not load package from copy " + sCacheDir);
+            sError = "Could not load package from copy '" + sCacheDir + "'";
             return false;
         }
 
         if (!WsjcppCore::copyFile(sCacheWsjcppYml, sInstallationDir + "/wsjcpp.hold.yml")) {
-            WsjcppLog::err(TAG, "Could not copy " + sCacheWsjcppYml + " -> " + sInstallationDir + "/wsjcpp.hold.yml");
+            sError = "Could not copy " + sCacheWsjcppYml + " -> " + sInstallationDir + "/wsjcpp.hold.yml";
             return false;
         }
 
@@ -1127,20 +1137,19 @@ bool WsjcppPackageManager::installFromCache(const std::string &sPackage, const W
             WsjcppPackageManagerDistributionFile src = vSources[i];
             std::string sFileFrom = sCacheDir + "/" + src.getSourceFile();
             std::string sFileTo = sInstallationDir + "/" + src.getTargetFile();
-            std::cout << "Coping file '" << sFileFrom << "' to '" << sFileTo << "'" << std::endl;
             if (!WsjcppCore::copyFile(sFileFrom, sFileTo)) {
+                sError = "Could not copy from '" + sFileFrom + "' to '" + sFileTo + "'";
                 return false;
             }
-            std::cout << "Done." << std::endl;
         }
         
         // TODO install all dependencies
         // TODO update src.wsjcpp/
-    } else {
-        return false;
+        return true;
     }
-    
-    return true;
+
+    sError = "Not found wsjcpp.yml in '" + sCacheDir + "'";
+    return false;
 }
 
 // ---------------------------------------------------------------------

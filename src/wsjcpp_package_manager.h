@@ -150,7 +150,7 @@ class WsjcppPackageManager {
 
         std::string generateResourceCppFileBasename(const std::string &sFilepath);
         bool isInstalled(const std::string &sPackage);
-        bool installFromCache(const std::string &sPackage, const WsjcppPackageManagerDependence &dep);
+        bool installFromCache(const std::string &sPackageUrl, const WsjcppPackageManagerDependence &dep, std::string &sError);
         void recursive_printAuthorsTree(std::vector<WsjcppPackageManagerDependence> &vDependencies);
         bool readFieldVersion();
         bool readFieldCMakeMinimumRequired();
