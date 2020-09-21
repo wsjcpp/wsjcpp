@@ -44,16 +44,4 @@ class ArgumentProcessorDistributionRemove : public WsjcppArgumentProcessor {
         
 };
 
-// ---------------------------------------------------------------------
-
-class ArgumentProcessorDistributionUpdate : public WsjcppArgumentProcessor {
-    public:
-        ArgumentProcessorDistributionUpdate();
-        virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams);
-        virtual bool applySingleArgument(const std::string &sProgramName, const std::string &sArgumentName);
-    private:
-        bool m_bUpdateAll;
-        
-};
-
 #endif // ARGUMENT_PROCESSOR_SOURCES_H

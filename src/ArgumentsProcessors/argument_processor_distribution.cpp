@@ -3,15 +3,18 @@
 #include <wsjcpp_core.h>
 #include <wsjcpp_hashes.h>
 
+// ---------------------------------------------------------------------
+// ArgumentProcessorDistribution
+
 ArgumentProcessorDistribution::ArgumentProcessorDistribution() 
   : WsjcppArgumentProcessor({"distribution", "dist"}, "Distribution files from this source package", "Files which will distribute with current source package") {
       registryProcessor(new ArgumentProcessorDistributionList());
       registryProcessor(new ArgumentProcessorDistributionAdd());
       registryProcessor(new ArgumentProcessorDistributionRemove());
-      registryProcessor(new ArgumentProcessorDistributionUpdate());
 }
 
 // ---------------------------------------------------------------------
+// ArgumentProcessorDistributionList
 
 ArgumentProcessorDistributionList::ArgumentProcessorDistributionList() 
   : WsjcppArgumentProcessor({"list", "ls"}, "Distribution list files", "Distribution list files") {
@@ -48,6 +51,7 @@ int ArgumentProcessorDistributionList::exec(const std::vector<std::string> &vRou
 }
 
 // ---------------------------------------------------------------------
+// ArgumentProcessorDistributionAdd
 
 ArgumentProcessorDistributionAdd::ArgumentProcessorDistributionAdd() 
   : WsjcppArgumentProcessor({"add"}, "Add distribution file", "Add file to distribution list") {
@@ -75,8 +79,22 @@ int ArgumentProcessorDistributionAdd::exec(const std::vector<std::string> &vRout
         // printHelp(vArgs);
         return -1;
     }
+    
+    std::string sFileExt = sSourceFile.substr(sSourceFile.find_last_of(".") + 1);
+    sFileExt = WsjcppCore::toLower(sFileExt);
+    std::string sFileType = "";
 
-    if (pkg.addSourceFile(sSourceFile, sTargetFile, "source-code")) {
+    if (sFileExt == "h" || sFileExt == "cpp" || sFileExt == "hpp" || sFileExt == "c") {
+        sFileType = "source-code";
+    } else if (sFileExt == "wsjcpp-script") {
+        sFileType = "safe-scripting-generate";
+    } else {
+        WsjcppLog::err(TAG, "Unknown extension '" + sFileExt + "' for file '" + sSourceFile + "'");
+        // printHelp(vArgs);
+        return -1;
+    }
+
+    if (pkg.addSourceFile(sSourceFile, sTargetFile, sFileType)) {
         std::cout << "Added." << std::endl;
         pkg.save();
     } else {
@@ -87,9 +105,10 @@ int ArgumentProcessorDistributionAdd::exec(const std::vector<std::string> &vRout
 }
 
 // ---------------------------------------------------------------------
+// ArgumentProcessorDistributionRemove
 
 ArgumentProcessorDistributionRemove::ArgumentProcessorDistributionRemove() 
-  : WsjcppArgumentProcessor({"remove"}, "Remove distribution file", "Remove file from distribution list") {
+  : WsjcppArgumentProcessor({"remove", "rm"}, "Remove distribution file", "Remove file from distribution list") {
 
 }
 
@@ -120,64 +139,3 @@ int ArgumentProcessorDistributionRemove::exec(const std::vector<std::string> &vR
     }
     return 0;
 }
-
-// ---------------------------------------------------------------------
-
-ArgumentProcessorDistributionUpdate::ArgumentProcessorDistributionUpdate() 
-  : WsjcppArgumentProcessor({"update"}, "Update sha1 in distribution list", "Update sha1 in distribution list") {
-      registrySingleArgument("--all", "update sha1 in all");
-      registryExample("from github source `./wsjcpp distribution update src/module.cpp`");
-      registryExample("from github source `./wsjcpp distribution update --all`");
-      m_bUpdateAll = false;
-}
-
-// ---------------------------------------------------------------------
-
-bool ArgumentProcessorDistributionUpdate::applySingleArgument(const std::string &sProgramName, const std::string &sArgumentName) {
-    if (sArgumentName == "--all") {
-        m_bUpdateAll = true;
-        return true;
-    }
-    return false;
-}
-
-// ---------------------------------------------------------------------
-
-int ArgumentProcessorDistributionUpdate::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
-    WsjcppPackageManager pkg(".");
-    if (!pkg.load()) {
-        WsjcppLog::err(TAG, "Could not load package info from current directory");
-        return -1;
-    }
-    std::string sSourceFile = "";
-    if (m_bUpdateAll && vSubParams.size() == 0) {
-        std::vector<WsjcppPackageManagerDistributionFile> vFiles = pkg.getListOfDistributionFiles();
-        int nCounter = 0;
-        for (int i = 0; i < vFiles.size(); i++) {
-            WsjcppPackageManagerDistributionFile file = vFiles[i];
-            if (pkg.updateSourceFile(file.getSourceFile(), true)) {
-                nCounter++;
-            }
-        }
-        if (nCounter > 0) {
-            pkg.save();
-            std::cout << "Updated." << std::endl;
-        }
-    } else if (!m_bUpdateAll && vSubParams.size() == 1) {
-        sSourceFile = vSubParams[0];
-        if (pkg.updateSourceFile(sSourceFile, true)) {
-            pkg.save();
-            std::cout << "Updated." << std::endl;
-        } else {
-            WsjcppLog::err(TAG, "Could not update source-file '" + sSourceFile + "'");
-            // printHelp(vArgs);
-            return -1;
-        }
-    } else {
-        WsjcppLog::err(TAG, "Expected params <source-file> or --all");
-        return -1;
-    }
-    return 0;
-}
-
-// ---------------------------------------------------------------------
