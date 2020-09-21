@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.0)
 
 project(unit-tests C CXX)
-add_definitions(-DWSJCPP_APP_VERSION="ut-v0.1.7")
+add_definitions(-DWSJCPP_APP_VERSION="ut-v0.2.0")
 add_definitions(-DWSJCPP_APP_NAME="unit-tests-wsjcpp")
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
@@ -51,7 +51,7 @@ list (APPEND WSJCPP_INCLUDE_DIRS "../src.wsjcpp/wsjcpp_arguments/")
 list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_arguments/wsjcpp_arguments.cpp")
 list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_arguments/wsjcpp_arguments.h")
 
-# wsjcpp:v0.1.7
+# wsjcpp:v0.2.0
 list (APPEND WSJCPP_INCLUDE_DIRS "../src")
 list (APPEND WSJCPP_SOURCES "../src/wsjcpp_package_manager_distribution_file.cpp")
 list (APPEND WSJCPP_SOURCES "../src/wsjcpp_package_manager_distribution_file.h")
@@ -112,12 +112,4 @@ include_directories(${WSJCPP_INCLUDE_DIRS})
 add_executable ("unit-tests" ${WSJCPP_SOURCES})
 
 target_link_libraries("unit-tests" -lpthread ${WSJCPP_LIBRARIES} )
-
-install(
-    TARGETS
-        "unit-tests"
-    RUNTIME DESTINATION
-        /usr/bin
-)
-
 
