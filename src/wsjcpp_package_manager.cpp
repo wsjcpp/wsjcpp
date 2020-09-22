@@ -334,7 +334,7 @@ bool WsjcppPackageManager::save() {
             WsjcppCore::writeFile(sGitkeepFile, ""); // TODO createEmptyFile
         }
     }
-    
+
     m_yamlPackageInfo.saveToFile(m_sYamlFullpath);
     return true;
 }
@@ -918,7 +918,7 @@ bool WsjcppPackageManager::checkInstalledPackage(
     vFilesInstalled.push_back(sPackageInstallationDir + "/wsjcpp.hold.yml");
     for (int i = 0; i < vSources.size(); i++) {
         WsjcppPackageManagerDistributionFile src = vSources[i];
-        std::string sFilename = sPackageInstallationDir + "/" + src.getTargetFile();
+        std::string sFilename = WsjcppCore::doNormalizePath(sPackageInstallationDir + "/" + src.getTargetFile());
         
         vFilesInstalled.push_back(sFilename);
 
