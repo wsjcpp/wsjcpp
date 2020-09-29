@@ -10,7 +10,7 @@ WsjcppPackageManagerDistributionFile::WsjcppPackageManagerDistributionFile() {
 
 // ---------------------------------------------------------------------
 
-bool WsjcppPackageManagerDistributionFile::fromYAML(WsjcppYamlItem *pYamlDistributionFile, bool bHolded) {
+bool WsjcppPackageManagerDistributionFile::fromYAML(WsjcppYamlNode *pYamlDistributionFile, bool bHolded) {
     m_bHolded = bHolded;
     m_pYamlDistributionFile = pYamlDistributionFile;
     if (!m_pYamlDistributionFile->hasElement("source-file")) {
@@ -33,9 +33,7 @@ bool WsjcppPackageManagerDistributionFile::fromYAML(WsjcppYamlItem *pYamlDistrib
 
     if (m_bHolded) {
         if (!m_pYamlDistributionFile->hasElement("sha1")) {
-            m_pYamlDistributionFile->setElementValue("sha1", false, "", true);
-            // TODO WsjcppLog::err(TAG, "Missing required field 'sha1' in " + m_pYamlDistributionFile->getForLogFormat());
-            // return false; 
+            m_pYamlDistributionFile->setElementValue("sha1", "", WSJCPP_YAML_QUOTES_NONE, WSJCPP_YAML_QUOTES_DOUBLE);
         } else {
             m_sSha1 = m_pYamlDistributionFile->getElement("sha1")->getValue();
         }
@@ -55,11 +53,11 @@ bool WsjcppPackageManagerDistributionFile::fromYAML(WsjcppYamlItem *pYamlDistrib
 
 // ---------------------------------------------------------------------
 
-WsjcppYamlItem *WsjcppPackageManagerDistributionFile::toYAML() {
-    m_pYamlDistributionFile->getElement("source-file")->setValue(m_sSourceFile, true);
-    m_pYamlDistributionFile->getElement("target-file")->setValue(m_sTargetFile, true);
-    m_pYamlDistributionFile->getElement("sha1")->setValue(m_sSha1, true);
-    m_pYamlDistributionFile->getElement("type")->setValue(m_sType, true);
+WsjcppYamlNode *WsjcppPackageManagerDistributionFile::toYAML() {
+    m_pYamlDistributionFile->getElement("source-file")->setValue(m_sSourceFile, WSJCPP_YAML_QUOTES_DOUBLE);
+    m_pYamlDistributionFile->getElement("target-file")->setValue(m_sTargetFile, WSJCPP_YAML_QUOTES_DOUBLE);
+    m_pYamlDistributionFile->getElement("sha1")->setValue(m_sSha1, WSJCPP_YAML_QUOTES_DOUBLE);
+    m_pYamlDistributionFile->getElement("type")->setValue(m_sType, WSJCPP_YAML_QUOTES_DOUBLE);
     return m_pYamlDistributionFile;
 }
 

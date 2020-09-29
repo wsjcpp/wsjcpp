@@ -47,16 +47,16 @@ std::string WsjcppPackageManagerAuthor::getFullAuthor() {
 
 // ---------------------------------------------------------------------
 
-WsjcppYamlItem *WsjcppPackageManagerAuthor::toYAML() {
-    m_pYamlAuthor->getElement("name")->setValue(m_sName, true);
-    m_pYamlAuthor->getElement("email")->setValue(m_sEmail, true);
-    m_pYamlAuthor->getElement("web-site")->setValue(m_sWebSite, true);
+WsjcppYamlNode *WsjcppPackageManagerAuthor::toYAML() {
+    m_pYamlAuthor->getElement("name")->setValue(m_sName, WSJCPP_YAML_QUOTES_NONE);
+    m_pYamlAuthor->getElement("email")->setValue(m_sEmail, WSJCPP_YAML_QUOTES_NONE);
+    m_pYamlAuthor->getElement("web-site")->setValue(m_sWebSite, WSJCPP_YAML_QUOTES_NONE);
     return m_pYamlAuthor;
 }
 
 // ---------------------------------------------------------------------
 
-bool WsjcppPackageManagerAuthor::fromYAML(WsjcppYamlItem *pYamlAuthor) {
+bool WsjcppPackageManagerAuthor::fromYAML(WsjcppYamlNode *pYamlAuthor) {
     m_pYamlAuthor = pYamlAuthor;
 
     if (!m_pYamlAuthor->hasElement("name")) {

@@ -16,8 +16,8 @@
 class WsjcppPackageManagerOrigin {
     public:
         WsjcppPackageManagerOrigin();
-        bool fromYAML(WsjcppYamlItem *pYaml);
-        WsjcppYamlItem *toYAML();
+        bool fromYAML(WsjcppYamlNode *pYaml);
+        WsjcppYamlNode *toYAML();
 
         std::string getAddress();
         std::string getType();
@@ -29,7 +29,7 @@ class WsjcppPackageManagerOrigin {
         std::string TAG;
         std::string m_sAddress;
         std::string m_sType;
-        WsjcppYamlItem *m_pYamlOrigin;
+        WsjcppYamlNode *m_pYamlOrigin;
 };
 
 // ---------------------------------------------------------------------
@@ -37,8 +37,8 @@ class WsjcppPackageManagerOrigin {
 class WsjcppPackageManagerRepository {
     public:
         WsjcppPackageManagerRepository();
-        WsjcppYamlItem *toYAML();
-        bool fromYAML(WsjcppYamlItem *pYaml);
+        WsjcppYamlNode *toYAML();
+        bool fromYAML(WsjcppYamlNode *pYaml);
         std::string getType();
         std::string getUrl();
 
@@ -46,7 +46,7 @@ class WsjcppPackageManagerRepository {
         std::string TAG;
         std::string m_sType;
         std::string m_sUrl;
-        WsjcppYamlItem *m_pYamlRepository;
+        WsjcppYamlNode *m_pYamlRepository;
 };
 
 // ---------------------------------------------------------------------
@@ -54,8 +54,8 @@ class WsjcppPackageManagerRepository {
 class WsjcppPackageManagerUnitTest {
     public:
         WsjcppPackageManagerUnitTest();
-        WsjcppYamlItem *toYAML();
-        bool fromYAML(WsjcppYamlItem *pYaml);
+        WsjcppYamlNode *toYAML();
+        bool fromYAML(WsjcppYamlNode *pYaml);
         std::string getName();
         std::string getDescription();
         bool isEnabled();
@@ -68,7 +68,7 @@ class WsjcppPackageManagerUnitTest {
         std::string m_sName;
         std::string m_sDescription;
         bool m_bEnabled;
-        WsjcppYamlItem *m_pYamlUnitTest;
+        WsjcppYamlNode *m_pYamlUnitTest;
 };
 
 // ---------------------------------------------------------------------

@@ -11,18 +11,18 @@ WsjcppPackageManagerDependence::WsjcppPackageManagerDependence() {
 
 // ---------------------------------------------------------------------
 
-WsjcppYamlItem *WsjcppPackageManagerDependence::toYAML() {
-    m_pYamlDependece->getElement("url")->setValue(m_sUrl, true);
-    m_pYamlDependece->getElement("name")->setValue(m_sName, true);
-    m_pYamlDependece->getElement("version")->setValue(m_sVersion, true);
-    m_pYamlDependece->getElement("origin")->setValue(m_sOrigin, true);
-    m_pYamlDependece->getElement("installation-dir")->setValue(m_sInstallationDir, true);
+WsjcppYamlNode *WsjcppPackageManagerDependence::toYAML() {
+    m_pYamlDependece->getElement("url")->setValue(m_sUrl, WSJCPP_YAML_QUOTES_DOUBLE);
+    m_pYamlDependece->getElement("name")->setValue(m_sName, WSJCPP_YAML_QUOTES_DOUBLE);
+    m_pYamlDependece->getElement("version")->setValue(m_sVersion, WSJCPP_YAML_QUOTES_DOUBLE);
+    m_pYamlDependece->getElement("origin")->setValue(m_sOrigin, WSJCPP_YAML_QUOTES_DOUBLE);
+    m_pYamlDependece->getElement("installation-dir")->setValue(m_sInstallationDir, WSJCPP_YAML_QUOTES_DOUBLE);
     return m_pYamlDependece;
 }
 
 // ---------------------------------------------------------------------
 
-bool WsjcppPackageManagerDependence::fromYAML(WsjcppYamlItem *pYaml) {
+bool WsjcppPackageManagerDependence::fromYAML(WsjcppYamlNode *pYaml) {
     m_pYamlDependece = pYaml;
     if (!m_pYamlDependece->hasElement("name")) {
         WsjcppLog::err(TAG, "Missing required field 'name' in " + m_pYamlDependece->getForLogFormat());
