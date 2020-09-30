@@ -65,6 +65,11 @@ class WsjcppYamlNode {
             const WsjcppYamlPlaceInFile &placeInFile,
             WsjcppYamlNodeType nItemType
         );
+        // WsjcppYamlNode(
+        //     WsjcppYamlNode *pParent,
+        //     WsjcppYamlNodeType nItemType
+        //     const WsjcppYamlPlaceInFile &placeInFile,
+        // );
         ~WsjcppYamlNode();
         WsjcppYamlNode *getParent();
 
@@ -119,13 +124,16 @@ class WsjcppYamlNode {
         
         std::string getSerializedName();
         std::string toString(std::string sIntent = "");
-        std::string getItemTypeAsString();
+        std::string getNodeTypeAsString();
 
         std::string getForLogFormat();
         int getNodeLastIntent();
         std::string getStringNodeLastIntent();
         void setNodeIntents(const std::vector<int> & vNodeIntents);
         int getNodeIntent();
+
+        int getNumberOfLine() const;
+        void setNumberOfLine(int nNumberOfLine);
 
     private:
         void throw_error(const std::string &sError);
@@ -235,6 +243,8 @@ class WsjcppYamlCursor {
         bool valBool();
         WsjcppYamlCursor &val(bool bValue);
        
+        // node
+        WsjcppYamlNode *node();
 
         WsjcppYamlCursor operator[](int idx) const;
         WsjcppYamlCursor operator[](const std::string &sName) const;
@@ -253,9 +263,9 @@ class WsjcppYaml {
         ~WsjcppYaml();
         void clear();
         bool loadFromFile(const std::string &sFileName, std::string &sError);
-        bool saveToFile(const std::string &sFileName);
+        bool saveToFile(const std::string &sFileName, std::string &sError);
         bool loadFromString(const std::string &sBufferName, const std::string &sBuffer, std::string &sError);
-        bool saveToString(std::string &sBuffer);
+        bool saveToString(std::string &sBuffer, std::string &sError);
         WsjcppYamlNode *getRoot();
 
         WsjcppYamlCursor getCursor() const;

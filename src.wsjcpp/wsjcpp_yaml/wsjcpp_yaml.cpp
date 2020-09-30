@@ -161,7 +161,7 @@ void WsjcppYamlNode::doEmpty() {
     if (m_nItemType == WSJCPP_YAML_NODE_UNDEFINED) {
         m_nItemType = WSJCPP_YAML_NODE_EMPTY;
     } else {
-        throw std::runtime_error(TAG + ": Element already defined as '" + this->getItemTypeAsString() + "'");
+        throw std::runtime_error(TAG + ": Element already defined as '" + this->getNodeTypeAsString() + "'");
     }
 }
 
@@ -177,7 +177,7 @@ void WsjcppYamlNode::doArray() {
     if (m_nItemType == WSJCPP_YAML_NODE_UNDEFINED) {
         m_nItemType = WSJCPP_YAML_NODE_ARRAY;
     } else {
-        throw std::runtime_error(TAG + ": Element already defined as '" + this->getItemTypeAsString() + "'");
+        throw std::runtime_error(TAG + ": Element already defined as '" + this->getNodeTypeAsString() + "'");
     }
 }
 
@@ -187,7 +187,7 @@ void WsjcppYamlNode::doMap() {
     if (m_nItemType == WSJCPP_YAML_NODE_UNDEFINED) {
         m_nItemType = WSJCPP_YAML_NODE_MAP;
     } else {
-        throw std::runtime_error(TAG + ": Element already defined as '" + this->getItemTypeAsString() + "'");
+        throw std::runtime_error(TAG + ": Element already defined as '" + this->getNodeTypeAsString() + "'");
     }
 }
 
@@ -197,7 +197,7 @@ void WsjcppYamlNode::doValue() {
     if (m_nItemType == WSJCPP_YAML_NODE_UNDEFINED) {
         m_nItemType = WSJCPP_YAML_NODE_VALUE;
     } else {
-        throw std::runtime_error(TAG + ": Element already defined as '" + this->getItemTypeAsString() + "'");
+        throw std::runtime_error(TAG + ": Element already defined as '" + this->getNodeTypeAsString() + "'");
     }
 }
 
@@ -413,15 +413,20 @@ WsjcppYamlNode *WsjcppYamlNode::getElement(int i) {
 
 // ---------------------------------------------------------------------
 
-bool WsjcppYamlNode::appendElement(WsjcppYamlNode *pItem) {
-    if (pItem->isEmpty()) {
-        m_vObjects.push_back(pItem); // TODO clone object
+bool WsjcppYamlNode::appendElement(WsjcppYamlNode *pNode) {
+    if (pNode->isEmpty()) {
+        m_vObjects.push_back(pNode); // TODO clone object
         return true;
     }
     if (m_nItemType != WSJCPP_YAML_NODE_ARRAY) {
-        throw std::runtime_error(TAG + ": appendElement, Element must be array for " + this->getForLogFormat());
+        throw std::runtime_error(TAG + ": appendElement, "
+            "tring add node \n"
+            "    name='" + pNode->getName() + "'\n"
+            "    type=" + pNode->getNodeTypeAsString() + "\n"
+            "    line=" + std::to_string(pNode->getNumberOfLine()) + ")\n"
+            " To element (must be array) \n" + this->getForLogFormat());
     }
-    m_vObjects.push_back(pItem); // TODO clone object
+    m_vObjects.push_back(pNode); // TODO clone object
     return true;
 }
 
@@ -613,7 +618,7 @@ std::string WsjcppYamlNode::toString(std::string sIntent) {
 
 // ---------------------------------------------------------------------
 
-std::string WsjcppYamlNode::getItemTypeAsString() {
+std::string WsjcppYamlNode::getNodeTypeAsString() {
     if (m_nItemType == WSJCPP_YAML_NODE_UNDEFINED) {
         return "undefined";
     } else if (m_nItemType == WSJCPP_YAML_NODE_ARRAY) {
@@ -662,6 +667,18 @@ void WsjcppYamlNode::setNodeIntents(const std::vector<int> & vNodeIntents) {
 
 int WsjcppYamlNode::getNodeIntent() {
     return m_nNodeIntent;
+}
+
+// ---------------------------------------------------------------------
+
+int WsjcppYamlNode::getNumberOfLine() const {
+    return m_placeInFile.getNumberOfLine();
+}
+
+// ---------------------------------------------------------------------
+
+void WsjcppYamlNode::setNumberOfLine(int nNumberOfLine) {
+    m_placeInFile.setNumberOfLine(nNumberOfLine);
 }
 
 // ---------------------------------------------------------------------
@@ -1191,6 +1208,12 @@ WsjcppYamlCursor &WsjcppYamlCursor::val(bool bValue) {
 
 // ---------------------------------------------------------------------
 
+WsjcppYamlNode *WsjcppYamlCursor::node() {
+    return m_pCurrentNode;
+}
+
+// ---------------------------------------------------------------------
+
 WsjcppYamlCursor WsjcppYamlCursor::operator[](int idx) const {
     if (m_pCurrentNode != nullptr && m_pCurrentNode->isArray() && idx < m_pCurrentNode->getLength() && idx >= 0) {
         return WsjcppYamlCursor(m_pCurrentNode->getElement(idx));
@@ -1240,9 +1263,10 @@ bool WsjcppYaml::loadFromFile(const std::string &sFileName, std::string &sError)
 
 // ---------------------------------------------------------------------
 
-bool WsjcppYaml::saveToFile(const std::string &sFileName) {
+bool WsjcppYaml::saveToFile(const std::string &sFileName, std::string &sError) {
     std::string sBuffer = m_pRoot->toString();
     if (!WsjcppCore::writeFile(sFileName, sBuffer)) {
+        sError = "Could not save to file";
         return false;    
     }
     return true;
@@ -1256,7 +1280,7 @@ bool WsjcppYaml::loadFromString(const std::string &sBufferName, const std::strin
 
 // ---------------------------------------------------------------------
 
-bool WsjcppYaml::saveToString(std::string &sBuffer) {
+bool WsjcppYaml::saveToString(std::string &sBuffer, std::string &sError) {
     sBuffer = m_pRoot->toString();
     return true;
 }
@@ -1440,38 +1464,30 @@ void WsjcppYaml::process_hasName_emptyValue_arrayItem() {
 // ---------------------------------------------------------------------
 
 void WsjcppYaml::process_hasName_emptyValue_noArrayItem() {
+    // std::cout << "process_hasName_emptyValue_noArrayItem" << std::endl;
     if (m_parseLine.getIntent() == m_pParseCurrentParentNode->getNodeIntent()) {
         if (m_pParseCurrentParentNode->getParent() != nullptr) {
             m_pParseCurrentParentNode = m_pParseCurrentParentNode->getParent();
         }
     }
-    // std::cout << "process_hasName_emptyValue_noArrayItem " << std::endl;
     WsjcppYamlNode *pNode = new WsjcppYamlNode(
         m_pParseCurrentParentNode, m_parsePlaceInFile, 
         WSJCPP_YAML_NODE_UNDEFINED
     );
     if (m_parseLine.getValueQuotes() != WSJCPP_YAML_QUOTES_NONE) {
+        // std::cout << "pNode->doValue() for '" << m_parseLine.getName() << "' value: '" << m_parseLine.getValue() << "' " << std::endl;
         pNode->doValue();
         pNode->setValue(m_parseLine.getValue(), m_parseLine.getValueQuotes());
     }
-    int nDiffIntent = m_parseLine.getIntent() - m_nParseCurrentIntent;
+    // int nDiffIntent = m_parseLine.getIntent() - m_nParseCurrentIntent;
     pNode->setName(m_parseLine.getName(), m_parseLine.getNameQuotes());
     pNode->setComment(m_parseLine.getComment());
     pNode->setNodeIntents(m_vStackDiffNodeIntents);
-    // std::cout << "current node [" << m_vStackDiffNodeIntents.back() << "]" << std::endl;
-    
-/*    if (nDiffIntent == 0 && m_pParseCurrentParentNode->isUndefined()) {
-        std::cout << "shit nDiffIntent = " << nDiffIntent << std::endl;
-        std::cout << "shit m_pParseCurrentParentNode->getName() = " << m_pParseCurrentParentNode->getName() << std::endl;
-        if (m_pParseCurrentParentNode->getParent() != nullptr) {
-            std::cout << "shit "
-                << " {" << m_pParseCurrentParentNode->getPlaceInFile().getLine() << "} "
-                << " {" << m_parsePlaceInFile.getLine() << "} " << std::endl;
-        }
-    }
-*/
+
     m_pParseCurrentParentNode->setElement(m_parseLine.getName(), pNode);
-    m_pParseCurrentParentNode = pNode;
+    if (pNode->isUndefined()) {
+        m_pParseCurrentParentNode = pNode;
+    }
 }
 
 // ---------------------------------------------------------------------
@@ -1481,11 +1497,18 @@ void WsjcppYaml::process_hasName_hasValue_arrayItem() {
     if (m_pParseCurrentParentNode->isUndefined()) {
         m_pParseCurrentParentNode->doArray();
     }
+    // if (!m_pParseCurrentParentNode->isArray()) {
+    //     std::cout << "m_pParseCurrentParentNode->getName(): " << m_pParseCurrentParentNode->getName() << std::endl;
+    // }
+
     WsjcppYamlNode *pMapItem = new WsjcppYamlNode(
         m_pParseCurrentParentNode, m_parsePlaceInFile, 
         WSJCPP_YAML_NODE_MAP
     );
+    // std::cout << "m_parseLine.getName(): " << m_parseLine.getName() << std::endl;
+
     m_pParseCurrentParentNode->appendElement(pMapItem);
+    // std::cout << "appended " << std::endl;
     m_pParseCurrentParentNode = pMapItem;
     pMapItem->setNodeIntents(m_vStackDiffNodeIntents);
 
@@ -1506,6 +1529,7 @@ void WsjcppYaml::process_hasName_hasValue_arrayItem() {
 // ---------------------------------------------------------------------
 
 void WsjcppYaml::process_hasName_hasValue_noArrayItem() {
+    // std::cout << "process_hasName_hasValue_noArrayItem" << std::endl;
     WsjcppYamlNode *pNode = new WsjcppYamlNode(
         m_pParseCurrentParentNode, m_parsePlaceInFile, 
         WSJCPP_YAML_NODE_VALUE
@@ -1550,6 +1574,7 @@ void WsjcppYaml::process_emptyName_hasValue_noArrayItem() {
 // ---------------------------------------------------------------------
 
 void WsjcppYaml::process_emptyName_emptyValue_arrayItem() {
+    // std::cout << "process_emptyName_emptyValue_arrayItem" << std::endl;
     if (m_pParseCurrentParentNode->isUndefined()) {
         m_pParseCurrentParentNode->doArray();
     }

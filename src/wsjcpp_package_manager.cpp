@@ -319,7 +319,7 @@ bool WsjcppPackageManager::init() {
 
 // ---------------------------------------------------------------------
 
-bool WsjcppPackageManager::save() {
+bool WsjcppPackageManager::save(/*std::string &sError*/) { // TODO uncomment sError
     if (m_bHolded) {
         WsjcppLog::throw_err(TAG, "wsjcpp is holded");
         return false;
@@ -334,9 +334,8 @@ bool WsjcppPackageManager::save() {
             WsjcppCore::writeFile(sGitkeepFile, ""); // TODO createEmptyFile
         }
     }
-
-    m_yamlPackageInfo.saveToFile(m_sYamlFullpath);
-    return true;
+    std::string sError;
+    return m_yamlPackageInfo.saveToFile(m_sYamlFullpath, sError);
 }
 
 // ---------------------------------------------------------------------
