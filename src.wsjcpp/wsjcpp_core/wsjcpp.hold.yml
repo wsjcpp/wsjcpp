@@ -16,7 +16,6 @@ keywords:
 authors:
   - name: Evgenii Sopov
     email: mrseakg@gmail.com
-
 distribution:
   - source-file: src/wsjcpp_core.cpp
     target-file: wsjcpp_core.cpp
@@ -45,8 +44,8 @@ distribution:
   - source-file: "scripts.wsjcpp/generate.Class.wsjcpp-script"
     target-file: "generate.Class.wsjcpp-script"
     type: "safe-scripting-generate"
-    sha1: "de1799907c685d606b93e08b821b540c2faa2db1"
 
+    sha1: "de1799907c685d606b93e08b821b540c2faa2db1"
 unit-tests:
   cases:
     - name: CoreNormalizePath

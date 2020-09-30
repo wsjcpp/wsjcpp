@@ -52,6 +52,10 @@ bool WsjcppPackageManagerDependence::fromYAML(WsjcppYamlNode *pYaml) {
         m_sInstallationDir = m_pYamlDependece->getElement("installation-dir")->getValue();
     }
 
+    if (m_pYamlDependece->hasElement("installation-datetime")) {
+        m_sInstallationDateTime = m_pYamlDependece->getElement("installation-datetime")->getValue();
+    }
+
     return true;
 }
 

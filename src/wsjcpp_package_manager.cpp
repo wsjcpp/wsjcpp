@@ -1064,6 +1064,8 @@ void WsjcppPackageManager::addDependency(WsjcppPackageManagerDependence &dep) {
     pItem->setElementValue("url", dep.getUrl(), WSJCPP_YAML_QUOTES_NONE, WSJCPP_YAML_QUOTES_DOUBLE);
     pItem->setElementValue("origin", dep.getOrigin(), WSJCPP_YAML_QUOTES_NONE, WSJCPP_YAML_QUOTES_DOUBLE);
     pItem->setElementValue("installation-dir", dep.getInstallationDir(), WSJCPP_YAML_QUOTES_NONE, WSJCPP_YAML_QUOTES_DOUBLE);
+    std::string sNow = WsjcppCore::formatTimeForWeb(WsjcppCore::getCurrentTimeInSeconds());
+    pItem->setElementValue("installation-datetime", sNow, WSJCPP_YAML_QUOTES_NONE, WSJCPP_YAML_QUOTES_DOUBLE);
     pDeps->appendElement(pItem);
 }
 
@@ -1081,6 +1083,12 @@ void WsjcppPackageManager::updateDependency(WsjcppPackageManagerDependence &dep)
             // pItem->getElement("url")->setValue(dep.getUrl(), true);
             pItem->getElement("origin")->setValue(dep.getOrigin(), WSJCPP_YAML_QUOTES_DOUBLE);
             pItem->getElement("installation-dir")->setValue(dep.getInstallationDir(), WSJCPP_YAML_QUOTES_DOUBLE);
+            std::string sNow = WsjcppCore::formatTimeForWeb(WsjcppCore::getCurrentTimeInSeconds());
+            if (pItem->hasElement("installation-datetime")) {
+                pItem->getElement("installation-datetime")->setValue(sNow, WSJCPP_YAML_QUOTES_DOUBLE);
+            } else {
+                pItem->setElementValue("installation-datetime", sNow, WSJCPP_YAML_QUOTES_NONE, WSJCPP_YAML_QUOTES_DOUBLE);
+            }
         }
     }
 }

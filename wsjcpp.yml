@@ -26,6 +26,7 @@ dependencies:
     url: "https://github.com/wsjcpp/wsjcpp-core:master"
     origin: "https://github.com/"
     installation-dir: "./src.wsjcpp/wsjcpp_core"
+    installation-datetime: "Wed, 30 Sep 2020 20:32:36 GMT"
   - name: "wsjcpp-yaml"
     version: "v0.1.5"
     url: "https://github.com/wsjcpp/wsjcpp-yaml:master"
@@ -60,13 +61,11 @@ authors:
     web-site: "https://sea-kg.com"
   - name: Danil Dudkin
     email: shikamaru740@gmail.com
-
 origins:
   - address: "https://sea-kg.com/wsjcpp-package-registry/"
     type: package-registry
   - address: "file:///usr/share/wsjcpp-package-registry"
     type: local-file-system # must be in global ~/.wsjcpp/config.yml
-
 distribution:
   - source-file: "src/wsjcpp_package_manager_distribution_file.cpp"
     target-file: "wsjcpp_package_manager_distribution_file.cpp"

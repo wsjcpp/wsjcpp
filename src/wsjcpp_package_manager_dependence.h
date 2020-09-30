@@ -27,6 +27,7 @@ class WsjcppPackageManagerDependence {
     private:
         std::string TAG;
         std::string m_sInstallationDir;
+        std::string m_sInstallationDateTime;
         std::string m_sUrl;
         std::string m_sName;
         std::string m_sVersion;
