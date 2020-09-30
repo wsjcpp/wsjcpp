@@ -38,7 +38,7 @@ dependencies:
     origin: "https://github.com/"
     installation-dir: "./src.wsjcpp/wsjcpp_safe_scripting"
   - name: "wsjcpp-arguments"
-    version: "v0.2.0"
+    version: "v0.2.1"
     url: "https://github.com/wsjcpp/wsjcpp-arguments:master"
     origin: "https://github.com/"
     installation-dir: "./src.wsjcpp/wsjcpp_arguments"
@@ -47,14 +47,12 @@ dependencies:
 repositories:
   - type: main # TODO validator
     url: "https://github.com/wsjcpp/wsjcpp"
-
 authors:
   - name: Evgenii Sopov
     email: mrseakg@gmail.com
     web-site: "https://sea-kg.com"
   - name: Danil Dudkin
     email: shikamaru740@gmail.com
-
 origins:
   - address: "https://sea-kg.com/wsjcpp-package-registry/"
     type: package-registry
@@ -139,7 +137,6 @@ distribution:
   - source-file: "src/wsjcpp_package_downloader_localfs.h"
     target-file: "wsjcpp_package_downloader_localfs.h"
     type: "source-code"
-
 unit-tests:
   cases:
     - name: "NormalizeUnitTestName"

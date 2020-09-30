@@ -46,7 +46,7 @@ list (APPEND WSJCPP_INCLUDE_DIRS "../src.wsjcpp/wsjcpp_safe_scripting/")
 list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_safe_scripting/wsjcpp_safe_scripting.h")
 list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_safe_scripting/wsjcpp_safe_scripting.cpp")
 
-# wsjcpp-arguments:v0.2.0
+# wsjcpp-arguments:v0.2.1
 list (APPEND WSJCPP_INCLUDE_DIRS "../src.wsjcpp/wsjcpp_arguments/")
 list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_arguments/wsjcpp_arguments.cpp")
 list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_arguments/wsjcpp_arguments.h")
