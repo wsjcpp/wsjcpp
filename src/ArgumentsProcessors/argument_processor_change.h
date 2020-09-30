@@ -20,4 +20,12 @@ class ArgumentProcessorChangeVersion : public WsjcppArgumentProcessor {
     private:
 };
 
+class ArgumentProcessorChangeVersionFile : public WsjcppArgumentProcessor {
+    public:
+        ArgumentProcessorChangeVersionFile();
+        virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams);
+        
+    private:
+};
+
 #endif // ARGUMENT_PROCESSOR_CHANGE_H

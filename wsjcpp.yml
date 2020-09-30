@@ -11,6 +11,10 @@ keywords:
   - "sources"
   - "package-manager"
 
+repositories:
+  - type: main # TODO validator
+    url: "https://github.com/wsjcpp/wsjcpp"
+
 required-pkg-config:
   - CURL
 
@@ -44,20 +48,25 @@ dependencies:
     installation-dir: "./src.wsjcpp/wsjcpp_arguments"
 # build-dependencies:
 
-repositories:
-  - type: main # TODO validator
-    url: "https://github.com/wsjcpp/wsjcpp"
+auto-generated-files:
+  version-file:
+    path: "./"
+    filename: "VERSION"
+    printed-format: "v{MAJOR}.{MINOR}.{BUILD}"
+
 authors:
   - name: Evgenii Sopov
     email: mrseakg@gmail.com
     web-site: "https://sea-kg.com"
   - name: Danil Dudkin
     email: shikamaru740@gmail.com
+
 origins:
   - address: "https://sea-kg.com/wsjcpp-package-registry/"
     type: package-registry
   - address: "file:///usr/share/wsjcpp-package-registry"
     type: local-file-system # must be in global ~/.wsjcpp/config.yml
+
 distribution:
   - source-file: "src/wsjcpp_package_manager_distribution_file.cpp"
     target-file: "wsjcpp_package_manager_distribution_file.cpp"
@@ -137,6 +146,7 @@ distribution:
   - source-file: "src/wsjcpp_package_downloader_localfs.h"
     target-file: "wsjcpp_package_downloader_localfs.h"
     type: "source-code"
+
 unit-tests:
   cases:
     - name: "NormalizeUnitTestName"
@@ -148,6 +158,7 @@ unit-tests:
       enabled: "no"
     - name: "ReadPackage"
       description: "Test for read package"
+
 resources:
   - filepath: "./build_simple.sh"
     filesize: 77
