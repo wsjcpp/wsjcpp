@@ -119,7 +119,7 @@ int ArgumentProcessorInit::exec(const std::vector<std::string> &vRoutes, const s
             "\n"
             "int main(int argc, const char* argv[]) {\n"
             "    std::string TAG = \"MAIN\";\n"
-            "    std::string appName = std::string(WSJCPP_NAME);\n"
+            "    std::string appName = std::string(WSJCPP_APP_NAME);\n"
             "    std::string appVersion = std::string(WSJCPP_APP_VERSION);\n"
             "    if (!WsjcppCore::dirExists(\".logs\")) {\n"
             "        WsjcppCore::makeDir(\".logs\");\n"
