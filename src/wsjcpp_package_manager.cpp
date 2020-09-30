@@ -1701,12 +1701,18 @@ bool WsjcppPackageManager::readFieldDescription() {
 
 // ---------------------------------------------------------------------
 
-bool WsjcppPackageManager::readFieldWsjcppVersion() {    
-    if (!m_yamlPackageInfo.getRoot()->hasElement("wsjcpp_version")) {
+bool WsjcppPackageManager::readFieldWsjcppVersion() {   
+    WsjcppYamlCursor cur = m_yamlPackageInfo["wsjcpp_version"];
+    if (cur.isNull()) {
         WsjcppLog::err(TAG, "Missing required field 'wsjcpp_version' in '" + m_sYamlFullpath + "'");
         return false;
     }
-    m_sWsjcppVersion = m_yamlPackageInfo["wsjcpp_version"].valStr();
+    m_sWsjcppVersion = cur.valStr();
+    if (!validateVersionFormat(m_sWsjcppVersion)) {
+        WsjcppLog::err(TAG, "Invalid version format for 'wsjcpp_version' in '" + m_sYamlFullpath + "'");
+        return false;
+    }
+    // 
     // TODO version comparator 
     // if (nWsjcppVersion > m_nWsjcppVersion) {
         //   std::cout << "WARN: Please update your 'wsjcpp' to " << nWsjcppVersion << std::endl;
@@ -1717,26 +1723,26 @@ bool WsjcppPackageManager::readFieldWsjcppVersion() {
 // ---------------------------------------------------------------------
 
 bool WsjcppPackageManager::readFieldIssues() {
-    if (!m_yamlPackageInfo.getRoot()->hasElement("issues")) {
+    WsjcppYamlCursor cur = m_yamlPackageInfo["issues"];
+    if (cur.isNull()) {
         WsjcppLog::err(TAG, "Missing required field 'issues' in '" + m_sYamlFullpath + "'");
         return false;
     }
-    m_sIssues = m_yamlPackageInfo["issues"].valStr();
+    m_sIssues = cur.valStr();
     return true;
 }
 
 // ---------------------------------------------------------------------
 
 bool WsjcppPackageManager::readFieldKeywords() {
-    if (!m_yamlPackageInfo.getRoot()->hasElement("keywords")) {
+    WsjcppYamlCursor cur = m_yamlPackageInfo["keywords"];
+    if (cur.isNull()) {
         WsjcppLog::err(TAG, "Missing required field 'keywords' in '" + m_sYamlFullpath + "'");
         return false;
     }
-    WsjcppYamlCursor cur = m_yamlPackageInfo["keywords"];
-    int nLength = cur.size();
-    for (int i = 0; i < nLength; i++) {
-        std::string sKeyword = m_yamlPackageInfo.getRoot()->getElement("keywords")->getElement(i)->getValue();
-        m_vKeywords.push_back(sKeyword);
+    int nSize = cur.size();
+    for (int i = 0; i < nSize; i++) {
+        m_vKeywords.push_back(cur[i].valStr());
     }
     return true;
 }
@@ -1744,16 +1750,15 @@ bool WsjcppPackageManager::readFieldKeywords() {
 // ---------------------------------------------------------------------
 
 bool WsjcppPackageManager::readFieldAuthors() {
-    if (!m_yamlPackageInfo.getRoot()->hasElement("authors")) {
+    WsjcppYamlCursor cur = m_yamlPackageInfo["authors"];
+    if (cur.isNull()) {
         WsjcppLog::err(TAG, "Missing required field 'authors' in '" + m_sYamlFullpath + "'");
         return false;
     }
-    WsjcppYamlCursor cur = m_yamlPackageInfo["authors"];
-    int nLength = cur.size();
-    for (int i = 0; i < nLength; i++) {
-        WsjcppYamlNode *pYamlAuthor = m_yamlPackageInfo.getRoot()->getElement("authors")->getElement(i);
+    int nSize = cur.size();
+    for (int i = 0; i < nSize; i++) {
         WsjcppPackageManagerAuthor author;
-        author.fromYAML(pYamlAuthor);
+        author.fromYAML(cur[i].node());
         m_vAuthors.push_back(author);
     }
     return true;
@@ -1762,16 +1767,15 @@ bool WsjcppPackageManager::readFieldAuthors() {
 // ---------------------------------------------------------------------
 
 bool WsjcppPackageManager::readFieldDistribution() {
-    if (m_yamlPackageInfo["distribution"].isNull()) {
+    WsjcppYamlCursor cur = m_yamlPackageInfo["distribution"];
+    if (cur.isNull()) {
         WsjcppLog::err(TAG, "Missing required field 'distribution' in '" + m_sYamlFullpath + "'");
         return false;
     }
-    WsjcppYamlCursor cur = m_yamlPackageInfo["distribution"];
-    int nLength = cur.size();
-    for (int i = 0; i < nLength; i++) {
-        WsjcppYamlNode *pYamlSource = m_yamlPackageInfo.getRoot()->getElement("distribution")->getElement(i);
+    int nSize = cur.size();
+    for (int i = 0; i < nSize; i++) {
         WsjcppPackageManagerDistributionFile source;
-        source.fromYAML(pYamlSource, m_bHolded);
+        source.fromYAML(cur[i].node(), m_bHolded);
         m_vDistributionFiles.push_back(source);
     }
     return true;
@@ -1780,16 +1784,16 @@ bool WsjcppPackageManager::readFieldDistribution() {
 // ---------------------------------------------------------------------
 
 bool WsjcppPackageManager::readFieldOrigins() {
-    if (!m_yamlPackageInfo.getRoot()->hasElement("origins")) {
+    WsjcppYamlCursor cur = m_yamlPackageInfo["origins"];
+    if (cur.isNull()) {
         WsjcppLog::err(TAG, "Missing required field 'origins' in '" + m_sYamlFullpath + "'");
         return false;
     }
-    WsjcppYamlCursor cur = m_yamlPackageInfo["origins"];
-    int nLength = cur.size();
-    for (int i = 0; i < nLength; i++) {
-        WsjcppYamlNode *pYamlOrigins = m_yamlPackageInfo.getRoot()->getElement("origins")->getElement(i);
+    
+    int nSize = cur.size();
+    for (int i = 0; i < nSize; i++) {
         WsjcppPackageManagerOrigin origin;
-        origin.fromYAML(pYamlOrigins);
+        origin.fromYAML(cur[i].node());
         m_vOrigins.push_back(origin);
     }
     return true;
@@ -1798,16 +1802,16 @@ bool WsjcppPackageManager::readFieldOrigins() {
 // ---------------------------------------------------------------------
 
 bool WsjcppPackageManager::readFieldDependencies() {
-    if (!m_yamlPackageInfo.getRoot()->hasElement("dependencies")) {
+    WsjcppYamlCursor cur = m_yamlPackageInfo["dependencies"];
+    if (cur.isNull()) {
         WsjcppLog::err(TAG, "Missing required field 'dependencies' in '" + m_sYamlFullpath + "'");
         return false;
     }
-    WsjcppYamlCursor cur = m_yamlPackageInfo["dependencies"];
-    int nLength = cur.size();
-    for (int i = 0; i < nLength; i++) {
-        WsjcppYamlNode *pYamlDependence = m_yamlPackageInfo.getRoot()->getElement("dependencies")->getElement(i);
+    
+    int nSize = cur.size();
+    for (int i = 0; i < nSize; i++) {
         WsjcppPackageManagerDependence dependence;
-        dependence.fromYAML(pYamlDependence);
+        dependence.fromYAML(cur[i].node());
         m_vDependencies.push_back(dependence);
     }
     return true;
@@ -1816,16 +1820,16 @@ bool WsjcppPackageManager::readFieldDependencies() {
 // ---------------------------------------------------------------------
 
 bool WsjcppPackageManager::readFieldRepositories() {
-    if (!m_yamlPackageInfo.getRoot()->hasElement("repositories")) {
+    WsjcppYamlCursor cur = m_yamlPackageInfo["repositories"];
+    if (cur.isNull()) {
         WsjcppLog::err(TAG, "Missing required field 'repositories' in '" + m_sYamlFullpath + "'");
         return false;
     }
-    WsjcppYamlCursor cur = m_yamlPackageInfo["repositories"];
-    int nLength = cur.size();
-    for (int i = 0; i < nLength; i++) {
-        WsjcppYamlNode *pYamlRepository = m_yamlPackageInfo.getRoot()->getElement("repositories")->getElement(i);
+    
+    int nSize = cur.size();
+    for (int i = 0; i < nSize; i++) {
         WsjcppPackageManagerRepository repository;
-        repository.fromYAML(pYamlRepository);
+        repository.fromYAML(cur[i].node());
         m_vRepositories.push_back(repository);
     }
     return true;
@@ -1834,16 +1838,16 @@ bool WsjcppPackageManager::readFieldRepositories() {
 // ---------------------------------------------------------------------
 
 bool WsjcppPackageManager::readFieldResources() {
-    if (!m_yamlPackageInfo.getRoot()->hasElement("resources")) {
-        // skip
+    WsjcppYamlCursor cur = m_yamlPackageInfo["resources"];
+    if (cur.isNull()) {
+        // just skip
         return true;
     }
-    WsjcppYamlCursor cur = m_yamlPackageInfo["resources"];
-    int nLength = cur.size();
-    for (int i = 0; i < nLength; i++) {
-        WsjcppYamlNode *pYamlResourceFile = m_yamlPackageInfo.getRoot()->getElement("resources")->getElement(i);
+    
+    int nSize = cur.size();
+    for (int i = 0; i < nSize; i++) {
         WsjcppPackageManagerResourceFile resource;
-        resource.fromYAML(pYamlResourceFile, m_bHolded);
+        resource.fromYAML(cur[i].node(), m_bHolded);
         m_vResourceFiles.push_back(resource);
     }
     return true;
@@ -1852,23 +1856,22 @@ bool WsjcppPackageManager::readFieldResources() {
 // ---------------------------------------------------------------------
 
 bool WsjcppPackageManager::readFieldUnitTests() {
-    if (!m_yamlPackageInfo.getRoot()->hasElement("unit-tests")) {
+    WsjcppYamlCursor cur = m_yamlPackageInfo["unit-tests"];
+    if (cur.isNull()) {
         WsjcppLog::err(TAG, "Missing required field 'unit-tests' in '" + m_sYamlFullpath + "'");
         return false;
     }
-
-    WsjcppYamlCursor cur = m_yamlPackageInfo["unit-tests"];
-    if (cur["cases"].isNull()) {
-        WsjcppLog::err(TAG, "Missing required field 'cases' in unit-tests, file: '" + m_sYamlFullpath + "'");
+    
+    cur = cur["cases"];
+    if (cur.isNull()) {
+        WsjcppLog::err(TAG, "Missing required field 'unit-tests.cases' in , file: '" + m_sYamlFullpath + "'");
         return false;
     }
-    cur = cur["cases"];
 
-    int nLength = cur.size();
-    for (int i = 0; i < nLength; i++) {
-        WsjcppYamlNode *pYamlCase = m_yamlPackageInfo.getRoot()->getElement("unit-tests")->getElement("cases")->getElement(i);
+    int nSize = cur.size();
+    for (int i = 0; i < nSize; i++) {
         WsjcppPackageManagerUnitTest unitTest;
-        unitTest.fromYAML(pYamlCase);
+        unitTest.fromYAML(cur[i].node());
         m_vUnitTests.push_back(unitTest);
     }
     return true;
@@ -1877,14 +1880,13 @@ bool WsjcppPackageManager::readFieldUnitTests() {
 // ---------------------------------------------------------------------
 
 bool WsjcppPackageManager::readFieldRequiredLibraries() {
-    if (!m_yamlPackageInfo.getRoot()->hasElement("required-libraries")) {
+    WsjcppYamlCursor cur = m_yamlPackageInfo["required-libraries"];
+    if (cur.isNull()) {
         WsjcppLog::err(TAG, "Missing required field 'required-libraries' in '" + m_sYamlFullpath + "'");
         return false;
     }
-    WsjcppYamlCursor cur = m_yamlPackageInfo["required-libraries"];
-    // WsjcppYamlNode *pItemRequiredLibraries = m_yamlPackageInfo.getRoot()->getElement("required-libraries");
-    int nLength = cur.size();
-    for (int i = 0; i < nLength; i++) {
+    int nSize = cur.size();
+    for (int i = 0; i < nSize; i++) {
         m_vRequiredLibraries.push_back(cur[i].valStr());
     }
     return true;
@@ -1893,13 +1895,14 @@ bool WsjcppPackageManager::readFieldRequiredLibraries() {
 // ---------------------------------------------------------------------
 
 bool WsjcppPackageManager::readFieldRequiredPkgConfig() {
-    if (!m_yamlPackageInfo.getRoot()->hasElement("required-pkg-config")) {
+    WsjcppYamlCursor cur = m_yamlPackageInfo["required-pkg-config"];
+    if (cur.isNull()) {
         WsjcppLog::err(TAG, "Missing required field 'required-pkg-config' in '" + m_sYamlFullpath + "'");
         return false;
     }
-    WsjcppYamlCursor cur = m_yamlPackageInfo["required-pkg-config"];
-    int nLength = cur.size();
-    for (int i = 0; i < nLength; i++) {
+    
+    int nSize = cur.size();
+    for (int i = 0; i < nSize; i++) {
         m_sRequiredPkgConfig.push_back(cur[i].valStr());
     }
     return true;
