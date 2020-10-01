@@ -28,6 +28,7 @@ ArgumentProcessorMain::ArgumentProcessorMain()
     registryProcessor(new ArgumentProcessorUninstall());
     registryProcessor(new ArgumentProcessorList());
     registryProcessor(new ArgumentProcessorUpdate());
+    registryProcessor(new ArgumentProcessorVerify());
     registryProcessor(new ArgumentProcessorDistribution());
     // registryProcessor(new ArgumentProcessorRun());
     registryProcessor(new ArgumentProcessorGenerate());
@@ -35,6 +36,7 @@ ArgumentProcessorMain::ArgumentProcessorMain()
     // registryProcessor(new ArgumentProcessorOrigins());
     registryProcessor(new ArgumentProcessorPrepare());
     registryProcessor(new ArgumentProcessorResources());
+    
 }
 
 // ---------------------------------------------------------------------

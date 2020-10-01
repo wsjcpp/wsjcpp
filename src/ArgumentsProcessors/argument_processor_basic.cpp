@@ -253,3 +253,27 @@ int ArgumentProcessorVersion::exec(const std::vector<std::string> &vRoutes, cons
 }
 
 // ---------------------------------------------------------------------
+// ArgumentProcessorVersion
+
+ArgumentProcessorVerify::ArgumentProcessorVerify() 
+: WsjcppArgumentProcessor({"verify"}, "Verify current package", "Verify current package") {
+      
+}
+
+// ---------------------------------------------------------------------
+
+int ArgumentProcessorVerify::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
+    WsjcppPackageManager pkg(".");
+    if (!pkg.load()) {
+        WsjcppLog::err(TAG, "Could not load package info from current directory");
+        return -1;
+    }
+    
+    if (!pkg.verify()) {
+        return -1;
+    }
+    
+    return 0;
+}
+
+// ---------------------------------------------------------------------

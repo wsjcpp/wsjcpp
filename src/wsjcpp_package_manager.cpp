@@ -837,7 +837,7 @@ bool WsjcppPackageManager::updateDependencies() {
 
 // ---------------------------------------------------------------------
 
-void WsjcppPackageManager::verify() {
+bool WsjcppPackageManager::verify() {
     std::vector<std::string> m_vVerified;
 
     // HERE verify current package
@@ -856,6 +856,7 @@ void WsjcppPackageManager::verify() {
         }
         
     }
+    return true;
 }
 
 // ---------------------------------------------------------------------
