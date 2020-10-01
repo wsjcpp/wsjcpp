@@ -30,4 +30,14 @@ class ArgumentProcessorPrepareDockerfile : public WsjcppArgumentProcessor {
         virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams);
 };
 
+class ArgumentProcessorPrepareChangeLogMd : public WsjcppArgumentProcessor {
+    public:
+        ArgumentProcessorPrepareChangeLogMd();
+        virtual bool applySingleArgument(const std::string &sProgramName, const std::string &sArgumentName);
+        virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams);
+
+    private:
+        bool m_bPrint;
+};
+
 #endif // ARGUMENT_PROCESSOR_PREPARE_H

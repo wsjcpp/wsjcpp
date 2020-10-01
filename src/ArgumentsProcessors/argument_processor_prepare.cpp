@@ -12,6 +12,8 @@ ArgumentProcessorPrepare::ArgumentProcessorPrepare()
     registryProcessor(new ArgumentProcessorPrepareTravis());
     registryProcessor(new ArgumentProcessorPrepareHomebrew());
     registryProcessor(new ArgumentProcessorPrepareDockerfile());
+    registryProcessor(new ArgumentProcessorPrepareChangeLogMd());
+    
 }
 
 // ---------------------------------------------------------------------
@@ -337,6 +339,92 @@ int ArgumentProcessorPrepareDockerfile::exec(const std::vector<std::string> &vRo
         std::cout << ".dockerignore: skipped already exists" << std::endl;
     }
 
+    std::cout << std::endl;
+    return 0;
+}
+
+// ---------------------------------------------------------------------
+// ArgumentProcessorPrepareChangeLogMd
+
+ArgumentProcessorPrepareChangeLogMd::ArgumentProcessorPrepareChangeLogMd() 
+: WsjcppArgumentProcessor({"changelog"}, "Prepare sample of CHANGELOG.md", "Prepare sample of CHANGELOG.md") {
+    TAG = "ArgumentProcessorPrepareChangeLogMd";
+    m_bPrint = false;
+    registrySingleArgument("--print", "Just print");
+}
+
+// ---------------------------------------------------------------------
+
+bool ArgumentProcessorPrepareChangeLogMd::applySingleArgument(const std::string &sProgramName, const std::string &sArgumentName) {
+    if (sArgumentName == "--print") {
+        m_bPrint = true;
+        return true;
+    }
+    return false;
+}
+
+// ---------------------------------------------------------------------
+
+int ArgumentProcessorPrepareChangeLogMd::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
+    WsjcppPackageManager pkg(".");
+    if (!pkg.load()) {
+        std::cout 
+            << std::endl
+            << "ERROR: Could not load package info from current directory"
+            << std::endl
+            << std::endl
+        ;
+        return -1;
+    }
+
+    std::string sChangeLogMdContent = 
+        "# Changelog\n"
+        "\n"
+        "All notable changes to " + pkg.getName() + " project will be documented in this file.\n"
+        "\n"
+        "The format is based on [Keep a Changelog](http://keepachangelog.com/)\n"
+        "and this project adheres to [Semantic Versioning](http://semver.org/).\n"
+        "\n"
+        "## [" + pkg.getVersion() + "] - 2020-09-12 (2020 Sep 12)\n"
+        "\n"
+        "### Added\n"
+        "\n"
+        "- Something added here\n"
+        "\n"
+        "### Changed\n"
+        "\n"
+        "- Something changed here\n"
+        "\n"
+        "### Deprecated\n"
+        "\n"
+        "- Something deprecated here\n"
+        "\n"
+        "### Removed\n"
+        "\n"
+        "- something removed\n"
+        "\n"
+        "### Fixed\n"
+        "\n"
+        "- Some fixed\n"
+        "\n"
+        "### Security\n"
+        "\n"
+        "Nope\n"
+    ;
+
+       
+
+    if (m_bPrint) {
+        std::cout << sChangeLogMdContent << std::endl;
+        return 0;
+    }
+
+    if (!WsjcppCore::fileExists("./CHANGELOG.md")) {
+        WsjcppCore::writeFile("./CHANGELOG.md", sChangeLogMdContent);
+        std::cout << "CHANGELOG.md: created" << std::endl;
+    } else {
+        std::cout << "CHANGELOG.md: skipped already exists" << std::endl;
+    }
     std::cout << std::endl;
     return 0;
 }
