@@ -1080,7 +1080,6 @@ void WsjcppPackageManager::updateDependency(WsjcppPackageManagerDependence &dep)
         if (dep.getUrl() == sUrl) {
             pItem->getElement("version")->setValue(dep.getVersion(), WSJCPP_YAML_QUOTES_DOUBLE);
             pItem->getElement("name")->setValue(dep.getName(), WSJCPP_YAML_QUOTES_DOUBLE);
-            // pItem->getElement("url")->setValue(dep.getUrl(), true);
             pItem->getElement("origin")->setValue(dep.getOrigin(), WSJCPP_YAML_QUOTES_DOUBLE);
             pItem->getElement("installation-dir")->setValue(dep.getInstallationDir(), WSJCPP_YAML_QUOTES_DOUBLE);
             std::string sNow = WsjcppCore::formatTimeForWeb(WsjcppCore::getCurrentTimeInSeconds());
@@ -2667,7 +2666,7 @@ std::string WsjcppPackageManager::getSampleForBuildSimpleSh() {
 // ---------------------------------------------------------------------
 
 bool WsjcppPackageManager::validateVersionFormat(const std::string &sVersion) {
-    std::regex rxVersion("v\\d*\\.\\d*\\.\\d*");
+    std::regex rxVersion("v\\d+\\.\\d+\\.\\d+");
     if (std::regex_match(sVersion, rxVersion)) {
         return true;
     }
