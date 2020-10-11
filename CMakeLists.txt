@@ -71,7 +71,7 @@ list (APPEND WSJCPP_SOURCES "./src/ArgumentsProcessors/argument_processor_prepar
 list (APPEND WSJCPP_SOURCES "./src/ArgumentsProcessors/argument_processor_prepare.cpp")
 list (APPEND WSJCPP_SOURCES "./src/ArgumentsProcessors/argument_processor_resources.h")
 list (APPEND WSJCPP_SOURCES "./src/ArgumentsProcessors/argument_processor_resources.cpp")
-
+list (APPEND WSJCPP_SOURCES "./src/ArgumentsProcessors/argument_processor_authors.cpp")
 
 
 include_directories(${WSJCPP_INCLUDE_DIRS})

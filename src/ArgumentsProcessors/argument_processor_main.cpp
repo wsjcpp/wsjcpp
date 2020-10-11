@@ -10,6 +10,7 @@
 #include "argument_processor_prepare.h"
 #include "argument_processor_resources.h"
 #include "argument_processor_change.h"
+#include "argument_processor_authors.h"
 
 #include <wsjcpp_package_manager.h>
 #include <iostream>
@@ -36,6 +37,7 @@ ArgumentProcessorMain::ArgumentProcessorMain()
     // registryProcessor(new ArgumentProcessorOrigins());
     registryProcessor(new ArgumentProcessorPrepare());
     registryProcessor(new ArgumentProcessorResources());
+    registryProcessor(new ArgumentProcessorAuthors());
     
 }
 
