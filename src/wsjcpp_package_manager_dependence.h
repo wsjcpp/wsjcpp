@@ -21,17 +21,18 @@ class WsjcppPackageManagerDependence {
         void setInstallationDir(const std::string &sInstallationDir);
         void setOrigin(const std::string &sOrigin);
 
-        bool fromYAML(WsjcppYamlItem *pYaml);
-        WsjcppYamlItem *toYAML();
+        bool fromYAML(WsjcppYamlNode *pYaml);
+        WsjcppYamlNode *toYAML();
 
     private:
         std::string TAG;
         std::string m_sInstallationDir;
+        std::string m_sInstallationDateTime;
         std::string m_sUrl;
         std::string m_sName;
         std::string m_sVersion;
         std::string m_sOrigin;
-        WsjcppYamlItem *m_pYamlDependece;
+        WsjcppYamlNode *m_pYamlDependece;
 };
 
 // ---------------------------------------------------------------------

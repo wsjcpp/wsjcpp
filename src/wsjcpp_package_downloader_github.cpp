@@ -27,8 +27,7 @@ bool WsjcppPackageDownloaderGithub::downloadToCache(
     WsjcppPackageManagerDependence &dep,
     std::string &sError
 ) {
-    std::cout << "Download package from https://github.com/ ..." << std::endl;
-
+    std::cout << "Try download package to " << sCacheDir << std::endl;
     std::string sPackageGithubPath = sPackage.substr(m_sGithubPrefix.size());
     // std::cout << "sPackageGithubPath: " << sPackageGithubPath << std::endl;
     std::istringstream f(sPackageGithubPath);
@@ -42,42 +41,43 @@ bool WsjcppPackageDownloaderGithub::downloadToCache(
 
     std::string sWsjcppUrl = sWsjcppBaseUrl + "/wsjcpp.yml";
 
-    std::string sDownloadedWsjCppYml = sCacheDir + "/wsjcpp.hold.yml";
-
-    if (!WsjcppPackageDownloaderBase::downloadFileOverHttps(sWsjcppBaseUrl + "/wsjcpp.yml", sDownloadedWsjCppYml)) {
+    std::cout << "Downloading " << sWsjcppBaseUrl << "/wsjcpp.yml" << std::endl;
+    if (!WsjcppPackageDownloaderBase::downloadFileOverHttps(sWsjcppBaseUrl + "/wsjcpp.yml", sCacheDir + "/wsjcpp.yml")) {
         WsjcppLog::err(TAG, "Could not download " + sWsjcppBaseUrl);
         return false;
     }
 
-    WsjcppPackageManager pkg(sCacheDir, sCacheDir, true);
+    WsjcppPackageManager pkg(sCacheDir);
     if (!pkg.load()) {
-        WsjcppLog::err(TAG, "Could not load " + sCacheDir);
+        sError = "Could not load " + sCacheDir;
         return false;
     }
 
-    // sources
+    // downlod sources
     std::vector<WsjcppPackageManagerDistributionFile> vSources = pkg.getListOfDistributionFiles();
     for (int i = 0; i < vSources.size(); i++) {
         WsjcppPackageManagerDistributionFile src = vSources[i];
-        std::string sDownloadedWsjCppSourceFrom = sWsjcppBaseUrl + "/" + src.getSourceFile();
-        std::string sDownloadedWsjCppSourceTo = sCacheDir + "/" + src.getTargetFile();
+        if (!WsjcppPackageDownloaderBase::prepareCacheSubdirForFile(sCacheDir, src.getSourceFile(), sError)) {
+            return false;
+        }
+        
 
-        WsjcppLog::info(TAG, "\n\t" + sDownloadedWsjCppSourceFrom + " \n\t-> \n\t" + sDownloadedWsjCppSourceTo + "\n\t[sha1:" + src.getSha1() + "]");
+        std::string sDownloadedWsjCppSourceFrom = sWsjcppBaseUrl + "/" + src.getSourceFile();
+        std::string sDownloadedWsjCppSourceTo = sCacheDir + "/" + src.getSourceFile();
+
+        std::cout << "Downloading " << sDownloadedWsjCppSourceFrom << std::endl;
+
+        // WsjcppLog::info(TAG, "\nDownloading " + sDownloadedWsjCppSourceFrom + " \n\t-> \n\t" + sDownloadedWsjCppSourceTo + "\n\t[sha1:" + src.getSha1() + "]");
         if (!WsjcppPackageDownloaderBase::downloadFileOverHttps(sDownloadedWsjCppSourceFrom, sDownloadedWsjCppSourceTo)) {
             WsjcppLog::err(TAG, "Could not download " + sDownloadedWsjCppSourceFrom);
             return false;
         }
-        // std::string sContent = "";
-        // if (!WsjcppCore::readTextFile(sDownloadedWsjCppSourceTo, sContent)) {
-        //   WsjcppLog::err(TAG, "Could not read file " + sDownloadedWsjCppSourceTo);
-        //    return false;
-        // }
-        // calculate sha1
-        // std::string sSha1 = WsjcppHashes::sha1_calc_hex(sContent);
-        // if (sSha1 != src.getSha1()) {
-        //    WsjcppLog::warn(TAG, "Expected sha1 '" + sSha1 + "', but got '" + src.getSha1() + "'");
-        // }
+        if (!pkg.updateSourceFile(src.getSourceFile(), false)) {
+            sError = "Could not update file '" + sDownloadedWsjCppSourceFrom + "'";
+            return false;
+        }
     }
+    pkg.save();
 
     std::string sInstallationDir = "./src.wsjcpp/" + WsjcppPackageDownloaderBase::prepareCacheSubFolderName(pkg.getName());
 

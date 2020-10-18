@@ -1,20 +1,35 @@
-#include "unit_test_normalize_unit_test_name.h"
+#include <wsjcpp_unit_tests.h>
 #include <vector>
 #include <wsjcpp_package_manager.h>
+
+
+// ---------------------------------------------------------------------
+// UnitTestNormalizeUnitTestName
+
+class UnitTestNormalizeUnitTestName : public WsjcppUnitTestBase {
+    public:
+        UnitTestNormalizeUnitTestName();
+        virtual bool doBeforeTest() override;
+        virtual void executeTest() override;
+        virtual bool doAfterTest() override;
+};
 
 REGISTRY_WSJCPP_UNIT_TEST(UnitTestNormalizeUnitTestName)
 
 UnitTestNormalizeUnitTestName::UnitTestNormalizeUnitTestName()
     : WsjcppUnitTestBase("UnitTestNormalizeUnitTestName") {
-}// ---------------------------------------------------------------------
-
-void UnitTestNormalizeUnitTestName::init() {
-    // nothing
 }
 
 // ---------------------------------------------------------------------
-bool UnitTestNormalizeUnitTestName::run() {
-    bool bTestSuccess = true;
+
+bool UnitTestNormalizeUnitTestName::doBeforeTest() {
+    // nothing
+    return true;
+}
+
+// ---------------------------------------------------------------------
+void UnitTestNormalizeUnitTestName::executeTest() {
+    
     WsjcppPackageManager pkg(".");
     std::vector<std::pair<std::string, std::string>> tests;
     tests.push_back(std::pair<std::string, std::string>("UnitTest1", "UnitTest1"));
@@ -25,11 +40,14 @@ bool UnitTestNormalizeUnitTestName::run() {
         std::string sName = tests[i].first;
         std::string sExpectedName = tests[i].second;
         std::string sGotName = pkg.normalizeUnitTestName(sName, true);
-        compareS(bTestSuccess, sName, sGotName, sExpectedName);
+        compare(sName, sGotName, sExpectedName);
         std::string sData;
-        
     }
-    
-    return bTestSuccess;
 }
 
+// ---------------------------------------------------------------------
+
+bool UnitTestNormalizeUnitTestName::doAfterTest() {
+    // nothing
+    return true;
+}

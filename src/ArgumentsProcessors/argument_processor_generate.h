@@ -1,5 +1,5 @@
-#ifndef ARGUMENT_PROCESSOR_TEMPLATES_H
-#define ARGUMENT_PROCESSOR_TEMPLATES_H
+#ifndef ARGUMENT_PROCESSOR_GENERATE_H
+#define ARGUMENT_PROCESSOR_GENERATE_H
 
 #include <wsjcpp_arguments.h>
 
@@ -40,4 +40,4 @@ class ArgumentProcessorGenerateDelete : public WsjcppArgumentProcessor {
         
 };
 
-#endif // ARGUMENT_PROCESSOR_TEMPLATES_H
+#endif // ARGUMENT_PROCESSOR_GENERATE_H

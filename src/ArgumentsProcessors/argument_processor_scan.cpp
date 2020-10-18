@@ -103,7 +103,30 @@ int ArgumentProcessorScanTodo::exec(const std::vector<std::string> &vRoutes, con
 
 ArgumentProcessorScanUniqLines::ArgumentProcessorScanUniqLines() 
 : WsjcppArgumentProcessor({"uniq-lines", "ul"}, "Observe code lines", "Scan code and search uniq-lines") {
-      
+    m_sFormat = "";
+    registrySingleArgument("--text", "Print as text format");
+    registrySingleArgument("--json", "Print as json format");
+    registrySingleArgument("--html", "Print as html format");
+}
+
+// ---------------------------------------------------------------------
+
+bool ArgumentProcessorScanUniqLines::applySingleArgument(const std::string &sProgramName, const std::string &sArgumentName) {
+    if (m_sFormat != "") {
+        std::cout << "ERROR: Can be defined only one of '--text', '--json', '--html'" << std::endl;
+        return false;
+    }
+    if (sArgumentName == "--text") {
+        m_sFormat = "text";
+        return true;
+    } else if (sArgumentName == "--json") {
+        m_sFormat = "json";
+        return true;
+    } else if (sArgumentName == "--html") {
+        m_sFormat = "html";
+        return true;
+    }
+    return false;
 }
 
 // ---------------------------------------------------------------------

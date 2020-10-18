@@ -2,28 +2,32 @@ wsjcpp_version: v0.0.2
 cmake_minimum_required: 3.0
 cmake_cxx_standard: 11
 name: wsjcpp
-version: v0.1.6
-description: C++ Source Package manager
+version: v0.2.0
+description: C++ Source Package Manager
 issues: https://github.com/wsjcpp/wsjcpp/issues # TODO add validate
-# web-site: "http://wsjcpp.org"
+# web-site: "https://wsjcpp.org"
 keywords:
   - "c++"
   - "sources"
+  - "package-manager"
 
-required-libraries:
-  - pthread
-
+repositories:
+  - type: main # TODO validator
+    url: "https://github.com/wsjcpp/wsjcpp"
 required-pkg-config:
   - CURL
 
+# "https://github.com/wsjcpp/wsjcpp-core:master"
+
 dependencies:
   - name: "wsjcpp-core"
-    version: "v0.1.7"
+    version: "v0.2.1"
     url: "https://github.com/wsjcpp/wsjcpp-core:master"
     origin: "https://github.com/"
     installation-dir: "./src.wsjcpp/wsjcpp_core"
+    installation-datetime: "Wed, 30 Sep 2020 20:32:36 GMT"
   - name: "wsjcpp-yaml"
-    version: "v0.1.1"
+    version: "v0.1.5"
     url: "https://github.com/wsjcpp/wsjcpp-yaml:master"
     origin: "https://github.com/"
     installation-dir: "./src.wsjcpp/wsjcpp_yaml"
@@ -38,28 +42,30 @@ dependencies:
     origin: "https://github.com/"
     installation-dir: "./src.wsjcpp/wsjcpp_safe_scripting"
   - name: "wsjcpp-arguments"
-    version: "v0.2.0"
+    version: "v0.2.1"
     url: "https://github.com/wsjcpp/wsjcpp-arguments:master"
     origin: "https://github.com/"
     installation-dir: "./src.wsjcpp/wsjcpp_arguments"
-
 # build-dependencies:
 
-repositories:
-  - type: main # TODO validator
-    url: "https://github.com/wsjcpp/wsjcpp" # TODO validator
+auto-generated-files:
+  version-file:
+    path: "./"
+    filename: "VERSION"
+    printed-format: "v{MAJOR}.{MINOR}.{BUILD}"
 
 authors:
-  - name: "Evgenii Sopov"
-    email: "mrseakg@gmail.com" # add validate email format
+  - name: Evgenii Sopov
+    email: mrseakg@gmail.com
     web-site: "https://sea-kg.com"
+  - name: Danil Dudkin
+    email: shikamaru740@gmail.com
 
 origins:
   - address: "https://sea-kg.com/wsjcpp-package-registry/"
     type: package-registry
   - address: "file:///usr/share/wsjcpp-package-registry"
     type: local-file-system # must be in global ~/.wsjcpp/config.yml
-
 distribution:
   - source-file: "src/wsjcpp_package_manager_distribution_file.cpp"
     target-file: "wsjcpp_package_manager_distribution_file.cpp"
@@ -139,7 +145,6 @@ distribution:
   - source-file: "src/wsjcpp_package_downloader_localfs.h"
     target-file: "wsjcpp_package_downloader_localfs.h"
     type: "source-code"
-
 unit-tests:
   cases:
     - name: "NormalizeUnitTestName"
@@ -151,10 +156,9 @@ unit-tests:
       enabled: "no"
     - name: "ReadPackage"
       description: "Test for read package"
-
 resources:
-  - filepath: "build_simple.sh"
-    filesize: 74
-    pack-as: "text"
-    modified: 1574699271
+  - filepath: "./build_simple.sh"
+    filesize: 77
+    pack-as: "binary"
+    modified: 1600401759
     sha1: ""

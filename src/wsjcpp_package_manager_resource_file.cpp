@@ -16,7 +16,7 @@ WsjcppPackageManagerResourceFile::WsjcppPackageManagerResourceFile() {
 
 // ---------------------------------------------------------------------
 
-bool WsjcppPackageManagerResourceFile::fromYAML(WsjcppYamlItem *pYamlDistributionFile, bool bHolded) {
+bool WsjcppPackageManagerResourceFile::fromYAML(WsjcppYamlNode *pYamlDistributionFile, bool bHolded) {
     m_pYamlResourceFile = pYamlDistributionFile;
     m_bHolded = bHolded;
     if (!m_pYamlResourceFile->hasElement("filepath")) {
@@ -75,12 +75,12 @@ bool WsjcppPackageManagerResourceFile::fromYAML(WsjcppYamlItem *pYamlDistributio
 
 // ---------------------------------------------------------------------
 
-WsjcppYamlItem *WsjcppPackageManagerResourceFile::toYAML() {
-    m_pYamlResourceFile->getElement("filepath")->setValue(m_sFilepath, true);
-    m_pYamlResourceFile->getElement("filesize")->setValue(std::to_string(m_nFilesize), false);
-    m_pYamlResourceFile->getElement("sha1")->setValue(m_sSha1, true);
-    m_pYamlResourceFile->getElement("pack-as")->setValue(m_sPackAs, true);
-    m_pYamlResourceFile->getElement("modified")->setValue(std::to_string(m_nModified), false);
+WsjcppYamlNode *WsjcppPackageManagerResourceFile::toYAML() {
+    m_pYamlResourceFile->getElement("filepath")->setValue(m_sFilepath, WSJCPP_YAML_QUOTES_DOUBLE);
+    m_pYamlResourceFile->getElement("filesize")->setValue(std::to_string(m_nFilesize), WSJCPP_YAML_QUOTES_NONE);
+    m_pYamlResourceFile->getElement("sha1")->setValue(m_sSha1, WSJCPP_YAML_QUOTES_DOUBLE);
+    m_pYamlResourceFile->getElement("pack-as")->setValue(m_sPackAs, WSJCPP_YAML_QUOTES_DOUBLE);
+    m_pYamlResourceFile->getElement("modified")->setValue(std::to_string(m_nModified), WSJCPP_YAML_QUOTES_NONE);
     return m_pYamlResourceFile;
 }
 

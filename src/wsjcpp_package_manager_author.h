@@ -8,8 +8,8 @@ class WsjcppPackageManagerAuthor {
     public:
         WsjcppPackageManagerAuthor();
         WsjcppPackageManagerAuthor(const std::string &sName, const std::string &sEmail);
-        bool fromYAML(WsjcppYamlItem *pYamlAuthor);
-        WsjcppYamlItem *toYAML();
+        bool fromYAML(WsjcppYamlNode *pYamlAuthor);
+        WsjcppYamlNode *toYAML();
 
         std::string getName();
         std::string getEmail();
@@ -21,7 +21,7 @@ class WsjcppPackageManagerAuthor {
         std::string m_sName;
         std::string m_sEmail;
         std::string m_sWebSite;
-        WsjcppYamlItem *m_pYamlAuthor;
+        WsjcppYamlNode *m_pYamlAuthor;
 };
 
 

@@ -7,17 +7,17 @@
 class WsjcppPackageDownloaders {
     public:
         WsjcppPackageDownloaders();
+        ~WsjcppPackageDownloaders();
         bool downloadToCache(
-            const std::string &sPackage,
-            const std::string &sCacheDir,
+            const std::string &sPackageUrl,
+            const std::string &sCurrentPackageDir,
             WsjcppPackageManagerDependence &dep,
             std::string &sError
         );
 
     private:
         std::string TAG;
-        std::vector<WsjcppPackageDownloaderBase *> m_vDownloaders;
-    
+        std::vector<WsjcppPackageDownloaderBase *> m_vDownloaders; 
 };
 
 #endif // WSJCPP_PACKAGE_DOWNLOADERS_H

@@ -34,4 +34,11 @@ class ArgumentProcessorVersion : public WsjcppArgumentProcessor {
     private: 
 };
 
+class ArgumentProcessorVerify : public WsjcppArgumentProcessor {
+    public:
+        ArgumentProcessorVerify();
+        virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) override;
+    private: 
+};
+
 #endif // ARGUMENT_PROCESSOR_BASIC_H

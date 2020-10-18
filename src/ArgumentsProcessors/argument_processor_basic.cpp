@@ -119,7 +119,7 @@ int ArgumentProcessorInit::exec(const std::vector<std::string> &vRoutes, const s
             "\n"
             "int main(int argc, const char* argv[]) {\n"
             "    std::string TAG = \"MAIN\";\n"
-            "    std::string appName = std::string(WSJCPP_NAME);\n"
+            "    std::string appName = std::string(WSJCPP_APP_NAME);\n"
             "    std::string appVersion = std::string(WSJCPP_APP_VERSION);\n"
             "    if (!WsjcppCore::dirExists(\".logs\")) {\n"
             "        WsjcppCore::makeDir(\".logs\");\n"
@@ -249,6 +249,30 @@ int ArgumentProcessorVersion::exec(const std::vector<std::string> &vRoutes, cons
     // TODO move to default arguments
     std::cout << "Application: " << std::string(WSJCPP_APP_NAME) << std::endl;
     std::cout << "Version: " << std::string(WSJCPP_APP_VERSION) << std::endl;
+    return 0;
+}
+
+// ---------------------------------------------------------------------
+// ArgumentProcessorVersion
+
+ArgumentProcessorVerify::ArgumentProcessorVerify() 
+: WsjcppArgumentProcessor({"verify"}, "Verify current package", "Verify current package") {
+      
+}
+
+// ---------------------------------------------------------------------
+
+int ArgumentProcessorVerify::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
+    WsjcppPackageManager pkg(".");
+    if (!pkg.load()) {
+        WsjcppLog::err(TAG, "Could not load package info from current directory");
+        return -1;
+    }
+    
+    if (!pkg.verify()) {
+        return -1;
+    }
+    
     return 0;
 }
 

@@ -8,6 +8,58 @@
 #include <deque>
 #include <iostream>
 
+class WsjcppFilePermissions {
+    public:
+        WsjcppFilePermissions();
+        WsjcppFilePermissions(
+            bool bOwnerReadFlag, bool bOwnerWriteFlag, bool bOwnerExecuteFlag,
+            bool bGroupReadFlag, bool bGroupWriteFlag, bool bGroupExecuteFlag,
+            bool bOtherReadFlag, bool bOtherWriteFlag, bool bOtherExecuteFlag
+        );
+        WsjcppFilePermissions(uint16_t nFilePermission);
+
+        // owner flags
+        void setOwnerReadFlag(bool bOwnerReadFlag);
+        bool getOwnerReadFlag() const;
+        void setOwnerWriteFlag(bool bOwnerWriteFlag);
+        bool getOwnerWriteFlag() const;
+        void setOwnerExecuteFlag(bool bOwnerExecuteFlag);
+        bool getOwnerExecuteFlag() const;
+        void setOwnerFlags(bool bOwnerReadFlag, bool bOwnerWriteFlag, bool bOwnerExecuteFlag);
+
+        // group flags
+        void setGroupReadFlag(bool bGroupReadFlag);
+        bool getGroupReadFlag() const;
+        void setGroupWriteFlag(bool bGroupWriteFlag);
+        bool getGroupWriteFlag() const;
+        void setGroupExecuteFlag(bool bGroupExecuteFlag);
+        bool getGroupExecuteFlag() const;
+        void setGroupFlags(bool bGroupReadFlag, bool bGroupWriteFlag, bool bGroupExecuteFlag);
+
+        // for other flags
+        void setOtherReadFlag(bool bOtherReadFlag);
+        bool getOtherReadFlag() const;
+        void setOtherWriteFlag(bool bOtherWriteFlag);
+        bool getOtherWriteFlag() const;
+        void setOtherExecuteFlag(bool bOtherExecuteFlag);
+        bool getOtherExecuteFlag() const;
+        void setOtherFlags(bool bOtherReadFlag, bool bOtherWriteFlag, bool bOtherExecuteFlag);
+
+        std::string toString() const;
+        uint16_t toUInt16() const;
+
+    private:
+        bool m_bOwnerReadFlag;
+        bool m_bOwnerWriteFlag;
+        bool m_bOwnerExecuteFlag;
+        bool m_bGroupReadFlag;
+        bool m_bGroupWriteFlag;
+        bool m_bGroupExecuteFlag;
+        bool m_bOtherReadFlag;
+        bool m_bOtherWriteFlag;
+        bool m_bOtherExecuteFlag;
+};
+
 class WsjcppCore {
     public:
         static bool init(
@@ -22,11 +74,11 @@ class WsjcppCore {
         static std::string extractFilename(const std::string &sPath);
         static std::string getCurrentDirectory();
 
-        static long currentTime_milliseconds();
-        static long currentTime_seconds();
-        static std::string currentTime_forFilename();
-        static std::string currentTime_logformat();
-        static std::string threadId();
+        static long getCurrentTimeInMilliseconds();
+        static long getCurrentTimeInSeconds();
+        static std::string getCurrentTimeForFilename();
+        static std::string getCurrentTimeForLogFormat();
+        static std::string getThreadId();
         static std::string formatTimeForWeb(long nTimeInSec);
         static std::string formatTimeForFilename(long nTimeInSec);
         static std::string formatTimeUTC(int nTimeInSec);
@@ -71,6 +123,13 @@ class WsjcppCore {
 
         static bool recoursiveCopyFiles(const std::string& sSourceDir, const std::string& sTargetDir);
         static bool recoursiveRemoveDir(const std::string& sDir);
+
+        static bool setFilePermissions(const std::string& sFilePath, const WsjcppFilePermissions &filePermissions, std::string& sError);
+        static bool getFilePermissions(const std::string& sFilePath, WsjcppFilePermissions &filePermissions, std::string& sError);
+
+        static std::string doPadLeft(const std::string& sIn, char cWhat, int nLength);
+        static std::string doPadRight(const std::string& sIn, char cWhat, int nLength);
+
 };
 
 
@@ -134,6 +193,42 @@ class WsjcppLog {
     private:
         static void add(WsjcppColorModifier &clr, const std::string &sType, const std::string &sTag, const std::string &sMessage);
 };
+
+// ---------------------------------------------------------------------
+// WsjcppResourceFile
+
+class WsjcppResourceFile {
+    public:
+        WsjcppResourceFile();
+        virtual const std::string &getFilename() const = 0;
+        virtual const std::string &getPackAs() const = 0;
+        virtual int getBufferSize() const = 0;
+        virtual const char *getBuffer() const = 0;
+};
+
+
+// ---------------------------------------------------------------------
+// WsjcppResourcesManager
+
+extern std::vector<WsjcppResourceFile*> *g_pWsjcppResourceFiles;
+
+class WsjcppResourcesManager {
+    public:
+        static void initGlobalVariables();
+        static void add(WsjcppResourceFile*);
+        static const std::vector<WsjcppResourceFile*> &list();
+        static bool has(const std::string &sFilename);
+        static WsjcppResourceFile* get(const std::string &sFilename);
+        static bool make(const std::string &sWorkspace);
+        // static bool createFolders(const std::string &sWorkspace);
+        // static bool extractFiles(const std::string &sWorkspace);
+};
+
+// ---------------------------------------------------------------------
+// Registry WsjcppResourceFile
+#define REGISTRY_WSJCPP_RESOURCE_FILE( classname ) \
+    static classname * pRegistryWsjcppResourceFile ## classname = new classname(); \
+
 
 #endif // WSJCPP_CORE_H
 

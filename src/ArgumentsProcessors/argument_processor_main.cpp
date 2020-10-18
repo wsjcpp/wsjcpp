@@ -9,6 +9,8 @@
 #include "argument_processor_scan.h"
 #include "argument_processor_prepare.h"
 #include "argument_processor_resources.h"
+#include "argument_processor_change.h"
+#include "argument_processor_authors.h"
 
 #include <wsjcpp_package_manager.h>
 #include <iostream>
@@ -18,6 +20,7 @@ ArgumentProcessorMain::ArgumentProcessorMain()
   : WsjcppArgumentProcessor({"main"}, "C++ Source Package Manager", "C++ Source Package Manager") {
     registryProcessor(new ArgumentProcessorVersion());
     registryProcessor(new ArgumentProcessorInfo());
+    registryProcessor(new ArgumentProcessorChange());
     registryProcessor(new ArgumentProcessorInit());
     registryProcessor(new ArgumentProcessorClean());
     registryProcessor(new ArgumentProcessorScan());
@@ -26,6 +29,7 @@ ArgumentProcessorMain::ArgumentProcessorMain()
     registryProcessor(new ArgumentProcessorUninstall());
     registryProcessor(new ArgumentProcessorList());
     registryProcessor(new ArgumentProcessorUpdate());
+    registryProcessor(new ArgumentProcessorVerify());
     registryProcessor(new ArgumentProcessorDistribution());
     // registryProcessor(new ArgumentProcessorRun());
     registryProcessor(new ArgumentProcessorGenerate());
@@ -33,11 +37,14 @@ ArgumentProcessorMain::ArgumentProcessorMain()
     // registryProcessor(new ArgumentProcessorOrigins());
     registryProcessor(new ArgumentProcessorPrepare());
     registryProcessor(new ArgumentProcessorResources());
+    registryProcessor(new ArgumentProcessorAuthors());
+    
 }
 
 // ---------------------------------------------------------------------
 
 int ArgumentProcessorMain::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
+    // TODO help i think
     return -1;
 }
 

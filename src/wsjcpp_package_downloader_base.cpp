@@ -13,6 +13,12 @@ WsjcppPackageDownloaderBase::WsjcppPackageDownloaderBase(const std::string &sNam
 
 // ---------------------------------------------------------------------
 
+std::string WsjcppPackageDownloaderBase::getName() {
+    return m_sName;
+}
+
+// ---------------------------------------------------------------------
+
 std::string WsjcppPackageDownloaderBase::prepareCacheSubFolderName(const std::string &sPackage) {
     std::string ret = sPackage;
     std::string illegalChars = "\\/:?\"<>|.-";

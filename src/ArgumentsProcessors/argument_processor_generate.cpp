@@ -135,6 +135,7 @@ int ArgumentProcessorGenerateCreate::exec(const std::vector<std::string> &vRoute
 }
 
 // ---------------------------------------------------------------------
+// ArgumentProcessorGenerateDelete
 
 ArgumentProcessorGenerateDelete::ArgumentProcessorGenerateDelete() 
 : WsjcppArgumentProcessor({"delete"}, "Delete template", "Delete template") {
