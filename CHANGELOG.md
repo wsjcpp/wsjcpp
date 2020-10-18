@@ -5,17 +5,56 @@ All notable changes to wsjcpp project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [v0.2.1] - ??
 
-## [v0.2.0] - ??
+
+
+## [v0.2.0] - 2020-10-18 (2020 Oct 18)
+
+### Added
+
+- Fixed #82: Add 'wsjcpp prepare changelog'
+- Prepare single argumets --text, --json, --html  for 'wsjcpp scan' #48
+- Fixed #75: add new field 'installation-datetime' to dependence information
+- Fixed #76. Implemented feature: write file VERSION if it enabled.
+- Added new author of project: Danil Dudkin
+- Added auto detection file type on 'wsjcpp dist add'
+- Fixed #22 added validate version format like 'v0.0.0'
+- Fixed #57 implemented command 'wsjcpp chnage version %vers%'
 
 ### Changed
 
-- Updated CHANGELOG.md
+- Moved main.cpp to src/app
+- Improve command 'wsjcpp dist add <dir/file>'
+- No dependencies - no create folder src.wsjcpp and no updates for src.wsjcpp/CMakeLists.txt
+- No create unit-tests.wsjcpp folder if it hasn't define unit-tests
+- Fixed #72 Redesign unit-tests create
+- Improved remove resource
+- Redesign generate resources
+
+### Removed
+
+- Removed section 'cmake/install' from unit-tests/CMakeLists.txt 
+- Removed unused files
 
 ### Fixed
 
 - bug: After remove last resource node - will removed node 'resources:' in wsjcpp.yml
+- Fixed #61 Cleanup main function
+- Fixed #83 bug with WsjcppPackageManager::validateVersionFormat
+- Fixed  #62: Build error after init
+- Collect 'required-libraries' from dependencies
+- Fixed normalized path
+- Fixed wsjcpp reinstall
+- Fixed #73 reinstall package from github
+- Fixed unit-tests after update wsjcpp-core
 
+### Security
+
+- Updated wsjcpp-arguments to v0.2.1
+- Updated wsjcpp-yaml to v0.1.5
+- Integrated with lgtm
+- Updated wsjcpp-core to v0.2.0
 
 ## [v0.1.6] - 2020-09-04 (2020 Sept 4)
 
