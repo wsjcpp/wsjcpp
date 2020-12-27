@@ -335,10 +335,6 @@ bool WsjcppPackageManager::save(/*std::string &sError*/) { // TODO uncomment sEr
         if (!WsjcppCore::dirExists(m_sDirWithSources)) {
             WsjcppCore::makeDir(m_sDirWithSources);
         }
-        std::string sGitkeepFile = m_sDirWithSources + "/.gitkeep";
-        if (!WsjcppCore::fileExists(sGitkeepFile)) {
-            WsjcppCore::writeFile(sGitkeepFile, ""); // TODO createEmptyFile
-        }
     }
     std::string sError;
     return m_yamlPackageInfo.saveToFile(m_sYamlFullpath, sError);
