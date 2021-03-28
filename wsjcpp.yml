@@ -6,6 +6,7 @@ version: v0.2.1
 description: C++ Source Package Manager
 issues: https://github.com/wsjcpp/wsjcpp/issues # TODO add validate
 # web-site: "https://wsjcpp.org"
+
 keywords:
   - "c++"
   - "sources"
