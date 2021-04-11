@@ -256,7 +256,7 @@ std::string ArgumentProcessorList::loadDependencies(
 // ArgumentProcessorUpdate
 
 ArgumentProcessorUpdate::ArgumentProcessorUpdate() 
-  : WsjcppArgumentProcessor({"update"}, "Update auto-generated files", "Update all auto-generated files") {
+  : WsjcppArgumentProcessor({"update", "up"}, "Update auto-generated files", "Update all auto-generated files") {
       TAG = "ArgumentProcessorUpdate";
 }
 

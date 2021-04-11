@@ -1,0 +1,30 @@
+#!/usr/bin/make -f		
+
+# secondly called by launchpad		
+build:
+	cmake .
+	make
+
+# thirdly called by launchpad		
+binary: binary-indep binary-arch	
+
+binary-indep:
+	# nothing to be done
+
+binary-arch:	
+	pwd
+	mkdir -p debian/tmp/usr/bin
+	cp -f wsjcpp debian/tmp/usr/bin/
+	mkdir debian/tmp/DEBIAN
+	dpkg-gencontrol -pwsjcpp
+	dpkg --build debian/tmp ..
+
+# firstly called by launchpad		
+clean:
+	rm -f CMakeCache.txt
+	rm -rf CMakeFiles/
+	rm -f cmake_install.cmake
+	rm -f Makefile
+	rm -f wsjcpp
+
+.PHONY: binary binary-arch binary-indep clean
