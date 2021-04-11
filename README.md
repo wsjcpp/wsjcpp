@@ -8,6 +8,7 @@ Official site: [http://wsjcpp.org/](http://wsjcpp.org/)
 
 ## Get for work 
 
+
 ### Use a docker
 
 Docker:
@@ -27,6 +28,14 @@ For exit, just enter `exit` command after this container will be destroed.
 ```
 $ brew tap wsjcpp/wsjcpp
 $ brew install wsjcpp
+```
+
+### Install on Ubuntu from ppa
+
+```
+$ sudo add-apt-repository ppa:sea5kg/wsjcpp
+$ sudo apt-get update
+$ sudo apt-get install wsjcpp
 ```
 
 ### Build and install in Ubuntu/Debian

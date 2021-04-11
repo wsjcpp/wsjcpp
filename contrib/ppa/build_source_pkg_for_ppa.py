@@ -94,6 +94,7 @@ def copytree(src, dst, symlinks=False, ignore=None):
 
 shutil.copytree('../../src', './wsjcpp/src', symlinks=False, ignore=None)
 shutil.copytree('../../src.wsjcpp', './wsjcpp/src.wsjcpp', symlinks=False, ignore=None)
+shutil.copytree('../../src-resources.wsjcpp', './wsjcpp/src-resources.wsjcpp', symlinks=False, ignore=None)
 shutil.copy2('../../CMakeLists.txt', './wsjcpp/CMakeLists.txt')
 shutil.copy2('../../VERSION', './wsjcpp/VERSION')
 shutil.copy2('../../LICENSE', './wsjcpp/LICENSE')

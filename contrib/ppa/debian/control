@@ -6,7 +6,7 @@ Build-Depends: cmake, build-essential, pkg-config, libcurl4-openssl-dev
 Homepage: https://wsjcpp.org
 
 Package: wsjcpp
-Architecture: any
+Architecture: amd64
 Depends: debconf (>= 0.2.1), libcurl4
 Description: C++ Source Package Manager
  Yet another... C++ Source Package Manager
