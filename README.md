@@ -1,12 +1,13 @@
 # wsjcpp
 
-[![Build Status](https://api.travis-ci.com/wsjcpp/wsjcpp.svg?branch=master)](https://travis-ci.com/wsjcpp/wsjcpp) [![Docker Pulls](https://img.shields.io/docker/pulls/sea5kg/wsjcpp.svg)](https://hub.docker.com/r/sea5kg/wsjcpp/) [![Github Stars](https://img.shields.io/github/stars/wsjcpp/wsjcpp.svg?label=github%20%E2%98%85)](https://github.com/wsjcpp/wsjcpp) [![Github Stars](https://img.shields.io/github/contributors/wsjcpp/wsjcpp.svg)](https://github.com/wsjcpp/wsjcpp) [![Github Forks](https://img.shields.io/github/forks/wsjcpp/wsjcpp.svg?label=github%20forks)](https://github.com/wsjcpp/wsjcpp/network/members) [![Total alerts](https://img.shields.io/lgtm/alerts/g/wsjcpp/wsjcpp.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/wsjcpp/wsjcpp/alerts/) [![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/wsjcpp/wsjcpp.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/wsjcpp/wsjcpp/context:cpp)
+[![Build Status](https://api.travis-ci.com/wsjcpp/wsjcpp.svg?branch=master)](https://travis-ci.com/wsjcpp/wsjcpp) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Docker Pulls](https://img.shields.io/docker/pulls/sea5kg/wsjcpp.svg)](https://hub.docker.com/r/sea5kg/wsjcpp/) [![Github Stars](https://img.shields.io/github/stars/wsjcpp/wsjcpp.svg?label=github%20%E2%98%85)](https://github.com/wsjcpp/wsjcpp) [![Github Stars](https://img.shields.io/github/contributors/wsjcpp/wsjcpp.svg)](https://github.com/wsjcpp/wsjcpp) [![Github Forks](https://img.shields.io/github/forks/wsjcpp/wsjcpp.svg?label=github%20forks)](https://github.com/wsjcpp/wsjcpp/network/members) [![Total alerts](https://img.shields.io/lgtm/alerts/g/wsjcpp/wsjcpp.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/wsjcpp/wsjcpp/alerts/) [![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/wsjcpp/wsjcpp.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/wsjcpp/wsjcpp/context:cpp)
 
 Yet another... C++ Source Package Manager
 
 Official site: [http://wsjcpp.org/](http://wsjcpp.org/)
 
 ## Get for work 
+
 
 ### Use a docker
 
@@ -27,6 +28,14 @@ For exit, just enter `exit` command after this container will be destroed.
 ```
 $ brew tap wsjcpp/wsjcpp
 $ brew install wsjcpp
+```
+
+### Install on Ubuntu from ppa
+
+```
+$ sudo add-apt-repository ppa:sea5kg/wsjcpp
+$ sudo apt-get update
+$ sudo apt-get install wsjcpp
 ```
 
 ### Build and install in Ubuntu/Debian

@@ -2,10 +2,11 @@ wsjcpp_version: v0.0.2
 cmake_minimum_required: 3.0
 cmake_cxx_standard: 11
 name: wsjcpp
-version: v0.2.0
+version: v0.2.1
 description: C++ Source Package Manager
 issues: https://github.com/wsjcpp/wsjcpp/issues # TODO add validate
 # web-site: "https://wsjcpp.org"
+
 keywords:
   - "c++"
   - "sources"
@@ -60,7 +61,6 @@ authors:
     web-site: "https://sea-kg.com"
   - name: Danil Dudkin
     email: shikamaru740@gmail.com
-
 origins:
   - address: "https://sea-kg.com/wsjcpp-package-registry/"
     type: package-registry
