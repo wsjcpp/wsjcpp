@@ -11,6 +11,8 @@
 #include "argument_processor_resources.h"
 #include "argument_processor_change.h"
 #include "argument_processor_authors.h"
+#include "argument_processor_lint.h"
+
 
 #include <wsjcpp_package_manager.h>
 #include <iostream>
@@ -38,6 +40,9 @@ ArgumentProcessorMain::ArgumentProcessorMain()
     registryProcessor(new ArgumentProcessorPrepare());
     registryProcessor(new ArgumentProcessorResources());
     registryProcessor(new ArgumentProcessorAuthors());
+    registryProcessor(new ArgumentProcessorLint());
+    
+
     
 }
 

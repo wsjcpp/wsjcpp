@@ -30,7 +30,7 @@ int main(int argc, const char* argv[]) {
     int nResult = prog.exec();
     if (nResult != 0) {
         // print help
-        std::cout 
+        std::cout
             << "Try exec 'wsjcpp help' for more information"
             << std::endl
             << std::endl

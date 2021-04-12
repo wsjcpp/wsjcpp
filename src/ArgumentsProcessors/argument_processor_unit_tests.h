@@ -28,9 +28,7 @@ class ArgumentProcessorUnitTestsDelete : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorUnitTestsDelete();
         virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams);
-        
     private:
-        
 };
 
 // ---------------------------------------------------------------------
@@ -39,9 +37,9 @@ class ArgumentProcessorUnitTestsEnable : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorUnitTestsEnable();
         virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams);
-        
+
     private:
-        
+
 };
 
 // ---------------------------------------------------------------------
