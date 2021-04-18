@@ -124,11 +124,8 @@ int ArgumentProcessorUnitTestsDelete::exec(const std::vector<std::string> &vRout
         pkg.save();
         WsjcppLog::ok(TAG, "Unit Test '" + sUnitTestName + "' removed successfully.");
         return 0;
-    } else {
-        WsjcppLog::err(TAG, "Could not delete unit-test with name '" + sUnitTestName + "'");
-        return -1;
     }
-    WsjcppLog::err(TAG, "Unit test with name '" + sUnitTestName + "' did not found");
+    WsjcppLog::err(TAG, "Could not delete unit-test with name '" + sUnitTestName + "', reason: not found ");
     return -1;
 }
 
