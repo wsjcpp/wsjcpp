@@ -4,7 +4,7 @@
 
 Yet another... C++ Source Package Manager
 
-Official site: [http://wsjcpp.org/](http://wsjcpp.org/)
+Official site: [https://wsjcpp.org/](https://wsjcpp.org/)
 
 ## Get for work 
 
