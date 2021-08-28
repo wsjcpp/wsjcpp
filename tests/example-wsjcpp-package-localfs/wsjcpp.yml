@@ -21,4 +21,7 @@ distribution:
     type: "source-code"
   - source-file: "src/example_wsjcpp_package_localfs.h"
     target-file: "example_wsjcpp_package_localfs.h"
-    type: "source-code"
+    type: "header-code"
+  - source-file: "src/subfolder1/example_subfolder.h"
+    target-file: "subfolder1/example_subfolder.h"
+    type: "header-code"

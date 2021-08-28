@@ -2,6 +2,7 @@
 #define EXAMPLE_WSJCPP_PACKAGE_LOCALFS_H
 
 #include <string>
+#include "subfolder1/example_subfolder.h"
 
 class ExampleWsjcppPackageLocalFs {
     public:
@@ -10,6 +11,7 @@ class ExampleWsjcppPackageLocalFs {
         std::string getValue();
     private:
         std::string m_sValue;
+        ExampleSubfolder m_exampleSubfolder;
 };
 
 
