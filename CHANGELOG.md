@@ -5,7 +5,7 @@ All notable changes to wsjcpp project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [v0.2.2] - 2021-??-?? (2021 ?? ??)
+## [v0.2.2] - 2021-08-28 (2021 Aug 28)
 
 ### Added
 

@@ -38,10 +38,10 @@ dists.append({
 })
 
 dists.append({
-    "name": "Ubuntu 20.10 (groovy)",
-    "dist_name": "groovy",
-    "ppa_name_suffix": "ppa-ubuntu-20-10-groovy-1",
-    "end": "July 2021",
+    "name": "Ubuntu 21.04 (Hirsute Hippo)",
+    "dist_name": "hirsute",
+    "ppa_name_suffix": "ppa-ubuntu-21-04-hirsute-1",
+    "end": "January 2022",
     "version": "20.10"
 })
 
