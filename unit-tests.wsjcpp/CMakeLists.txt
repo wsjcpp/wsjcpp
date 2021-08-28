@@ -32,7 +32,7 @@ list (APPEND WSJCPP_INCLUDE_DIRS "../src.wsjcpp/wsjcpp_yaml/")
 list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_yaml/wsjcpp_yaml.cpp")
 list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_yaml/wsjcpp_yaml.h")
 
-# wsjcpp-hashes:v0.1.3
+# wsjcpp-hashes:v0.1.4
 list (APPEND WSJCPP_INCLUDE_DIRS "../src.wsjcpp/wsjcpp_hashes/")
 list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_hashes/md5.cpp")
 list (APPEND WSJCPP_SOURCES "../src.wsjcpp/wsjcpp_hashes/md5.h")

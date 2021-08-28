@@ -3,7 +3,7 @@ cmake_cxx_standard: 11
 cmake_minimum_required: 3.0
 
 name: wsjcpp-hashes
-version: v0.1.3
+version: v0.1.4
 description: Small Collection of hashes
 issues: https://github.com/wsjcpp/wsjcpp-hashes/issues
 
@@ -37,7 +37,7 @@ distribution:
   - source-file: src/md5.cpp
     target-file: md5.cpp
     type: "source-code"
-    sha1: "4a9f0db6667074b7211ef111ac1a400ed280d5c0"
+    sha1: "7464f9b0845cd15ef7fbc7b906c93823dd731571"
   - source-file: src/md5.h
     target-file: md5.h
     type: "source-code"
@@ -53,7 +53,7 @@ distribution:
   - source-file: src/wsjcpp_hashes.cpp
     target-file: wsjcpp_hashes.cpp
     type: "source-code"
-    sha1: "1af7a15633ec5c4df62ba275824cff9ecdb7144b"
+    sha1: "1ea15831ca3f838ea19d6680e2d5cdb3c86926f4"
   - source-file: src/wsjcpp_hashes.h
     target-file: wsjcpp_hashes.h
     type: "source-code"

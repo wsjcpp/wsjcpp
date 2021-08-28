@@ -51,6 +51,7 @@ std::string WsjcppHashes::getMd5ByFile(const std::string &sFilename) {
     f.close();
 
     MD5 md5;
+    // deepcode ignore insecureHash: legacy support
     md5.update(pBuffer, nBufferSize);
     md5.finalize();
     return md5.hexdigest();
