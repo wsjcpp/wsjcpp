@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - Added new 'wsjcpp unit-tests run' or short 'wsjcpp ut r'
 
+### Security
+
+- Updated wsjcpp-hashes to v0.1.4
+
 ## [v0.2.1] - 2021-04-11 (2021 Apr 11)
 
 ### Added
