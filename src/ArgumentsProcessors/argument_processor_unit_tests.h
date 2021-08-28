@@ -64,4 +64,15 @@ class ArgumentProcessorUnitTestsList : public WsjcppArgumentProcessor {
         
 };
 
+// ---------------------------------------------------------------------
+
+class ArgumentProcessorUnitTestsRun : public WsjcppArgumentProcessor {
+    public:
+        ArgumentProcessorUnitTestsRun();
+        virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams);
+        
+    private:
+        
+};
+
 #endif // ARGUMENT_PROCESSOR_UNIT_TESTS_H

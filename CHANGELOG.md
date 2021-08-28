@@ -5,6 +5,12 @@ All notable changes to wsjcpp project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [v0.2.2] - 2021-??-?? (2021 ?? ??)
+
+### Added
+
+- Added new 'wsjcpp unit-tests run' or short 'wsjcpp ut r'
+
 ## [v0.2.1] - 2021-04-11 (2021 Apr 11)
 
 ### Added
