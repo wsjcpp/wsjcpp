@@ -8,7 +8,6 @@ Official site: [https://wsjcpp.org/](https://wsjcpp.org/)
 
 ## Get for work 
 
-
 ### Use a docker
 
 Docker:
@@ -160,10 +159,15 @@ For update automaticly generated files:
 $ wsjcpp update
 ```
 
-
 ## For building 
 
 wsjcpp prepare file 'build_simple.sh' for easy building 
 ```
 $ ./build_simple.sh
+```
+
+## Build docker image
+
+```
+$ docker build -t sea5kg/wsjcpp:latest .
 ```
