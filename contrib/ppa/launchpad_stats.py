@@ -4,14 +4,14 @@
 from launchpadlib.launchpad import Launchpad
 import os
 
-USERNAME='sea5kg'
+PPA_OWNER='sea5kg'
 PPA='wsjcpp'
 PACKAGE='wsjcpp'
 
 cachedir = os.environ['HOME'] + '/.launchpadlib/cache/'
 launchpad = Launchpad.login_anonymously('just testing', 'production', cachedir)
 
-ppa = launchpad.people[USERNAME].getPPAByName(name=PPA)
+ppa = launchpad.people[PPA_OWNER].getPPAByName(name=PPA)
 bins = ppa.getPublishedBinaries(binary_name=PACKAGE)
 builds = []
 total = 0
