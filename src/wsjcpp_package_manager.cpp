@@ -883,7 +883,12 @@ bool WsjcppPackageManager::install(const std::string &sPackage, std::string &sEr
     }
 
     addDependency(dep);
-    return installFromCache(sPackage, dep, sError);
+    if (!installFromCache(sPackage, dep, sError)) {
+        // TODO if could not install package cleanup target folder
+        // removeDependency(dep);
+        return false;
+    }
+    return true;
 }
 
 // ---------------------------------------------------------------------
