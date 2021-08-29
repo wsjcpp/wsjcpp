@@ -110,7 +110,7 @@ int ArgumentProcessorDistributionAdd::exec(const std::vector<std::string> &vRout
         }
     }
     
-    if (vDistFiles.size() == 0) {
+    if (vDistFiles.empty()) {
         WsjcppLog::err(TAG, "Not found files for distribution in '" + sSourceFile + "'");
         return -1;
     }

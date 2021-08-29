@@ -39,8 +39,8 @@ distribution:
   - source-file: "scripts.wsjcpp/generate.WsjcppArgumentProcessor.wsjcpp-script"
     target-file: "generate.WsjcppArgumentProcessor.wsjcpp-script"
     type: "safe-scripting-generate"
-
     sha1: "0575fd1da103baa29c7394c73a5bb1ffed8621f8"
+
 unit-tests:
   cases:
     - name: "ArgumentsWithParams"

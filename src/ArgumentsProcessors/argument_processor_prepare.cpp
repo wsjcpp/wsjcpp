@@ -63,7 +63,7 @@ int ArgumentProcessorPrepareTravis::exec(const std::vector<std::string> &vRoutes
 
     WsjcppPackageManager pkg(".");
     if (!pkg.load()) {
-        std::cout 
+        std::cout
             << std::endl
             << "ERROR: Could not load package info from current directory"
             << std::endl
@@ -145,7 +145,7 @@ int ArgumentProcessorPrepareHomebrew::exec(const std::vector<std::string> &vRout
     }
 
     if (sMainRepository == "") {
-        std::cout 
+        std::cout
             << std::endl
             << "ERROR: Could not find main repository in wsjcpp.yml"
             << std::endl
@@ -278,7 +278,7 @@ int ArgumentProcessorPrepareDockerfile::exec(const std::vector<std::string> &vRo
         "unit-tests.wsjcpp/*\n"
     ;
 
-    std::string sContentDockerfile = 
+    std::string sContentDockerfile =
         "# " + pkg.getName() + "@" + pkg.getVersion() + "\n"
         "FROM debian:10\n"
         "\n"

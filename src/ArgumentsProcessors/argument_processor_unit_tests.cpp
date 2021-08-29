@@ -9,6 +9,8 @@ ArgumentProcessorUnitTests::ArgumentProcessorUnitTests()
     registryProcessor(new ArgumentProcessorUnitTestsEnable());
     registryProcessor(new ArgumentProcessorUnitTestsDisable());
     registryProcessor(new ArgumentProcessorUnitTestsList());
+    registryProcessor(new ArgumentProcessorUnitTestsRun());
+    
 }
 
 // ---------------------------------------------------------------------
@@ -124,11 +126,8 @@ int ArgumentProcessorUnitTestsDelete::exec(const std::vector<std::string> &vRout
         pkg.save();
         WsjcppLog::ok(TAG, "Unit Test '" + sUnitTestName + "' removed successfully.");
         return 0;
-    } else {
-        WsjcppLog::err(TAG, "Could not delete unit-test with name '" + sUnitTestName + "'");
-        return -1;
     }
-    WsjcppLog::err(TAG, "Unit test with name '" + sUnitTestName + "' did not found");
+    WsjcppLog::err(TAG, "Could not delete unit-test with name '" + sUnitTestName + "', reason: not found ");
     return -1;
 }
 
@@ -153,6 +152,25 @@ int ArgumentProcessorUnitTestsList::exec(const std::vector<std::string> &vRoutes
       sRes += "* " + ut.getName() + " - " + ut.getDescription() + "\n";
     }
     WsjcppLog::info(TAG, sRes);
+    return 0;
+}
+
+// ---------------------------------------------------------------------
+// ArgumentProcessorUnitTestsRun
+
+ArgumentProcessorUnitTestsRun::ArgumentProcessorUnitTestsRun() 
+: WsjcppArgumentProcessor({"run", "r"}, "Build and run unit-test", "Build and run unit-tests") {
+}
+
+// ---------------------------------------------------------------------
+
+int ArgumentProcessorUnitTestsRun::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
+    WsjcppPackageManager pkg("./");
+    if (!pkg.load()) {
+        return -1;
+    }
+    system("cd unit-tests.wsjcpp && ./build_simple.sh");
+    system("cd unit-tests.wsjcpp && ./unit-tests");
     return 0;
 }
 
