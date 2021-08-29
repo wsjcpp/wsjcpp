@@ -18,10 +18,4 @@ addons:
 
 # Build steps
 script:
-  - ./build_simple.sh
-  - cd ./tests/
-  - ./run_package_installation.sh
-  - cd ..
-  - cd unit-tests.wsjcpp
-  - ./build_simple.sh
-  - ./unit-tests
+  - ./ci/travis/run.sh

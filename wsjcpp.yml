@@ -1,8 +1,8 @@
-wsjcpp_version: v0.0.2
+wsjcpp_version: v0.2.2
 cmake_minimum_required: 3.0
 cmake_cxx_standard: 11
 name: wsjcpp
-version: v0.2.1
+version: v0.2.2
 description: C++ Source Package Manager
 issues: https://github.com/wsjcpp/wsjcpp/issues # TODO add validate
 # web-site: "https://wsjcpp.org"
@@ -33,10 +33,11 @@ dependencies:
     origin: "https://github.com/"
     installation-dir: "./src.wsjcpp/wsjcpp_yaml"
   - name: "wsjcpp-hashes"
-    version: "v0.1.0"
+    version: "v0.1.4"
     url: "https://github.com/wsjcpp/wsjcpp-hashes:master"
     origin: "https://github.com/"
     installation-dir: "./src.wsjcpp/wsjcpp_hashes"
+    installation-datetime: "Sat, 28 Aug 2021 13:05:06 GMT"
   - name: "wsjcpp-safe-scripting"
     version: "v0.1.0"
     url: "https://github.com/wsjcpp/wsjcpp-safe-scripting:master"
@@ -53,7 +54,7 @@ auto-generated-files:
   version-file:
     path: "./"
     filename: "VERSION"
-    printed-format: "v{MAJOR}.{MINOR}.{BUILD}"
+    printed-format: "{MAJOR}.{MINOR}.{BUILD}"
 
 authors:
   - name: Evgenii Sopov

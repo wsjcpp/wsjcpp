@@ -883,7 +883,12 @@ bool WsjcppPackageManager::install(const std::string &sPackage, std::string &sEr
     }
 
     addDependency(dep);
-    return installFromCache(sPackage, dep, sError);
+    if (!installFromCache(sPackage, dep, sError)) {
+        // TODO if could not install package cleanup target folder
+        // removeDependency(dep);
+        return false;
+    }
+    return true;
 }
 
 // ---------------------------------------------------------------------
@@ -2685,18 +2690,16 @@ bool WsjcppPackageManager::append(
     if (vSplit.size() != 3) {
         WsjcppLog::err(TAG, "Wrong script name: '" + sTargetName + "' must like 'generate.ScriptName.wsjcpp-script'");
         return false;
-    } else {
-        if (vSplit[0] != "generate") {
-            WsjcppLog::err(TAG, "Wrong script name: '" + sTargetName + "' (left part must be 'generate.*')");
-            return false;
-        } else if (vSplit[2] != "wsjcpp-script") {
-            WsjcppLog::err(TAG, "Wrong script name: '" + sTargetName + "' (right part must be '*.wsjcpp-script')");
-            return false;
-        } else {
-            gen.setName(vSplit[1]);
-            vRet.push_back(gen);
-            return true;
-        }
     }
-    return false;
+    if (vSplit[0] != "generate") {
+        WsjcppLog::err(TAG, "Wrong script name: '" + sTargetName + "' (left part must be 'generate.*')");
+        return false;
+    } else if (vSplit[2] != "wsjcpp-script") {
+        WsjcppLog::err(TAG, "Wrong script name: '" + sTargetName + "' (right part must be '*.wsjcpp-script')");
+        return false;
+    } else {
+        gen.setName(vSplit[1]);
+        vRet.push_back(gen);
+        return true;
+    }
 }
