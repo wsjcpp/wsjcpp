@@ -148,6 +148,7 @@ class WsjcppPackageManager {
         std::string TAG;
 
         void addDependency(WsjcppPackageManagerDependence &dep);
+        void removeDependency(WsjcppPackageManagerDependence &dep);
         void updateDependency(WsjcppPackageManagerDependence &dep);
 
         std::string generateResourceCppFileBasename(const std::string &sFilepath);

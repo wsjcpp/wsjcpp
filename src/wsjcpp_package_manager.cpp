@@ -885,7 +885,7 @@ bool WsjcppPackageManager::install(const std::string &sPackage, std::string &sEr
     addDependency(dep);
     if (!installFromCache(sPackage, dep, sError)) {
         // TODO if could not install package cleanup target folder
-        // removeDependency(dep);
+        removeDependency(dep);
         return false;
     }
     return true;
@@ -1073,6 +1073,25 @@ void WsjcppPackageManager::addDependency(WsjcppPackageManagerDependence &dep) {
 
 // ---------------------------------------------------------------------
 
+void WsjcppPackageManager::removeDependency(WsjcppPackageManagerDependence &dep) {
+    m_vDependencies.push_back(dep);
+    WsjcppYamlCursor cur = m_yamlPackageInfo.getCursor();
+    if (!cur.hasKey("dependencies")) {
+        return;
+    }
+    cur = cur["dependencies"];
+    int nLen = cur.size();
+    for (int i = 0; i < nLen; i++) {
+        WsjcppYamlCursor el = cur[i];
+        if (el["name"].valStr() == dep.getName()) {
+            cur.node()->removeElement(i);
+            return;
+        }
+    }
+}
+
+// ---------------------------------------------------------------------
+
 void WsjcppPackageManager::updateDependency(WsjcppPackageManagerDependence &dep) {
     WsjcppYamlNode *pDeps = m_yamlPackageInfo.getRoot()->getElement("dependencies");
     int nLen = pDeps->getLength();
@@ -1134,7 +1153,8 @@ bool WsjcppPackageManager::installFromCache(
             std::string sFrom = sCacheDir + "/" + vFiles[i];
             std::string sTo = sInstallationDir + "/" + vFiles[i];
             if (!WsjcppCore::copyFile(sFrom, sTo)) {
-                sError = "Could not copy file '" + sFrom + "' to '" + sTo + "'";
+                sError = "Could not copy file (1) '" + sFrom + "' to '" + sTo + "'";
+                WsjcppCore::recoursiveRemoveDir(sInstallationDir);
                 return false;
             }
         }
@@ -1150,7 +1170,8 @@ bool WsjcppPackageManager::installFromCache(
         }
 
         if (!WsjcppCore::copyFile(sCacheWsjcppYml, sInstallationDir + "/wsjcpp.hold.yml")) {
-            sError = "Could not copy " + sCacheWsjcppYml + " -> " + sInstallationDir + "/wsjcpp.hold.yml";
+            sError = "Could not copy (2) " + sCacheWsjcppYml + " -> " + sInstallationDir + "/wsjcpp.hold.yml";
+            WsjcppCore::recoursiveRemoveDir(sInstallationDir);
             return false;
         }
 
@@ -1160,7 +1181,8 @@ bool WsjcppPackageManager::installFromCache(
             std::string sFileFrom = sCacheDir + "/" + src.getSourceFile();
             std::string sFileTo = sInstallationDir + "/" + src.getTargetFile();
             if (!WsjcppCore::copyFile(sFileFrom, sFileTo)) {
-                sError = "Could not copy from '" + sFileFrom + "' to '" + sFileTo + "'";
+                sError = "Could not copy (3) from '" + sFileFrom + "' to '" + sFileTo + "'";
+                WsjcppCore::recoursiveRemoveDir(sInstallationDir);
                 return false;
             }
         }
