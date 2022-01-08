@@ -123,21 +123,23 @@ class WsjcppYamlNode {
         WsjcppYamlQuotes getValueQuotes();
         
         std::string getSerializedName();
-        std::string toString(std::string sIntent = "");
+        std::string toString(std::string sIndent = "");
         std::string getNodeTypeAsString();
 
         std::string getForLogFormat();
-        int getNodeLastIntent();
-        std::string getStringNodeLastIntent();
-        void setNodeIntents(const std::vector<int> & vNodeIntents);
-        int getNodeIntent();
+        int getNodeLastIndent();
+        std::string getStringNodeLastIndent();
+        void setNodeIndents(const std::vector<int> & vNodeIndents);
+        int getNodeIndent();
 
         int getNumberOfLine() const;
         void setNumberOfLine(int nNumberOfLine);
 
     private:
         void throw_error(const std::string &sError);
-
+        void removeLastCharNewLine(std::string &sLine);
+        bool hasContent(const std::string &sVal);
+        bool hasObjects();
         std::string TAG;
         WsjcppYamlNode *m_pParent;
         WsjcppYamlPlaceInFile m_placeInFile;
@@ -148,9 +150,9 @@ class WsjcppYamlNode {
         std::string m_sName;
         WsjcppYamlQuotes m_nNameQuotes;
         std::string m_sComment;
-        int m_nNodeDiffIntent;
-        std::string m_sNodeDiffIntent;
-        int m_nNodeIntent;
+        int m_nNodeDiffIndent;
+        std::string m_sNodeDiffIndent;
+        int m_nNodeIndent;
 };
 
 // ---------------------------------------------------------------------
@@ -162,7 +164,7 @@ class WsjcppYamlParsebleLine {
         int getLineNumber();
 
         std::string getPrefix();
-        int getIntent(); // prefix length
+        int getIndent(); // prefix length
         bool isArrayItem();
         std::string getComment();
         bool hasComment();
@@ -293,10 +295,10 @@ class WsjcppYaml {
         // prsing line status
         void logUnknownParseLine();
         WsjcppYamlNode *m_pParseCurrentParentNode;
-        int m_nParseCurrentIntent;
+        int m_nParseCurrentIndent;
         WsjcppYamlPlaceInFile m_parsePlaceInFile;
         WsjcppYamlParsebleLine m_parseLine;
-        std::vector<int> m_vStackDiffNodeIntents;
+        std::vector<int> m_vStackDiffNodeIndents;
 };
 
 #endif // WSJCPP_YAML_H
