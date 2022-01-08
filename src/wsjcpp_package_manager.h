@@ -192,6 +192,8 @@ class WsjcppPackageManager {
             const std::string &sTargetName
         );
 
+        bool makeDirPath(const std::string &sDirPath);
+
         std::string m_sDir;
         bool m_bHolded;
         std::string m_sParentDir;

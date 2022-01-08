@@ -25,3 +25,6 @@ distribution:
   - source-file: "src/subfolder1/example_subfolder.h"
     target-file: "subfolder1/example_subfolder.h"
     type: "header-code"
+  - source-file: "src/subfolder1/subsubfolder2/example_subsubfolder2.h"
+    target-file: "subfolder1/subsubfolder2/example_subsubfolder2.h"
+    type: "header-code"

@@ -1152,6 +1152,7 @@ bool WsjcppPackageManager::installFromCache(
         for (int i = 0; i < vFiles.size(); i++) {
             std::string sFrom = sCacheDir + "/" + vFiles[i];
             std::string sTo = sInstallationDir + "/" + vFiles[i];
+            WsjcppLog::err(TAG, "sTo = '" + sTo + "'");
             if (!WsjcppCore::copyFile(sFrom, sTo)) {
                 sError = "Could not copy file (1) '" + sFrom + "' to '" + sTo + "'";
                 WsjcppCore::recoursiveRemoveDir(sInstallationDir);
@@ -1162,7 +1163,6 @@ bool WsjcppPackageManager::installFromCache(
         // TODO update src.wsjcpp/
         return true;
     } else if (WsjcppCore::fileExists(sCacheWsjcppYml)) {
-        
         WsjcppPackageManager pkg(sCacheDir);
         if (!pkg.load()) {
             sError = "Could not load package from copy '" + sCacheDir + "'";
@@ -1180,6 +1180,13 @@ bool WsjcppPackageManager::installFromCache(
             WsjcppPackageManagerDistributionFile src = vSources[i];
             std::string sFileFrom = sCacheDir + "/" + src.getSourceFile();
             std::string sFileTo = sInstallationDir + "/" + src.getTargetFile();
+            std::string sDir = sFileTo.substr(0, sFileTo.length() - WsjcppCore::extractFilename(sFileTo).length());
+            WsjcppLog::err(TAG, "sDir = '" + sDir + "'");
+            if (!this->makeDirPath(sDir)) {
+                sError = "Could not create directory '" + sDir + "'";
+                WsjcppCore::recoursiveRemoveDir(sInstallationDir);
+                return false;
+            }
             if (!WsjcppCore::copyFile(sFileFrom, sFileTo)) {
                 sError = "Could not copy (3) from '" + sFileFrom + "' to '" + sFileTo + "'";
                 WsjcppCore::recoursiveRemoveDir(sInstallationDir);
@@ -2697,8 +2704,6 @@ bool WsjcppPackageManager::validateVersionFormat(const std::string &sVersion) {
     return false;
 }
 
-// ---------------------------------------------------------------------
-
 bool WsjcppPackageManager::append(
     std::vector<WsjcppPackageManagerSafeScriptingGenerate> &vRet,
     const std::string &sSourceFile,
@@ -2724,4 +2729,15 @@ bool WsjcppPackageManager::append(
         vRet.push_back(gen);
         return true;
     }
+}
+
+bool WsjcppPackageManager::makeDirPath(const std::string &sDirPath) {
+    if (WsjcppCore::dirExists(sDirPath)) {
+        return true;
+    }
+    std::cout << "Create a directory " << sDirPath << std::endl;
+    if (!WsjcppCore::makeDir(sDirPath)) {
+        return false;
+    }
+    return WsjcppCore::dirExists(sDirPath);
 }

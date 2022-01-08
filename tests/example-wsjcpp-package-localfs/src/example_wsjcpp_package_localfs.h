@@ -3,6 +3,7 @@
 
 #include <string>
 #include "subfolder1/example_subfolder.h"
+#include "example_subsubfolder2.h"
 
 class ExampleWsjcppPackageLocalFs {
     public:
