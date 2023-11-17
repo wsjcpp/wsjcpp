@@ -21,17 +21,17 @@ bool WsjcppPackageManagerResourceFile::fromYAML(WsjcppYamlNode *pYamlDistributio
     m_bHolded = bHolded;
     if (!m_pYamlResourceFile->hasElement("filepath")) {
         WsjcppLog::err(TAG, "Missing required field 'filepath' in " + m_pYamlResourceFile->getForLogFormat());
-        return false; 
+        return false;
     }
 
     if (!m_pYamlResourceFile->hasElement("filesize")) {
         WsjcppLog::err(TAG, "Missing required field 'filesize' in " + m_pYamlResourceFile->getForLogFormat());
-        return false; 
+        return false;
     }
 
     if (!m_pYamlResourceFile->hasElement("sha1")) {
         WsjcppLog::err(TAG, "Missing required field 'sha1' in " + m_pYamlResourceFile->getForLogFormat());
-        return false; 
+        return false;
     }
 
     if (!m_pYamlResourceFile->hasElement("pack-as")) {
@@ -41,7 +41,7 @@ bool WsjcppPackageManagerResourceFile::fromYAML(WsjcppYamlNode *pYamlDistributio
 
     if (!m_pYamlResourceFile->hasElement("modified")) {
         WsjcppLog::err(TAG, "Missing required field 'modified' in " + m_pYamlResourceFile->getForLogFormat());
-        return false; 
+        return false;
     }
 
     std::vector<std::string> vKeys = m_pYamlResourceFile->getKeys();
@@ -108,40 +108,26 @@ std::string WsjcppPackageManagerResourceFile::getPackAs() const {
     return m_sPackAs;
 }
 
-// ---------------------------------------------------------------------
-
 long WsjcppPackageManagerResourceFile::getModified() const {
     return m_nModified;
 }
-
-// ---------------------------------------------------------------------
 
 void WsjcppPackageManagerResourceFile::setFilepath(const std::string &sFilepath) {
     m_sFilepath = sFilepath;
 }
 
-// ---------------------------------------------------------------------
-
 void WsjcppPackageManagerResourceFile::setFilesize(long nFilesize) {
     m_nFilesize = nFilesize;
 }
-
-// ---------------------------------------------------------------------
 
 void WsjcppPackageManagerResourceFile::setSha1(const std::string &sSha1) {
     m_sSha1 = sSha1;
 }
 
-// ---------------------------------------------------------------------
-
 void WsjcppPackageManagerResourceFile::setPackAs(const std::string &sPackAs) {
     m_sPackAs = sPackAs;
 }
 
-// ---------------------------------------------------------------------
-
 void WsjcppPackageManagerResourceFile::setModified(long nModified) {
     m_nModified = nModified;
 }
-
-// ---------------------------------------------------------------------

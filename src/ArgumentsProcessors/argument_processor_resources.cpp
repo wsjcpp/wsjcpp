@@ -143,9 +143,9 @@ int ArgumentProcessorResourcesRemove::exec(const std::vector<std::string> &vRout
         ;
         return -1;
     }
-    
+
     if (vSubParams.size() != 1) {
-        std::cout 
+        std::cout
             << std::endl
             << "ERROR: Expected arg1 with path to file" 
             << std::endl
@@ -259,7 +259,6 @@ int ArgumentProcessorResourcesAdd::exec(const std::vector<std::string> &vRoutes,
     }
     std::vector<std::string> vFileList;
 
-    
     if (WsjcppCore::dirExists(vSubParams[0])) {
         std::vector<std::string> vDirList;
         vDirList.push_back(vSubParams[0]);
@@ -280,17 +279,17 @@ int ArgumentProcessorResourcesAdd::exec(const std::vector<std::string> &vRoutes,
     } else if (WsjcppCore::fileExists(vSubParams[0])) {
         vFileList.push_back(vSubParams[0]);
     } else {
-        std::cout 
+        std::cout
             << std::endl
             << "ERROR: '" << vSubParams[0] << "' - file or directory not exists" 
             << std::endl
             << std::endl;
-        return -1; 
+        return -1;
     }
 
     WsjcppPackageManager pkg(".");
     if (!pkg.load()) {
-        std::cout 
+        std::cout
             << std::endl
             << "ERROR: Could not load package info from current directory"
             << std::endl
@@ -301,34 +300,34 @@ int ArgumentProcessorResourcesAdd::exec(const std::vector<std::string> &vRoutes,
 
     if (vFileList.size() == 1) {
         if (m_bText && m_bBinary) {
-            std::cout 
+            std::cout
                 << std::endl
                 << "ERROR: File could not be and text and binary please specify only one"
                 << std::endl
                 << std::endl;
-            return -1; 
+            return -1;
         }
     }
 
     if (vFileList.size() > 1) {
         if (m_bText && m_bBinary) {
-            std::cout 
+            std::cout
                 << std::endl
                 << "ERROR: Could not be and text and binary please specify for dir"
                 << std::endl
                 << std::endl;
-            return -1; 
+            return -1;
         }
     }
-    
+
     for (int i = 0; i < vFileList.size(); i++) {
         std::string sFilepath = vFileList[i];
         std::string sFileType = pkg.detectTypeOfResource(sFilepath);
-        
+
         sFilepath = WsjcppCore::doNormalizePath("./" + sFilepath);
         if (pkg.hasResource(sFilepath)) {
             if (vFileList.size() == 1) {
-                std::cout 
+                std::cout
                     << std::endl
                     << "Resource '" << sFilepath << "' already exists" << std::endl
                     << std::endl
@@ -363,7 +362,7 @@ int ArgumentProcessorResourcesAdd::exec(const std::vector<std::string> &vRoutes,
         return 0;
     }
 
-    std::cout 
+    std::cout
         << std::endl
         << "ERROR: Could not generate file resources"
         << std::endl
@@ -376,7 +375,7 @@ int ArgumentProcessorResourcesAdd::exec(const std::vector<std::string> &vRoutes,
 // ---------------------------------------------------------------------
 // ArgumentProcessorResourcesUpdate
 
-ArgumentProcessorResourcesUpdate::ArgumentProcessorResourcesUpdate() 
+ArgumentProcessorResourcesUpdate::ArgumentProcessorResourcesUpdate()
 : WsjcppArgumentProcessor({"update", "up"}, "Will update all resources", "Will be regenerated all resources") {
     TAG = "ArgumentProcessorResourcesUpdate";
 
@@ -391,74 +390,18 @@ bool ArgumentProcessorResourcesUpdate::applySingleArgument(const std::string &sP
 // ---------------------------------------------------------------------
 
 int ArgumentProcessorResourcesUpdate::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
-    if (vSubParams.size() != 1) {
-        std::cout 
-            << std::endl
-            << "ERROR: Expected arg1 with path to file or directory" 
-            << std::endl
-            << std::endl;
-        return -1;
-    }
-    // if (WsjcppCore::dirExists(sFilepath)) {
-        // TODO resoursive
+    // if (vSubParams.size() != 1) {
+    //     std::cout
+    //         << std::endl
+    //         << "ERROR: Expected arg1 with path to file or directory"
+    //         << std::endl
+    //         << std::endl;
+    //     return -1;
     // }
-    
-    
-    /*if (pkg.hasResource(sFilepath)) {
-        std::cout 
-            << std::endl
-            << "Resource '" << sFilepath << "' already exists" << std::endl
-            << std::endl
-            << "For remove this resource you can try call " << std::endl << "     wsjcpp res rm '" << sFilepath << "'" << std::endl
-            << std::endl
-            << "For update content of this resource " << std::endl << "     wsjcpp res up '" << sFilepath << "'" << std::endl
-            << std::endl
-            << std::endl
-        ;
-        return -1;
-    }*/
-
-/*    std::string sFilepath = vSubParams[0];
-
-    if (!WsjcppCore::fileExists(sFilepath)) {
-        std::cout 
-            << std::endl
-            << "ERROR: '" << sFilepath << "' - file not exists" 
-            << std::endl
-            << std::endl;
-        return -1; 
-    }
-
-    std::string sFileExt = sFilepath.substr(sFilepath.find_last_of(".") + 1);
-    sFileExt = WsjcppCore::toLower(sFileExt);
-
-    if (!m_bText && !m_bBinary) {
-        // if user not specified
-        if (sFileExt == "svg" 
-            || sFileExt == "js" 
-            || sFileExt == "css"
-            || sFileExt == "html"
-            || sFileExt == "conf"
-            || sFileExt == "sh"
-        ) {
-            m_bText = true;
-        } else {
-            m_bBinary = true;
-        }
-    }
-
-    if (m_bText && m_bBinary) {
-        std::cout 
-            << std::endl
-            << "ERROR: File could not be and text and binary please specify only one"
-            << std::endl
-            << std::endl;
-        return -1; 
-    }
 
     WsjcppPackageManager pkg(".");
     if (!pkg.load()) {
-        std::cout 
+        std::cout
             << std::endl
             << "ERROR: Could not load package info from current directory"
             << std::endl
@@ -466,18 +409,13 @@ int ArgumentProcessorResourcesUpdate::exec(const std::vector<std::string> &vRout
         ;
         return -1;
     }
-    sFilepath = WsjcppCore::doNormalizePath(sFilepath);
-    if (pkg.addResource(sFilepath, m_bText ? "text" : "binary")) {
-        pkg.save();
-        pkg.updateAutogeneratedFiles();
-        return 0;
-    }
 
-    std::cout 
-        << std::endl
-        << "ERROR: Could not generate file resources"
-        << std::endl
-        << std::endl
-    ;*/
-    return -1;
+    std::vector<WsjcppPackageManagerResourceFile> fileResources = pkg.getListOfResourceFiles();
+    for (int i = 0; i < fileResources.size(); i++) {
+        WsjcppPackageManagerResourceFile fileRes = fileResources[i];
+        pkg.updateResource(fileRes.getFilepath());
+    }
+    pkg.save();
+    pkg.updateAutogeneratedFiles();
+    return 0;
 }

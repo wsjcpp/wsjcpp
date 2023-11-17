@@ -163,7 +163,8 @@ unit-tests:
 
 resources:
   - filepath: "./build_simple.sh"
-    filesize: 77
-    pack-as: "binary"
-    modified: 1600401759
-    sha1: ""
+    filesize: 513
+    pack-as: "text"
+    modified: 1700241876
+    sha1: "a47ffad305efcc18bf8886c547fc11907ded2b0f"
+
