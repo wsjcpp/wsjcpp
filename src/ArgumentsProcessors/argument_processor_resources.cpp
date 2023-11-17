@@ -72,7 +72,7 @@ bool ArgumentProcessorResourcesList::applySingleArgument(const std::string &sPro
 int ArgumentProcessorResourcesList::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     WsjcppPackageManager pkg(".");
     if (!pkg.load()) {
-        std::cout 
+        std::cout
             << std::endl
             << "ERROR: Could not load package info from current directory"
             << std::endl
@@ -81,7 +81,7 @@ int ArgumentProcessorResourcesList::exec(const std::vector<std::string> &vRoutes
         return -1;
     }
     std::vector<WsjcppPackageManagerResourceFile> vList = pkg.getListOfResourceFiles();
-    
+
     if (vList.size() == 0) {
         std::cout
             << "resource not found. "
@@ -92,15 +92,15 @@ int ArgumentProcessorResourcesList::exec(const std::vector<std::string> &vRoutes
             << std::endl
             << std::endl;
     } else {
-        std::cout 
+        std::cout
             << std::endl
             << "resources: "
             << std::endl;
         for (int i = 0; i < vList.size(); i++) {
             WsjcppPackageManagerResourceFile resFile = vList[i];
-            // TODO check exists / size / modified / sha1 
+            // TODO check exists / size / modified / sha1
             if (!m_bMore) {
-                std::cout << " - " << resFile.getFilepath() << " (size: " << resFile.getFilesize() << " bytes)" << std::endl;
+                std::cout << " - as " << resFile.getPackAs() << ": " << resFile.getFilepath() << " (size: " << resFile.getFilesize() << " bytes)" << std::endl;
             } else {
                 std::cout
                     << "  - filepath: " << resFile.getFilepath()
@@ -125,7 +125,7 @@ int ArgumentProcessorResourcesList::exec(const std::vector<std::string> &vRoutes
 // ---------------------------------------------------------------------
 // ArgumentProcessorResourcesRemove
 
-ArgumentProcessorResourcesRemove::ArgumentProcessorResourcesRemove() 
+ArgumentProcessorResourcesRemove::ArgumentProcessorResourcesRemove()
 : WsjcppArgumentProcessor({"remove", "rm"}, "Remove resource", "Remove resource (only c++ code, original file will be not touched)") {
     TAG = "ArgumentProcessorResourcesRemove";
 }
@@ -195,7 +195,7 @@ int ArgumentProcessorResourcesRemove::exec(const std::vector<std::string> &vRout
                 return 0;
             }
         } else {
-            std::cout 
+            std::cout
                 << std::endl
                 << "Resource '" + vFilesToRemove[0] + "' - not found" << std::endl
                 << std::endl
@@ -216,7 +216,6 @@ int ArgumentProcessorResourcesRemove::exec(const std::vector<std::string> &vRout
         pkg.save();
         return 0;
     }
-    
     return -1;
 }
 
@@ -250,9 +249,9 @@ bool ArgumentProcessorResourcesAdd::applySingleArgument(const std::string &sProg
 
 int ArgumentProcessorResourcesAdd::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     if (vSubParams.size() != 1) {
-        std::cout 
+        std::cout
             << std::endl
-            << "ERROR: Expected arg1 with path to file or directory" 
+            << "ERROR: Expected arg1 with path to file or directory"
             << std::endl
             << std::endl;
         return -1;
