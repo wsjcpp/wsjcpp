@@ -9,14 +9,14 @@ class ArgumentProcessorChange : public WsjcppArgumentProcessor {
         virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams);
 
     private:
-        
+
 };
 
 class ArgumentProcessorChangeVersion : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorChangeVersion();
         virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams);
-        
+
     private:
 };
 
@@ -24,7 +24,7 @@ class ArgumentProcessorChangeVersionFile : public WsjcppArgumentProcessor {
     public:
         ArgumentProcessorChangeVersionFile();
         virtual int exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams);
-        
+
     private:
 };
 

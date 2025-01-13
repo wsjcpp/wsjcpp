@@ -885,7 +885,7 @@ bool WsjcppPackageManager::install(const std::string &sPackage, std::string &sEr
     addDependency(dep);
     if (!installFromCache(sPackage, dep, sError)) {
         // TODO if could not install package cleanup target folder
-        // removeDependency(dep);
+        removeDependency(dep);
         return false;
     }
     return true;
@@ -1073,6 +1073,25 @@ void WsjcppPackageManager::addDependency(WsjcppPackageManagerDependence &dep) {
 
 // ---------------------------------------------------------------------
 
+void WsjcppPackageManager::removeDependency(WsjcppPackageManagerDependence &dep) {
+    m_vDependencies.push_back(dep);
+    WsjcppYamlCursor cur = m_yamlPackageInfo.getCursor();
+    if (!cur.hasKey("dependencies")) {
+        return;
+    }
+    cur = cur["dependencies"];
+    int nLen = cur.size();
+    for (int i = 0; i < nLen; i++) {
+        WsjcppYamlCursor el = cur[i];
+        if (el["name"].valStr() == dep.getName()) {
+            cur.node()->removeElement(i);
+            return;
+        }
+    }
+}
+
+// ---------------------------------------------------------------------
+
 void WsjcppPackageManager::updateDependency(WsjcppPackageManagerDependence &dep) {
     WsjcppYamlNode *pDeps = m_yamlPackageInfo.getRoot()->getElement("dependencies");
     int nLen = pDeps->getLength();
@@ -1133,8 +1152,10 @@ bool WsjcppPackageManager::installFromCache(
         for (int i = 0; i < vFiles.size(); i++) {
             std::string sFrom = sCacheDir + "/" + vFiles[i];
             std::string sTo = sInstallationDir + "/" + vFiles[i];
+            WsjcppLog::err(TAG, "sTo = '" + sTo + "'");
             if (!WsjcppCore::copyFile(sFrom, sTo)) {
-                sError = "Could not copy file '" + sFrom + "' to '" + sTo + "'";
+                sError = "Could not copy file (1) '" + sFrom + "' to '" + sTo + "'";
+                WsjcppCore::recoursiveRemoveDir(sInstallationDir);
                 return false;
             }
         }
@@ -1142,7 +1163,6 @@ bool WsjcppPackageManager::installFromCache(
         // TODO update src.wsjcpp/
         return true;
     } else if (WsjcppCore::fileExists(sCacheWsjcppYml)) {
-        
         WsjcppPackageManager pkg(sCacheDir);
         if (!pkg.load()) {
             sError = "Could not load package from copy '" + sCacheDir + "'";
@@ -1150,7 +1170,8 @@ bool WsjcppPackageManager::installFromCache(
         }
 
         if (!WsjcppCore::copyFile(sCacheWsjcppYml, sInstallationDir + "/wsjcpp.hold.yml")) {
-            sError = "Could not copy " + sCacheWsjcppYml + " -> " + sInstallationDir + "/wsjcpp.hold.yml";
+            sError = "Could not copy (2) " + sCacheWsjcppYml + " -> " + sInstallationDir + "/wsjcpp.hold.yml";
+            WsjcppCore::recoursiveRemoveDir(sInstallationDir);
             return false;
         }
 
@@ -1159,8 +1180,16 @@ bool WsjcppPackageManager::installFromCache(
             WsjcppPackageManagerDistributionFile src = vSources[i];
             std::string sFileFrom = sCacheDir + "/" + src.getSourceFile();
             std::string sFileTo = sInstallationDir + "/" + src.getTargetFile();
+            std::string sDir = sFileTo.substr(0, sFileTo.length() - WsjcppCore::extractFilename(sFileTo).length());
+            WsjcppLog::err(TAG, "sDir = '" + sDir + "'");
+            if (!this->makeDirPath(sDir)) {
+                sError = "Could not create directory '" + sDir + "'";
+                WsjcppCore::recoursiveRemoveDir(sInstallationDir);
+                return false;
+            }
             if (!WsjcppCore::copyFile(sFileFrom, sFileTo)) {
-                sError = "Could not copy from '" + sFileFrom + "' to '" + sFileTo + "'";
+                sError = "Could not copy (3) from '" + sFileFrom + "' to '" + sFileTo + "'";
+                WsjcppCore::recoursiveRemoveDir(sInstallationDir);
                 return false;
             }
         }
@@ -1277,8 +1306,6 @@ bool WsjcppPackageManager::removeAuthor(const std::string &sFullAuthor) {
     return false;
 }
 
-// ---------------------------------------------------------------------
-
 bool WsjcppPackageManager::addResource(const std::string &sFilepath, const std::string &sPackAs) {
     for (int i = 0; i < m_vResourceFiles.size(); i++) {
         if (m_vResourceFiles[i].getFilepath() == sFilepath) {
@@ -1294,7 +1321,9 @@ bool WsjcppPackageManager::addResource(const std::string &sFilepath, const std::
     WsjcppPackageManagerResourceFile resourceFile;
     resourceFile.setFilepath(sFilepath);
     resourceFile.setPackAs(sPackAs);
-    resourceFile.setSha1(""); // TODO sha1 
+
+    std::string sSha1 = WsjcppHashes::getSha1ByFile(sFilepath);
+    resourceFile.setSha1(sSha1);
 
     struct stat result;
     if (stat(sFilepath.c_str(), &result) == 0) {
@@ -1325,7 +1354,54 @@ bool WsjcppPackageManager::addResource(const std::string &sFilepath, const std::
     return true;
 }
 
-// ---------------------------------------------------------------------
+bool WsjcppPackageManager::updateResource(const std::string &sFilepath) {
+    int nResFileNum = -1;
+    for (int i = 0; i < m_vResourceFiles.size(); i++) {
+        if (m_vResourceFiles[i].getFilepath() == sFilepath) {
+            nResFileNum = i;
+            break;
+        }
+    }
+
+    WsjcppLog::info(TAG, "Start updating '" + m_vResourceFiles[nResFileNum].getFilepath() + "'");
+
+    std::string sSha1 = WsjcppHashes::getSha1ByFile(sFilepath);
+    m_vResourceFiles[nResFileNum].setSha1(sSha1);
+
+    struct stat result;
+    if (stat(sFilepath.c_str(), &result) == 0) {
+        m_vResourceFiles[nResFileNum].setFilesize(result.st_size);
+        m_vResourceFiles[nResFileNum].setModified(result.st_mtime);
+    }
+
+    updateAutogeneratedFiles_Resource(m_vResourceFiles[nResFileNum]);
+
+    m_vResourceFiles[nResFileNum].toYAML();
+
+    // if (!WsjcppCore::fileExists(sFilepath)) {
+    //     WsjcppLog::err(TAG, "Resource file '" + sFilepath + "' did not found");
+    //     return false;
+    // }
+    // resourceFile.setPackAs(sPackAs);
+
+    // if (!m_yamlPackageInfo.getRoot()->hasElement("resources")) {
+    //     m_yamlPackageInfo.getRoot()->createElementArray("resources");
+    // }
+    // WsjcppYamlNode *pItem = m_yamlPackageInfo.getRoot()->getElement("resources");
+
+    // WsjcppYamlPlaceInFile pl;
+    // WsjcppYamlNode *pNewItemMap = new WsjcppYamlNode(pItem, pl, WSJCPP_YAML_NODE_MAP);
+    // pNewItemMap->setElementValue("filepath", resourceFile.getFilepath(), WSJCPP_YAML_QUOTES_NONE, WSJCPP_YAML_QUOTES_DOUBLE);
+    // // TODO redesign without std::to_string
+    // pNewItemMap->setElementValue("filesize", std::to_string(resourceFile.getFilesize()), WSJCPP_YAML_QUOTES_NONE, WSJCPP_YAML_QUOTES_NONE);
+    // pNewItemMap->setElementValue("pack-as", resourceFile.getPackAs(), WSJCPP_YAML_QUOTES_NONE, WSJCPP_YAML_QUOTES_DOUBLE);
+    //  // TODO redesign without std::to_string
+    // pNewItemMap->setElementValue("modified", std::to_string(resourceFile.getModified()), WSJCPP_YAML_QUOTES_NONE, WSJCPP_YAML_QUOTES_NONE);
+    // pNewItemMap->setElementValue("sha1", resourceFile.getSha1(), WSJCPP_YAML_QUOTES_NONE, WSJCPP_YAML_QUOTES_DOUBLE);
+    // pItem->appendElement(pNewItemMap);
+
+    return true;
+}
 
 bool WsjcppPackageManager::removeResource(const std::string &sFilepath) {
 
@@ -2080,14 +2156,14 @@ bool WsjcppPackageManager::updateAutogeneratedFiles_CMakeListsTXT() {
         std::string sInstDir = dep.getInstallationDir();
         WsjcppPackageManager pkg(dep.getInstallationDir(), m_sDir, true);
         if (pkg.load()) {
-            sCMakeListsTXT += 
+            sCMakeListsTXT +=
                 "# " + pkg.getName() + ":" + pkg.getVersion() + "\n"
-                "list (APPEND WSJCPP_INCLUDE_DIRS \"" + sInstDir + "/\")\n";
+                "list (APPEND WSJCPP_INCLUDE_DIRS \"${CMAKE_SOURCE_DIR}/" + sInstDir + "/\")\n";
             std::vector<WsjcppPackageManagerDistributionFile> vFiles = pkg.getListOfDistributionFiles();
             for (int i = 0; i < vFiles.size(); i++) {
                 WsjcppPackageManagerDistributionFile file = vFiles[i];
                 if (file.getType() == "source-code") {
-                    sCMakeListsTXT += "list (APPEND WSJCPP_SOURCES \"" + sInstDir + "/" + file.getTargetFile() + "\")\n";
+                    sCMakeListsTXT += "list (APPEND WSJCPP_SOURCES \"${CMAKE_SOURCE_DIR}/" + sInstDir + "/" + file.getTargetFile() + "\")\n";
                 }
             }
             std::vector<std::string> vLibs = pkg.getRequiredLibraries();
@@ -2097,17 +2173,17 @@ bool WsjcppPackageManager::updateAutogeneratedFiles_CMakeListsTXT() {
         }
         sCMakeListsTXT += "\n";
     }
-    
+
     if (m_vResourceFiles.size() > 0) {
-        sCMakeListsTXT += 
+        sCMakeListsTXT +=
             "# resources.wsjcpp\n"
-            "list (APPEND WSJCPP_INCLUDE_DIRS \"./" + m_sDirnameResources + "/\")\n";
+            "list (APPEND WSJCPP_INCLUDE_DIRS \"${CMAKE_SOURCE_DIR}/" + m_sDirnameResources + "/\")\n";
 
         for (int i = 0; i < m_vResourceFiles.size(); i++) {
             std::string sFilepath = m_vResourceFiles[i].getFilepath();
             std::string sFilepathBase = generateResourceCppFileBasename(sFilepath);
-            sCMakeListsTXT += "list (APPEND WSJCPP_SOURCES \"./" + m_sDirnameResources + "/" + sFilepathBase + ".h\")\n";
-            sCMakeListsTXT += "list (APPEND WSJCPP_SOURCES \"./" + m_sDirnameResources + "/" + sFilepathBase + ".cpp\")\n";
+            sCMakeListsTXT += "list (APPEND WSJCPP_SOURCES \"${CMAKE_SOURCE_DIR}/" + m_sDirnameResources + "/" + sFilepathBase + ".h\")\n";
+            sCMakeListsTXT += "list (APPEND WSJCPP_SOURCES \"${CMAKE_SOURCE_DIR}/" + m_sDirnameResources + "/" + sFilepathBase + ".cpp\")\n";
         }
         sCMakeListsTXT += "\n";
     }
@@ -2127,12 +2203,12 @@ bool WsjcppPackageManager::updateAutogeneratedFiles_CMakeListsTXT() {
         }
         sCMakeListsTXT += "\n";
     }
-    
+
     if (m_sRequiredPkgConfig.size() > 0) {
         sCMakeListsTXT += "# required-pkg-config\n";
         for (int i = 0; i < m_sRequiredPkgConfig.size(); i++) {
             std::string sPkgConfig = m_sRequiredPkgConfig[i];
-            sCMakeListsTXT += 
+            sCMakeListsTXT +=
                 "## " + sPkgConfig + "\n"
                 "FIND_PACKAGE(" + sPkgConfig + ")\n"
                 "IF(" + sPkgConfig + "_FOUND)\n"
@@ -2154,7 +2230,7 @@ bool WsjcppPackageManager::updateAutogeneratedFiles_CMakeListsTXT() {
 bool WsjcppPackageManager::updateAutogeneratedFiles_VersionFile() {
     if (!m_bVersionFile) {
         // do need nothing
-        return true; 
+        return true;
     }
 
     std::string sFileName = WsjcppCore::doNormalizePath(m_sDir + "/" + m_sVersionFile_Path + "/" + m_sVersionFile_Filename);
@@ -2409,7 +2485,7 @@ bool WsjcppPackageManager::updateAutogeneratedFiles_UnitTests() {
             for (int i = 0; i < vFiles.size(); i++) {
                 WsjcppPackageManagerDistributionFile file = vFiles[i];
                 if (file.getType() == "source-code" || file.getType() == "unit-tests") {
-                    sCMakeListsTXT += "list (APPEND WSJCPP_SOURCES \""
+                    sCMakeListsTXT += "list (APPEND WSJCPP_SOURCES \"${CMAKE_SOURCE_DIR}/"
                         + WsjcppCore::doNormalizePath("../" + sInstDir + "/" + file.getTargetFile()) 
                         + "\")\n";
                 }
@@ -2418,13 +2494,13 @@ bool WsjcppPackageManager::updateAutogeneratedFiles_UnitTests() {
         sCMakeListsTXT += "\n";
     }
 
-    sCMakeListsTXT += 
+    sCMakeListsTXT +=
         "# " + m_sName + ":" + m_sVersion + "\n"
-        "list (APPEND WSJCPP_INCLUDE_DIRS \"../src\")\n";
+        "list (APPEND WSJCPP_INCLUDE_DIRS \"${CMAKE_SOURCE_DIR}/../src\")\n";
     for (int i = 0; i < m_vDistributionFiles.size(); i++) {
         WsjcppPackageManagerDistributionFile file = m_vDistributionFiles[i];
         if (file.getType() == "source-code" || file.getType() == "unit-tests") {
-            sCMakeListsTXT += "list (APPEND WSJCPP_SOURCES \""
+            sCMakeListsTXT += "list (APPEND WSJCPP_SOURCES \"${CMAKE_SOURCE_DIR}/"
                 + WsjcppCore::doNormalizePath("../" + file.getSourceFile())
                 + "\")\n";
         }
@@ -2434,13 +2510,13 @@ bool WsjcppPackageManager::updateAutogeneratedFiles_UnitTests() {
     if (m_vResourceFiles.size() > 0) {
         sCMakeListsTXT += 
             "\n# resources.wsjcpp\n"
-            "list (APPEND WSJCPP_INCLUDE_DIRS \"../" + m_sDirnameResources + "/\")\n";
+            "list (APPEND WSJCPP_INCLUDE_DIRS \"${CMAKE_SOURCE_DIR}/../" + m_sDirnameResources + "/\")\n";
 
         for (int i = 0; i < m_vResourceFiles.size(); i++) {
             std::string sFilepath = m_vResourceFiles[i].getFilepath();
             std::string sFilepathBase = generateResourceCppFileBasename(sFilepath);
-            sCMakeListsTXT += "list (APPEND WSJCPP_SOURCES \"../" + m_sDirnameResources + "/" + sFilepathBase + ".h\")\n";
-            sCMakeListsTXT += "list (APPEND WSJCPP_SOURCES \"../" + m_sDirnameResources + "/" + sFilepathBase + ".cpp\")\n";
+            sCMakeListsTXT += "list (APPEND WSJCPP_SOURCES \"${CMAKE_SOURCE_DIR}/../" + m_sDirnameResources + "/" + sFilepathBase + ".h\")\n";
+            sCMakeListsTXT += "list (APPEND WSJCPP_SOURCES \"${CMAKE_SOURCE_DIR}/../" + m_sDirnameResources + "/" + sFilepathBase + ".cpp\")\n";
         }
     }
 
@@ -2462,7 +2538,7 @@ bool WsjcppPackageManager::updateAutogeneratedFiles_UnitTests() {
         std::string sFileSource = "./unit-tests.wsjcpp/src/" + sBaseName + ".cpp";
 
         if (WsjcppCore::fileExists(sFileSource)) {
-            sCMakeListsTXT += "list (APPEND WSJCPP_SOURCES \""
+            sCMakeListsTXT += "list (APPEND WSJCPP_SOURCES \"${CMAKE_SOURCE_DIR}/"
                 + WsjcppCore::doNormalizePath("../" + sFileSource)
                 + "\")\n";
         } else {
@@ -2479,7 +2555,7 @@ bool WsjcppPackageManager::updateAutogeneratedFiles_UnitTests() {
         }
         sCMakeListsTXT += "\n";
     }
-    
+
     if (m_sRequiredPkgConfig.size() > 0) {
         sCMakeListsTXT += "# required-pkg-config\n";
         for (int i = 0; i < m_sRequiredPkgConfig.size(); i++) {
@@ -2521,10 +2597,10 @@ bool WsjcppPackageManager::updateAutogeneratedFiles_Resource(const WsjcppPackage
     if (!WsjcppCore::dirExists(m_sDirResources)) {
         WsjcppCore::makeDir(m_sDirResources);
     }
-    std::string sResourcesLog = "Resources files: \n"; 
+    std::string sResourcesLog = "Resources files: \n";
     std::string sFilenameNormalized = generateResourceCppFileBasename(resFile.getFilepath());
     std::string sClassName = "RES_" + sFilenameNormalized;
-    std::string sHeaderContent = 
+    std::string sHeaderContent =
         "// automaticly generated by wsjcpp:" + getVersion() + "\n"
         "\n"
         "#include <wsjcpp_core.h>\n"
@@ -2544,7 +2620,7 @@ bool WsjcppPackageManager::updateAutogeneratedFiles_Resource(const WsjcppPackage
     } else {
         sResourcesLog += "\n - generated: " + sHeaderFilepath;
     }
-    
+
     WsjcppCore::writeFile(sHeaderFilepath, sHeaderContent);
 
     char *pBuffer = nullptr;
@@ -2554,7 +2630,7 @@ bool WsjcppPackageManager::updateAutogeneratedFiles_Resource(const WsjcppPackage
         return false;
     }
 
-    std::string sSourceContent = 
+    std::string sSourceContent =
         "// automaticly generated by wsjcpp:" + getVersion() + "\n"
         "\n"
         "#include \"" + sFilenameNormalized + ".h\"\n"
@@ -2585,7 +2661,7 @@ bool WsjcppPackageManager::updateAutogeneratedFiles_Resource(const WsjcppPackage
         sSourceContent += 
             "const char *" + sClassName + "::getBuffer() const {\n"
             "    static const unsigned char b[" + std::to_string(nBufferSize) + "] = {";
-        
+
         char const arrHexChars[16] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
         for (int i = 0; i < nBufferSize; i++) {
             if (i != 0) {
@@ -2603,15 +2679,15 @@ bool WsjcppPackageManager::updateAutogeneratedFiles_Resource(const WsjcppPackage
             "\n"
             "    };\n"
             "    return (const char*)b;\n"
-            "} //::buffer() \n"
+            "} //::buffer()\n"
             "\n";
     }
-    
+
     if (resFile.getPackAs() == "text") {
-        sSourceContent += 
-            "const char *" + sClassName + "::getBuffer() {\n"
+        sSourceContent +=
+            "const char *" + sClassName + "::getBuffer() const {\n"
             "    static const std::string sRet = \"\" // size: " + std::to_string(nBufferSize) + "\n";
-        
+
         sSourceContent += "        \"";
         for (int i = 0; i < nBufferSize; i++) {
             char c = pBuffer[i];
@@ -2675,8 +2751,6 @@ bool WsjcppPackageManager::validateVersionFormat(const std::string &sVersion) {
     return false;
 }
 
-// ---------------------------------------------------------------------
-
 bool WsjcppPackageManager::append(
     std::vector<WsjcppPackageManagerSafeScriptingGenerate> &vRet,
     const std::string &sSourceFile,
@@ -2702,4 +2776,15 @@ bool WsjcppPackageManager::append(
         vRet.push_back(gen);
         return true;
     }
+}
+
+bool WsjcppPackageManager::makeDirPath(const std::string &sDirPath) {
+    if (WsjcppCore::dirExists(sDirPath)) {
+        return true;
+    }
+    std::cout << "Create a directory " << sDirPath << std::endl;
+    if (!WsjcppCore::makeDir(sDirPath)) {
+        return false;
+    }
+    return WsjcppCore::dirExists(sDirPath);
 }

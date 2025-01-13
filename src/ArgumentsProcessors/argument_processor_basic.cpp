@@ -134,7 +134,7 @@ int ArgumentProcessorInit::exec(const std::vector<std::string> &vRoutes, const s
 
     std::string sCMakeListsTXT = sPath + "/CMakeLists.txt";
     if (!WsjcppCore::fileExists(sCMakeListsTXT)) {
-        WsjcppCore::writeFile(sCMakeListsTXT, 
+        WsjcppCore::writeFile(sCMakeListsTXT,
             "cmake_minimum_required(VERSION " + pkg.getCMakeMinimumRequired() + ")\n"
             "\n"
             "project(" + pkg.getName() + " C CXX)\n"
