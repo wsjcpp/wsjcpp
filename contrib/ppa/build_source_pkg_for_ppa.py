@@ -14,35 +14,35 @@ dists = []
 # https://wiki.ubuntu.com/Releases
 
 dists.append({
-    "name": "Ubuntu 16.04.7 LTS (xenial)",
-    "dist_name": "xenial",
-    "ppa_name_suffix": "ppa-ubuntu-16-04-xenial-1",
-    "end": "April 2021",
-    "version": "16.04.7 LTS"
-})
-
-dists.append({
-    "name": "Ubuntu 18.04.5 LTS (bionic)",
-    "dist_name": "bionic",
-    "ppa_name_suffix": "ppa-ubuntu-18-04-bionic-2",
-    "end": "April 2023",
-    "version": "18.04.5 LTS"
-})
-
-dists.append({
-    "name": "Ubuntu 20.04.2 LTS (focal)",
+    "name": "Ubuntu 20.04.6 LTS (focal)",
     "dist_name": "focal",
-    "ppa_name_suffix": "ppa-ubuntu-20-04-focal-2",
+    "ppa_name_suffix": "ppa-ubuntu-20-04-focal-3",
     "end": "April 2025",
-    "version": "20.04.2 LTS"
+    "version": "20.04.6 LTS"
 })
 
 dists.append({
-    "name": "Ubuntu 21.04 (Hirsute Hippo)",
-    "dist_name": "hirsute",
-    "ppa_name_suffix": "ppa-ubuntu-21-04-hirsute-1",
-    "end": "January 2022",
-    "version": "20.10"
+    "name": "Ubuntu 22.04.5 LTS (Jammy Jellyfish)",
+    "dist_name": "jammy",
+    "ppa_name_suffix": "ppa-ubuntu-22-04-jammy-1",
+    "end": "June 2027",
+    "version": "22.04.5 LTS"
+})
+
+dists.append({
+    "name": "Ubuntu 24.04.1 LTS (Noble Numbat)",
+    "dist_name": "noble",
+    "ppa_name_suffix": "ppa-ubuntu-24-04-noble-1",
+    "end": "June 2029",
+    "version": "24.04.1 LTS"
+})
+
+dists.append({
+    "name": "Ubuntu 24.10 (Oracular Oriole)",
+    "dist_name": "oracular",
+    "ppa_name_suffix": "ppa-ubuntu-24-10-oracular-1",
+    "end": "July 2025",
+    "version": "24.10"
 })
 
 print("Please choose dist name:")
@@ -192,7 +192,7 @@ print( " -> DONE ")
 
 dput_filename = "wsjcpp_" + current_version + "-" + ppa_name_ + "_source.changes"
 
-if os.system("debsign -k 3AA3105C5766233DD2F243A3A742BE2E628592AC " + dput_filename) != 0:
+if os.system("debsign -k 3D21BC44D45E5F8EF600C917EC70B82B65A9E3FA " + dput_filename) != 0:
     print( " -> FAILED ")
     sys.exit(-1)
 
