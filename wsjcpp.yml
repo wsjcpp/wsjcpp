@@ -2,7 +2,7 @@ wsjcpp_version: v0.2.2
 cmake_minimum_required: 3.0
 cmake_cxx_standard: 11
 name: wsjcpp
-version: v0.2.2
+version: v0.2.3
 description: C++ Source Package Manager
 issues: https://github.com/wsjcpp/wsjcpp/issues # TODO add validate
 # web-site: "https://wsjcpp.org"
@@ -49,7 +49,6 @@ dependencies:
     url: "https://github.com/wsjcpp/wsjcpp-arguments:master"
     origin: "https://github.com/"
     installation-dir: "./src.wsjcpp/wsjcpp_arguments"
-
 # build-dependencies:
 
 auto-generated-files:
@@ -148,7 +147,6 @@ distribution:
   - source-file: "src/wsjcpp_package_downloader_localfs.h"
     target-file: "wsjcpp_package_downloader_localfs.h"
     type: "source-code"
-
 unit-tests:
   cases:
     - name: "NormalizeUnitTestName"
@@ -160,11 +158,9 @@ unit-tests:
       enabled: "no"
     - name: "ReadPackage"
       description: "Test for read package"
-
 resources:
   - filepath: "./build_simple.sh"
     filesize: 513
     pack-as: "text"
     modified: 1700241876
     sha1: "a47ffad305efcc18bf8886c547fc11907ded2b0f"
-
