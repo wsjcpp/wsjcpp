@@ -2,7 +2,7 @@ wsjcpp_version: v0.2.2
 cmake_minimum_required: 3.0
 cmake_cxx_standard: 11
 name: wsjcpp
-version: v0.2.2
+version: v0.2.3
 description: C++ Source Package Manager
 issues: https://github.com/wsjcpp/wsjcpp/issues # TODO add validate
 # web-site: "https://wsjcpp.org"
@@ -28,10 +28,11 @@ dependencies:
     installation-dir: "./src.wsjcpp/wsjcpp_core"
     installation-datetime: "Wed, 30 Sep 2020 20:32:36 GMT"
   - name: "wsjcpp-yaml"
-    version: "v0.1.5"
+    version: "v0.1.6"
     url: "https://github.com/wsjcpp/wsjcpp-yaml:master"
     origin: "https://github.com/"
     installation-dir: "./src.wsjcpp/wsjcpp_yaml"
+    installation-datetime: "Sat, 08 Jan 2022 15:37:23 GMT"
   - name: "wsjcpp-hashes"
     version: "v0.1.4"
     url: "https://github.com/wsjcpp/wsjcpp-hashes:master"
@@ -159,7 +160,7 @@ unit-tests:
       description: "Test for read package"
 resources:
   - filepath: "./build_simple.sh"
-    filesize: 77
-    pack-as: "binary"
-    modified: 1600401759
-    sha1: ""
+    filesize: 513
+    pack-as: "text"
+    modified: 1700241876
+    sha1: "a47ffad305efcc18bf8886c547fc11907ded2b0f"

@@ -24,14 +24,14 @@ int ArgumentProcessorChange::exec(const std::vector<std::string> &vRoutes, const
 // ---------------------------------------------------------------------
 // ArgumentProcessorChangeVersion
 
-ArgumentProcessorChangeVersion::ArgumentProcessorChangeVersion() 
+ArgumentProcessorChangeVersion::ArgumentProcessorChangeVersion()
 : WsjcppArgumentProcessor({"version", "ver"}, "Change version of current wsjcpp-package", "Change version of current wsjcpp-package") {
 }
 
 // ---------------------------------------------------------------------
 
 int ArgumentProcessorChangeVersion::exec(
-    const std::vector<std::string> &vRoutes, 
+    const std::vector<std::string> &vRoutes,
     const std::vector<std::string> &vSubParams
 ) {
 
@@ -59,14 +59,14 @@ int ArgumentProcessorChangeVersion::exec(
 // ---------------------------------------------------------------------
 // ArgumentProcessorChangeVersionFile
 
-ArgumentProcessorChangeVersionFile::ArgumentProcessorChangeVersionFile() 
+ArgumentProcessorChangeVersionFile::ArgumentProcessorChangeVersionFile()
 : WsjcppArgumentProcessor({"version-file", "ver-file"}, "version-file updating 'on' or 'off'", "version-file updating 'on' or 'off'") {
 }
 
 // ---------------------------------------------------------------------
 
 int ArgumentProcessorChangeVersionFile::exec(
-    const std::vector<std::string> &vRoutes, 
+    const std::vector<std::string> &vRoutes,
     const std::vector<std::string> &vSubParams
 ) {
 
