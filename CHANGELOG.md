@@ -1,9 +1,27 @@
 # ChangeLog
 
 All notable changes to wsjcpp project will be documented in this file.
- 
+
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
+
+## [v0.2.3] - 2025-01-13 (2025 Jan 13)
+
+### Added
+
+- Implemented './build_simple.sh'
+- Prepare subfolders
+- Prepare example-wsjcpp-package-localfs with subfolders
+
+### Fixed
+
+- Fixed if not instaleld package so remove src.wsjcpp/package_name
+- Improve wsjcpp res ls
+- Fix relative paths
+
+### Changed
+
+- Upgraded wsjcpp-yaml to 0.1.6
 
 ## [v0.2.2] - 2021-08-28 (2021 Aug 28)
 
