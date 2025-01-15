@@ -9,7 +9,7 @@ authors:
     email: "mrseakg@gmail.com"
 
 origins:
-  - address: "https://sea-kg.com/wsjcpp-package-registry/"
+  - address: "https://wsjcpp.org/wsjcpp-package-registry/"
     type: "package-registry"
   
 keywords:

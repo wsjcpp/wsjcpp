@@ -313,7 +313,7 @@ bool WsjcppPackageManager::init() {
     std::getline(std::cin, sAuthorEmail);
 
     addAuthor(sAuthorName, sAuthorEmail);
-    addOrigin("https://sea-kg.com/wsjcpp-package-registry/");
+    addOrigin("https://sea5kg.ru/wsjcpp-package-registry/");
 
     m_yamlPackageInfo.getRoot()->createElementArray("keywords");
     m_yamlPackageInfo.getRoot()->getElement("keywords")->appendElementValue("c++", WSJCPP_YAML_QUOTES_DOUBLE);
