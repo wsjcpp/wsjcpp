@@ -292,7 +292,7 @@ bool WsjcppPackageManager::init() {
     m_sCMakeMinimumRequired = "3.0";
     m_yamlPackageInfo.getRoot()->setElementValue("cmake_minimum_required", m_sCMakeMinimumRequired, WSJCPP_YAML_QUOTES_NONE, WSJCPP_YAML_QUOTES_DOUBLE);
 
-    m_sCMakeCxxStandard = "11";
+    m_sCMakeCxxStandard = "17";
     m_yamlPackageInfo.getRoot()->setElementValue("cmake_cxx_standard", m_sCMakeCxxStandard, WSJCPP_YAML_QUOTES_NONE, WSJCPP_YAML_QUOTES_DOUBLE);
 
 
