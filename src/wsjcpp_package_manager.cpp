@@ -288,7 +288,7 @@ bool WsjcppPackageManager::init() {
 
     m_sVersion = "v0.0.1";
     m_yamlPackageInfo.getRoot()->setElementValue("version", m_sVersion, WSJCPP_YAML_QUOTES_NONE, WSJCPP_YAML_QUOTES_DOUBLE);
-    
+
     m_sCMakeMinimumRequired = "3.0";
     m_yamlPackageInfo.getRoot()->setElementValue("cmake_minimum_required", m_sCMakeMinimumRequired, WSJCPP_YAML_QUOTES_NONE, WSJCPP_YAML_QUOTES_DOUBLE);
 
@@ -297,7 +297,7 @@ bool WsjcppPackageManager::init() {
 
 
     std::cout << "Source Package Name: " << m_sName << std::endl;
-    std::cout << "Version: " << m_sVersion << std::endl;
+    std::cout << "Version: " << m_sVersion << " (Hint: in future you can easy change this version by use a command line, for example: 'wsjcpp ch ver v0.0.2')" << std::endl;
 
     std::cout << "Description: ";
     std::getline(std::cin, m_sDescription);
