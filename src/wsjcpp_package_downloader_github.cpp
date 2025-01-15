@@ -60,7 +60,6 @@ bool WsjcppPackageDownloaderGithub::downloadToCache(
         if (!WsjcppPackageDownloaderBase::prepareCacheSubdirForFile(sCacheDir, src.getSourceFile(), sError)) {
             return false;
         }
-        
 
         std::string sDownloadedWsjCppSourceFrom = sWsjcppBaseUrl + "/" + src.getSourceFile();
         std::string sDownloadedWsjCppSourceTo = sCacheDir + "/" + src.getSourceFile();
@@ -79,6 +78,10 @@ bool WsjcppPackageDownloaderGithub::downloadToCache(
     }
     pkg.save();
 
+    // temporary fix for init package
+    if (!WsjcppCore::dirExists("./src.wsjcpp/")) {
+        WsjcppCore::makeDir("./src.wsjcpp/");
+    }
     std::string sInstallationDir = "./src.wsjcpp/" + WsjcppPackageDownloaderBase::prepareCacheSubFolderName(pkg.getName());
 
     // WsjcppPackageManagerDependence dep;

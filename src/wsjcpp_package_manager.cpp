@@ -1181,7 +1181,7 @@ bool WsjcppPackageManager::installFromCache(
             std::string sFileFrom = sCacheDir + "/" + src.getSourceFile();
             std::string sFileTo = sInstallationDir + "/" + src.getTargetFile();
             std::string sDir = sFileTo.substr(0, sFileTo.length() - WsjcppCore::extractFilename(sFileTo).length());
-            WsjcppLog::err(TAG, "sDir = '" + sDir + "'");
+            // WsjcppLog::err(TAG, "sDir = '" + sDir + "'");
             if (!this->makeDirPath(sDir)) {
                 sError = "Could not create directory '" + sDir + "'";
                 WsjcppCore::recoursiveRemoveDir(sInstallationDir);
@@ -1193,7 +1193,7 @@ bool WsjcppPackageManager::installFromCache(
                 return false;
             }
         }
-        
+
         // TODO install all dependencies
         // TODO update src.wsjcpp/
         return true;
