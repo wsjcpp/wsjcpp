@@ -1,13 +1,40 @@
+/*
+MIT License
+
+Copyright (c) 2019-2024 Evgenii Sopov
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+Official Source Code: https://github.com/wsjcpp/wsjcpp
+*/
+
 #include "argument_processor_basic.h"
 #include <wsjcpp_package_manager.h>
 #include <wsjcpp_core.h>
 
-ArgumentProcessorInfo::ArgumentProcessorInfo() 
-: WsjcppArgumentProcessor({"info"}, "Information about package", "Information about package") {
-      
-}
-
 // ---------------------------------------------------------------------
+// ArgumentProcessorInfo
+
+ArgumentProcessorInfo::ArgumentProcessorInfo()
+: WsjcppArgumentProcessor({"info"}, "Information about package", "Information about package") {
+
+}
 
 int ArgumentProcessorInfo::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     WsjcppPackageManager pkg(".");
@@ -16,7 +43,7 @@ int ArgumentProcessorInfo::exec(const std::vector<std::string> &vRoutes, const s
         return -1;
     }
 
-    std::cout << std::endl 
+    std::cout << std::endl
         << "===== begin: wsjcpp info =====" << std::endl
         << "Name: " << pkg.getName() << std::endl
         << "Version: " << pkg.getVersion() << std::endl
@@ -45,25 +72,24 @@ int ArgumentProcessorInfo::exec(const std::vector<std::string> &vRoutes, const s
             std::cout << " - " << source.getSourceFile() << " -> " << source.getTargetFile() << "[" << source.getType() << "]" << std::endl;
         }
     }
-    
+
     std::vector<WsjcppPackageManagerAuthor> vAuthors = pkg.getListOfAuthors();
-    if (vAuthors.size() > 0) { 
+    if (vAuthors.size() > 0) {
         std::cout << std::endl << "Authors: " << std::endl;
         for (unsigned int i = 0; i < vAuthors.size(); i++) {
             WsjcppPackageManagerAuthor author = vAuthors[i];
             std::cout << " - " << author.getName() << " <" << author.getEmail() << ">" << std::endl;
         }
     }
-    
+
     std::vector<WsjcppPackageManagerDependence> vDeps = pkg.getListOfDependencies();
-    if (vDeps.size() > 0) { 
+    if (vDeps.size() > 0) {
         std::cout << std::endl << "Dependencies: " << std::endl;
         for (unsigned int i = 0; i < vDeps.size(); i++) {
             WsjcppPackageManagerDependence dep = vDeps[i];
             std::cout << " - " << dep.getName() << ":" << dep.getVersion() << std::endl;
         }
     }
-    
 
     std::cout << "===== end: wsjcpp info =====" << std::endl
         << std::endl;
@@ -71,13 +97,12 @@ int ArgumentProcessorInfo::exec(const std::vector<std::string> &vRoutes, const s
 }
 
 // ---------------------------------------------------------------------
+// ArgumentProcessorInit
 
-ArgumentProcessorInit::ArgumentProcessorInit() 
+ArgumentProcessorInit::ArgumentProcessorInit()
 : WsjcppArgumentProcessor({"init"}, "Init package in current directory", "Init package in current directory") {
-      
-}
 
-// ---------------------------------------------------------------------
+}
 
 int ArgumentProcessorInit::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
 
@@ -111,7 +136,7 @@ int ArgumentProcessorInit::exec(const std::vector<std::string> &vRoutes, const s
 
     std::string sMainCpp = sPath + "/src/main.cpp";
     if (!WsjcppCore::fileExists(sMainCpp)) {
-        WsjcppCore::writeFile(sMainCpp, 
+        WsjcppCore::writeFile(sMainCpp,
             "#include <string.h>\n"
             "#include <iostream>\n"
             "#include <algorithm>\n"
@@ -126,7 +151,9 @@ int ArgumentProcessorInit::exec(const std::vector<std::string> &vRoutes, const s
             "    }\n"
             "    WsjcppLog::setPrefixLogFile(\"wsjcpp\");\n"
             "    WsjcppLog::setLogDirectory(\".logs\");\n"
+            "\n"
             "    // TODO your code here\n"
+            "\n"
             "    return 0;\n"
             "}\n"
         );
@@ -172,13 +199,12 @@ int ArgumentProcessorInit::exec(const std::vector<std::string> &vRoutes, const s
 
 
 // ---------------------------------------------------------------------
+// ArgumentProcessorClean
 
-ArgumentProcessorClean::ArgumentProcessorClean() 
+ArgumentProcessorClean::ArgumentProcessorClean()
 : WsjcppArgumentProcessor({"clean"}, "Clean all packages and files for wsjcpp", "Clean all packages and files for wsjcpp") {
-      
-}
 
-// ---------------------------------------------------------------------
+}
 
 int ArgumentProcessorClean::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     std::vector<std::string> vRemoveFiles;
@@ -206,7 +232,7 @@ int ArgumentProcessorClean::exec(const std::vector<std::string> &vRoutes, const 
             }
         }
     }
-    
+
     while (vRemoveFiles.size() > 0) {
         std::string sFileName = vRemoveFiles.back();
         vRemoveFiles.pop_back();
@@ -238,12 +264,10 @@ int ArgumentProcessorClean::exec(const std::vector<std::string> &vRoutes, const 
 // ---------------------------------------------------------------------
 // ArgumentProcessorVersion
 
-ArgumentProcessorVersion::ArgumentProcessorVersion() 
+ArgumentProcessorVersion::ArgumentProcessorVersion()
 : WsjcppArgumentProcessor({"version"}, "Current version of wsjcpp", "Current version of wsjcpp") {
-      
-}
 
-// ---------------------------------------------------------------------
+}
 
 int ArgumentProcessorVersion::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     // TODO move to default arguments
@@ -257,10 +281,8 @@ int ArgumentProcessorVersion::exec(const std::vector<std::string> &vRoutes, cons
 
 ArgumentProcessorVerify::ArgumentProcessorVerify() 
 : WsjcppArgumentProcessor({"verify"}, "Verify current package", "Verify current package") {
-      
-}
 
-// ---------------------------------------------------------------------
+}
 
 int ArgumentProcessorVerify::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
     WsjcppPackageManager pkg(".");
@@ -268,12 +290,10 @@ int ArgumentProcessorVerify::exec(const std::vector<std::string> &vRoutes, const
         WsjcppLog::err(TAG, "Could not load package info from current directory");
         return -1;
     }
-    
+
     if (!pkg.verify()) {
         return -1;
     }
-    
+
     return 0;
 }
-
-// ---------------------------------------------------------------------
