@@ -48,7 +48,7 @@ authors:
     email: "mrseakg@gmail.com" # add validate email format
 
 origins:
-  - address: "https://sea-kg.com/wsjcpp-package-registry/"
+  - address: "https://wsjcpp.org/wsjcpp-package-registry/"
     type: package-registry
   - address: "file:///usr/share/wsjcpp-package-registry"
     type: local-file-system # must be in global ~/.wsjcpp/config.yml

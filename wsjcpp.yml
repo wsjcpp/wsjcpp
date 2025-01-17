@@ -1,8 +1,8 @@
 wsjcpp_version: v0.2.2
 cmake_minimum_required: 3.0
-cmake_cxx_standard: 11
+cmake_cxx_standard: 17
 name: wsjcpp
-version: v0.2.3
+version: v0.2.4
 description: C++ Source Package Manager
 issues: https://github.com/wsjcpp/wsjcpp/issues # TODO add validate
 # web-site: "https://wsjcpp.org"
@@ -60,11 +60,11 @@ auto-generated-files:
 authors:
   - name: Evgenii Sopov
     email: mrseakg@gmail.com
-    web-site: "https://sea-kg.com"
+    web-site: "https://sea5kg.ru"
   - name: Danil Dudkin
     email: shikamaru740@gmail.com
 origins:
-  - address: "https://sea-kg.com/wsjcpp-package-registry/"
+  - address: "https://wsjcpp.org/wsjcpp-package-registry/"
     type: package-registry
   - address: "file:///usr/share/wsjcpp-package-registry"
     type: local-file-system # must be in global ~/.wsjcpp/config.yml
@@ -164,3 +164,4 @@ resources:
     pack-as: "text"
     modified: 1700241876
     sha1: "a47ffad305efcc18bf8886c547fc11907ded2b0f"
+
