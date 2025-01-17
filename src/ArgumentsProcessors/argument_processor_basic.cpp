@@ -127,6 +127,31 @@ int ArgumentProcessorInit::exec(const std::vector<std::string> &vRoutes, const s
 
     if (!WsjcppCore::fileExists(sBuildSimplaShPath)) {
         WsjcppCore::writeFile(sBuildSimplaShPath, pkg.getSampleForBuildSimpleSh());
+        WsjcppFilePermissions perm(0x775);
+        if (!WsjcppCore::setFilePermissions(sBuildSimplaShPath, perm, sError)) {
+            WsjcppLog::err(TAG, "Could not set permissions for file '" + sBuildSimplaShPath + "'");
+        }
+    }
+
+    // TODO from resources
+    std::string sGitignorePath = sPath + "/.gitignore";
+    if (!WsjcppCore::fileExists(sGitignorePath)) {
+        std::string sGitignore =
+            "tmp/*\n"
+            ".vscode/*\n"
+            ".logs/*\n"
+            ".wsjcpp/*\n"
+            "\n"
+            "# Vim temp files\n"
+            "*.swp\n"
+            "\n"
+            "# Compiled Object files\n"
+            "*.slo\n"
+            "*.lo\n"
+            "*.o\n"
+            "*.obj\n"
+        ;
+        WsjcppCore::writeFile(sGitignorePath, sGitignore);
     }
 
     std::string sSrcPath = sPath + "/src";
