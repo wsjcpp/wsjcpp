@@ -100,7 +100,7 @@ required-pkg-config:
     std::vector<WsjcppPackageManagerOrigin> vOrigins = pkg.getListOfOrigins();
     compare("vOrigins size", vOrigins.size(), 2);
     if (vOrigins.size() == 2) {
-        compare("origins_0_address", vOrigins[0].getAddress(), "https://sea-kg.com/wsjcpp-package-registry/");
+        compare("origins_0_address", vOrigins[0].getAddress(), "https://wsjcpp.org/wsjcpp-package-registry/");
         compare("origins_0_type", vOrigins[0].getType(), "package-registry");
         compare("origins_1_address", vOrigins[1].getAddress(), "file:///usr/share/wsjcpp-package-registry");
         compare("origins_1_type", vOrigins[1].getType(), "local-file-system");

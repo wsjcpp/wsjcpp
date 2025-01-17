@@ -73,7 +73,7 @@ bool WsjcppPackageDownloaderLocalFs::downloadToCache(
 
         std::string sWsjCppSourceFrom = sDirPath + "/" + src.getSourceFile();
         std::string sWsjCppSourceTo = sCacheDir + "/" + src.getSourceFile();
-        
+
         std::cout
             << "    Copy file from '" << sWsjCppSourceFrom << "'" << " to '" << sWsjCppSourceTo << "'."
             << std::endl;
@@ -82,7 +82,6 @@ bool WsjcppPackageDownloaderLocalFs::downloadToCache(
             WsjcppCore::removeFile(sWsjCppSourceTo);
         }
 
-        
         std::string sDir = sWsjCppSourceTo.substr(0, sWsjCppSourceTo.length() - WsjcppCore::extractFilename(sWsjCppSourceTo).length());
         std::cout << "sDir = " << sDir << std::endl;
         if (!WsjcppCore::dirExists(sDir)) {
@@ -96,7 +95,7 @@ bool WsjcppPackageDownloaderLocalFs::downloadToCache(
             sError = "Could not copy " + sWsjCppSourceFrom;
             return false;
         } else {
-            std::cout  
+            std::cout
                 << "    Completed." << std::endl;
         }
 

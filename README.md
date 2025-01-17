@@ -43,7 +43,6 @@ $ sudo apt-get install wsjcpp
 $ sudo apt install cmake make g++ pkg-config libcurl4-openssl-dev git-core
 $ git clone https://github.com/wsjcpp/wsjcpp /tmp/wsjcpp.git
 $ cd /tmp/wsjcpp.git
-$ ./build_simple.sh
 $ sudo cp -r /tmp/wsjcpp.git /bin/wsjcpp
 ```
 
@@ -58,8 +57,6 @@ $ sudo cp -r /tmp/wsjcpp.git /bin/wsjcpp
 Inside with your folder project
 ```
 $ wsjcpp init .
-$ chmod +x build_simple.sh
-$ chmod +x unit-tests.wsjcpp/build_simple.sh
 ```
 
 If you already have a project and want integrate to you project please look here: TODO

@@ -5,6 +5,23 @@ All notable changes to wsjcpp project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [v0.2.4] - 2025-01-18 (2025 Jan 18)
+
+### Added
+
+- Added set permissions for build_simple.sh on init
+- Added temporary fix for init package
+- Added hint about change version on init new package
+- Added license to files
+
+### Fixed
+
+- Fix urls
+
+### Changed
+
+- Change minimal version fo c++ from 11 to 17 (it's need for wsjcpp-core)
+
 ## [v0.2.3] - 2025-01-13 (2025 Jan 13)
 
 ### Added
