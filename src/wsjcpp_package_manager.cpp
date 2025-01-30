@@ -2791,8 +2791,20 @@ bool WsjcppPackageManager::makeDirPath(const std::string &sDirPath) {
         return true;
     }
     std::cout << "Create a directory " << sDirPath << std::endl;
-    if (!WsjcppCore::makeDir(sDirPath)) {
-        return false;
+    // TODO
+    std::vector<std::string> vSubDirs = WsjcppCore::split(sDirPath, "/");
+    std::string sTargetDir = "/" + vSubDirs[0]; // TODO only for linux
+    for (int i = 1; i < vSubDirs.size(); i++) {
+        if (vSubDirs[i] == "") {
+            continue;
+        }
+        sTargetDir += "/" + vSubDirs[i];
+        if (WsjcppCore::dirExists(sTargetDir)) {
+            continue;
+        }
+        if (!WsjcppCore::makeDir(sTargetDir)) {
+            return false;
+        }
     }
     return WsjcppCore::dirExists(sDirPath);
 }
