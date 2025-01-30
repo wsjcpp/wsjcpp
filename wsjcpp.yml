@@ -2,7 +2,7 @@ wsjcpp_version: v0.2.2
 cmake_minimum_required: 3.0
 cmake_cxx_standard: 17
 name: wsjcpp
-version: v0.2.5
+version: v0.2.6
 description: C++ Source Package Manager
 issues: https://github.com/wsjcpp/wsjcpp/issues # TODO add validate
 # web-site: "https://wsjcpp.org"
