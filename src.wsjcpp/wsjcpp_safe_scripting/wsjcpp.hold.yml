@@ -1,5 +1,5 @@
 name: "wsjcpp-safe-scripting"
-version: "v0.1.0"
+version: v0.1.1
 cmake_minimum_required: "3.0"
 cmake_cxx_standard: "11"
 description: "C++ Safe Scripting"
@@ -9,9 +9,9 @@ authors:
     email: "mrseakg@gmail.com"
 
 origins:
-  - address: "https://wsjcpp.org/wsjcpp-package-registry/"
+  - address: "https://sea-kg.com/wsjcpp-package-registry/"
     type: "package-registry"
-  
+
 keywords:
   - "c++"
   - "script"
@@ -20,7 +20,7 @@ keywords:
 
 dependencies:
   - name: "wsjcpp-core"
-    version: "v0.1.0"
+    version: "v0.2.1"
     url: "https://github.com/wsjcpp/wsjcpp-core:master"
     origin: "https://github.com/"
     installation-dir: "./src.wsjcpp/wsjcpp_core"
@@ -29,12 +29,15 @@ distribution:
   - source-file: "src/wsjcpp_safe_scripting.h"
     target-file: "wsjcpp_safe_scripting.h"
     type: "source-code"
+    sha1: "c6b524896b79748e54d1cc3fa7c6b65449615b06"
   - source-file: "src/wsjcpp_safe_scripting.cpp"
     target-file: "wsjcpp_safe_scripting.cpp"
     type: "source-code"
+    sha1: "b47096b329020f749d3a0d497883673fb35de485"
   - source-file: "scripts.wsjcpp/generate.WsjcppSafeScriptingProc"
     target-file: "generate.WsjcppSafeScriptingProc"
     type: "safe-scripting-generate"
+    sha1: "ab9c999df1800f8ad16a6481b0362f104091267c"
 
 unit-tests:
   cases:
@@ -44,3 +47,4 @@ unit-tests:
       description: "Test concat"
     - name: "ProcedureSetValue"
       description: "Test set value"
+
