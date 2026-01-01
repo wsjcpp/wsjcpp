@@ -28,6 +28,5 @@ distribution:
   - source-file: src/wsjcpp_yaml.h
     target-file: wsjcpp_yaml.h
     type: "source-code"
-
     sha1: "566de8251d67e46aad480809d06320c562a09ef5"
 
