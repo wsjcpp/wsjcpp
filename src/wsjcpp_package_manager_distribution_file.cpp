@@ -63,25 +63,25 @@ WsjcppYamlNode *WsjcppPackageManagerDistributionFile::toYAML() {
 
 // ---------------------------------------------------------------------
 
-std::string WsjcppPackageManagerDistributionFile::getSourceFile() {
+std::string WsjcppPackageManagerDistributionFile::getSourceFile() const {
     return m_sSourceFile;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WsjcppPackageManagerDistributionFile::getTargetFile() {
+std::string WsjcppPackageManagerDistributionFile::getTargetFile() const {
     return m_sTargetFile;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WsjcppPackageManagerDistributionFile::getSha1() {
+std::string WsjcppPackageManagerDistributionFile::getSha1() const {
     return m_sSha1;
 }
 
 // ---------------------------------------------------------------------
 
-std::string WsjcppPackageManagerDistributionFile::getType() {
+std::string WsjcppPackageManagerDistributionFile::getType() const {
     return m_sType;
 }
 

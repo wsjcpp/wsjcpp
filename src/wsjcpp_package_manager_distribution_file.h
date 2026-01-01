@@ -13,10 +13,10 @@ class WsjcppPackageManagerDistributionFile {
         bool fromYAML(WsjcppYamlNode *pYamlDistributionFile, bool bHolded);
         WsjcppYamlNode *toYAML();
 
-        std::string getSourceFile();
-        std::string getTargetFile();
-        std::string getSha1();
-        std::string getType();
+        std::string getSourceFile() const;
+        std::string getTargetFile() const;
+        std::string getSha1() const;
+        std::string getType() const;
 
         void setSourceFile(const std::string &sSourceFile);
         void setTargetFile(const std::string &sTargetFile);
