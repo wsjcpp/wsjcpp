@@ -24,7 +24,7 @@ class WsjcppPackageManagerOrigin {
 
         void setAddress(const std::string &sAddress);
         void setType(const std::string &sType);
-        
+
     private:
         std::string TAG;
         std::string m_sAddress;
@@ -87,7 +87,7 @@ class WsjcppPackageManager {
         bool addSourceFile(const std::string &sSourceFile, const std::string &sTargetFile, const std::string &sType);
         bool removeSourceFile(const std::string &sSourceFile);
         bool updateSourceFile(const std::string &sSourceFile, bool bAutoUpdate);
-        
+
         // unit-tests
         bool createUnitTest(const std::string &sUnitTestName, const std::string &sUnitTestDescription);
         bool deleteUnitTest(const std::string &sUnitTestName);
@@ -195,7 +195,7 @@ class WsjcppPackageManager {
 
         bool makeDirPath(const std::string &sDirPath);
 
-        std::string m_sDir;
+        std::string m_sRootDir;
         bool m_bHolded;
         std::string m_sParentDir;
         std::string m_sYamlFilename;

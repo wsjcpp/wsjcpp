@@ -216,18 +216,18 @@ void WsjcppPackageManagerUnitTest::setEnabled(bool bEnabled) {
 WsjcppPackageManager::WsjcppPackageManager(const std::string &sDir) {
     TAG = "WsjcppPackageManager";
     if (sDir.length() > 0 && sDir[0] != '/') { // if not absolute path
-        m_sDir = WsjcppCore::getCurrentDirectory() + "/" + sDir;
+        m_sRootDir = WsjcppCore::getCurrentDirectory() + "/" + sDir;
     } else {
-        m_sDir = sDir;
+        m_sRootDir = sDir;
     }
-    m_sDir = WsjcppCore::doNormalizePath(m_sDir);
-    
+    m_sRootDir = WsjcppCore::doNormalizePath(m_sRootDir);
+
 
     m_sDirnameResources = "src-resources.wsjcpp";
-    m_sDirResources = WsjcppCore::doNormalizePath(m_sDir + "/" + m_sDirnameResources);
-    m_sDirWithSources = WsjcppCore::doNormalizePath(m_sDir + "/src.wsjcpp");
+    m_sDirResources = WsjcppCore::doNormalizePath(m_sRootDir + "/" + m_sDirnameResources);
+    m_sDirWithSources = WsjcppCore::doNormalizePath(m_sRootDir + "/src.wsjcpp");
     // TODO m_sGithubPrefix = "git@";  // try clone project to cache directory
-    
+
     m_sYamlFilename = "wsjcpp.yml";
     m_sWsjcppCurrentVersion = std::string(WSJCPP_APP_VERSION);
     m_sWsjcppVersion = m_sWsjcppCurrentVersion;
@@ -244,9 +244,9 @@ WsjcppPackageManager::WsjcppPackageManager(const std::string &sDir) {
 
 // ---------------------------------------------------------------------
 
-WsjcppPackageManager::WsjcppPackageManager(const std::string &sDir, const std::string &sParentDir, bool bHolded) 
+WsjcppPackageManager::WsjcppPackageManager(const std::string &sDir, const std::string &sParentDir, bool bHolded)
 : WsjcppPackageManager(sDir) {
-    m_sDirWithSources = WsjcppCore::doNormalizePath(m_sDir + "/src.wsjcpp");
+    m_sDirWithSources = WsjcppCore::doNormalizePath(m_sRootDir + "/src.wsjcpp");
     m_sYamlFilename = "wsjcpp.hold.yml";
     m_bHolded = true; // must be detect by wsjcpp.hold.yml
     m_bHasDocker = false;
@@ -262,7 +262,7 @@ WsjcppPackageManager::~WsjcppPackageManager() {
 // ---------------------------------------------------------------------
 
 std::string WsjcppPackageManager::getDir() const {
-    return m_sDir;
+    return m_sRootDir;
 }
 
 // ---------------------------------------------------------------------
@@ -274,7 +274,7 @@ bool WsjcppPackageManager::isHolded() const {
 // ---------------------------------------------------------------------
 
 bool WsjcppPackageManager::init() {
-    std::string sCurrentDirectory = WsjcppCore::getCurrentDirectory() + "/" + m_sDir;
+    std::string sCurrentDirectory = WsjcppCore::getCurrentDirectory() + "/" + m_sRootDir;
     sCurrentDirectory = WsjcppCore::doNormalizePath(sCurrentDirectory);
     if (sCurrentDirectory[sCurrentDirectory.length()-1] == '/') {
         sCurrentDirectory = sCurrentDirectory.substr(0, sCurrentDirectory.size()-1);
@@ -343,10 +343,10 @@ bool WsjcppPackageManager::save(/*std::string &sError*/) { // TODO uncomment sEr
 // ---------------------------------------------------------------------
 
 bool WsjcppPackageManager::load(/*std::string &sError*/) { // TODO uncomment sError
-    m_sYamlFullpath = WsjcppCore::doNormalizePath(m_sDir + "/" + m_sYamlFilename);
+    m_sYamlFullpath = WsjcppCore::doNormalizePath(m_sRootDir + "/" + m_sYamlFilename);
     if (!WsjcppCore::fileExists(m_sYamlFullpath)) {
         // sError = "File '" + m_sYamlFullpath + "' did not found";
-        std::cout << "ERROR: '" << m_sYamlFullpath << "' did not found" << std::endl;
+        std::cout << "ERROR(load): '" << m_sYamlFullpath << "' did not found" << std::endl;
         return false;
     }
     std::string sError;
@@ -541,9 +541,9 @@ bool WsjcppPackageManager::updateSourceFile(const std::string &sSourceFile, bool
         WsjcppLog::err(TAG, "wsjcpp is holded");
         return false;
     }
-    std::string sFilePath = m_sDir + "/" + sSourceFile;
+    std::string sFilePath = m_sRootDir + "/" + sSourceFile;
     if (!WsjcppCore::fileExists(sFilePath)) {
-        WsjcppLog::err(TAG, "'" + sSourceFile + "' file does not exists in " + m_sDir);
+        WsjcppLog::err(TAG, "'" + sSourceFile + "' file does not exists in " + m_sRootDir);
         return false;
     }
 
@@ -624,7 +624,7 @@ bool WsjcppPackageManager::createUnitTest(const std::string &sUnitTestName, cons
     }
 
     // TODO redesign WsjcppCore::makeDirPath
-    std::string sUnitTestsFolder = WsjcppCore::doNormalizePath(m_sDir + "/unit-tests.wsjcpp");
+    std::string sUnitTestsFolder = WsjcppCore::doNormalizePath(m_sRootDir + "/unit-tests.wsjcpp");
     if (!WsjcppCore::dirExists(sUnitTestsFolder)) {
         if (!WsjcppCore::makeDir(sUnitTestsFolder)) {
             WsjcppLog::err(TAG, "Could not create '" + sUnitTestsFolder + "'");
@@ -672,8 +672,8 @@ bool WsjcppPackageManager::createUnitTest(const std::string &sUnitTestName, cons
     }
 
     int nResult = scriptContext.exec(
-        m_sDir, 
-        sWsjcppUnitTestScriptFilePath, 
+        m_sRootDir,
+        sWsjcppUnitTestScriptFilePath,
         sScriptContent,
         vScriptArgs
     );
@@ -718,7 +718,7 @@ bool WsjcppPackageManager::deleteUnitTest(const std::string &sUnitTestName) {
     for (int i = 0; i < nLength; i++) {
         if (pItem->getElement(i)->getElement("name")->getValue() == sName) {
             std::string sBaseName = this->generateFilenameForUnitTest(sUnitTestName);
-            std::string sFileSource = WsjcppCore::doNormalizePath(m_sDir + "/unit-tests.wsjcpp/src/" + sBaseName + ".cpp");
+            std::string sFileSource = WsjcppCore::doNormalizePath(m_sRootDir + "/unit-tests.wsjcpp/src/" + sBaseName + ".cpp");
             if (WsjcppCore::fileExists(sFileSource)) {
                 WsjcppCore::removeFile(sFileSource);
             }
@@ -837,22 +837,95 @@ bool WsjcppPackageManager::verify() {
     std::vector<std::string> m_vVerified;
 
     // HERE verify current package
-    
+    // TODO find root dir of roto package with wsjcpp.yaml
+    bool ret = true;
     for (auto it = m_vDependencies.begin(); it != m_vDependencies.end(); ++it) {
+        std::string sPackageName = it->getName();
+        std::string sPackageInstallationDir = it->getInstallationDir();
+
         if (m_bHolded) {
-            WsjcppPackageManager m(m_sParentDir + "/" + it->getName(), m_sParentDir, true);
+            std::string sPath = WsjcppCore::doNormalizePath(m_sRootDir + "/../../" + sPackageInstallationDir);
+            // std::cout << "Try load (holded) " << sPath << std::endl;
+            WsjcppPackageManager m(sPath, m_sParentDir, true);
             if (m.load()) {
-                m.verify();
+                if (!m.verify()) {
+                    std::cerr << "ERROR: Unverified package (holded): " << sPath << std::endl;
+                    ret = false;
+                    continue;
+                }
+                for (const auto& df : m.getListOfDistributionFiles()) {
+                    std::string sFilename = WsjcppCore::doNormalizePath(sPath + "/" + df.getTargetFile());
+                    if (!WsjcppCore::fileExists(sFilename)) {
+                        std::cerr << "ERROR: Could not find file: " << sFilename << std::endl;
+                        // sFilesHasChanges += " - missed: " + sFilename + " (with sha1:'" + src.getSha1() + "')\n";
+                        ret = false;
+                        continue;
+                    }
+
+                    // TODO redesign to WsjcppHashes::getSha1ByFile(sFilename);
+                    std::string sContent = "";
+                    if (!WsjcppCore::readTextFile(sFilename, sContent)) {
+                        std::cerr << "ERROR: Could not read file '" + sFilename + "'";
+                        ret = false;
+                        continue;
+                    }
+
+                    std::string sSha1 = WsjcppHashes::sha1_calc_hex(sContent);
+                    if (sSha1 != df.getSha1()) {
+                        std::cerr << "ERROR: wrong sha1 for '" + sFilename + "' (expected sha1 '" + sSha1 + "', but got '" + df.getSha1() + "')\n";
+                        ret = false;
+                        continue;
+                    }
+                }
+                std::cout << "Holded package verified: " << sPackageName << std::endl;
+                m_vVerified.push_back(sPackageName);
+            } else {
+                std::cerr << "ERROR: Could not load package (holded): " << sPath << std::endl;
+                ret = false;
             }
         } else {
-            WsjcppPackageManager m(m_sDirWithSources + "/" + it->getName(), m_sDirWithSources, true);
+            std::string sPath = WsjcppCore::doNormalizePath(m_sRootDir + "/" + sPackageInstallationDir);
+            WsjcppPackageManager m(sPath, m_sDirWithSources, true);
             if (m.load()) {
-                m.verify();
+                for (const auto& df : m.getListOfDistributionFiles()) {
+                    std::string sFilename = WsjcppCore::doNormalizePath(sPath + "/" + df.getTargetFile());
+                    if (!WsjcppCore::fileExists(sFilename)) {
+                        std::cerr << "ERROR: Could not find file: " << sFilename << std::endl;
+                        // sFilesHasChanges += " - missed: " + sFilename + " (with sha1:'" + src.getSha1() + "')\n";
+                        ret = false;
+                        continue;
+                    }
+
+                    // TODO redesign to WsjcppHashes::getSha1ByFile(sFilename);
+                    std::string sContent = "";
+                    if (!WsjcppCore::readTextFile(sFilename, sContent)) {
+                        std::cerr << "ERROR: Could not read file '" + sFilename + "'";
+                        ret = false;
+                        continue;
+                    }
+
+                    std::string sSha1 = WsjcppHashes::sha1_calc_hex(sContent);
+                    if (sSha1 != df.getSha1()) {
+                        std::cerr << "ERROR: wrong sha1 for '" + sFilename + "' (expected sha1 '" + sSha1 + "', but got '" + df.getSha1() + "')\n";
+                        ret = false;
+                        continue;
+                    }
+                }
+
+                if (!m.verify()) {
+                    std::cerr << "ERROR: Could not verify package: " << sPath << std::endl;
+                    ret = false;
+                } else {
+                    std::cout << "Package verified: " << sPackageName << std::endl;
+                    m_vVerified.push_back(sPackageName);
+                }
+            } else {
+                std::cerr << "ERROR: Could not load package: " << sPath << std::endl;
+                ret = false;
             }
         }
-        
     }
-    return true;
+    return ret;
 }
 
 // ---------------------------------------------------------------------
@@ -869,11 +942,11 @@ bool WsjcppPackageManager::install(const std::string &sPackage, std::string &sEr
     }
 
     std::cout << "Search package from " << sPackage << " ..." << std::endl;
-   
+
     std::string sWsjcppBaseUrl = sPackage;
 
     WsjcppPackageManagerDependence dep;
-    if (!m_pDownloaders->downloadToCache(sPackage, m_sDir, dep, sError)) {
+    if (!m_pDownloaders->downloadToCache(sPackage, m_sRootDir, dep, sError)) {
         return false;
     }
 
@@ -899,7 +972,7 @@ bool WsjcppPackageManager::checkInstalledPackage(
     std::string &sPackageUrl,
     std::string &sError
 ) {
-    
+
     // find installed package
     std::string sPackageInstallationDir = "";
     std::vector<WsjcppPackageManagerDependence> deps = getListOfDependencies();
@@ -907,7 +980,7 @@ bool WsjcppPackageManager::checkInstalledPackage(
         WsjcppPackageManagerDependence dep = deps[i];
         if (sPackage == dep.getUrl() || sPackage == dep.getName()) {
             sPackageUrl = dep.getUrl();
-            sPackageInstallationDir = WsjcppCore::doNormalizePath(m_sDir + "/" + dep.getInstallationDir());
+            sPackageInstallationDir = WsjcppCore::doNormalizePath(m_sRootDir + "/" + dep.getInstallationDir());
         }
     }
 
@@ -918,7 +991,7 @@ bool WsjcppPackageManager::checkInstalledPackage(
 
     // prepare old file list for remove before install
     // std::cout << "sPackageInstallationDir = " << sPackageInstallationDir << std::endl;
-    WsjcppPackageManager installedPkg(sPackageInstallationDir, m_sDir, true);
+    WsjcppPackageManager installedPkg(sPackageInstallationDir, m_sRootDir, true);
     if (!installedPkg.load()) {
         sError = "Could not load " + sPackageInstallationDir;
         return false;
@@ -932,7 +1005,7 @@ bool WsjcppPackageManager::checkInstalledPackage(
     for (int i = 0; i < vSources.size(); i++) {
         WsjcppPackageManagerDistributionFile src = vSources[i];
         std::string sFilename = WsjcppCore::doNormalizePath(sPackageInstallationDir + "/" + src.getTargetFile());
-        
+
         vFilesInstalled.push_back(sFilename);
 
         // calculate sha1
@@ -993,7 +1066,7 @@ bool WsjcppPackageManager::reinstall(const std::string &sPackage, std::string &s
 
     // download package to cache
     WsjcppPackageManagerDependence dep;
-    if (!m_pDownloaders->downloadToCache(sPackageUrl, m_sDir, dep, sError)) {
+    if (!m_pDownloaders->downloadToCache(sPackageUrl, m_sRootDir, dep, sError)) {
         return false;
     }
 
@@ -1133,13 +1206,13 @@ bool WsjcppPackageManager::installFromCache(
     const WsjcppPackageManagerDependence &dep,
     std::string &sError
 ) {
-    std::string sInstallationDir = WsjcppCore::doNormalizePath(m_sDir + "/" + dep.getInstallationDir());
+    std::string sInstallationDir = WsjcppCore::doNormalizePath(m_sRootDir + "/" + dep.getInstallationDir());
 
     if (!WsjcppCore::dirExists(sInstallationDir)) {
         WsjcppCore::makeDir(sInstallationDir);
     }
-    
-    std::string sCacheDir = m_sDir + "/.wsjcpp/cache";
+
+    std::string sCacheDir = m_sRootDir + "/.wsjcpp/cache";
     sCacheDir = sCacheDir + "/" + WsjcppPackageDownloaderBase::prepareCacheSubFolderName(sPackageUrl);
     std::string sCacheWsjcppHoldYml = sCacheDir + "/wsjcpp.hold.yml";
     std::string sCacheWsjcppYml = sCacheDir + "/wsjcpp.yml";
@@ -1238,7 +1311,7 @@ void WsjcppPackageManager::recursive_printAuthorsTree(std::vector<WsjcppPackageM
         std::string sInstalledDir = dep.getInstallationDir(); 
 
         if (WsjcppCore::dirExists(dep.getInstallationDir())) {
-            WsjcppPackageManager subpkg(sInstalledDir, m_sDir, true);
+            WsjcppPackageManager subpkg(sInstalledDir, m_sRootDir, true);
             WsjcppLog::info(TAG, "Loading package '" + sInstalledDir + "'");
             if (subpkg.load()) {
                 subpkg.printAuthorsTree();
@@ -1530,7 +1603,7 @@ std::vector<WsjcppPackageManagerSafeScriptingGenerate> WsjcppPackageManager::get
     std::vector<WsjcppPackageManagerDependence> vDeps = this->getListOfDependencies();
     for (int i = 0; i < vDeps.size(); i++) {
         WsjcppPackageManagerDependence dep = vDeps[i];
-        std::string sInstallationDir = WsjcppCore::doNormalizePath(m_sDir + "/" + dep.getInstallationDir());
+        std::string sInstallationDir = WsjcppCore::doNormalizePath(m_sRootDir + "/" + dep.getInstallationDir());
         WsjcppPackageManager pkgHold(sInstallationDir, this->getDir(), true);
         if (!pkgHold.load()) {
             WsjcppLog::err(TAG, "Could not load package from '" + sInstallationDir + "'");
@@ -2066,7 +2139,7 @@ bool WsjcppPackageManager::readFieldRequiredPkgConfig() {
         WsjcppLog::err(TAG, "Missing required field 'required-pkg-config' in '" + m_sYamlFullpath + "'");
         return false;
     }
-    
+
     int nSize = cur.size();
     for (int i = 0; i < nSize; i++) {
         m_sRequiredPkgConfig.push_back(cur[i].valStr());
@@ -2077,7 +2150,7 @@ bool WsjcppPackageManager::readFieldRequiredPkgConfig() {
 // ---------------------------------------------------------------------
 
 void WsjcppPackageManager::removeDependenciesFilesSafe(const WsjcppPackageManagerDependence &dep) {
-    WsjcppPackageManager pkgDep(dep.getInstallationDir(), m_sDir, true);
+    WsjcppPackageManager pkgDep(dep.getInstallationDir(), m_sRootDir, true);
     if (pkgDep.load()) {
         std::vector<WsjcppPackageManagerDistributionFile> vFiles = pkgDep.getListOfDistributionFiles();
         int nRemovedFiles = 0;
@@ -2154,7 +2227,7 @@ bool WsjcppPackageManager::updateAutogeneratedFiles_CMakeListsTXT() {
     for (int iDep = 0; iDep < m_vDependencies.size(); iDep++) {
         WsjcppPackageManagerDependence dep = m_vDependencies[iDep];
         std::string sInstDir = dep.getInstallationDir();
-        WsjcppPackageManager pkg(dep.getInstallationDir(), m_sDir, true);
+        WsjcppPackageManager pkg(dep.getInstallationDir(), m_sRootDir, true);
         if (pkg.load()) {
             sCMakeListsTXT +=
                 "# " + pkg.getName() + ":" + pkg.getVersion() + "\n"
@@ -2233,9 +2306,9 @@ bool WsjcppPackageManager::updateAutogeneratedFiles_VersionFile() {
         return true;
     }
 
-    std::string sFileName = WsjcppCore::doNormalizePath(m_sDir + "/" + m_sVersionFile_Path + "/" + m_sVersionFile_Filename);
+    std::string sFileName = WsjcppCore::doNormalizePath(m_sRootDir + "/" + m_sVersionFile_Path + "/" + m_sVersionFile_Filename);
 
-    // TODO check sub path must be equal m_sDir
+    // TODO check sub path must be equal m_sRootDir
 
     std::regex rxVersion("v(\\d+)\\.(\\d+)\\.(\\d+)");
     std::smatch matches;
@@ -2482,19 +2555,19 @@ bool WsjcppPackageManager::updateAutogeneratedFiles_UnitTests() {
     for (int i = 0; i < m_vDependencies.size(); i++) {
         WsjcppPackageManagerDependence dep = m_vDependencies[i];
         std::string sInstDir = dep.getInstallationDir();
-        WsjcppPackageManager pkg(dep.getInstallationDir(), m_sDir, true);
+        WsjcppPackageManager pkg(dep.getInstallationDir(), m_sRootDir, true);
         if (pkg.load()) {
-            sCMakeListsTXT += 
+            sCMakeListsTXT +=
                 "# " + pkg.getName() + ":" + pkg.getVersion() + "\n"
                 "list (APPEND WSJCPP_INCLUDE_DIRS \""
-                    + WsjcppCore::doNormalizePath("../" + sInstDir + "/") 
+                    + WsjcppCore::doNormalizePath("../" + sInstDir + "/")
                     + "\")\n";
             std::vector<WsjcppPackageManagerDistributionFile> vFiles = pkg.getListOfDistributionFiles();
             for (int i = 0; i < vFiles.size(); i++) {
                 WsjcppPackageManagerDistributionFile file = vFiles[i];
                 if (file.getType() == "source-code" || file.getType() == "unit-tests") {
                     sCMakeListsTXT += "list (APPEND WSJCPP_SOURCES \"${CMAKE_SOURCE_DIR}/"
-                        + WsjcppCore::doNormalizePath("../" + sInstDir + "/" + file.getTargetFile()) 
+                        + WsjcppCore::doNormalizePath("../" + sInstDir + "/" + file.getTargetFile())
                         + "\")\n";
                 }
             }
