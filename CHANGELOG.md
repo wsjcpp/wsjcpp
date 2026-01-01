@@ -5,9 +5,13 @@ All notable changes to wsjcpp project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [v0.2.6] - 2026-01-01 (2026 Jan 1)
 
 - Fixed makeDirPath is not working #117
+- Fixed #120: wsjcpp verify
+- Updated wsjcpp-safe-scripting from v0.1.0 to v0.1.1
+- Fixed get* methods must be const
+- Updated wsjcpp-yaml from v0.1.6 to v0.1.10
 
 ## [v0.2.5] - 2025-01-24 (2026 Jan 24)
 
