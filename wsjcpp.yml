@@ -48,7 +48,7 @@ dependencies:
     url: "https://github.com/wsjcpp/wsjcpp-yaml:master"
     origin: "https://github.com/"
     installation-dir: "./src.wsjcpp/wsjcpp_yaml"
-    installation-datetime: "Thu, 01 Jan 2026 06:25:03 GMT"
+    installation-datetime: "Thu, 01 Jan 2026 07:11:43 GMT"
 
 # build-dependencies:
 
