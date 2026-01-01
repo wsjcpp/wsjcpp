@@ -424,7 +424,7 @@ int WsjcppSafeScriptingContext::exec(
     const std::string &sScriptRootDir,
     const std::string &sScriptFileName, 
     const std::string &sScriptContent, 
-    std::vector<std::string> vArgs
+    std::vector<std::string> vArgs0
 ) {
     m_sScriptRootDir = sScriptRootDir;
     m_sScriptFileName = sScriptFileName;
@@ -432,10 +432,10 @@ int WsjcppSafeScriptingContext::exec(
 
     m_vVariables["rootdir"] = new WsjcppSafeScriptingVariable(m_sScriptRootDir);
     m_vVariables["script_filename"] = new WsjcppSafeScriptingVariable(m_sScriptFileName);
-    for (int i = 0; i < vArgs.size(); i++) {
+    for (int i = 0; i < vArgs0.size(); i++) {
         std::string sArgName = "arg" + std::to_string(i+1);
-        WsjcppLog::info(TAG, sArgName + " = '" + vArgs[i] + "'");
-        m_vVariables[sArgName] = new WsjcppSafeScriptingVariable(vArgs[i]);
+        WsjcppLog::info(TAG, sArgName + " = '" + vArgs0[i] + "'");
+        m_vVariables[sArgName] = new WsjcppSafeScriptingVariable(vArgs0[i]);
     }
     if (!parseScript()) {
         WsjcppLog::err(TAG, "Parse script failed");
@@ -470,7 +470,7 @@ int WsjcppSafeScriptingContext::exec(
                 addVariable(sVarName); // TODO add variable
             }
         } else if (hasProc(sToken)) {
-            std::vector<WsjcppSafeScriptingVariable *> vArgs;
+            std::vector<WsjcppSafeScriptingVariable *> vArgs2;
             std::vector<WsjcppSafeScriptingVariable *> vRuntimeRemoveAfter;
             std::vector<WsjcppSafeScriptingToken *> vTokenArgs;
             for (int n = i+1; n < m_vScriptTokens.size(); n++) {
@@ -484,11 +484,11 @@ int WsjcppSafeScriptingContext::exec(
                 } else if (pToken2->hasString()) {
                     WsjcppSafeScriptingVariable *pVar = addVariable("vartmp_" + WsjcppCore::createUuid());
                     pVar->setValue(sTokenValue2);
-                    vArgs.push_back(pVar);
+                    vArgs2.push_back(pVar);
                     vRuntimeRemoveAfter.push_back(pVar);
                 } else if (hasVariable(sTokenValue2)) {
                     WsjcppSafeScriptingVariable *pVar = getVariable(sTokenValue2);
-                    vArgs.push_back(pVar);
+                    vArgs2.push_back(pVar);
                 } else {
                     WsjcppLog::err(TAG, "Uknown token: " + sTokenValue2);
                     // TODO cleanup 
@@ -496,11 +496,11 @@ int WsjcppSafeScriptingContext::exec(
                 }
             }
             WsjcppSafeScriptingProc *pProcedure = this->getProc(sToken);
-            if (!pProcedure->exec(vArgs)) {
+            if (!pProcedure->exec(vArgs2)) {
                 std::string sDebugInfo = "Procedure: " + sToken + "\n";
                 sDebugInfo += "Arguments: \n";
-                for (int n = 0; n < vArgs.size(); n++) {
-                    sDebugInfo += "   - " + vArgs[n]->getValue() + "\n";
+                for (int n = 0; n < vArgs2.size(); n++) {
+                    sDebugInfo += "   - " + vArgs2[n]->getValue() + "\n";
                 }
                 sDebugInfo += "Tokens info:\n";
                 sDebugInfo += pToken->getContextForLog() + "\n";
