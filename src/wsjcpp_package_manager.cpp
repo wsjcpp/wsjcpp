@@ -488,7 +488,7 @@ bool WsjcppPackageManager::addSourceFile(const std::string &sSourceFile, const s
 
     WsjcppYamlNode *pDist = m_yamlPackageInfo.getRoot()->getElement("distribution");
     WsjcppYamlPlaceInFile pl;
-    WsjcppYamlNode *pItem = new WsjcppYamlNode(pDist, pl, WSJCPP_YAML_NODE_MAP);
+    WsjcppYamlNode *pItem = new WsjcppYamlNode(pDist, &m_yamlPackageInfo, pl, WSJCPP_YAML_NODE_MAP);
     pItem->setElementValue("source-file", sSourceFile, WSJCPP_YAML_QUOTES_NONE, WSJCPP_YAML_QUOTES_DOUBLE);
     pItem->setElementValue("target-file", sTargetFile, WSJCPP_YAML_QUOTES_NONE, WSJCPP_YAML_QUOTES_DOUBLE);
     pItem->setElementValue("type", sType, WSJCPP_YAML_QUOTES_NONE, WSJCPP_YAML_QUOTES_DOUBLE);
@@ -795,7 +795,7 @@ bool WsjcppPackageManager::addOrigin(const std::string &sAddress) {
     
     WsjcppYamlNode *pOrigins = m_yamlPackageInfo.getRoot()->getElement("origins");
     WsjcppYamlPlaceInFile pl;
-    WsjcppYamlNode *pNewItemMap = new WsjcppYamlNode(pOrigins, pl, WSJCPP_YAML_NODE_MAP);
+    WsjcppYamlNode *pNewItemMap = new WsjcppYamlNode(pOrigins, &m_yamlPackageInfo, pl, WSJCPP_YAML_NODE_MAP);
     pNewItemMap->setElementValue("address", sAddress, WSJCPP_YAML_QUOTES_NONE, WSJCPP_YAML_QUOTES_DOUBLE);
     pNewItemMap->setElementValue("type", sOriginType, WSJCPP_YAML_QUOTES_NONE, WSJCPP_YAML_QUOTES_DOUBLE);
     pOrigins->appendElement(pNewItemMap);
@@ -1059,7 +1059,7 @@ void WsjcppPackageManager::addDependency(WsjcppPackageManagerDependence &dep) {
 
     WsjcppYamlNode *pDeps = pRoot->getElement("dependencies");
     WsjcppYamlPlaceInFile pl;
-    WsjcppYamlNode *pItem = new WsjcppYamlNode(pDeps, pl, WSJCPP_YAML_NODE_MAP);
+    WsjcppYamlNode *pItem = new WsjcppYamlNode(pDeps, &m_yamlPackageInfo, pl, WSJCPP_YAML_NODE_MAP);
     // TODO add simplyfy method
     pItem->setElementValue("name", dep.getName(), WSJCPP_YAML_QUOTES_NONE, WSJCPP_YAML_QUOTES_DOUBLE);
     pItem->setElementValue("version", dep.getVersion(), WSJCPP_YAML_QUOTES_NONE, WSJCPP_YAML_QUOTES_DOUBLE);
@@ -1276,7 +1276,7 @@ bool WsjcppPackageManager::addAuthor(const std::string &sName, const std::string
 
     WsjcppYamlNode *pItem = m_yamlPackageInfo.getRoot()->getElement("authors");
     WsjcppYamlPlaceInFile pl;
-    WsjcppYamlNode *pNewItemMap = new WsjcppYamlNode(pItem, pl, WSJCPP_YAML_NODE_MAP);
+    WsjcppYamlNode *pNewItemMap = new WsjcppYamlNode(pItem, &m_yamlPackageInfo, pl, WSJCPP_YAML_NODE_MAP);
     // pNewItem->setName(sName, false);
     // pItem->setElement(sName, pNewItem);
     pNewItemMap->setElementValue("name", sName, WSJCPP_YAML_QUOTES_NONE, WSJCPP_YAML_QUOTES_DOUBLE);
@@ -1341,7 +1341,7 @@ bool WsjcppPackageManager::addResource(const std::string &sFilepath, const std::
     WsjcppYamlNode *pItem = m_yamlPackageInfo.getRoot()->getElement("resources");
 
     WsjcppYamlPlaceInFile pl;
-    WsjcppYamlNode *pNewItemMap = new WsjcppYamlNode(pItem, pl, WSJCPP_YAML_NODE_MAP);
+    WsjcppYamlNode *pNewItemMap = new WsjcppYamlNode(pItem, &m_yamlPackageInfo, pl, WSJCPP_YAML_NODE_MAP);
     pNewItemMap->setElementValue("filepath", resourceFile.getFilepath(), WSJCPP_YAML_QUOTES_NONE, WSJCPP_YAML_QUOTES_DOUBLE);
     // TODO redesign without std::to_string
     pNewItemMap->setElementValue("filesize", std::to_string(resourceFile.getFilesize()), WSJCPP_YAML_QUOTES_NONE, WSJCPP_YAML_QUOTES_NONE);
