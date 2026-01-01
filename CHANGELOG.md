@@ -5,6 +5,14 @@ All notable changes to wsjcpp project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+
+- Fixed makeDirPath is not working #117
+
+## [v0.2.5] - 2025-01-24 (2026 Jan 24)
+
+- Fix crash on macos
+
 ## [v0.2.4] - 2025-01-18 (2025 Jan 18)
 
 ### Added
