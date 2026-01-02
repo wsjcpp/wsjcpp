@@ -6,10 +6,10 @@ build:
 	make
 
 # thirdly called by launchpad
-binary: binary-indep binary-arch
+binary: build binary-indep binary-arch
 
 binary-indep:
-	# nothing to be done
+	echo "nothing to be done"
 
 binary-arch:
 	pwd

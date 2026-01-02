@@ -17,7 +17,7 @@ dists.append({
     "name": "Ubuntu 20.04.6 LTS (focal)",
     "dist_name": "focal",
     "ppa_name_suffix": "ppa-ubuntu-20-04-focal-3",
-    "end": "April 2025",
+    "end": "April 2035",
     "version": "20.04.6 LTS"
 })
 
@@ -30,19 +30,27 @@ dists.append({
 })
 
 dists.append({
-    "name": "Ubuntu 24.04.1 LTS (Noble Numbat)",
+    "name": "Ubuntu 24.04.3 LTS (Noble Numbat)",
     "dist_name": "noble",
     "ppa_name_suffix": "ppa-ubuntu-24-04-noble-1",
-    "end": "June 2029",
-    "version": "24.04.1 LTS"
+    "end": "April 2039",
+    "version": "24.04.3 LTS"
 })
 
 dists.append({
-    "name": "Ubuntu 24.10 (Oracular Oriole)",
-    "dist_name": "oracular",
-    "ppa_name_suffix": "ppa-ubuntu-24-10-oracular-1",
-    "end": "July 2025",
-    "version": "24.10"
+    "name": "Ubuntu 25.04 (Plucky Puffin)",
+    "dist_name": "plucky",
+    "ppa_name_suffix": "ppa-ubuntu-25-04-plucky-3",
+    "end": "January 2026",
+    "version": "25.04"
+})
+
+dists.append({
+    "name": "Ubuntu 25.10 (Questing Quokka)",
+    "dist_name": "questing",
+    "ppa_name_suffix": "ppa-ubuntu-25.10-questing-2",
+    "end": "July 2026",
+    "version": "25.10"
 })
 
 print("Please choose dist name:")
