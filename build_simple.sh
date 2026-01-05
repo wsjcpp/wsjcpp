@@ -15,13 +15,12 @@ check_ret() {
     fi
 }
 
-if [ ! -d tmp ]; then
-    mkdir -p tmp
-fi
+# if [ ! -d tmp ]; then
+#     mkdir -p tmp
+# fi
 
-cd tmp
-cmake ..
+cmake -H. -Btmp/release -DCMAKE_BUILD_TYPE=Release
 check_ret $? "configure"
 
-make
+cmake --build tmp/release --config Release
 check_ret $? "make"
