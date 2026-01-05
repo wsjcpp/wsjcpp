@@ -2,7 +2,7 @@
 #include "argument_processor_resources.h"
 #include <wsjcpp_core.h>
 #include <wsjcpp_package_manager.h>
-#include <wsjcpp_hashes.h>
+#include <wsjcpp_helpers.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <algorithm>
@@ -10,7 +10,7 @@
 // ---------------------------------------------------------------------
 // ArgumentProcessorResources
 
-ArgumentProcessorResources::ArgumentProcessorResources() 
+ArgumentProcessorResources::ArgumentProcessorResources()
 : WsjcppArgumentProcessor({"resources", "res"}, "Pack files to c++ code", "Pack files to c++ code") {
     TAG = "ArgumentProcessorResources";
     // registrySingleArgument("--single", "What exactly do this single param?");

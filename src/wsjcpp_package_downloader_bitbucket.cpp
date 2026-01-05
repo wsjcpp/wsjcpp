@@ -70,7 +70,7 @@ bool WsjcppPackageDownloaderBitbucket::downloadToCache(
         //    return false;
         // }
         // calculate sha1
-        // std::string sSha1 = WsjcppHashes::sha1_calc_hex(sContent);
+        // std::string sSha1 = WsjcppHelpers::sha1_calc_hex(sContent);
         // if (sSha1 != src.getSha1()) {
         //    WsjcppLog::warn(TAG, "Expected sha1 '" + sSha1 + "', but got '" + src.getSha1() + "'");
         // }
