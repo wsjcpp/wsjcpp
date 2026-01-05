@@ -27,12 +27,6 @@ dependencies:
     origin: "https://github.com/"
     installation-dir: "./src.wsjcpp/wsjcpp_core"
     installation-datetime: "Wed, 30 Sep 2020 20:32:36 GMT"
-  - name: "wsjcpp-hashes"
-    version: "v0.1.4"
-    url: "https://github.com/wsjcpp/wsjcpp-hashes:master"
-    origin: "https://github.com/"
-    installation-dir: "./src.wsjcpp/wsjcpp_hashes"
-    installation-datetime: "Sat, 28 Aug 2021 13:05:06 GMT"
   - name: "wsjcpp-safe-scripting"
     version: "v0.1.1"
     url: "https://github.com/wsjcpp/wsjcpp-safe-scripting:master"
@@ -166,8 +160,8 @@ unit-tests:
 
 resources:
   - filepath: "./build_simple.sh"
-    filesize: 513
+    filesize: 592
     pack-as: "text"
-    modified: 1700241876
-    sha1: "a47ffad305efcc18bf8886c547fc11907ded2b0f"
+    modified: 1767591341
+    sha1: "d536d44532d0bf7ad57831586e71f094d5b299d3"
 

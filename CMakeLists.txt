@@ -15,8 +15,12 @@ set(EXECUTABLE_OUTPUT_PATH ${wsjcpp_SOURCE_DIR})
 # include header dirs
 list (APPEND WSJCPP_INCLUDE_DIRS "src")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/app")
+list (APPEND WSJCPP_INCLUDE_DIRS "src/thirdparty")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/ArgumentsProcessors")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/Downloaders")
+
+list (APPEND WSJCPP_SOURCES "src/thirdparty/smallsha1.cpp")
+list (APPEND WSJCPP_SOURCES "src/wsjcpp_helpers.cpp")
 
 list (APPEND WSJCPP_SOURCES "src/wsjcpp_package_manager_author.cpp")
 list (APPEND WSJCPP_SOURCES "src/wsjcpp_package_manager_author.h")

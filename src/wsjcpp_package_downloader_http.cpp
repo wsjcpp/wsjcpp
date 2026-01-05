@@ -1,13 +1,13 @@
 
 #include "wsjcpp_package_downloader_http.h"
 #include <wsjcpp_core.h>
-#include <wsjcpp_hashes.h>
+#include <wsjcpp_helpers.h>
 #include <wsjcpp_package_manager.h>
 
 // ---------------------------------------------------------------------
 // WsjcppPackageDownloaderHttp
 
-WsjcppPackageDownloaderHttp::WsjcppPackageDownloaderHttp() 
+WsjcppPackageDownloaderHttp::WsjcppPackageDownloaderHttp()
  : WsjcppPackageDownloaderBase("http") {
     TAG = "WsjcppPackageDownloaderHttp";
     m_sHttpPrefix = "http://"; // from some http://
