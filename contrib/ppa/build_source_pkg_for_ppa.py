@@ -47,8 +47,8 @@ dists.append({
 
 dists.append({
     "name": "Ubuntu 26.04 (Resolute Raccoon)",
-    "dist_name": "questing",
-    "ppa_name_suffix": "ppa-ubuntu-26.40-resolute-1",
+    "dist_name": "resolute",
+    "ppa_name_suffix": "ppa-ubuntu-26.04-resolute-2",
     "end": "April 2041",
     "version": "26.04"
 })
