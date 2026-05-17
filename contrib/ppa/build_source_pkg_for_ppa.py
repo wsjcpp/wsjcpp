@@ -38,19 +38,19 @@ dists.append({
 })
 
 dists.append({
-    "name": "Ubuntu 25.04 (Plucky Puffin)",
-    "dist_name": "plucky",
-    "ppa_name_suffix": "ppa-ubuntu-25-04-plucky-3",
-    "end": "January 2026",
-    "version": "25.04"
-})
-
-dists.append({
     "name": "Ubuntu 25.10 (Questing Quokka)",
     "dist_name": "questing",
     "ppa_name_suffix": "ppa-ubuntu-25.10-questing-2",
     "end": "July 2026",
     "version": "25.10"
+})
+
+dists.append({
+    "name": "Ubuntu 26.04 (Resolute Raccoon)",
+    "dist_name": "questing",
+    "ppa_name_suffix": "ppa-ubuntu-26.40-resolute-1",
+    "end": "April 2041",
+    "version": "26.04"
 })
 
 print("Please choose dist name:")
