@@ -72,8 +72,8 @@ list (APPEND WSJCPP_SOURCES "${CMAKE_SOURCE_DIR}/../src/wsjcpp_package_downloade
 list (APPEND WSJCPP_SOURCES "${CMAKE_SOURCE_DIR}/../src/wsjcpp_package_downloader_localfs.h")
 
 # resources.wsjcpp
-list (APPEND WSJCPP_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/../src-resources.wsjcpp/")
-list (APPEND WSJCPP_SOURCES "${CMAKE_SOURCE_DIR}/../src-resources.wsjcpp/__build_simple_sh_path66c8dc.cpp")
+list (APPEND WSJCPP_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/../src/resources.wsjcpp/")
+list (APPEND WSJCPP_SOURCES "${CMAKE_SOURCE_DIR}/../src/resources.wsjcpp/__build_simple_sh_path66c8dc.cpp")
 
 # unit-tests
 list (APPEND WSJCPP_INCLUDE_DIRS "src")
