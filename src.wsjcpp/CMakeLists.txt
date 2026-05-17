@@ -38,9 +38,9 @@ list (APPEND WSJCPP_SOURCES "${CMAKE_SOURCE_DIR}/./src.wsjcpp/wsjcpp_yaml/wsjcpp
 list (APPEND WSJCPP_SOURCES "${CMAKE_SOURCE_DIR}/./src.wsjcpp/wsjcpp_yaml/wsjcpp_yaml.h")
 
 # resources.wsjcpp
-list (APPEND WSJCPP_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/src-resources.wsjcpp/")
-list (APPEND WSJCPP_SOURCES "${CMAKE_SOURCE_DIR}/src-resources.wsjcpp/__build_simple_sh_path66c8dc.h")
-list (APPEND WSJCPP_SOURCES "${CMAKE_SOURCE_DIR}/src-resources.wsjcpp/__build_simple_sh_path66c8dc.cpp")
+list (APPEND WSJCPP_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/src/resources.wsjcpp/")
+list (APPEND WSJCPP_SOURCES "${CMAKE_SOURCE_DIR}/src/resources.wsjcpp/__build_simple_sh_path66c8dc.h")
+list (APPEND WSJCPP_SOURCES "${CMAKE_SOURCE_DIR}/src/resources.wsjcpp/__build_simple_sh_path66c8dc.cpp")
 
 # required-libraries
 list (APPEND WSJCPP_LIBRARIES "-lpthread")

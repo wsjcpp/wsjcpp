@@ -159,7 +159,7 @@ unit-tests:
       description: "Test for read package"
 
 resources:
-  output-generation-dir: src-resources.wsjcpp
+  output-generation-dir: src/resources.wsjcpp
   files:
     - filepath: "./build_simple.sh"
       size: 592
