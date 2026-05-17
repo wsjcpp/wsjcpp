@@ -5,6 +5,16 @@ All notable changes to wsjcpp project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [v0.2.7] - 2026-05-17 (2026 May 17)
+
+* Redesign resources struct
+* Disable include h files for resource to CMakeLists.txt
+* Fixed comment with wsjcpp version in file resources
+* Fixed spell checker 'automaticly' -> 'automatically'
+* Removed dependency wsjcpp-hashes (copied what a need to project)
+* Redesing build_simple.sh
+* Updated year in copyrights
+
 ## [v0.2.6] - 2026-01-01 (2026 Jan 1)
 
 - Fixed makeDirPath is not working #117
@@ -19,19 +29,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [v0.2.4] - 2025-01-18 (2025 Jan 18)
 
-### Added
-
 - Added set permissions for build_simple.sh on init
 - Added temporary fix for init package
 - Added hint about change version on init new package
 - Added license to files
-
-### Fixed
-
 - Fix urls
-
-### Changed
-
 - Change minimal version fo c++ from 11 to 17 (it's need for wsjcpp-core)
 
 ## [v0.2.3] - 2025-01-13 (2025 Jan 13)
