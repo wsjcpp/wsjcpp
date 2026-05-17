@@ -7,13 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [v0.2.7] - 2026-05-17 (2026 May 17)
 
-* Redesign resources struct
-* Disable include h files for resource to CMakeLists.txt
-* Fixed comment with wsjcpp version in file resources
-* Fixed spell checker 'automaticly' -> 'automatically'
-* Removed dependency wsjcpp-hashes (copied what a need to project)
-* Redesing build_simple.sh
-* Updated year in copyrights
+- Updated Up cmake version from 3.0 to 3.5
+- Redesign resources struct
+- Disable include h files for resource to CMakeLists.txt
+- Fixed comment with wsjcpp version in file resources
+- Fixed spell checker 'automaticly' -> 'automatically'
+- Removed dependency wsjcpp-hashes (copied what a need to project)
+- Redesing build_simple.sh
+- Updated year in copyrights
 
 ## [v0.2.6] - 2026-01-01 (2026 Jan 1)
 
