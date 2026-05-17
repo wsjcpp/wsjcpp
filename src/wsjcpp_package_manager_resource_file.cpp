@@ -24,8 +24,8 @@ bool WsjcppPackageManagerResourceFile::fromYAML(WsjcppYamlNode *pYamlDistributio
         return false;
     }
 
-    if (!m_pYamlResourceFile->hasElement("filesize")) {
-        WsjcppLog::err(TAG, "Missing required field 'filesize' in " + m_pYamlResourceFile->getForLogFormat());
+    if (!m_pYamlResourceFile->hasElement("filesize") && !m_pYamlResourceFile->hasElement("size")) {
+        WsjcppLog::err(TAG, "Missing required field 'filesize' or 'size' in " + m_pYamlResourceFile->getForLogFormat());
         return false;
     }
 
@@ -55,6 +55,9 @@ bool WsjcppPackageManagerResourceFile::fromYAML(WsjcppYamlNode *pYamlDistributio
         } else if (sKey == "filesize") {
             std::string sFileSize = m_pYamlResourceFile->getElement("filesize")->getValue();
             m_nFilesize = std::atoi(sFileSize.c_str());
+        } else if (sKey == "size") {
+            std::string sFileSize = m_pYamlResourceFile->getElement("size")->getValue();
+            m_nFilesize = std::atoi(sFileSize.c_str());
         } else if (sKey == "sha1") {
             m_sSha1 = m_pYamlResourceFile->getElement("sha1")->getValue();
         } else if (sKey == "pack-as") {
@@ -73,18 +76,18 @@ bool WsjcppPackageManagerResourceFile::fromYAML(WsjcppYamlNode *pYamlDistributio
     return true;
 }
 
-// ---------------------------------------------------------------------
-
 WsjcppYamlNode *WsjcppPackageManagerResourceFile::toYAML() {
-    m_pYamlResourceFile->getElement("filepath")->setValue(m_sFilepath, WSJCPP_YAML_QUOTES_DOUBLE);
-    m_pYamlResourceFile->getElement("filesize")->setValue(std::to_string(m_nFilesize), WSJCPP_YAML_QUOTES_NONE);
-    m_pYamlResourceFile->getElement("sha1")->setValue(m_sSha1, WSJCPP_YAML_QUOTES_DOUBLE);
-    m_pYamlResourceFile->getElement("pack-as")->setValue(m_sPackAs, WSJCPP_YAML_QUOTES_DOUBLE);
-    m_pYamlResourceFile->getElement("modified")->setValue(std::to_string(m_nModified), WSJCPP_YAML_QUOTES_NONE);
-    return m_pYamlResourceFile;
-}
+  m_pYamlResourceFile->getElement("filepath")->setValue(m_sFilepath, WSJCPP_YAML_QUOTES_DOUBLE);
+  if (m_pYamlResourceFile->hasElement("filesize")) {
+    m_pYamlResourceFile->getElement("filesize")->setName("size"); // rename to just size
+  }
 
-// ---------------------------------------------------------------------
+  m_pYamlResourceFile->getElement("size")->setValue(std::to_string(m_nFilesize), WSJCPP_YAML_QUOTES_NONE);
+  m_pYamlResourceFile->getElement("sha1")->setValue(m_sSha1, WSJCPP_YAML_QUOTES_DOUBLE);
+  m_pYamlResourceFile->getElement("pack-as")->setValue(m_sPackAs, WSJCPP_YAML_QUOTES_DOUBLE);
+  m_pYamlResourceFile->getElement("modified")->setValue(std::to_string(m_nModified), WSJCPP_YAML_QUOTES_NONE);
+  return m_pYamlResourceFile;
+}
 
 std::string WsjcppPackageManagerResourceFile::getFilepath() const {
     return m_sFilepath;

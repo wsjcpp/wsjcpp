@@ -159,9 +159,11 @@ unit-tests:
       description: "Test for read package"
 
 resources:
-  - filepath: "./build_simple.sh"
-    filesize: 592
-    pack-as: "text"
-    modified: 1767591341
-    sha1: "d536d44532d0bf7ad57831586e71f094d5b299d3"
+  output-generation-dir: src-resources.wsjcpp
+  files:
+    - filepath: "./build_simple.sh"
+      size: 592
+      pack-as: "text"
+      modified: 1767591341
+      sha1: "d536d44532d0bf7ad57831586e71f094d5b299d3"
 
