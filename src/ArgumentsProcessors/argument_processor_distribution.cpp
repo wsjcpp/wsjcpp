@@ -37,14 +37,14 @@ int ArgumentProcessorDistributionList::exec(const std::vector<std::string> &vRou
     }
     std::cout << std::endl << "Distribution list:" << std::endl;
     std::vector<WsjcppPackageManagerDistributionFile> files = pkg.getListOfDistributionFiles();
-    
+
     for (int i = 0; i < files.size(); i++) {
         std::cout << "    - ";
         WsjcppPackageManagerDistributionFile file = files[i];
-        if (!WsjcppCore::fileExists(file.getSourceFile())) {
+        if (!wsjcpp::file_exists(file.getSourceFile())) {
             std::cout << "[did not exists]";
         }
-        std::cout <<  file.getType() << ": '" 
+        std::cout <<  file.getType() << ": '"
             << file.getSourceFile() << "' -> '" << file.getTargetFile() << std::endl;
     }
     return 0;
@@ -73,12 +73,12 @@ int ArgumentProcessorDistributionAdd::exec(const std::vector<std::string> &vRout
 
     if (vSubParams.size() == 1) {
         sSourceFile = vSubParams[0];
-        sTargetFile = WsjcppCore::extractFilename(vSubParams[0]);
+        sTargetFile = wsjcpp::extract_filename(vSubParams[0]);
     } else if (vSubParams.size() == 2) {
         sSourceFile = vSubParams[0];
         sTargetFile = vSubParams[1];
         // test '../' or './'
-        std::string sTargetFile2 = WsjcppCore::doNormalizePath(pkg.getDir() + "/" + sTargetFile);
+        std::string sTargetFile2 = wsjcpp::normalize_filepath(pkg.getDir() + "/" + sTargetFile);
         if (sTargetFile2.rfind(pkg.getDir(), 0) != 0) {
             WsjcppLog::err(TAG, "Could not use upper directories for distribution files target path");
             return -1;
@@ -89,27 +89,27 @@ int ArgumentProcessorDistributionAdd::exec(const std::vector<std::string> &vRout
         return -1;
     }
 
-    if (WsjcppCore::fileExists(sSourceFile)) {
+    if (wsjcpp::file_exists(sSourceFile)) {
         vDistFiles.push_back(std::pair<std::string,std::string>(sSourceFile, sTargetFile));
-    } else if (WsjcppCore::dirExists(sSourceFile)) {
+    } else if (wsjcpp::dir_exists(sSourceFile)) {
         std::vector<std::string> vSearchInDirs;
         vSearchInDirs.push_back(sSourceFile);
         while (vSearchInDirs.size() > 0) {
             std::string sDir = vSearchInDirs.back();
             vSearchInDirs.pop_back();
-            std::vector<std::string> vDirs = WsjcppCore::getListOfDirs(sDir);
+            std::vector<std::string> vDirs = wsjcpp::directory_list(sDir);
             for (int i = 0; i < vDirs.size(); i++) {
-                vSearchInDirs.push_back(WsjcppCore::doNormalizePath(sDir + "/" + vDirs[i]));
+                vSearchInDirs.push_back(wsjcpp::normalize_filepath(sDir + "/" + vDirs[i]));
             }
             std::vector<std::string> vFiles = WsjcppCore::getListOfFiles(sDir);
             for (int i = 0; i < vFiles.size(); i++) {
-                std::string sFilepath = WsjcppCore::doNormalizePath(sDir + "/" + vFiles[i]);
-                std::string sExtractFilename = WsjcppCore::extractFilename(sFilepath);
+                std::string sFilepath = wsjcpp::normalize_filepath(sDir + "/" + vFiles[i]);
+                std::string sExtractFilename = wsjcpp::extract_filename(sFilepath);
                 vDistFiles.push_back(std::pair<std::string,std::string>(sFilepath, sExtractFilename));
             }
         }
     }
-    
+
     if (vDistFiles.empty()) {
         WsjcppLog::err(TAG, "Not found files for distribution in '" + sSourceFile + "'");
         return -1;

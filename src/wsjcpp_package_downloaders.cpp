@@ -35,14 +35,14 @@ bool WsjcppPackageDownloaders::downloadToCache(
     std::string &sError
 ) {
     std::string sCacheDir = sCurrentPackageDir + "/.wsjcpp";
-    if (!WsjcppCore::dirExists(sCacheDir)) {
+    if (!wsjcpp::dir_exists(sCacheDir)) {
         if (!WsjcppCore::makeDir(sCacheDir)) {
             sError = "Could not create dir: '" + sCacheDir + "'";
             return false;
         }
     }
     sCacheDir = sCacheDir + "/cache";
-    if (!WsjcppCore::dirExists(sCacheDir)) {
+    if (!wsjcpp::dir_exists(sCacheDir)) {
         if (!WsjcppCore::makeDir(sCacheDir)) {
             sError = "Could not create dir: '" + sCacheDir + "'";
             return false;
@@ -50,15 +50,15 @@ bool WsjcppPackageDownloaders::downloadToCache(
     }
 
     sCacheDir = sCacheDir + "/" + WsjcppPackageDownloaderBase::prepareCacheSubFolderName(sPackageUrl);
-    
-    if (WsjcppCore::dirExists(sCacheDir)) {
-        if (!WsjcppCore::recoursiveRemoveDir(sCacheDir)) {
-            sError = "Could not recoursive remove dir: '" + sCacheDir + "'";
+
+    if (wsjcpp::dir_exists(sCacheDir)) {
+        if (!wsjcpp::recursive_remove_dir(sCacheDir, sError)) {
+            sError = "Could not recursive remove dir: '" + sCacheDir + "'";
             return false;
         }
     }
 
-    if (!WsjcppCore::dirExists(sCacheDir)) {
+    if (!wsjcpp::dir_exists(sCacheDir)) {
         if (!WsjcppCore::makeDir(sCacheDir)) {
             sError = "Could not create dir: '" + sCacheDir + "'";
             return false;
@@ -71,7 +71,7 @@ bool WsjcppPackageDownloaders::downloadToCache(
         if (pDownloader->canDownload(sPackageUrl)) {
             bool bResult = pDownloader->downloadToCache(sPackageUrl, sCacheDir, dep, sError);
             if (!bResult) {
-                WsjcppCore::recoursiveRemoveDir(sCacheDir);
+                wsjcpp::recursive_remove_dir(sCacheDir, sError);
             }
             return bResult;
         }

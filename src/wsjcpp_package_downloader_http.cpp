@@ -90,13 +90,13 @@ bool WsjcppPackageDownloaderHttp::downloadToCache(
     dep.setInstallationDir(sInstallationDir);
 
     // remove package/version from url
-    std::vector<std::string> vSubdirs = WsjcppCore::split(sPackage, "/");
+    std::vector<std::string> vSubdirs = wsjcpp::split(sPackage, "/");
     if (vSubdirs[vSubdirs.size()-1] == "") {
         vSubdirs.pop_back();
     }
     vSubdirs.pop_back(); // version
     vSubdirs.pop_back(); // package-name
-    std::string sOrigin = WsjcppCore::join(vSubdirs, "/");
+    std::string sOrigin = wsjcpp::join(vSubdirs, "/");
     dep.setOrigin(sOrigin);
     return true;
 }

@@ -11,14 +11,14 @@ int main(int argc, const char* argv[]) {
     std::string TAG = "MAIN";
     std::string appName = std::string(WSJCPP_APP_NAME);
     std::string appVersion = std::string(WSJCPP_APP_VERSION);
-    if (!WsjcppCore::dirExists(".wsjcpp")) {
+    if (!wsjcpp::dir_exists(".wsjcpp")) {
         WsjcppCore::makeDir(".wsjcpp");
     }
-    if (!WsjcppCore::fileExists(".wsjcpp/.gitignore")) {
+    if (!wsjcpp::file_exists(".wsjcpp/.gitignore")) {
         WsjcppCore::writeFile(".wsjcpp/.gitignore", "logs/*\ncache/*\n");
     }
     std::string appLogPath = ".wsjcpp/logs";
-    if (!WsjcppCore::dirExists(appLogPath)) {
+    if (!wsjcpp::dir_exists(appLogPath)) {
         WsjcppCore::makeDir(appLogPath);
     }
     WsjcppLog::setPrefixLogFile("wsjcpp");

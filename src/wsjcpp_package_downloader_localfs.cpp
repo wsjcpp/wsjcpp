@@ -42,13 +42,13 @@ bool WsjcppPackageDownloaderLocalFs::downloadToCache(
         sDirPath = sDirPath.substr(nPrSize, sDirPath.size() - nPrSize);
     }
     // std::cout << "sDirPath = " << sDirPath << std::endl;
-    if (!WsjcppCore::dirExists(sDirPath)) {
+    if (!wsjcpp::dir_exists(sDirPath)) {
         sError = "Could not found directory '" + sDirPath + "'";
         return false;
     }
 
     std::string sWsjCppYml = sCacheDir + "/wsjcpp.yml";
-    if (WsjcppCore::fileExists(sWsjCppYml)) {
+    if (wsjcpp::file_exists(sWsjCppYml)) {
         WsjcppCore::removeFile(sWsjCppYml);
     }
     if (!WsjcppCore::copyFile(sDirPath + "/wsjcpp.yml", sWsjCppYml)) {
@@ -78,13 +78,13 @@ bool WsjcppPackageDownloaderLocalFs::downloadToCache(
             << "    Copy file from '" << sWsjCppSourceFrom << "'" << " to '" << sWsjCppSourceTo << "'."
             << std::endl;
 
-        if (WsjcppCore::fileExists(sWsjCppSourceTo)) {
+        if (wsjcpp::file_exists(sWsjCppSourceTo)) {
             WsjcppCore::removeFile(sWsjCppSourceTo);
         }
 
-        std::string sDir = sWsjCppSourceTo.substr(0, sWsjCppSourceTo.length() - WsjcppCore::extractFilename(sWsjCppSourceTo).length());
+        std::string sDir = sWsjCppSourceTo.substr(0, sWsjCppSourceTo.length() - wsjcpp::extract_filename(sWsjCppSourceTo).length());
         std::cout << "sDir = " << sDir << std::endl;
-        if (!WsjcppCore::dirExists(sDir)) {
+        if (!wsjcpp::dir_exists(sDir)) {
             if (!WsjcppCore::makeDir(sDir)) {
                 sError = "Could not make directory " + sDir;
                 return false;

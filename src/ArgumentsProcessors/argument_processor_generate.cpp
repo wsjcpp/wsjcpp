@@ -42,7 +42,7 @@ int ArgumentProcessorGenerate::exec(const std::vector<std::string> &vRoutes, con
         return -1;
     }
 
-    if (!WsjcppCore::fileExists(gen.getFullPath())) {
+    if (!wsjcpp::file_exists(gen.getFullPath())) {
         WsjcppLog::err(TAG, "File not found '" + gen.getFullPath() + "'");
         return -1;
     }

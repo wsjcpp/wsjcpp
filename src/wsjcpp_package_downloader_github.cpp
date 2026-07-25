@@ -79,7 +79,7 @@ bool WsjcppPackageDownloaderGithub::downloadToCache(
     pkg.save();
 
     // temporary fix for init package
-    if (!WsjcppCore::dirExists("./src.wsjcpp/")) {
+    if (!wsjcpp::dir_exists("./src.wsjcpp/")) {
         WsjcppCore::makeDir("./src.wsjcpp/");
     }
     std::string sInstallationDir = "./src.wsjcpp/" + WsjcppPackageDownloaderBase::prepareCacheSubFolderName(pkg.getName());

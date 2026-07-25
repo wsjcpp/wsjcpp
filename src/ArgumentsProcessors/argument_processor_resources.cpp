@@ -154,7 +154,7 @@ int ArgumentProcessorResourcesRemove::exec(const std::vector<std::string> &vRout
     }
     std::vector<std::string> vFilesToRemove;
 
-    std::string sFilepath = WsjcppCore::doNormalizePath(vSubParams[0]);
+    std::string sFilepath = wsjcpp::normalize_filepath(vSubParams[0]);
     if (pkg.hasResource(sFilepath)) {
         std::vector<std::string>::iterator it;
         it = std::find(vFilesToRemove.begin(), vFilesToRemove.end(), sFilepath);
@@ -162,7 +162,7 @@ int ArgumentProcessorResourcesRemove::exec(const std::vector<std::string> &vRout
             vFilesToRemove.push_back(sFilepath);
         }
     }
-    sFilepath = WsjcppCore::doNormalizePath( "./" + sFilepath); // for transfer to new paths
+    sFilepath = wsjcpp::normalize_filepath( "./" + sFilepath); // for transfer to new paths
     if (pkg.hasResource(sFilepath)) {
         std::vector<std::string>::iterator it;
         it = std::find(vFilesToRemove.begin(), vFilesToRemove.end(), sFilepath);
@@ -171,12 +171,12 @@ int ArgumentProcessorResourcesRemove::exec(const std::vector<std::string> &vRout
         }
     }
 
-    std::string sDirpath0 = WsjcppCore::doNormalizePath(vSubParams[0] + "/");
-    std::string sDirpath1 = WsjcppCore::doNormalizePath("./" + vSubParams[0] + "/");
+    std::string sDirpath0 = wsjcpp::normalize_filepath(vSubParams[0] + "/");
+    std::string sDirpath1 = wsjcpp::normalize_filepath("./" + vSubParams[0] + "/");
     std::vector<WsjcppPackageManagerResourceFile> vResources = pkg.getListOfResourceFiles();
     for (int i = 0; i < vResources.size(); i++) {
         std::string sPath = vResources[i].getFilepath();
-        std::string sPathModified = WsjcppCore::doNormalizePath("./" + sPath);
+        std::string sPathModified = wsjcpp::normalize_filepath("./" + sPath);
         if (sPathModified.rfind(sDirpath1, 0) == 0 || sPath.rfind(sDirpath0, 0) == 0) {
             std::vector<std::string>::iterator it;
             it = std::find(vFilesToRemove.begin(), vFilesToRemove.end(), sPath);
@@ -258,14 +258,14 @@ int ArgumentProcessorResourcesAdd::exec(const std::vector<std::string> &vRoutes,
     }
     std::vector<std::string> vFileList;
 
-    if (WsjcppCore::dirExists(vSubParams[0])) {
+    if (wsjcpp::dir_exists(vSubParams[0])) {
         std::vector<std::string> vDirList;
         vDirList.push_back(vSubParams[0]);
         while (vDirList.size() > 0) {
             std::string sDir = vDirList.back();
             // std::cout << "dir: "  << sDir << std::endl;
             vDirList.pop_back();
-            std::vector<std::string> vDirs = WsjcppCore::getListOfDirs(sDir);
+            std::vector<std::string> vDirs = wsjcpp::directory_list(sDir);
             for (int i = 0; i < vDirs.size(); i++) {
                 vDirList.push_back(sDir + "/" + vDirs[i]);
             }
@@ -275,7 +275,7 @@ int ArgumentProcessorResourcesAdd::exec(const std::vector<std::string> &vRoutes,
                 // std::cout << "file: "  << vFileList[vFileList.size()-1] << std::endl;
             }
         }
-    } else if (WsjcppCore::fileExists(vSubParams[0])) {
+    } else if (wsjcpp::file_exists(vSubParams[0])) {
         vFileList.push_back(vSubParams[0]);
     } else {
         std::cout
@@ -323,7 +323,7 @@ int ArgumentProcessorResourcesAdd::exec(const std::vector<std::string> &vRoutes,
         std::string sFilepath = vFileList[i];
         std::string sFileType = pkg.detectTypeOfResource(sFilepath);
 
-        sFilepath = WsjcppCore::doNormalizePath("./" + sFilepath);
+        sFilepath = wsjcpp::normalize_filepath("./" + sFilepath);
         if (pkg.hasResource(sFilepath)) {
             if (vFileList.size() == 1) {
                 std::cout

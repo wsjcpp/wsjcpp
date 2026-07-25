@@ -13,7 +13,7 @@ ArgumentProcessorLint::ArgumentProcessorLint()
 int ArgumentProcessorLint::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
   std::vector<std::string> vFiles = WsjcppCore::getListOfFiles("./");
 
-  std::vector<std::string> vDirs = WsjcppCore::getListOfDirs("./");
+  std::vector<std::string> vDirs = wsjcpp::directory_list("./");
   while (!vDirs.empty()) {
     std::string sPath = vDirs.back();
     vDirs.pop_back();
@@ -29,9 +29,8 @@ int ArgumentProcessorLint::exec(const std::vector<std::string> &vRoutes, const s
     for (int i = 0; i < vTmpFiles.size(); i++) {
       std::string sFilepath = sPath + "/" + vTmpFiles[i];
       vFiles.push_back(sFilepath);
-      
     }
-    std::vector<std::string> vTmpDirs = WsjcppCore::getListOfDirs(sPath);
+    std::vector<std::string> vTmpDirs = wsjcpp::directory_list(sPath);
     for (int i = 0; i < vTmpDirs.size(); i++) {
       std::string sDirpath = sPath + "/" + vTmpDirs[i];
       vDirs.push_back(sDirpath);
@@ -54,7 +53,7 @@ int ArgumentProcessorLint::exec(const std::vector<std::string> &vRoutes, const s
       continue;
     }
 
-    std::vector<std::string> vLines = WsjcppCore::split(sOutputContent, "\n");   
+    std::vector<std::string> vLines = wsjcpp::split(sOutputContent, "\n");
     for (int l = 0; l < vLines.size(); l++) {
       std::string sLine = vLines[l];
       if (

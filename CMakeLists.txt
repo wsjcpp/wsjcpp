@@ -7,7 +7,7 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/src.wsjcpp/CMakeLists.txt)
 #### BEGIN_WSJCPP_APPEND
 #### END_WSJCPP_APPEND
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(EXECUTABLE_OUTPUT_PATH ${wsjcpp_SOURCE_DIR})
 
 # Sources
@@ -17,7 +17,6 @@ list (APPEND WSJCPP_INCLUDE_DIRS "src")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/app")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/thirdparty")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/ArgumentsProcessors")
-list (APPEND WSJCPP_INCLUDE_DIRS "src/Downloaders")
 
 list (APPEND WSJCPP_SOURCES "src/thirdparty/smallsha1.cpp")
 list (APPEND WSJCPP_SOURCES "src/wsjcpp_helpers.cpp")

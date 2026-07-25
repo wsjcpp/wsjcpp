@@ -1,9 +1,9 @@
 wsjcpp_version: v0.0.1
-cmake_cxx_standard: 11
-cmake_minimum_required: 3.0
+cmake_cxx_standard: 17
+cmake_minimum_required: 3.7
 
 name: wsjcpp-core
-version: v0.2.1
+version: v0.2.7
 description: Basic Utils for wsjcpp
 issues: https://github.com/wsjcpp/wsjcpp-core/issues
 repositories:
@@ -16,27 +16,28 @@ keywords:
 authors:
   - name: Evgenii Sopov
     email: mrseakg@gmail.com
+
 distribution:
   - source-file: src/wsjcpp_core.cpp
     target-file: wsjcpp_core.cpp
     type: "source-code"
-    sha1: "09ef821bbc090fc1cd8a15bc4a57a9a2ce8ae00d"
+    sha1: "fe5422bc3ccb9099d82788a82f2332d7fef05561"
   - source-file: src/wsjcpp_core.h
     target-file: wsjcpp_core.h
     type: "source-code" # todo must be header-file
-    sha1: "e6e4ab2067d3c942db08e3b79862486eaf851e4b"
+    sha1: "5ae8f5f6b620162ce3d1bc2f017f1dec7e542391"
   - source-file: "src/wsjcpp_unit_tests.cpp"
     target-file: "wsjcpp_unit_tests.cpp"
     type: "unit-tests"
-    sha1: "fd5989d1a83c8b90bdc4d5e9bc9c3051eaa1e6d2"
+    sha1: "818a90995cc776a9e2dd48954b0be646c945aa7d"
   - source-file: "src/wsjcpp_unit_tests.h"
     target-file: "wsjcpp_unit_tests.h"
     type: "unit-tests"
-    sha1: "83d4b6e046b6b58c42882ccae4be413e03c401c1"
+    sha1: "a2c93d9c07da4031a8c2a0b9cdf9f70ba637ce38"
   - source-file: "src/wsjcpp_unit_tests_main.cpp"
     target-file: "wsjcpp_unit_tests_main.cpp"
     type: "unit-tests"
-    sha1: "388ae269b325c5e161f6c3a5c598575714a4bffc"
+    sha1: "9edaee6c40f60a95ea659228280f7ae0f51b4c7c"
   - source-file: "scripts.wsjcpp/generate.WsjcppUnitTest.wsjcpp-script"
     target-file: "generate.WsjcppUnitTest.wsjcpp-script"
     type: "safe-scripting-generate"
@@ -44,47 +45,14 @@ distribution:
   - source-file: "scripts.wsjcpp/generate.Class.wsjcpp-script"
     target-file: "generate.Class.wsjcpp-script"
     type: "safe-scripting-generate"
-
     sha1: "de1799907c685d606b93e08b821b540c2faa2db1"
-unit-tests:
-  cases:
-    - name: CoreNormalizePath
-      description: Check function normalizePath
-    - name: CoreExtractFilename
-      description: Check function extract filenane from path
-    - name: "ToUpper"
-      description: "String to upper"
-    - name: "CreateUuid"
-      description: "Test generation uuids"
-    - name: "GetEnv"
-      description: "Test getEnv function"
-    - name: "ToLower"
-      description: "Test toLower"
-    - name: "ReplaceAll"
-      description: "Test replace all"
-    - name: "DecodeUriComponent"
-      description: "Check decoding"
-    - name: "EncodeUriComponent"
-      description: "Check encoding"
-    - name: "Uint2HexString"
-      description: "Test convert unsigned int to hex string"
-    - name: "Split"
-      description: "Test split function"
-    - name: "CreateEmptyFile"
-      description: "Test create empty file"
-    - name: "ReadFileToBuffer"
-      description: "test for readFileToBuffer"
-    - name: "Join"
-      description: "Test join function"
-    - name: "getHumanSizeBytes"
-      description: "Test function get human size in bytes"
-    - name: "TestResources"
-      description: "Test basic resources"
-    - name: "ListOfDirs"
-      description: "Check list of directories"
-    - name: "FilePermissions"
-      description: ""
-    - name: "StringPadding"
-      description: ""
-    - name: "DateTimeFormat"
-      description: ""
+
+resources:
+  output-generation-dir: src/resources.wsjcpp
+  files:
+    - filepath: "./src/resources/html/images/favicon.svg"
+      size: 10014
+      pack-as: "text"
+      modified: 1600318923
+      sha1: "a3393af3be6713c1268d38066e54087422b99c09"
+

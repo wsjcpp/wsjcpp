@@ -216,12 +216,12 @@ WsjcppPackageManager::WsjcppPackageManager(const std::string &sDir) {
     } else {
         m_sRootDir = sDir;
     }
-    m_sRootDir = WsjcppCore::doNormalizePath(m_sRootDir);
+    m_sRootDir = wsjcpp::normalize_filepath(m_sRootDir);
 
 
     m_sDirnameResources = "src-resources.wsjcpp";
-    m_sDirResources = WsjcppCore::doNormalizePath(m_sRootDir + "/" + m_sDirnameResources);
-    m_sDirWithSources = WsjcppCore::doNormalizePath(m_sRootDir + "/src.wsjcpp");
+    m_sDirResources = wsjcpp::normalize_filepath(m_sRootDir + "/" + m_sDirnameResources);
+    m_sDirWithSources = wsjcpp::normalize_filepath(m_sRootDir + "/src.wsjcpp");
     // TODO m_sGithubPrefix = "git@";  // try clone project to cache directory
 
     m_sYamlFilename = "wsjcpp.yml";
@@ -242,7 +242,7 @@ WsjcppPackageManager::WsjcppPackageManager(const std::string &sDir) {
 
 WsjcppPackageManager::WsjcppPackageManager(const std::string &sDir, const std::string &sParentDir, bool bHolded)
 : WsjcppPackageManager(sDir) {
-    m_sDirWithSources = WsjcppCore::doNormalizePath(m_sRootDir + "/src.wsjcpp");
+    m_sDirWithSources = wsjcpp::normalize_filepath(m_sRootDir + "/src.wsjcpp");
     m_sYamlFilename = "wsjcpp.hold.yml";
     m_bHolded = true; // must be detect by wsjcpp.hold.yml
     m_bHasDocker = false;
@@ -271,7 +271,7 @@ bool WsjcppPackageManager::isHolded() const {
 
 bool WsjcppPackageManager::init() {
     std::string sCurrentDirectory = WsjcppCore::getCurrentDirectory() + "/" + m_sRootDir;
-    sCurrentDirectory = WsjcppCore::doNormalizePath(sCurrentDirectory);
+    sCurrentDirectory = wsjcpp::normalize_filepath(sCurrentDirectory);
     if (sCurrentDirectory[sCurrentDirectory.length()-1] == '/') {
         sCurrentDirectory = sCurrentDirectory.substr(0, sCurrentDirectory.size()-1);
     }
@@ -279,7 +279,7 @@ bool WsjcppPackageManager::init() {
 
     // TODO check wsjcpp.yml
 
-    m_sName = WsjcppCore::extractFilename(sCurrentDirectory);
+    m_sName = wsjcpp::extract_filename(sCurrentDirectory);
     m_yamlPackageInfo.getRoot()->setElementValue("name", m_sName, WSJCPP_YAML_QUOTES_NONE, WSJCPP_YAML_QUOTES_DOUBLE);
 
     m_sVersion = "v0.0.1";
@@ -328,7 +328,7 @@ bool WsjcppPackageManager::save(/*std::string &sError*/) { // TODO uncomment sEr
     }
 
     if (m_vDependencies.size() > 0) {
-        if (!WsjcppCore::dirExists(m_sDirWithSources)) {
+        if (!wsjcpp::dir_exists(m_sDirWithSources)) {
             WsjcppCore::makeDir(m_sDirWithSources);
         }
     }
@@ -339,8 +339,8 @@ bool WsjcppPackageManager::save(/*std::string &sError*/) { // TODO uncomment sEr
 // ---------------------------------------------------------------------
 
 bool WsjcppPackageManager::load(/*std::string &sError*/) { // TODO uncomment sError
-    m_sYamlFullpath = WsjcppCore::doNormalizePath(m_sRootDir + "/" + m_sYamlFilename);
-    if (!WsjcppCore::fileExists(m_sYamlFullpath)) {
+    m_sYamlFullpath = wsjcpp::normalize_filepath(m_sRootDir + "/" + m_sYamlFilename);
+    if (!wsjcpp::file_exists(m_sYamlFullpath)) {
         // sError = "File '" + m_sYamlFullpath + "' did not found";
         std::cout << "ERROR(load): '" << m_sYamlFullpath << "' did not found" << std::endl;
         return false;
@@ -454,7 +454,7 @@ bool WsjcppPackageManager::addSourceFile(const std::string &sSourceFile, const s
         return false;
     }
 
-    if (!WsjcppCore::fileExists(sSourceFile)) {
+    if (!wsjcpp::file_exists(sSourceFile)) {
         WsjcppLog::err(TAG, "'" + sSourceFile + "' file does not exists");
         return false;
     }
@@ -538,7 +538,7 @@ bool WsjcppPackageManager::updateSourceFile(const std::string &sSourceFile, bool
         return false;
     }
     std::string sFilePath = m_sRootDir + "/" + sSourceFile;
-    if (!WsjcppCore::fileExists(sFilePath)) {
+    if (!wsjcpp::file_exists(sFilePath)) {
         WsjcppLog::err(TAG, "'" + sSourceFile + "' file does not exists in " + m_sRootDir);
         return false;
     }
@@ -620,22 +620,22 @@ bool WsjcppPackageManager::createUnitTest(const std::string &sUnitTestName, cons
     }
 
     // TODO redesign WsjcppCore::makeDirPath
-    std::string sUnitTestsFolder = WsjcppCore::doNormalizePath(m_sRootDir + "/unit-tests.wsjcpp");
-    if (!WsjcppCore::dirExists(sUnitTestsFolder)) {
+    std::string sUnitTestsFolder = wsjcpp::normalize_filepath(m_sRootDir + "/unit-tests.wsjcpp");
+    if (!wsjcpp::dir_exists(sUnitTestsFolder)) {
         if (!WsjcppCore::makeDir(sUnitTestsFolder)) {
             WsjcppLog::err(TAG, "Could not create '" + sUnitTestsFolder + "'");
             return false;
         }
     }
     sUnitTestsFolder = sUnitTestsFolder + "/src";
-    if (!WsjcppCore::dirExists(sUnitTestsFolder)) {
+    if (!wsjcpp::dir_exists(sUnitTestsFolder)) {
         if (!WsjcppCore::makeDir(sUnitTestsFolder)) {
             WsjcppLog::err(TAG, "Could not create '" + sUnitTestsFolder + "'");
             return false;
         }
     }
 
-    if (!WsjcppCore::dirExists("./unit-tests.wsjcpp/src/")) {
+    if (!wsjcpp::dir_exists("./unit-tests.wsjcpp/src/")) {
         WsjcppLog::err(TAG, "Directory does not exists './unit-tests.wsjcpp/src/'");
         return false;
     }
@@ -706,7 +706,7 @@ bool WsjcppPackageManager::deleteUnitTest(const std::string &sUnitTestName) {
     }
     if (!bFound) {
         WsjcppLog::err(TAG, "Not found unit-test with name '" + sName + "'");
-        return false;    
+        return false;
     }
     WsjcppYamlCursor cur = m_yamlPackageInfo["unit-tests"]["cases"];
     WsjcppYamlNode *pItem = m_yamlPackageInfo.getRoot()->getElement("unit-tests")->getElement("cases");
@@ -714,8 +714,8 @@ bool WsjcppPackageManager::deleteUnitTest(const std::string &sUnitTestName) {
     for (int i = 0; i < nLength; i++) {
         if (pItem->getElement(i)->getElement("name")->getValue() == sName) {
             std::string sBaseName = this->generateFilenameForUnitTest(sUnitTestName);
-            std::string sFileSource = WsjcppCore::doNormalizePath(m_sRootDir + "/unit-tests.wsjcpp/src/" + sBaseName + ".cpp");
-            if (WsjcppCore::fileExists(sFileSource)) {
+            std::string sFileSource = wsjcpp::normalize_filepath(m_sRootDir + "/unit-tests.wsjcpp/src/" + sBaseName + ".cpp");
+            if (wsjcpp::file_exists(sFileSource)) {
                 WsjcppCore::removeFile(sFileSource);
             }
             /*if (nLength == 1) {
@@ -840,7 +840,7 @@ bool WsjcppPackageManager::verify() {
         std::string sPackageInstallationDir = it->getInstallationDir();
 
         if (m_bHolded) {
-            std::string sPath = WsjcppCore::doNormalizePath(m_sRootDir + "/../../" + sPackageInstallationDir);
+            std::string sPath = wsjcpp::normalize_filepath(m_sRootDir + "/../../" + sPackageInstallationDir);
             // std::cout << "Try load (holded) " << sPath << std::endl;
             WsjcppPackageManager m(sPath, m_sParentDir, true);
             if (m.load()) {
@@ -850,8 +850,8 @@ bool WsjcppPackageManager::verify() {
                     continue;
                 }
                 for (const auto& df : m.getListOfDistributionFiles()) {
-                    std::string sFilename = WsjcppCore::doNormalizePath(sPath + "/" + df.getTargetFile());
-                    if (!WsjcppCore::fileExists(sFilename)) {
+                    std::string sFilename = wsjcpp::normalize_filepath(sPath + "/" + df.getTargetFile());
+                    if (!wsjcpp::file_exists(sFilename)) {
                         std::cerr << "ERROR: Could not find file: " << sFilename << std::endl;
                         // sFilesHasChanges += " - missed: " + sFilename + " (with sha1:'" + src.getSha1() + "')\n";
                         ret = false;
@@ -880,12 +880,12 @@ bool WsjcppPackageManager::verify() {
                 ret = false;
             }
         } else {
-            std::string sPath = WsjcppCore::doNormalizePath(m_sRootDir + "/" + sPackageInstallationDir);
+            std::string sPath = wsjcpp::normalize_filepath(m_sRootDir + "/" + sPackageInstallationDir);
             WsjcppPackageManager m(sPath, m_sDirWithSources, true);
             if (m.load()) {
                 for (const auto& df : m.getListOfDistributionFiles()) {
-                    std::string sFilename = WsjcppCore::doNormalizePath(sPath + "/" + df.getTargetFile());
-                    if (!WsjcppCore::fileExists(sFilename)) {
+                    std::string sFilename = wsjcpp::normalize_filepath(sPath + "/" + df.getTargetFile());
+                    if (!wsjcpp::file_exists(sFilename)) {
                         std::cerr << "ERROR: Could not find file: " << sFilename << std::endl;
                         // sFilesHasChanges += " - missed: " + sFilename + " (with sha1:'" + src.getSha1() + "')\n";
                         ret = false;
@@ -976,7 +976,7 @@ bool WsjcppPackageManager::checkInstalledPackage(
         WsjcppPackageManagerDependence dep = deps[i];
         if (sPackage == dep.getUrl() || sPackage == dep.getName()) {
             sPackageUrl = dep.getUrl();
-            sPackageInstallationDir = WsjcppCore::doNormalizePath(m_sRootDir + "/" + dep.getInstallationDir());
+            sPackageInstallationDir = wsjcpp::normalize_filepath(m_sRootDir + "/" + dep.getInstallationDir());
         }
     }
 
@@ -1000,12 +1000,12 @@ bool WsjcppPackageManager::checkInstalledPackage(
     vFilesInstalled.push_back(sPackageInstallationDir + "/wsjcpp.hold.yml");
     for (int i = 0; i < vSources.size(); i++) {
         WsjcppPackageManagerDistributionFile src = vSources[i];
-        std::string sFilename = WsjcppCore::doNormalizePath(sPackageInstallationDir + "/" + src.getTargetFile());
+        std::string sFilename = wsjcpp::normalize_filepath(sPackageInstallationDir + "/" + src.getTargetFile());
 
         vFilesInstalled.push_back(sFilename);
 
         // calculate sha1
-        if (!WsjcppCore::fileExists(sFilename)) {
+        if (!wsjcpp::file_exists(sFilename)) {
             sFilesHasChanges += " - missed: " + sFilename + " (with sha1:'" + src.getSha1() + "')\n";
             bHasChanges = true;
         } else {
@@ -1202,9 +1202,9 @@ bool WsjcppPackageManager::installFromCache(
     const WsjcppPackageManagerDependence &dep,
     std::string &sError
 ) {
-    std::string sInstallationDir = WsjcppCore::doNormalizePath(m_sRootDir + "/" + dep.getInstallationDir());
+    std::string sInstallationDir = wsjcpp::normalize_filepath(m_sRootDir + "/" + dep.getInstallationDir());
 
-    if (!WsjcppCore::dirExists(sInstallationDir)) {
+    if (!wsjcpp::dir_exists(sInstallationDir)) {
         WsjcppCore::makeDir(sInstallationDir);
     }
 
@@ -1213,7 +1213,7 @@ bool WsjcppPackageManager::installFromCache(
     std::string sCacheWsjcppHoldYml = sCacheDir + "/wsjcpp.hold.yml";
     std::string sCacheWsjcppYml = sCacheDir + "/wsjcpp.yml";
 
-    if (WsjcppCore::fileExists(sCacheWsjcppHoldYml)) {
+    if (wsjcpp::file_exists(sCacheWsjcppHoldYml)) {
         // TODO deprecated method
         // TODO redesign to WsjcppCore::recoursiveCopyFiles
         // copy sources to installation dir
@@ -1224,14 +1224,14 @@ bool WsjcppPackageManager::installFromCache(
             WsjcppLog::err(TAG, "sTo = '" + sTo + "'");
             if (!WsjcppCore::copyFile(sFrom, sTo)) {
                 sError = "Could not copy file (1) '" + sFrom + "' to '" + sTo + "'";
-                WsjcppCore::recoursiveRemoveDir(sInstallationDir);
+                wsjcpp::recursive_remove_dir(sInstallationDir, sError);
                 return false;
             }
         }
         // TODO install all dependencies
         // TODO update src.wsjcpp/
         return true;
-    } else if (WsjcppCore::fileExists(sCacheWsjcppYml)) {
+    } else if (wsjcpp::file_exists(sCacheWsjcppYml)) {
         WsjcppPackageManager pkg(sCacheDir);
         if (!pkg.load()) {
             sError = "Could not load package from copy '" + sCacheDir + "'";
@@ -1240,7 +1240,9 @@ bool WsjcppPackageManager::installFromCache(
 
         if (!WsjcppCore::copyFile(sCacheWsjcppYml, sInstallationDir + "/wsjcpp.hold.yml")) {
             sError = "Could not copy (2) " + sCacheWsjcppYml + " -> " + sInstallationDir + "/wsjcpp.hold.yml";
-            WsjcppCore::recoursiveRemoveDir(sInstallationDir);
+            if (wsjcpp::recursive_remove_dir(sInstallationDir, sError)) {
+                return false;
+            }
             return false;
         }
 
@@ -1249,16 +1251,16 @@ bool WsjcppPackageManager::installFromCache(
             WsjcppPackageManagerDistributionFile src = vSources[i];
             std::string sFileFrom = sCacheDir + "/" + src.getSourceFile();
             std::string sFileTo = sInstallationDir + "/" + src.getTargetFile();
-            std::string sDir = sFileTo.substr(0, sFileTo.length() - WsjcppCore::extractFilename(sFileTo).length());
+            std::string sDir = sFileTo.substr(0, sFileTo.length() - wsjcpp::extract_filename(sFileTo).length());
             // WsjcppLog::err(TAG, "sDir = '" + sDir + "'");
             if (!this->makeDirPath(sDir)) {
                 sError = "Could not create directory '" + sDir + "'";
-                WsjcppCore::recoursiveRemoveDir(sInstallationDir);
+                wsjcpp::recursive_remove_dir(sInstallationDir, sError);
                 return false;
             }
             if (!WsjcppCore::copyFile(sFileFrom, sFileTo)) {
                 sError = "Could not copy (3) from '" + sFileFrom + "' to '" + sFileTo + "'";
-                WsjcppCore::recoursiveRemoveDir(sInstallationDir);
+                wsjcpp::recursive_remove_dir(sInstallationDir, sError);
                 return false;
             }
         }
@@ -1306,7 +1308,7 @@ void WsjcppPackageManager::recursive_printAuthorsTree(std::vector<WsjcppPackageM
     WsjcppPackageManagerDependence dep = vDependencies[i];
     std::string sInstalledDir = dep.getInstallationDir(); 
 
-    if (WsjcppCore::dirExists(dep.getInstallationDir())) {
+    if (wsjcpp::dir_exists(dep.getInstallationDir())) {
       WsjcppPackageManager subpkg(sInstalledDir, m_sRootDir, true);
       WsjcppLog::info(TAG, "Loading package '" + sInstalledDir + "'");
       if (subpkg.load()) {
@@ -1383,7 +1385,7 @@ bool WsjcppPackageManager::addResource(const std::string &sFilepath, const std::
     }
   }
 
-  if (!WsjcppCore::fileExists(sFilepath)) {
+  if (!wsjcpp::file_exists(sFilepath)) {
     WsjcppLog::err(TAG, "Resource file '" + sFilepath + "' did not found");
     return false;
   }
@@ -1463,7 +1465,7 @@ bool WsjcppPackageManager::updateResource(const std::string &sFilepath) {
 
   m_vResourceFiles[nResFileNum].toYAML();
 
-  // if (!WsjcppCore::fileExists(sFilepath)) {
+  // if (!wsjcpp::file_exists(sFilepath)) {
   //     WsjcppLog::err(TAG, "Resource file '" + sFilepath + "' did not found");
   //     return false;
   // }
@@ -1534,13 +1536,13 @@ bool WsjcppPackageManager::removeResource(const std::string &sFilepath) {
   std::string sRemovedFiles = " Removed files: \n";
   std::string sBaseFilename = generateResourceCppFileBasename(sFilepath);
   sBaseFilename = m_sDirResources + "/" + sBaseFilename;
-  if (WsjcppCore::fileExists(sBaseFilename + ".h")) {
+  if (wsjcpp::file_exists(sBaseFilename + ".h")) {
     WsjcppCore::removeFile(sBaseFilename + ".h");
     sRemovedFiles += "\n - " + sBaseFilename + ".h";
   } else {
     sRemovedFiles += "\n - not found: " + sBaseFilename + ".h";
   }
-  if (WsjcppCore::fileExists(sBaseFilename + ".cpp")) {
+  if (wsjcpp::file_exists(sBaseFilename + ".cpp")) {
     WsjcppCore::removeFile(sBaseFilename + ".cpp");
     sRemovedFiles += "\n - " + sBaseFilename + ".cpp";
   } else {
@@ -1639,7 +1641,7 @@ std::vector<WsjcppPackageManagerSafeScriptingGenerate> WsjcppPackageManager::get
     std::vector<WsjcppPackageManagerDependence> vDeps = this->getListOfDependencies();
     for (int i = 0; i < vDeps.size(); i++) {
         WsjcppPackageManagerDependence dep = vDeps[i];
-        std::string sInstallationDir = WsjcppCore::doNormalizePath(m_sRootDir + "/" + dep.getInstallationDir());
+        std::string sInstallationDir = wsjcpp::normalize_filepath(m_sRootDir + "/" + dep.getInstallationDir());
         WsjcppPackageManager pkgHold(sInstallationDir, this->getDir(), true);
         if (!pkgHold.load()) {
             WsjcppLog::err(TAG, "Could not load package from '" + sInstallationDir + "'");
@@ -2130,7 +2132,7 @@ bool WsjcppPackageManager::readFieldResources() {
   } else if (cur.isMap()) { // > v0.2.6
     if (cur.hasKey("output-generation-dir")) {
       m_sDirnameResources = cur["output-generation-dir"].valStr();
-      m_sDirResources = WsjcppCore::doNormalizePath(m_sRootDir + "/" + m_sDirnameResources);
+      m_sDirResources = wsjcpp::normalize_filepath(m_sRootDir + "/" + m_sDirnameResources);
     }
     if (cur.hasKey("files") && cur["files"].isArray()) {
       int nSize = cur["files"].size();
@@ -2210,7 +2212,7 @@ void WsjcppPackageManager::removeDependenciesFilesSafe(const WsjcppPackageManage
         for (int i = 0; i < vFiles.size(); i++) {
             WsjcppPackageManagerDistributionFile file = vFiles[i];
             std::string sFilePath = dep.getInstallationDir() + "/" + file.getTargetFile();
-            if (!WsjcppCore::fileExists(sFilePath)) {
+            if (!wsjcpp::file_exists(sFilePath)) {
                 WsjcppLog::info(TAG, "Did not found file '" + sFilePath + "'");
             } else {
                 std::string sContent;
@@ -2359,7 +2361,7 @@ bool WsjcppPackageManager::updateAutogeneratedFiles_VersionFile() {
         return true;
     }
 
-    std::string sFileName = WsjcppCore::doNormalizePath(m_sRootDir + "/" + m_sVersionFile_Path + "/" + m_sVersionFile_Filename);
+    std::string sFileName = wsjcpp::normalize_filepath(m_sRootDir + "/" + m_sVersionFile_Path + "/" + m_sVersionFile_Filename);
 
     // TODO check sub path must be equal m_sRootDir
 
@@ -2382,9 +2384,9 @@ bool WsjcppPackageManager::updateAutogeneratedFiles_VersionFile() {
     }
     std::string sPrinted = m_sVersionFile_PrintedFormat;
 
-    WsjcppCore::replaceAll(sPrinted, "{MAJOR}", sMajor);
-    WsjcppCore::replaceAll(sPrinted, "{MINOR}", sMinor);
-    WsjcppCore::replaceAll(sPrinted, "{BUILD}", sBuild);
+    wsjcpp::replace_all_in(sPrinted, "{MAJOR}", sMajor);
+    wsjcpp::replace_all_in(sPrinted, "{MINOR}", sMinor);
+    wsjcpp::replace_all_in(sPrinted, "{BUILD}", sBuild);
     if (!WsjcppCore::writeFile(sFileName, sPrinted)) {
         WsjcppLog::err(TAG, "Could not write file '" + sFileName + "'");
         return false;
@@ -2447,7 +2449,7 @@ bool WsjcppPackageManager::updateAutogeneratedFiles_Dockerfile_for_build() {
         "WORKDIR /root/sources\n"
     ;
 
-    if (!WsjcppCore::dirExists("./docker.for-build")) {
+    if (!wsjcpp::dir_exists("./docker.for-build")) {
         WsjcppCore::makeDir("./docker.for-build");
     }
     WsjcppCore::writeFile("./docker.for-build/Dockerfile", sContent);
@@ -2490,7 +2492,7 @@ bool WsjcppPackageManager::updateAutogeneratedFiles_Dockerfile_for_release() {
         "\n"
         "WORKDIR /root/\n";
 
-    if (!WsjcppCore::dirExists("./docker.for-release")) {
+    if (!wsjcpp::dir_exists("./docker.for-release")) {
         WsjcppCore::makeDir("./docker.for-release");
     }
     WsjcppCore::writeFile("./docker.for-release/Dockerfile", sContent);
@@ -2546,16 +2548,16 @@ bool WsjcppPackageManager::updateAutogeneratedFiles_UnitTests() {
     }
 
     std::string sUnitTestsDir = "./unit-tests.wsjcpp";
-    if (!WsjcppCore::dirExists(sUnitTestsDir)) {
+    if (!wsjcpp::dir_exists(sUnitTestsDir)) {
         WsjcppCore::makeDir(sUnitTestsDir);
     }
-    if (!WsjcppCore::dirExists(sUnitTestsDir)) {
+    if (!wsjcpp::dir_exists(sUnitTestsDir)) {
         WsjcppLog::err(TAG, "Could not create " + sUnitTestsDir + " directory");
         return false;
     }
 
     std::string sCMakeListsCustomTXTPath = sUnitTestsDir + "/CMakeLists.user-custom.txt";
-    if (!WsjcppCore::fileExists(sCMakeListsCustomTXTPath)) {
+    if (!wsjcpp::file_exists(sCMakeListsCustomTXTPath)) {
         WsjcppCore::writeFile(sCMakeListsCustomTXTPath, "## You can here write some custom includes\n");
     }
 
@@ -2613,14 +2615,14 @@ bool WsjcppPackageManager::updateAutogeneratedFiles_UnitTests() {
             sCMakeListsTXT +=
                 "# " + pkg.getName() + ":" + pkg.getVersion() + "\n"
                 "list (APPEND WSJCPP_INCLUDE_DIRS \""
-                    + WsjcppCore::doNormalizePath("../" + sInstDir + "/")
+                    + wsjcpp::normalize_filepath("../" + sInstDir + "/")
                     + "\")\n";
             std::vector<WsjcppPackageManagerDistributionFile> vFiles = pkg.getListOfDistributionFiles();
             for (int i = 0; i < vFiles.size(); i++) {
                 WsjcppPackageManagerDistributionFile file = vFiles[i];
                 if (file.getType() == "source-code" || file.getType() == "unit-tests") {
                     sCMakeListsTXT += "list (APPEND WSJCPP_SOURCES \"${CMAKE_SOURCE_DIR}/"
-                        + WsjcppCore::doNormalizePath("../" + sInstDir + "/" + file.getTargetFile())
+                        + wsjcpp::normalize_filepath("../" + sInstDir + "/" + file.getTargetFile())
                         + "\")\n";
                 }
             }
@@ -2635,7 +2637,7 @@ bool WsjcppPackageManager::updateAutogeneratedFiles_UnitTests() {
         WsjcppPackageManagerDistributionFile file = m_vDistributionFiles[i];
         if (file.getType() == "source-code" || file.getType() == "unit-tests") {
             sCMakeListsTXT += "list (APPEND WSJCPP_SOURCES \"${CMAKE_SOURCE_DIR}/"
-                + WsjcppCore::doNormalizePath("../" + file.getSourceFile())
+                + wsjcpp::normalize_filepath("../" + file.getSourceFile())
                 + "\")\n";
         }
     }
@@ -2671,9 +2673,9 @@ bool WsjcppPackageManager::updateAutogeneratedFiles_UnitTests() {
         std::string sBaseName = this->generateFilenameForUnitTest(sName);
         std::string sFileSource = "./unit-tests.wsjcpp/src/" + sBaseName + ".cpp";
 
-        if (WsjcppCore::fileExists(sFileSource)) {
+        if (wsjcpp::file_exists(sFileSource)) {
             sCMakeListsTXT += "list (APPEND WSJCPP_SOURCES \"${CMAKE_SOURCE_DIR}/"
-                + WsjcppCore::doNormalizePath("../" + sFileSource)
+                + wsjcpp::normalize_filepath("../" + sFileSource)
                 + "\")\n";
         } else {
             WsjcppLog::warn(TAG, "Ignored '" + sFileSource + "' - file did not exists");
@@ -2726,7 +2728,7 @@ bool WsjcppPackageManager::updateAutogeneratedFiles_UnitTests() {
 // ---------------------------------------------------------------------
 
 bool WsjcppPackageManager::updateAutogeneratedFiles_Resource(const WsjcppPackageManagerResourceFile &resFile) {
-    if (!WsjcppCore::dirExists(m_sDirResources)) {
+    if (!wsjcpp::dir_exists(m_sDirResources)) {
         WsjcppCore::makeDir(m_sDirResources);
     }
     std::string sResourcesLog = "Resources files: \n";
@@ -2746,7 +2748,7 @@ bool WsjcppPackageManager::updateAutogeneratedFiles_Resource(const WsjcppPackage
         "};"
     ;
     std::string sHeaderFilepath = m_sDirResources + "/" + sFilenameNormalized + ".h";
-    if (WsjcppCore::fileExists(sHeaderFilepath)) {
+    if (wsjcpp::file_exists(sHeaderFilepath)) {
         sResourcesLog += "\n - updated: " + sHeaderFilepath;
     } else {
         sResourcesLog += "\n - generated: " + sHeaderFilepath;
@@ -2845,7 +2847,7 @@ bool WsjcppPackageManager::updateAutogeneratedFiles_Resource(const WsjcppPackage
     }
 
     std::string sSourceFilepath = m_sDirResources + "/" + sFilenameNormalized + ".cpp";
-    if (WsjcppCore::fileExists(sSourceFilepath)) {
+    if (wsjcpp::file_exists(sSourceFilepath)) {
         sResourcesLog += "\n - updated: " + sSourceFilepath;
     } else {
         sResourcesLog += "\n - generated: " + sSourceFilepath;
@@ -2889,7 +2891,7 @@ bool WsjcppPackageManager::append(
     WsjcppPackageManagerSafeScriptingGenerate gen;
     gen.setModuleName(sModuleFile);
     gen.setFullPath(sSourceFile);
-    std::vector<std::string> vSplit = WsjcppCore::split(sTargetName, ".");
+    std::vector<std::string> vSplit = wsjcpp::split(sTargetName, ".");
     if (vSplit.size() != 3) {
         WsjcppLog::err(TAG, "Wrong script name: '" + sTargetName + "' must like 'generate.ScriptName.wsjcpp-script'");
         return false;
@@ -2908,24 +2910,24 @@ bool WsjcppPackageManager::append(
 }
 
 bool WsjcppPackageManager::makeDirPath(const std::string &sDirPath) {
-    if (WsjcppCore::dirExists(sDirPath)) {
+    if (wsjcpp::dir_exists(sDirPath)) {
         return true;
     }
     std::cout << "Create a directory " << sDirPath << std::endl;
     // TODO
-    std::vector<std::string> vSubDirs = WsjcppCore::split(sDirPath, "/");
+    std::vector<std::string> vSubDirs = wsjcpp::split(sDirPath, "/");
     std::string sTargetDir = "/" + vSubDirs[0]; // TODO only for linux
     for (int i = 1; i < vSubDirs.size(); i++) {
         if (vSubDirs[i] == "") {
             continue;
         }
         sTargetDir += "/" + vSubDirs[i];
-        if (WsjcppCore::dirExists(sTargetDir)) {
+        if (wsjcpp::dir_exists(sTargetDir)) {
             continue;
         }
         if (!WsjcppCore::makeDir(sTargetDir)) {
             return false;
         }
     }
-    return WsjcppCore::dirExists(sDirPath);
+    return wsjcpp::dir_exists(sDirPath);
 }

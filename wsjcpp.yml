@@ -22,11 +22,11 @@ required-pkg-config:
 
 dependencies:
   - name: "wsjcpp-core"
-    version: "v0.2.1"
+    version: "v0.2.7"
     url: "https://github.com/wsjcpp/wsjcpp-core:master"
     origin: "https://github.com/"
     installation-dir: "./src.wsjcpp/wsjcpp_core"
-    installation-datetime: "Wed, 30 Sep 2020 20:32:36 GMT"
+    installation-datetime: "Sat, 25 Jul 2026 08:59:42 GMT"
   - name: "wsjcpp-safe-scripting"
     version: "v0.1.1"
     url: "https://github.com/wsjcpp/wsjcpp-safe-scripting:master"

@@ -52,7 +52,7 @@ ArgumentProcessorPrepareTravis::ArgumentProcessorPrepareTravis()
 // ---------------------------------------------------------------------
 
 int ArgumentProcessorPrepareTravis::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
-    if (WsjcppCore::fileExists(".travis.yml")) {
+    if (wsjcpp::file_exists(".travis.yml")) {
         std::cout 
             << std::endl
             << "ERROR: .travis.yml - file already exists" 
@@ -325,14 +325,14 @@ int ArgumentProcessorPrepareDockerfile::exec(const std::vector<std::string> &vRo
         "CMD " +  pkg.getName() + " start\n"
     ;
 
-    if (!WsjcppCore::fileExists("Dockerfile")) {
+    if (!wsjcpp::file_exists("Dockerfile")) {
         WsjcppCore::writeFile("./Dockerfile", sContentDockerfile);
         std::cout << "Dockerfile: created" << std::endl;
     } else {
         std::cout << "Dockerfile: skipped already exists" << std::endl;
     }
 
-    if (!WsjcppCore::fileExists(".dockerignore")) {
+    if (!wsjcpp::file_exists(".dockerignore")) {
         WsjcppCore::writeFile("./.dockerignore", sContentDockerignore);
         std::cout << ".dockerignore: created" << std::endl;
     } else {
@@ -412,14 +412,12 @@ int ArgumentProcessorPrepareChangeLogMd::exec(const std::vector<std::string> &vR
         "Nope\n"
     ;
 
-       
-
     if (m_bPrint) {
         std::cout << sChangeLogMdContent << std::endl;
         return 0;
     }
 
-    if (!WsjcppCore::fileExists("./CHANGELOG.md")) {
+    if (!wsjcpp::file_exists("./CHANGELOG.md")) {
         WsjcppCore::writeFile("./CHANGELOG.md", sChangeLogMdContent);
         std::cout << "CHANGELOG.md: created" << std::endl;
     } else {

@@ -41,15 +41,14 @@ int ArgumentProcessorScan::exec(const std::vector<std::string> &vRoutes, const s
 // ---------------------------------------------------------------------
 // ArgumentProcessorScanTodo
 
-ArgumentProcessorScanTodo::ArgumentProcessorScanTodo() 
+ArgumentProcessorScanTodo::ArgumentProcessorScanTodo()
 : WsjcppArgumentProcessor({"todo"}, "Search in code all TODOs", "Search in code all TODOs") {
-      
+
 }
 
 // ---------------------------------------------------------------------
 
 int ArgumentProcessorScanTodo::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
-    
     std::vector<std::string> vFoundFiles;
 
     // TODO directories must be configured
@@ -60,16 +59,16 @@ int ArgumentProcessorScanTodo::exec(const std::vector<std::string> &vRoutes, con
     while(vScanDirs.size() > 0) {
         std::string sDir = vScanDirs[vScanDirs.size() - 1];
         vScanDirs.pop_back();
-        std::vector<std::string> vDirs = WsjcppCore::getListOfDirs(sDir);
+        std::vector<std::string> vDirs = wsjcpp::directory_list(sDir);
         for (int i = 0; i < vDirs.size(); i++) {
             std::string sNewDir = sDir + "/" + vDirs[i];
-            sNewDir = WsjcppCore::doNormalizePath(sNewDir);
+            sNewDir = wsjcpp::normalize_filepath(sNewDir);
             vScanDirs.push_back(sNewDir);
         }
 
         std::vector<std::string> vFiles = WsjcppCore::getListOfFiles(sDir);
         for (int i = 0; i < vFiles.size(); i++) {
-            vFoundFiles.push_back(WsjcppCore::doNormalizePath(sDir + "/" + vFiles[i]));
+            vFoundFiles.push_back(wsjcpp::normalize_filepath(sDir + "/" + vFiles[i]));
         }
     }
 
@@ -82,7 +81,7 @@ int ArgumentProcessorScanTodo::exec(const std::vector<std::string> &vRoutes, con
             // WsjcppLog::info(TAG, vFoundFiles[i]);
             std::string sFileContent;
             WsjcppCore::readTextFile(sFileName, sFileContent);
-            std::vector<std::string> vLines = WsjcppCore::split(sFileContent, "\n");
+            std::vector<std::string> vLines = wsjcpp::split(sFileContent, "\n");
             for (int n = 0; n < vLines.size(); n++) {
                 std::string sLine = vLines[n];
                 sLine = WsjcppCore::trim(sLine);
@@ -143,7 +142,6 @@ struct ScanUniqCodeLine {
 };
 
 int ArgumentProcessorScanUniqLines::exec(const std::vector<std::string> &vRoutes, const std::vector<std::string> &vSubParams) {
-    
     std::vector<std::string> vFoundFiles;
     std::map<std::string, int> mapResult;
     // TODO directories must be configured
@@ -156,16 +154,16 @@ int ArgumentProcessorScanUniqLines::exec(const std::vector<std::string> &vRoutes
     while(vScanDirs.size() > 0) {
         std::string sDir = vScanDirs[vScanDirs.size() - 1];
         vScanDirs.pop_back();
-        std::vector<std::string> vDirs = WsjcppCore::getListOfDirs(sDir);
+        std::vector<std::string> vDirs = wsjcpp::directory_list(sDir);
         for (int i = 0; i < vDirs.size(); i++) {
             std::string sNewDir = sDir + "/" + vDirs[i];
-            sNewDir = WsjcppCore::doNormalizePath(sNewDir);
+            sNewDir = wsjcpp::normalize_filepath(sNewDir);
             vScanDirs.push_back(sNewDir);
         }
 
         std::vector<std::string> vFiles = WsjcppCore::getListOfFiles(sDir);
         for (int i = 0; i < vFiles.size(); i++) {
-            vFoundFiles.push_back(WsjcppCore::doNormalizePath(sDir + "/" + vFiles[i]));
+            vFoundFiles.push_back(wsjcpp::normalize_filepath(sDir + "/" + vFiles[i]));
         }
     }
 
@@ -177,7 +175,7 @@ int ArgumentProcessorScanUniqLines::exec(const std::vector<std::string> &vRoutes
             std::cout << sFileName << std::endl;
             std::string sFileContent;
             WsjcppCore::readTextFile(sFileName, sFileContent);
-            std::vector<std::string> vLines = WsjcppCore::split(sFileContent, "\n");
+            std::vector<std::string> vLines = wsjcpp::split(sFileContent, "\n");
             for (int n = 0; n < vLines.size(); n++) {
                 std::string sLine = vLines[n];
                 sLine = WsjcppCore::trim(sLine);

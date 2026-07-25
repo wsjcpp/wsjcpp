@@ -127,7 +127,7 @@ bool WsjcppSafeScriptingProcMakeDir::exec(const std::vector<WsjcppSafeScriptingV
     }
     // TODO check rootdir safe!
     std::string sDir = vArgs[0]->getValue();
-    if (WsjcppCore::dirExists(sDir)) {
+    if (wsjcpp::dir_exists(sDir)) {
         return true;
     }
     return WsjcppCore::makeDir(sDir);
@@ -268,7 +268,7 @@ bool WsjcppSafeScriptingProcCMakeListsTxtAppendWsjcpp::exec(const std::vector<Ws
     WsjcppCore::trim(sCMakeListsTxt);
 
     std::string sCMakeListsTxtOutput;
-    std::vector<std::string> vLines = WsjcppCore::split(sCMakeListsTxt, "\n");
+    std::vector<std::string> vLines = wsjcpp::split(sCMakeListsTxt, "\n");
     bool bAdded = false;
     int nState = 0;
     for (int i = 0; i < vLines.size(); i++) {
@@ -482,7 +482,7 @@ int WsjcppSafeScriptingContext::exec(
                     vTokenArgs.pop_back();
                     break;
                 } else if (pToken2->hasString()) {
-                    WsjcppSafeScriptingVariable *pVar = addVariable("vartmp_" + WsjcppCore::createUuid());
+                    WsjcppSafeScriptingVariable *pVar = addVariable("vartmp_" + wsjcpp::generate_uuid());
                     pVar->setValue(sTokenValue2);
                     vArgs2.push_back(pVar);
                     vRuntimeRemoveAfter.push_back(pVar);

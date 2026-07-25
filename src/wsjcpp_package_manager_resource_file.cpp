@@ -49,7 +49,7 @@ bool WsjcppPackageManagerResourceFile::fromYAML(WsjcppYamlNode *pYamlDistributio
         std::string sKey = vKeys[i];
         if (sKey == "filepath") {
             m_sFilepath = m_pYamlResourceFile->getElement("filepath")->getValue();
-            if (!m_bHolded && !WsjcppCore::fileExists(m_sFilepath)) {
+            if (!m_bHolded && !wsjcpp::file_exists(m_sFilepath)) {
                 WsjcppLog::warn(TAG, "File resource '" + m_sFilepath + "' did not exists in " + m_pYamlResourceFile->getForLogFormat());
             }
         } else if (sKey == "filesize") {
