@@ -5,6 +5,16 @@ All notable changes to wsjcpp project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [v0.2.8] - 2026-??-?? (2026 ?? ??)
+
+- Fixed build_source_pkg_for_ppa.py
+- Up cmake version from 3.0 to 3.5
+- Fix spell
+- Removed shutil.copytree('../../src-resources.wsjcpp' from build_source_pkg_for_ppa.py
+- Added Ubuntu 26.04 to ppa
+- Fixed build unit-tests
+- Updated wsjcpp-core from v0.2.1 to v0.2.7
+
 ## [v0.2.7] - 2026-05-17 (2026 May 17)
 
 - Updated Up cmake version from 3.0 to 3.5
