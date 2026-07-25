@@ -1,5 +1,4 @@
 ## You can here write some custom includes
 
-list (APPEND WSJCPP_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/../src/thirdparty")
-list (APPEND WSJCPP_SOURCES "${CMAKE_SOURCE_DIR}/../src/thirdparty/smallsha1.cpp")
-list (APPEND WSJCPP_SOURCES "${CMAKE_SOURCE_DIR}/../src/wsjcpp_helpers.cpp")
+list (APPEND WSJCPP_SOURCES "${CMAKE_SOURCE_DIR}/../src/third_party/smallsha1/smallsha1.cpp")
+list (APPEND WSJCPP_SOURCES "${CMAKE_SOURCE_DIR}/../src/s5k/utils/s5k_helpers.cpp")

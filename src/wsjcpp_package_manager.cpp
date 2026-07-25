@@ -3,7 +3,7 @@
 #include <wsjcpp_core.h>
 #include <fstream>
 #include <iomanip>
-#include "wsjcpp_helpers.h"
+#include "s5k/utils/s5k_helpers.h"
 #include <wsjcpp_core.h>
 #include <stdio.h>
 #include <ctype.h>
@@ -547,7 +547,7 @@ bool WsjcppPackageManager::updateSourceFile(const std::string &sSourceFile, bool
     if (!WsjcppCore::readTextFile(sFilePath, sContent)) {
         return false;
     }
-    std::string sSha1 = WsjcppHelpers::sha1_calc_hex(sContent);
+    std::string sSha1 = s5k::sha1_by_string(sContent);
 
     bool bFound = false;
     std::vector<WsjcppPackageManagerDistributionFile>::iterator it;
@@ -858,7 +858,7 @@ bool WsjcppPackageManager::verify() {
                         continue;
                     }
 
-                    // TODO redesign to WsjcppHelpers::getSha1ByFile(sFilename);
+                    // TODO redesign to s5k::sha1_by_file(sFilename);
                     std::string sContent = "";
                     if (!WsjcppCore::readTextFile(sFilename, sContent)) {
                         std::cerr << "ERROR: Could not read file '" + sFilename + "'";
@@ -866,7 +866,7 @@ bool WsjcppPackageManager::verify() {
                         continue;
                     }
 
-                    std::string sSha1 = WsjcppHelpers::sha1_calc_hex(sContent);
+                    std::string sSha1 = s5k::sha1_by_string(sContent);
                     if (sSha1 != df.getSha1()) {
                         std::cerr << "ERROR: wrong sha1 for '" + sFilename + "' (expected sha1 '" + sSha1 + "', but got '" + df.getSha1() + "')\n";
                         ret = false;
@@ -892,7 +892,7 @@ bool WsjcppPackageManager::verify() {
                         continue;
                     }
 
-                    // TODO redesign to WsjcppHelpers::getSha1ByFile(sFilename);
+                    // TODO redesign to s5k::sha1_by_file(sFilename);
                     std::string sContent = "";
                     if (!WsjcppCore::readTextFile(sFilename, sContent)) {
                         std::cerr << "ERROR: Could not read file '" + sFilename + "'";
@@ -900,7 +900,7 @@ bool WsjcppPackageManager::verify() {
                         continue;
                     }
 
-                    std::string sSha1 = WsjcppHelpers::sha1_calc_hex(sContent);
+                    std::string sSha1 = s5k::sha1_by_string(sContent);
                     if (sSha1 != df.getSha1()) {
                         std::cerr << "ERROR: wrong sha1 for '" + sFilename + "' (expected sha1 '" + sSha1 + "', but got '" + df.getSha1() + "')\n";
                         ret = false;
@@ -1009,13 +1009,13 @@ bool WsjcppPackageManager::checkInstalledPackage(
             sFilesHasChanges += " - missed: " + sFilename + " (with sha1:'" + src.getSha1() + "')\n";
             bHasChanges = true;
         } else {
-            // TODO redesign to WsjcppHelpers::getSha1ByFile(sFilename);
+            // TODO redesign to s5k::sha1_by_file(sFilename);
             std::string sContent = "";
             if (!WsjcppCore::readTextFile(sFilename, sContent)) {
                 sError = "Could not read file '" + sFilename + "'";
                 return false;
             }
-            std::string sSha1 = WsjcppHelpers::sha1_calc_hex(sContent);
+            std::string sSha1 = s5k::sha1_by_string(sContent);
             if (sSha1 != src.getSha1()) {
                 sFilesHasChanges += " - wrong sha1: " + sFilename + " (expected sha1 '" + sSha1 + "', but got '" + src.getSha1() + "')\n";
                 bHasChanges = true;
@@ -1393,7 +1393,7 @@ bool WsjcppPackageManager::addResource(const std::string &sFilepath, const std::
   resourceFile.setFilepath(sFilepath);
   resourceFile.setPackAs(sPackAs);
 
-  std::string sSha1 = WsjcppHelpers::getSha1ByFile(sFilepath);
+  std::string sSha1 = s5k::sha1_by_file(sFilepath);
   resourceFile.setSha1(sSha1);
 
   struct stat result;
@@ -1452,7 +1452,7 @@ bool WsjcppPackageManager::updateResource(const std::string &sFilepath) {
 
   WsjcppLog::info(TAG, "Start updating '" + m_vResourceFiles[nResFileNum].getFilepath() + "'");
 
-  std::string sSha1 = WsjcppHelpers::getSha1ByFile(sFilepath);
+  std::string sSha1 = s5k::sha1_by_file(sFilepath);
   m_vResourceFiles[nResFileNum].setSha1(sSha1);
 
   struct stat result;
@@ -1879,7 +1879,7 @@ std::string WsjcppPackageManager::generateResourceCppFileBasename(const std::str
             sFilenameNormalized += '_';
         }
     }
-    std::string sMd5 = WsjcppHelpers::getSha1ByString(sFilepath);
+    std::string sMd5 = s5k::sha1_by_string(sFilepath);
     sMd5 = sMd5.substr(0,6);
     sFilenameNormalized += "_path" + sMd5;
     return sFilenameNormalized;
@@ -2217,7 +2217,7 @@ void WsjcppPackageManager::removeDependenciesFilesSafe(const WsjcppPackageManage
             } else {
                 std::string sContent;
                 WsjcppCore::readTextFile(sFilePath, sContent);
-                std::string sSha1 = WsjcppHelpers::sha1_calc_hex(sContent);
+                std::string sSha1 = s5k::sha1_by_string(sContent);
                 if (sSha1 != file.getSha1()) {
                     WsjcppLog::warn(TAG, "Could not remove file '" + sFilePath + "', because maybe has local important changes. "
                         "\r\n  sha1 expected '" + file.getSha1() + "', but got '" + sSha1 + "'");

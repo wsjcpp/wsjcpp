@@ -25,26 +25,15 @@ https://github.com/wsjcpp/wsjcpp
 
 */
 
-#include "wsjcpp_helpers.h"
-#include <smallsha1.h>
+#include "s5k_helpers.h"
+#include "third_party/smallsha1/smallsha1.h"
 #include <iostream>
 #include <cstring>
 #include <fstream>
 
-// ---------------------------------------------------------------------
-// WsjcppHelpers
+namespace s5k {
 
-std::string WsjcppHelpers::sha1_calc_hex(const std::string &sSource) { // deprecated
-    char hexstring[41]; // 40 chars + a zero
-    std::memset(hexstring, 0, sizeof hexstring);
-
-    unsigned char hash[20];
-    sha1::calc(sSource.c_str(), sSource.length(), hash);
-    sha1::toHexString(hash, hexstring);
-    return std::string(hexstring);
-}
-
-std::string WsjcppHelpers::getSha1ByString(const std::string &sStr) {
+std::string sha1_by_string(const std::string &sStr) {
     char hexstring[41]; // 40 chars + a zero
     std::memset(hexstring, 0, sizeof hexstring);
 
@@ -54,7 +43,7 @@ std::string WsjcppHelpers::getSha1ByString(const std::string &sStr) {
     return std::string(hexstring);
 }
 
-std::string WsjcppHelpers::getSha1ByFile(const std::string &sFilename) {
+std::string sha1_by_file(const std::string &sFilename) {
     std::ifstream f(sFilename, std::ifstream::binary);
     if (!f) {
         return "Could not open file";
@@ -84,3 +73,4 @@ std::string WsjcppHelpers::getSha1ByFile(const std::string &sFilename) {
     return std::string(hexstring);
 }
 
+} // namespace s5k

@@ -29,9 +29,9 @@ https://github.com/wsjcpp/wsjcpp
 
 #include <string>
 
-class WsjcppHelpers {
-    public:
-        static std::string sha1_calc_hex(const std::string &sSource); // deprecated
-        static std::string getSha1ByString(const std::string &sStr);
-        static std::string getSha1ByFile(const std::string &sFilename);
-};
+namespace s5k {
+
+  std::string sha1_by_string(const std::string &str);
+  std::string sha1_by_file(const std::string &filepath);
+
+} // namespace s5k

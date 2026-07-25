@@ -14,12 +14,8 @@ set(EXECUTABLE_OUTPUT_PATH ${wsjcpp_SOURCE_DIR})
 
 # include header dirs
 list (APPEND WSJCPP_INCLUDE_DIRS "src")
-list (APPEND WSJCPP_INCLUDE_DIRS "src")
-list (APPEND WSJCPP_INCLUDE_DIRS "src/thirdparty")
 list (APPEND WSJCPP_INCLUDE_DIRS "src/ArgumentsProcessors")
 
-list (APPEND WSJCPP_SOURCES "src/thirdparty/smallsha1.cpp")
-list (APPEND WSJCPP_SOURCES "src/wsjcpp_helpers.cpp")
 
 list (APPEND WSJCPP_SOURCES "src/wsjcpp_package_manager_author.cpp")
 list (APPEND WSJCPP_SOURCES "src/wsjcpp_package_manager_author.h")
@@ -49,7 +45,10 @@ list (APPEND WSJCPP_SOURCES "./src/wsjcpp_package_downloader_localfs.cpp")
 list (APPEND WSJCPP_SOURCES "./src/wsjcpp_package_downloaders.h")
 list (APPEND WSJCPP_SOURCES "./src/wsjcpp_package_downloaders.cpp")
 
+list (APPEND WSJCPP_SOURCES "src/third_party/smallsha1/smallsha1.cpp")
 list (APPEND WSJCPP_SOURCES "src/s5k/main.cpp")
+list (APPEND WSJCPP_SOURCES "src/s5k/utils/s5k_helpers.cpp")
+
 list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_dependencies.cpp")
 list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_dependencies.h")
 list (APPEND WSJCPP_SOURCES "src/ArgumentsProcessors/argument_processor_distribution.cpp")

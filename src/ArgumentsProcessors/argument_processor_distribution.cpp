@@ -1,7 +1,7 @@
 #include "argument_processor_distribution.h"
 #include <wsjcpp_package_manager.h>
 #include <wsjcpp_core.h>
-#include <wsjcpp_helpers.h>
+#include "s5k/utils/s5k_helpers.h"
 
 // ---------------------------------------------------------------------
 // ArgumentProcessorDistribution

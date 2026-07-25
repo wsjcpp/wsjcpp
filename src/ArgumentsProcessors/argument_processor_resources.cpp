@@ -2,7 +2,7 @@
 #include "argument_processor_resources.h"
 #include <wsjcpp_core.h>
 #include <wsjcpp_package_manager.h>
-#include <wsjcpp_helpers.h>
+#include "s5k/utils/s5k_helpers.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <algorithm>
