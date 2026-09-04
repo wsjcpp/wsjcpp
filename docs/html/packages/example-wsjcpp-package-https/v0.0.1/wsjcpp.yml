@@ -1,0 +1,24 @@
+name: "example-wsjcpp-package-https"
+version: "v0.0.1"
+cmake_minimum_required: "3.0"
+cmake_cxx_standard: "11"
+description: "Example package wsjcpp"
+
+authors:
+  - name: "Evgenii Sopov"
+    email: "mrseakg@gmail.com"
+
+origins:
+  - address: "http://wsjcpp.org/packages/"
+    type: "package-registry"
+
+keywords:
+  - "c++"
+
+distribution:
+  - source-file: "src/example_wsjcpp_package_https.cpp"
+    target-file: "example_wsjcpp_package_https.cpp"
+    type: "source-code"
+  - source-file: "src/example_wsjcpp_package_https.h"
+    target-file: "example_wsjcpp_package_https.h"
+    type: "source-code"

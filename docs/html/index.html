@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html xmlns = "http://www.w3.org/1999/xhtml">
+<head>
+    <title>wsjcpp</title>
+    <meta name="description" content="wsjcpp - yet another c++ source package manager"> 
+
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="yandex-verification" content="f4fcdbd8a3c6e10d" />
+
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.svg" type="image/svg">
+    <link rel="icon" href="favicon.png" type="image/png">
+    <meta name="msapplication-config" content="browserconfig.xml">
+    <meta name="application-name" content="wsjcpp">
+    <meta name="msapplication-tooltip" content="wsjcpp">
+    <link rel="mask-icon" href="safari-pinned-tab.svg" color="#ffffff">
+    <link rel="apple-touch-icon" sizes="57x57" href="apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-180x180.png">
+    <meta name = "apple-mobile-web-app-title" content = "wsjcpp">
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
+    <link rel="manifest" href="manifest.json">
+
+    <link rel="stylesheet" href="./css/index.css?ver=1"/>
+    <link rel="stylesheet" href="./css/wsjcpp-hightlight-code.css?ver=1"/>
+    <script src="./js/jquery-3.4.1.min.js"></script>
+    <script src="./js/index.js?ver=1"></script>
+    <script src="./js/wsjcpp-hightlight-code.js?ver=1"></script>
+</head>
+<body>
+    <div class="menu-mobile">
+        <div class="menu-icon-mobile">wsjcpp</div>
+        <div class="menu-gamburger" onclick="switch_menu()"></div>
+    </div>
+    <div class="menu" id="main_menu">
+        <div class="menu-content">
+            <div class="menu-icon">wsjcpp</div>
+            <div class="menu-item menu-info">
+                <a href="#about" onclick="open_main(); close_menu();">About</a>
+            </div>
+            <div class="menu-item menu-info">
+                <a href="#contacts" onclick="open_main(); close_menu()">Contacts</a>
+            </div>
+            <div class="menu-item menu-info">
+                <a href="#install" onclick="open_main(); close_menu()">Install</a>
+            </div>
+            <div class="menu-item menu-info">
+                <a href="#docker" onclick="open_main(); close_menu()">Docker</a>
+            </div>
+            <div class="menu-divider">
+                Documentation    
+            </div>
+            <div class="menu-item menu-doc">
+                <a href="#search_packages" onclick="open_main(); close_menu()">search packages</a>
+            </div>
+            <div class="menu-item menu-doc">
+                <a href="#init_new_package" onclick="open_main(); close_menu()">init new package</a>
+            </div>
+            <div class="menu-item menu-doc">
+                <a href="#submit_source_package_into_wsjcpp" onclick="open_main(); close_menu()">submit package</a>
+            </div>
+            <div class="menu-item menu-doc">
+                <a href="#wsjcpp_info" onclick="open_main(); close_menu()">info</a>
+            </div>
+            <div class="menu-item menu-doc">
+                <a href="#wsjcpp_distribution" onclick="open_main(); close_menu()">distribution</a>
+            </div>
+            <div class="menu-item menu-doc">
+                <a href="#wsjcpp_unit_tests" onclick="open_main(); close_menu()">unit-tests</a>
+            </div>
+            <div class="menu-item menu-doc">
+                <a href="#wsjcpp_generate" onclick="open_main(); close_menu()">generate</a>
+            </div>
+            <div class="menu-item menu-doc">
+                <a href="#wsjcpp_auto_generate_files" onclick="open_main(); close_menu()">auto-generated-files</a>
+            </div>
+            <div class="menu-item menu-doc">
+                <a href="#wsjcpp_resources" onclick="open_main(); close_menu()">resources</a>
+            </div>
+            <div class="menu-item menu-doc">
+                <a href="#wsjcpp_prepare" onclick="open_main(); close_menu()">prepare</a>
+            </div>
+            <div class="menu-item menu-doc">
+                <a href="#wsjcpp_scan" onclick="open_main(); close_menu()">scan</a>
+            </div>
+
+            <div class="menu-divider"></div>
+            <div class="menu-item menu-more">
+                <a href="#ideas" onclick="open_main(); close_menu()">Ideas</a>
+            </div>
+            <div class="menu-item menu-more">
+                <a href="javascript:void(0);" onclick="open_packages(); close_menu();">Packages</a>
+            </div>
+            <div class="menu-divider">
+                C++ Links
+            </div>
+            <div class="menu-item menu-more">
+                <a href="#cpp-managers" onclick="open_main(); close_menu()">C++ Managers</a>
+            </div>
+            <div class="menu-item menu-more">
+                <a href="#cpp-services" onclick="open_main(); close_menu()">C++ Services</a>    
+            </div>
+            <div class="menu-item menu-more">
+                <a href="#cpp-conferences" onclick="open_main(); close_menu()">C++ Conferences</a>
+            </div>
+            <div class="menu-item menu-more">
+                <a href="#cpp-frameworks" onclick="open_main(); close_menu()">C++ Frameworks</a>    
+            </div>
+            <div class="menu-item menu-more">
+                <a href="#cpp-tools" onclick="open_main(); close_menu()">C++ Tools</a>
+            </div>
+            <div class="menu-item menu-more">
+                <a href="#cpp-other" onclick="open_main(); close_menu()">C++ Other</a>
+            </div>
+            <div class="menu-skip"></div>
+            <div class="menu-skip"></div>
+        </div>
+    </div>
+    
+    <div class="container" id="content_main">
+        <div class="info">
+            If you found some error or want append more information please add pull request in 
+            <a target="_blank" href="https://github.com/wsjcpp/wsjcpp-org/">github</a> 
+            or create <a target="_blank" href="https://github.com/wsjcpp/wsjcpp-org/issues/new">new issues</a> for ask or problem
+        </div>
+
+        <a class="anchorjs-link" name="about" aria-label="Anchor" data-anchorjs-icon="#" style="padding-left: 0.375em;"></a>
+        <h1>wsjcpp</h1>
+        
+        <p>Yet another... C++ Source Package Manager.</p>
+        <img src="https://img.shields.io/github/stars/wsjcpp/wsjcpp.svg?label=github%20%E2%98%85">
+
+        <h3>Issues</h3>
+        <p>
+            You can add any issues on github: <a target="_blank" href="https://github.com/wsjcpp/wsjcpp/issues">https://github.com/wsjcpp/wsjcpp/issues</a>
+        </p>
+        <p>
+            Or write me an e-mail with topic: "wsjcpp"
+            to <a href="mailto:mrseakg@gmail.com?subject=wsjcpp">mrseakg@gmail.com</a>
+        </p>
+
+        <div class="warn">
+            I need your help with this project! <br>
+            Please rate it with a star, follow updates notifications by clicking on "watch" button or just make a fork <a href="https://github.com/wsjcpp/wsjcpp">https://github.com/wsjcpp/wsjcpp</a><br>
+            For submitting the official package into brew: "GitHub repository is not notable enough (&lt;30 forks, &lt;30 watchers and &lt;75 stars)"
+        </div>
+
+        <h3>features - has implementation</h3>
+        <ul>
+            <li>Creating an open-source package by anyone (github.com / gitlab.com / bitbucket.org / http / https )</li>
+            <li>Manager - an application consisting of a single binary file</li>
+            <li>Supports: Linux and MacOS</li>
+            <li>Simple installation of specific versions of source packages into your projects</li>
+            <li>Upgrade source packages</li>
+            <li>Hold specific version of source code - so you can fix modules locally</li>
+            <li>Source code "freezing" (sometimes it's necessary for commercial development)</li>
+            <li>Simple integration into your CMake project</li>
+            <li>Simple start for a new project (prepared basic structures and files)</li>
+            <li>System for generating files with specific classes</li>
+            <li>Included unit-tests systems</li>
+            <li>Simple publication of source packages (github.com, bitbucket.org, gitlab.com, http/https servers)</li>
+            <li>Added helpful tool for preparing packages for other systems: homebrew</li>
+            <li>Included tool for unit-tests</li>
+        </ul>
+
+        <h3>all goals - not yet implemented</h3>
+        <ul>
+            <li>Fast creation of microservices based on Dockerfile using C++</li>
+            <li>Adding helpful tool for generating specific classes (templates or snippets)</li>
+            <li>Adding helpful tool for preparing packages for other systems: deb, ppa, etc...</li>
+            <li>Adding helpful tool for docker images</li>
+            <li>Adding helpful tool for build servers</li>
+            <li>Adding helpful tool with web interface for coding, building, managment</li>
+            <li>Adding helpful tool for quick start of your local "source package registry"</li>
+            <li>Adding helpful tool for code analizing</li>
+            <li>Adding helpful tool for code documentation</li>
+        </ul>
+        
+        <hr/>
+
+        <a class="anchorjs-link" name="contacts" aria-label="Anchor" data-anchorjs-icon="#" style="padding-left: 0.375em;"></a>
+        <h3>Contacts</h3>
+        <p>E-mail: <a href="mailto:mrseakg@gmail.com?subject=wsjcpp">mrseakg@gmail.com</a></p>
+        <p>Telegram: <a href="https://t.me/wsjcpp" target="_blank">https://t.me/wsjcpp</a></p>
+        <p>Official web-site: <a href="https://wsjcpp.org" target="_blank">https://wsjcpp.org</a> </p>
+        <p>GitHub: <a href="https://github.com/wsjcpp/wsjcpp" target="_blank">https://github.com/wsjcpp/wsjcpp</a> </p>
+
+        <hr/>
+
+        <a class="anchorjs-link " name="install" aria-label="Anchor" data-anchorjs-icon="#" style="padding-left: 0.375em;"></a>
+        <h1>Install</h1>
+        <h3>MacOS: brew</h3>
+Via brew
+<div class="wsjcpp-hightlight-code shell-zsh">
+% brew tap wsjcpp/wsjcpp
+% brew install wsjcpp
+</div>
+To upgrade package:
+<div class="wsjcpp-hightlight-code shell-zsh">
+% brew upgrade wsjcpp
+</div>
+
+<br>
+        <h3>MacOS: build from source code</h3>
+<div class="wsjcpp-hightlight-code shell-zsh">
+% brew install git-core cmake make pkg-config g++ curl-openssl
+% git clone https://github.com/wsjcpp/wsjcpp
+% cd wsjcpp/
+% ./build_simple.sh
+% sudo cp -r /tmp/wsjcpp.git /usr/local/bin/wsjcpp
+</div>
+    <h3>Ubuntu: install from PPA</h3>
+<div class="wsjcpp-hightlight-code shell-bash">
+$ sudo add-apt-repository ppa:sea5kg/wsjcpp
+$ sudo apt-get update
+$ sudo apt-get install wsjcpp
+</div>
+<a href="https://launchpad.net/~sea5kg/+archive/ubuntu/wsjcpp">Launchpad PPA</a>
+<br>
+<h3>Debian/Ubuntu: build && install from source code</h3>
+<div class="wsjcpp-hightlight-code shell-bash">
+$ sudo apt install cmake make g++ pkg-config libcurl4-openssl-dev git-core
+$ git clone https://github.com/wsjcpp/wsjcpp /tmp/wsjcpp.git
+$ cd /tmp/wsjcpp.git
+$ ./build_simple.sh
+$ sudo cp -r ./wsjcpp /usr/local/bin/wsjcpp
+</div>
+<a href="https://www.youtube.com/watch?v=pOTK7MVZV7g">Look on YouTube</a>
+
+<br>
+
+        <hr>
+        <a class="anchorjs-link " name="docker" aria-label="Anchor" data-anchorjs-icon="#" style="padding-left: 0.375em;"></a>
+        <h1>Docker</h1>
+
+        <p>Step 1. Install the latest docker into your system</p>
+        <p>Step 2. Pull a container with wsjcpp</p>
+        <div class="wsjcpp-hightlight-code shell-zsh">$ docker pull sea5kg/wsjcpp:latest</div>
+        <br>
+        <p>Step 3. Change the directory to the one containing your project (cd ~/my-project)</p>
+        <p>Step 4. Run interactive command line container</p>
+<div class="wsjcpp-hightlight-code shell-bash">
+$ docker pull sea5kg/wsjcpp:latest
+$ docker run -it --rm \
+    -v `pwd`/.:/root/project \
+    sea5kg/wsjcpp:latest \
+    bash
+root@8b93098b8a07:~/project#
+</div>
+        <p>Now you can use "wsjcpp" command and build/run your project</p>
+        <br>
+        <h3>more dependencies in docker image</h3>
+        <p>If you need more deb packages and programs than the image "sea5kg/wsjcpp:latest" contains, you can install it via apt, but don't forget that after restarting the container they will be lost.</p>
+        <br>
+        <p>To solve this problem you need to prepare Dockerfile.dev that looks something like this:</p>
+<div class="wsjcpp-hightlight-code dockerfile">
+FROM sea5kg/wsjcpp:latest
+
+# install build requiremenets
+RUN apt update && apt install -y --no-install-recommends \
+    libqt5sql5-mysql \ # replace to your packages
+    libqt5websockets5 \ # replace to your packages
+    libqt5websockets5-dev \ # replace to your packages
+    qt5-default # replace to your packages
+</div>
+        <br>        
+        <p>Now you can use "wsjcpp" command and build/run your project</p>
+        
+        <p>Build your docker image:</p>
+<div class="wsjcpp-hightlight-code shell-zsh">$ docker build -t your-project-build:latest -f Dockerfile.dev</div>
+        <br>
+        <p>Run container from your image (+ extend port):</p>
+<div class="wsjcpp-hightlight-code shell-bash">
+$ docker run -it --rm \
+    -v `pwd`/.:/root/project \
+    your-project-build:latest \
+    -p 1234:1234 \
+    bash
+root@0b93098b8a07:~/project#
+</div>
+
+        <a class="anchorjs-link " name="documentation" aria-label="Anchor" data-anchorjs-icon="#" style="padding-left: 0.375em;"></a>
+        <h1>Documentation</h1>
+        
+        <a class="anchorjs-link " name="search_packages" aria-label="Anchor" data-anchorjs-icon="#" style="padding-left: 0.375em;"></a>
+        <h3>search packages in github</h3>
+        I think that better praxis is to add topic in the github repository:
+        <a target="_blank" href="https://github.com/topics/wsjcpp-package">https://github.com/topics/wsjcpp-package</a>
+
+        <a class="anchorjs-link " name="init_new_package" aria-label="Anchor" data-anchorjs-icon="#" style="padding-left: 0.375em;"></a>
+        <h3>init new package</h3>
+<div class="wsjcpp-hightlight-code shell-bash">
+$ mkdir your-package-name
+$ cd your-package-name
+$ wsjcpp init .
+</div>
+
+Then you need to specify several fields (or you can do it later in wsjcpp.yml):
+<div class="wsjcpp-hightlight-code text">
+Source Package Name: your-package-name
+Version: v0.0.1
+Description: Some package
+Author's Name: Some Author
+Author's Email: some@author.org
+</div>
+
+At this step different files will be generated (if they don't exist), eg:
+
+<ul>
+    <li>src.wsjcpp/CMakeLists.txt - file will be automatically updated after packages installation</li>
+    <li>src.wsjcpp/wsjcpp_core/* - preinstalled package with core for unit-tests and logger</li>
+    <li>unit-tests.wsjcpp/* <- folder for unit-tests</li>
+    <li>src/main.cpp</li>
+    <li>.wsjcpp/* <- temporary folder</li>
+    <li>CMakeLists.txt</li>
+    <li>build_simple.sh</li>
+    <li>.gitignore</li>
+    <li>...</li>
+</ul>
+        <a class="anchorjs-link " name="submit_source_package_into_wsjcpp" aria-label="Anchor" data-anchorjs-icon="#" style="padding-left: 0.375em;"></a>
+        <h3>Submit source packages into wsjcpp</h3>
+<p>At the moment, wsjcpp can work with public repositories in
+    <ul>
+        <li>github.com</li>
+        <li>bibucket.org (example: <a href="https://bitbucket.org/wsjcpp/example-wsjcpp-package-bitbucket/">https://bitbucket.org/wsjcpp/example-wsjcpp-package-bitbucket/</a>)</li>
+        <li>gitlab.org (example: <a href="https://gitlab.com/wsjcpp/example-wsjcpp-package-gitlab">https://gitlab.com/wsjcpp/example-wsjcpp-package-gitlab</a>)</li>
+        <li>http(s) (example: <a href="https://wsjcpp.org/packages/example/v0.0.1/">https://wsjcpp.org/packages/example/v0.0.1/</a>)</li>
+    </ul>
+</p>
+<p>Below you can see that it is easy to submit wsjcpp-package:</p>
+<p>Step 1. Create "wsjcpp.yml" file with minimal content (please fill in the fields with your data) in your repository</p>
+<div class="wsjcpp-hightlight-code yaml">
+wsjcpp_version: "v0.1.1"
+cmake_minimum_required: "3.0"
+cmake_cxx_standard: "11"
+name: "you/package-name"
+version: "v0.0.0"
+description: "Describe your package"
+issues: "https://github.com/you/package-name/issues"
+keywords:
+  - "c++"
+  - "keyword"
+
+repositories:
+  - type: main
+    url: "https://github.com/you/package-name"
+
+authors:
+  - name: "Your Name"
+    email: "your@email.com"
+
+# files will be distributed for this package
+distribution:
+  - source-file: "src/some.h"
+    target-file: "some.h"
+    type: "source-code"
+  - source-file: "src/some.h"
+    target-file: "some.h"
+    type: "source-code"
+</div>
+
+<p>Step 2. And add topic <br>"wsjcpp-package"</br> into your public github project</p>
+
+<p>Step 3. Test installation of your project</p>
+<div class="wsjcpp-hightlight-code shell-bash">
+$ mkdir /tmp/test1
+$ cd /tmp/test1
+$ wsjcpp init .
+$ chmod +x build_simple.sh
+$ wsjcpp install https://github.com/you/package-name:master
+$ ./build_simple.sh
+</div>
+
+        <br></br>
+        
+        <a class="anchorjs-link " name="wsjcpp_info" aria-label="Anchor" data-anchorjs-icon="#" style="padding-left: 0.375em;"></a>
+
+        <h3>wsjcpp info</h3>
+        Information about current package. Example:
+<div class="wsjcpp-hightlight-code text">
+===== begin: wsjcpp info =====
+Name: wsjcpp
+Version: v0.1.1
+Description: C++ Source Package manager
+Directory: .
+wsjcpp.version = v0.0.2
+Keywords: 
+    - c++
+    - sources
+
+Distribution-Files: 
+    - src/wsjcpp_package_manager_distribution_file.cpp -> wsjcpp_package_manager_distribution_file.cpp [source-code]
+    - src/wsjcpp_package_manager_distribution_file.h -> wsjcpp_package_manager_distribution_file.h [source-code]
+    - src/wsjcpp_package_manager_safe_scripting_generate.cpp -> wsjcpp_package_manager_safe_scripting_generate.cpp [source-code]
+    - src/wsjcpp_package_manager_safe_scripting_generate.h -> wsjcpp_package_manager_safe_scripting_generate.h [source-code]
+    - src/wsjcpp_package_manager.cpp -> wsjcpp_package_manager.cpp[source-code]
+    - src/wsjcpp_package_manager.h -> wsjcpp_package_manager.h [source-code]
+
+Authors: 
+    - Evgenii Sopov <mrseakg@gmail.com>
+
+Dependencies: 
+    - wsjcpp-core:v0.1.1
+    - wsjcpp-yaml:v0.1.1
+    - wsjcpp-hashes:v0.1.0
+    - wsjcpp-safe-scripting:v0.1.0
+    - wsjcpp-arguments:v0.1.0
+===== end: wsjcpp info =====
+
+</div>
+        <br><br>
+        <a class="anchorjs-link " name="wsjcpp_distribution" aria-label="Anchor" data-anchorjs-icon="#" style="padding-left: 0.375em;"></a>
+        <h3>wsjcpp distribution</h3>
+        Developer defines what exactly your package will distribute (without main/trash/unit-tests - only core code).
+        <ul>
+            <li>wsjcpp dist list - list of distributed files</li>
+            <li>wsjcpp dist add filepath1 - add to distributed files</li>
+            <li>wsjcpp dist remove filepath1 - remove from distribution (remove info only from wsjcpp.yml, not from filesystem)</li>
+        </ul>
+        Example:
+<div class="wsjcpp-hightlight-code shell-zsh">
+% wsjcpp dist list
+Distribution list:
+   source-code: 'src/wsjcpp_package_manager_distribution_file.cpp' -> 'wsjcpp_package_manager_distribution_file.cpp'
+   source-code: 'src/wsjcpp_package_manager_distribution_file.h' -> 'wsjcpp_package_manager_distribution_file.h'
+   source-code: 'src/wsjcpp_package_manager_safe_scripting_generate.cpp' -> 'wsjcpp_package_manager_safe_scripting_generate.cpp'
+   source-code: 'src/wsjcpp_package_manager_safe_scripting_generate.h' -> 'wsjcpp_package_manager_safe_scripting_generate.h'
+   source-code: 'src/wsjcpp_package_manager.cpp' -> 'wsjcpp_package_manager.cpp'
+   source-code: 'src/wsjcpp_package_manager.h' -> 'wsjcpp_package_manager.h'
+% wsjcpp dist add src/some_file.h
+Added.
+% wsjcpp dist remove src/some_file.h
+Removed.
+</div>
+        <br><br>
+        <a class="anchorjs-link " name="wsjcpp_unit_tests" aria-label="Anchor" data-anchorjs-icon="#" style="padding-left: 0.375em;"></a>
+        <h3>wsjcpp unit-tests</h3>
+        Create unit-tests for your distributed files
+        <ul>
+            <li>wsjcpp unit-tests list - list of defined unit-tests</li>
+            <li>wsjcpp unit-tests create NameTest "Description Test" - few files will be created and added to unit-tests/CMakeLists.txt</li>
+            <li>wsjcpp unit-tests delete NameTest - !!! remove files and definitions from wsjcpp.yml</li>
+            <li>wsjcpp unit-tests disable NameTest - disable unit-test (exclude from build/run)</li>
+            <li>wsjcpp unit-tests enable NameTest - enable unit-test (include into build/run)</li>
+        </ul>
+        Example:
+<div class="wsjcpp-hightlight-code shell-zsh">
+% wsjcpp unit-tests list
+2020-04-09 11:16:18.097, 0x0x1130c1dc0 [INFO] WsjcppArgumentProcessor-list: 
+Unit Tests Cases:
+* NormalizeUnitTestName - Test Normalize UnitTest Name
+* generateFilenameForUnitTest - Test generate filename for UnitTest
+* InitPackage - Test for init package
+* ReadPackage - Test for read package
+% wsjcpp unit-tests create ExampleTest "Some example test"
+% wsjcpp unit-tests delete ExampleTest
+Unit Test 'ExampleTest' removed successfully.
+</div>
+
+    <br><br>
+    <a class="anchorjs-link " name="wsjcpp_generate" aria-label="Anchor" data-anchorjs-icon="#" style="padding-left: 0.375em;"></a>
+    <h3>wsjcpp generate</h3>
+    Generate source code from templates supplied with packages
+    <ul>
+        <li>wsjcpp generate list - list of templates</li>
+        <li>wsjcpp generate TemplateName ClassName - files will be generated from template and added into your CMakeLists.txt between lines '#### BEGIN_WSJCPP_APPEND' and '#### END_WSJCPP_APPEND'</li>
+    </ul>
+    Example:
+<div class="wsjcpp-hightlight-code shell-zsh">
+% wsjcpp generate list
+Generators: 
+ - wsjcpp generate WsjcppSafeScriptingProc YouClassNameHere
+ - wsjcpp generate WsjcppArgumentProcessor YouClassNameHere
+
+% wsjcpp generate WsjcppArgumentProcessor Some
+2020-04-09 11:44:09.418, 0x0x10a3aadc0 [INFO] WsjcppSafeScriptingContext: arg1 = 'Some'
+2020-04-09 11:44:09.420, 0x0x10a3aadc0 [INFO] WsjcppSafeScriptingProc[log_info]: 
+======
+Generated class:
+    - ArgumentProcessorSome
+Generated files:
+    - ./src/argument_processor_some.h
+    - ./src/argument_processor_some.cpp
+======
+</div>
+
+<br><br>
+<a class="anchorjs-link " name="wsjcpp_auto_generate_files" aria-label="Anchor" data-anchorjs-icon="#" style="padding-left: 0.375em;"></a>
+<h3>wsjcpp change version</h3>
+Update version in project
+<ul>
+    <li>wsjcpp change version v0.1.1 - update version for current project</li>
+</ul>
+Example config lines for wsjcpp.yaml:
+<div class="wsjcpp-hightlight-code shell-zsh">
+auto-generated-files:
+  version-file:
+    path: "./"
+    filename: "VERSION"
+    printed-format: "{MAJOR}.{MINOR}.{BUILD}"
+</div>
+        
+    <br><br>
+    <a class="anchorjs-link " name="wsjcpp_resources" aria-label="Anchor" data-anchorjs-icon="#" style="padding-left: 0.375em;"></a>
+    <h3>wsjcpp resources</h3>
+    Convert binary or text resource files into C++ code
+    <ul>
+        <li>wsjcpp [resources|res] [list|ls] - list of defined resources</li>
+        <li>wsjcpp [resources|res] add [--text|--binary] path_to_file - add file to resources and generate C++ files</li>
+        <li>wsjcpp [resources|res] [remove|rm] path_to_file - remove C++ files, which were generated</li>
+    </ul>
+
+    Example:
+<div class="wsjcpp-hightlight-code shell-zsh">
+% wsjcpp res ls --more
+
+resources: 
+  - filepath: build_simple.sh
+    filesize: 74
+    pack-as: text
+    sha1: 01af063d6f69d212dc443ed8afce828855f040a2
+    modified: 2019-08-09 13:57:33
+  - filepath: README.md
+    filesize: 4218
+    pack-as: text
+    sha1: 
+    modified: 2020-04-13 12:39:27
+
+% wsjcpp res rm README.md
+Removed files:
+
+- ./src-resources.wsjcpp/README_md_path04c6e9.h
+- ./src-resources.wsjcpp/README_md_path04c6e9.cpp
+
+% wsjcpp res add README.md
+2020-04-09 11:44:09.418, 0x0x10a3aadc0 [INFO] WsjcppSafeScriptingContext: arg1 = 'Some'
+2020-04-09 11:44:09.420, 0x0x10a3aadc0 [INFO] WsjcppSafeScriptingProc[log_info]:
+======
+Generated class:
+    - ArgumentProcessorSome
+Generated files:
+    - ./src/argument_processor_some.h
+    - ./src/argument_processor_some.cpp
+======
+</div>
+
+<br>
+How to use resources from code:
+
+<div class="wsjcpp-hightlight-code clike">
+
+#include &lt;wsjcpp_resources_manager.h&gt;
+
+int main () {
+    WsjcppResourceFile *pFile = WsjcppResourcesManager::get("build_simple.sh");
+
+    if (pFile->getPackAs() == "text") {
+        std::string sBuildSipleSh(pFile->getBuffer(), pFile->getBufferSize());
+    }
+
+    if (pFile->getPackAs() == "binary") {
+        pFile->getBuffer(); // buffer 
+        pFile->getBufferSize(); // buffer size
+    }
+    return -1;
+}
+</div>
+
+        <br><br>
+        <a class="anchorjs-link " name="wsjcpp_prepare" aria-label="Anchor" data-anchorjs-icon="#" style="padding-left: 0.375em;"></a>
+        <h3>wsjcpp prepare</h3>
+        
+        Preparing some useful files and packages for other systems
+        <ul>
+            <li>wsjcpp prepare help - For more information</li>
+            <li>wsjcpp prepare travis - Prepare base file (.travis.yml) for Travis CI</li>
+            <li>wsjcpp prepare homebrew - Prepare package for homebrew</li>
+            <li>wsjcpp prepare dockerfile - Prepare sample Dockerfile for build and publishing current project</li>
+            <li>wsjcpp prepare changelog - Prepare sample CHANGELOG.md</li>
+        </ul>
+        <br><br>
+        <a class="anchorjs-link " name="wsjcpp_scan" aria-label="Anchor" data-anchorjs-icon="#" style="padding-left: 0.375em;"></a>
+        <h3>wsjcpp scan</h3>
+        
+        Scan the code
+        <ul>
+            <li>wsjcpp scan help - For more information</li>
+            <li>wsjcpp scan todo - Search in code all TODOs</li>
+            <li>wsjcpp scan uniq-lines - Scan code and search uniq-lines</li>
+        </ul>
+        
+        <hr>
+
+        <a class="anchorjs-link " name="ideas" aria-label="Anchor" data-anchorjs-icon="#" style="padding-left: 0.375em;"></a>
+        <h1>Ideas</h1>
+        <br>
+        <div class="card0">
+            <h5 class="card0-title">idea: wsjcpp prepare deb-package</h5>
+            <h6 class="card0-subtitle">idea</h6>
+            <p>Prepare folder with a deb package</p>
+        </div>
+        <br>
+        <div class="card0">
+            <h5 class="card0-title">idea: wsjcpp prepare ppa-package</h5>
+            <h6 class="card0-subtitle">idea</h6>
+            <p>Prepare folder for a ppa source package</p>
+        </div>
+        <br>
+        <div class="card0">
+            <h5 class="card0-title">idea: wsjcpp prepare dockerfile</h5>
+            <h6 class="card0-subtitle">idea</h6>
+            <p>Prepare sample Dockerfile for you package</p>
+            <a href="https://github.com/wsjcpp/wsjcpp/issues/34" target="_blank">GitHub Issue</a>
+        </div>
+        <br>
+        <div class="card0">
+            <h5 class="card0-title">idea: wsjcpp docs generate</h5>
+            <h6 class="card0-subtitle">idea</h6>
+            <p>Scan sources and generate documentation like a doxygen</p>
+            <a href="https://github.com/wsjcpp/wsjcpp/issues/36" target="_blank">GitHub Issue</a>
+        </div>
+        <br>
+        <div class="card0">
+            
+            <h5 class="card0-title">idea: web-dev-panel</h5>
+            <h6 class="card0-subtitle">idea</h6>
+            <p>
+                <p>launch: wsjcpp web-dev-panel start --web ./web --project-dir ./project --port 8777</p>
+                <p>Or simply (default port: 8777): wsjcpp web-dev-panel start</p>
+                
+                <p>missing package: wsjcpp-do-run-command</p>
+
+                What will be done:
+                <ul>
+                    <li>Simple web app</li>
+                    <li>File tree of a project (exclude git maybe)</li>
+                    <li>Code editor: using a CodeMirror</li>
+                    <li>Command line web</li>
+                    <li>Tabs: editor / console / test / packages / docs</li>
+                    <li>Or buttons: build / run-unit-tests</li>
+                </ul>
+            </p>
+            <a href="https://github.com/wsjcpp/wsjcpp/issues/37" target="_blank">GitHub Issue</a>
+            
+        </div>
+        <br>
+        <div class="card0">
+            <h5 class="card0-title">idea: add support conan</h5>
+            <h6 class="card0-subtitle">idea</h6>
+            <p>
+                <ul>
+                    <li>1. Push/prepare package for conan.io</li>
+                    <li>2. Install packages from conan.io</li>
+                </ul>
+            </p>
+        </div>
+        <br>
+        <div class="card0">
+            <h5 class="card0-title">idea: wsjcpp clean</h5>
+            <h6 class="card0-subtitle">idea</h6>
+            <p>
+                read conf file wsjcpp.yml to clean section
+            </p>
+        </div>
+        <br>
+        <div class="card0">
+            <h5 class="card0-title">idea: wsjcpp install -g "url" </h5>
+            <h6 class="card0-subtitle">idea</h6>
+            <p>
+                Add installation to global directory in system / or in home user directory
+            </p>
+        </div>
+        <br>
+        <div class="card0">
+            <h5 class="card0-title">idea: wsjcpp install "git@github.com:...."</h5>
+            <h6 class="card0-subtitle">idea</h6>
+            <p>
+                Add support of installation packages from private repository (with credentials https/ssh/git)
+            </p>
+        </div>
+        <br>
+
+        <div class="card0">
+            <div class="card0-title">idea: wsjcpp server-origin start</div>
+            <div class="card0-subtitle">idea</div>
+
+            <p>
+                <p>Same "registry"</p>
+                Web server for caching/registry source packages in local network (e.g. for use within your company)
+                <p>what will be included:</p>
+                <ul>
+                    <li>registry source package</li>
+                    <li>page of source package with infomation about tests/builds/dependencies</li>
+                    <li>package search interface</li>
+                    <li>feature: test build (enable/disable) - based on docker</li>
+                    <li>feature: subscription about new versions (enable/disable)</li>
+                    <li>feature: build/tests - logging</li>
+                    <li>feature: number of package dependencies for a specific package + remote icon</li>
+                    <li>feature: code-covarage</li>
+                    <li>feature: doxigen or something like it</li>
+                    <li>feature: find on github wsjcpp packages by tag 'wsjcpp'</li>
+                </ul>
+        
+                <p>тезисы </p>
+                <p>Он же билд сервер - для проверки пакетов (на основе докера)</p>
+        
+                <p>Без авторизации - просто ссылка на репозиторий (github) и версию пакета (типа wsjcpp publish link : version) - также сохраняются все файлы для дистрибьюции - запрещена повторная заливка пакета</p>
+                <p>С авторизацией (простенькая) - загружается сорс код по файлово - то что в дистрибьюции - надо проработать протокол типа заливается вначале wsjcpp.yml - потом дозаливаются все остальные файлы</p>
+                <p>Регистрация только в ручном режиме - заходим в админку и добавляем пользователя с ролью девелопер</p>
+        
+                <p>Состояние сборки и тестов (если не прошли тесты и сборка то пакет дропается с сервера а состояния остаются)</p>
+                <p>Хранятся последняя версия пакета а также версии на которые ссылаются предыдущие + хранятся unit-tests - весь остальной храм удаляется</p>
+                
+                <p>Команды:</p>
+        
+                <p>wsjcpp publish ссылка-на-гитхаб:бранч-или-тег</p>
+                <p>wsjcpp publish путь-до-локального-пакета</p>
+                <p>wsjcpp publish --origin ссылка-сервера-регистратора что-куда</p>
+                <p>если оригин не указан то используется дефолтный wsjcpp.org</p>
+            </p>
+            
+        </div>
+        <hr>
+
+        <a class="anchorjs-link " name="cpp-managers" aria-label="Anchor" data-anchorjs-icon="#" style="padding-left: 0.375em;"></a>
+        <h1>C++ Managers</h1>
+        Such as:
+        <ul>
+            <li>C++ Library Manager</li>
+            <li>C++ Package Manager</li>
+            <li>C++ Build Manager</li>
+            <li>C++ Source Package Manager</li>
+        </ul>
+
+        <p>I once thought:</p>
+        <p>"I wanna package manager for C++ like npm/pip for comfortable management of source code modules in my C++ projects".</p>
+        <p>Then I found a few source package manager projects for C++, but they didn't suit me... and I tried to create my own.</p>
+        <p>So... if you don't like my wsjcpp, or it's not exactly what you're looking for, please look through systems developed by other authors:</p>
+
+
+        <br>
+        <div class="card0">
+            <h5 class="card0-title">conan</h5>
+            <h6 class="card0-subtitle">Conan, the C/C++ Package Manager for Developers</h6>
+            <p>The open source, decentralized and multi-platform
+                package manager to create and share all your native binaries.</p>
+            <a href="https://conan.io/" target="_blank">Web Site</a>
+        </div>
+
+        <br>
+        <div class="card0">
+            <h5 class="card0-title">dds</h5>
+            <h6 class="card0-subtitle">A Build System and Library Manager</h6>
+            <p>dds is a modern take on build system and library dependency management for C and C++ projects. It aims to be easy to use for beginners and experts alike, and maximally discoverable.</p>
+            <a href="https://github.com/vector-of-bool/dds" target="_blank">GitHub</a>
+            <a href="https://vector-of-bool.github.io/docs/dds/index.html" target="_blank">the official documentation.</a>
+        </div>
+
+        <br>
+        <div class="card0">
+            <h5 class="card0-title">cpm</h5>
+            <h6 class="card0-subtitle">A C++ Package Manager based on CMake and Git.</h6>
+            <p>CPM is designed to promote small, well-tested, composable C++ modules. CPM allows you to link against multiple different versions of the same static library without symbol conflicts. You can include other C++ modules that may depend on older or newer versions of the same modules you are using. Additionally, CPM will automatically download and build C++ modules for you.</p>
+            <a href="https://github.com/iauns/cpm" target="_blank">GitHub</a>
+        </div>        
+
+        <br>
+        <div class="card0">
+            <h5 class="card0-title">pacm</h5>
+            <h6 class="card0-subtitle">C++ package manager</h6>
+            <p>Pacm is your solution for a simple C++ package manager that can be embedded or redistributed with native applications.</p>
+            <a href="http://sourcey.com/pacm/" target="_blank">Web site</a>
+            <a href="https://github.com/sourcey/pacm" target="_blank">GitHub</a>
+        </div>
+
+        <br>
+        <div class="card0">
+            <h5 class="card0-title">spack</h5>
+            <h6 class="card0-subtitle">?</h6>
+            <p>A flexible package manager supporting multiple versions, configurations, platforms, and compilers. </p>
+            <a href="https://spack.io" target="_blank">Web site</a>
+            <a href="https://github.com/spack/spack" target="_blank">GitHub</a>
+        </div>
+
+        <br>
+        <div class="card0">
+            <h5 class="card0-title">buckaroo</h5>
+            <h6 class="card0-subtitle">C/C++ Package Manager</h6>
+            <p>Buckaroo is a package manager for C/C++. Buckaroo makes it easy to add modules to your project in a controlled and cross-platform way.</p>
+            <a href="http://buckaroo.pm" target="_blank">Web site</a>
+            <a href="https://github.com/LoopPerfect/buckaroo/" target="_blank">GitHub</a>
+        </div>
+
+        <br>
+        <div class="card0">
+            <h5 class="card0-title">hunter</h5>
+            <h6 class="card0-subtitle">C/C++ Package Manager</h6>
+            <p>CMake driven cross-platform package manager for C/C++.</p>
+            <a href="https://github.com/cpp-pm/hunter" target="_blank">GitHub</a>
+        </div>
+
+        <br>
+        <div class="card0">
+            <h5 class="card0-title">vcpkg</h5>
+            <h6 class="card0-subtitle">C++ Library Manager for Windows, Linux, and MacOS</h6>
+            <p>Vcpkg helps you manage C and C++ libraries on Windows, Linux and MacOS. This tool and ecosystem are constantly evolving; your involvement is vital to its success!</p>
+            <a href="https://github.com/Microsoft/vcpkg" target="_blank">GitHub</a>
+        </div>
+
+        <br>
+        <div class="card0">
+            <h5 class="card0-title">Nuget</h5>
+            <a href="https://docs.microsoft.com/ru-ru/nuget/guides/native-packages" target="_blank">Guide</a>
+        </div>
+
+        <br>
+        <div class="card0">
+            <h5 class="card0-title">DownloadProject</h5>
+            <h6 class="card0-subtitle">?</h6>
+            <p>CMake module for downloading an external project's source at configure time</p>
+            <a href="https://github.com/Crascit/DownloadProject" target="_blank">GitHub</a>
+        </div>
+
+        <br>
+        <div class="card0">
+            <h5 class="card0-title">cget</h5>
+            <h6 class="card0-subtitle">Cmake package retrieval.</h6>
+            <p>This can be used to download and install cmake packages.</p>
+            <a href="https://github.com/pfultz2/cget" target="_blank">GitHub</a>
+        </div>
+        
+
+        <br>
+        <div class="card0">
+            <h5 class="card0-title">maiken</h5>
+            <h6 class="card0-subtitle">build tool</h6>
+            <p>Cross platform build tool for C/C++/Obj-C/C#/CUDA/opencl</p>
+            <a href="https://github.com/Dekken/maiken" target="_blank">GitHub</a>
+        </div>
+
+        <br>
+        <div class="card0">
+            <h5 class="card0-title">cppget</h5>
+            <h6 class="card0-subtitle">C++ package repository</h6>
+            <p>C++ package repository, stable section</p>
+            <a href="https://cppget.org/" target="_blank">Web site</a>
+        </div>
+
+        <br>
+        <div class="card0">
+            <h5 class="card0-title">cmake - ExternalProject</h5>
+            <h6 class="card0-subtitle">cmake module</h6>
+            <p>?</p>
+            <a href="https://cmake.org/cmake/help/v3.7/module/ExternalProject.html" target="_blank">Web site</a>
+        </div>
+
+        <br>
+        <div class="card0">
+            <h5 class="card0-title">build2</h5>
+            <h6 class="card0-subtitle">C++ Build Toolchain</h6>
+            <p>?</p>
+            <a href="https://build2.org/" target="_blank">Web site</a>
+        </div>
+        
+        <br>
+        <div class="card0">
+            <h5 class="card0-title">scons</h5>
+            <h6 class="card0-subtitle">SCons is an Open Source software construction tool—that is, a next-generation build tool.</h6>
+            <p>Think of SCons as an improved, cross-platform substitute for the classic Make utility with integrated functionality similar to autoconf/automake and compiler caches such as ccache. In short, SCons is an easier, more reliable and faster way to build software.</p>
+            <a href="https://scons.org/" target="_blank">Web Site</a>
+        </div>
+
+        <br>
+        <div class="card0">
+            <h5 class="card0-title">ninja</h5>
+            <h6 class="card0-subtitle">C++ Build System</h6>
+            <p>Ninja is a small build system with a focus on speed. It differs from other build systems in two major respects: it is designed to have its input files generated by a higher-level build system, and it is designed to run builds as fast as possible.</p>
+            <a href="https://ninja-build.org/" target="_blank">Web site</a>
+        </div>
+        
+        <br>
+        <div class="card0">
+            <h5 class="card0-title">conda</h5>
+            <h6 class="card0-subtitle">Package, dependency and environment management for any language</h6>
+            <p>Package, dependency and environment management for any language—Python, R, Ruby, Lua, Scala, Java, JavaScript, C/ C++, FORTRAN, and more.</p>
+            <a href="https://docs.conda.io/en/latest/" target="_blank">Web site</a>
+        </div>
+        
+        <br>
+        <div class="card0">
+            <h5 class="card0-title">pak-c-mak</h5>
+            <h6 class="card0-subtitle">pak-c-mak is cross-platform tools used as distributed package manager for C++ libraries.</h6>
+            <p>This tool was inspired by maven local and maven central repositories.</p>
+            <div class="topics">
+                <div class="topic">maven</div>
+                <div class="topic">package-manager</div>
+                <div class="topic">cpp</div>
+                <div class="topic">cmake</div>
+                <div class="topic">artifacts-repository</div>
+                <div class="topic">c-plus-plus</div>
+                <div class="topic">package-repository</div>
+                <div class="topic">cross-platform</div>
+                <div class="topic">googletest</div>
+            </div>
+            <br>
+            <a href="https://github.com/amidukr/pak-c-mak" target="_blank">GitHub</a>
+        </div>
+
+        <br>
+        <div class="card0">
+            <h5 class="card0-title">wsjcpp</h5>
+            <h6 class="card0-subtitle">C++ Source Package Manager</h6>
+            <p>Yet another... C++ Source Package Manager.</p>
+            <a href="https://wsjcpp.org/" target="_blank">Web site</a>
+            <a href="https://github.com/wsjcpp/wsjcpp" target="_blank">GitHub</a>
+        </div>
+
+        <br>
+        Know more C++ managers/systems? Please create <a href="https://github.com/wsjcpp/wsjcpp-org/issues/new" target="_blank">an issue</a>.
+        <hr/>
+
+        <a class="anchorjs-link " name="cpp-services" aria-label="Anchor" data-anchorjs-icon="#" style="padding-left: 0.375em;"></a>
+        <h1>C++ Services</h1>
+        
+        <br><br>
+        <div class="card0">
+            <h5 class="card0-title">wandbox</h5>
+            <h6 class="card0-subtitle"></h6>
+            <p>Online C++ Compiler</p>
+            <a href="https://wandbox.org/" target="_blank">https://wandbox.org/</a>
+        </div>
+        <hr>
+
+        <a class="anchorjs-link " name="cpp-conferences" aria-label="Anchor" data-anchorjs-icon="#" style="padding-left: 0.375em;"></a>
+        <h1>C++ Conferences</h1>
+        Collection of C++ conferences
+        <br><br>
+        <div class="card0">
+            <h5 class="card0-title">cppcon</h5>
+            <h6 class="card0-subtitle">C++ conference</h6>
+            <p >CppCon is the annual, week-long face-to-face gathering for the entire C++ community. The conference is organized by the C++ community for the community. You will enjoy inspirational talks and a friendly atmosphere designed to help attendees learn from each other, meet interesting people, and generally have a stimulating experience. Taking place this year in Aurora, Colorado, near the Denver airport, and including multiple diverse tracks, the conference will appeal to anyone from C++ novices to experts. (c) https://cppcon.org/about/</p>
+            <a href="https://cppcon.org/" target="_blank">Web Site</a>
+        </div>
+        <br>
+        <div class="card0">
+            <h5 class="card0-title">C++ CoreHard Spring</h5>
+            <h6 class="card0-subtitle">C++ conference</h6>
+            <p >2015 - 2020 (?)</p>
+            <a href="https://conference.corehard.by/" target="_blank">Web Site</a>
+        </div>
+        <br>
+        <div class="card0">
+            <h5 class="card0-title">C++ Russia</h5>
+            <h6 class="card0-subtitle">C++ conference</h6>
+            <p>Конференция С++ Russia — это два дня и несколько треков хардкорных технических докладов, посвященных C++: concurrency, производительность, архитектура и инфраструктурные решения — всё для того, чтобы ваш код выглядел лучше и делал больше. Конференция ориентирована на опытных разработчиков, никаких вводных докладов! </p>
+            <a href="https://cppconf.ru/" target="_blank">Web Site</a>
+        </div>
+        <br>
+        Know more C++ conferences? Please create <a href="https://github.com/wsjcpp/wsjcpp-org/issues/new" target="_blank">an issue</a>.
+        <hr>
+
+        <a class="anchorjs-link " name="cpp-frameworks" aria-label="Anchor" data-anchorjs-icon="#" style="padding-left: 0.375em;"></a>
+        <h1>C++ Frameworks</h1>
+        <div class="card0">
+            <h5 class="card0-title">Oat++</h5>
+            <h6 class="card0-subtitle">Modern Web Framework for C++ </h6>
+            <p >
+                Oat++ is the modern web framework for C++. It provides all the necessary features and components for production-grade development, including:
+
+                <ul>
+                    <li>Advanced REST controllers with request mappings and Swagger-UI annotations. See Api Controller.</li>
+                    <li>Retrofit/Feign like client. See Api Client.</li>
+                    <li>Object Mapping. See Data Transfer Object (DTO).</li>
+                    <li>Dependency Injection</li>
+                    <li>Swagger-UI. See oatpp-swagger module.</li>
+                </ul>
+
+                It is zero-dependency, easy-portable, and high-performance.
+            </p>
+            <a href="https://oatpp.io/" target="_blank" >https://oatpp.io/</a>
+        </div>
+        <div class="card0">
+            <h5 class="card0-title">CppCMS</h5>
+            <h6 class="card0-subtitle">CppCMS is a Free High Performance Web Development Framework (not a CMS)</h6>
+            <p >
+                What is CppCMS? CppCMS is a Free High Performance Web Development Framework (not a CMS) aimed at Rapid Web Application Development. It differs from most other web development frameworks like: Python Django, Java Servlets in the following ways:
+
+                <ul>
+                    <li>It is designed and tuned to handle extremely high loads.</li>
+                    <li>It uses modern C++ as the primary development language in order to achieve the first goal.</li>
+                    <li>It is designed for developing both Web Sites and Web Services.</li>
+                </ul>
+
+                Starting from version 1.2 it is available under MIT license.
+            </p>
+            <a href="http://cppcms.com/wikipp/en/page/main" target="_blank" >http://cppcms.com/wikipp/en/page/main</a>
+        </div>
+        <div class="card0">
+            <h5 class="card0-title">Drogon</h5>
+            <h6 class="card0-subtitle">Drogon is a cross-platform framework, It supports Linux, macOS, FreeBSD, OpenBSD, HaikuOS, and Windows.</h6>
+            <p>
+                Drogon is a C++17/20 based HTTP application framework. Drogon can be used to easily build various types of web application server programs using C++.
+                Drogon is the name of a dragon from the American TV series Game of Thrones, which I really enjoy.
+
+                <ul>
+                    <li>Use a non-blocking I/O network lib based on epoll (kqueue under macOS/FreeBSD) to provide high-concurrency, high-performance network IO, please visit the TFB Tests Results for more details;</li>
+                    <li>Provide a completely asynchronous programming mode;</li>
+                    <li>Support Http1.0/1.1 (server side and client side);</li>
+                    <li>...</li>
+                </ul>
+
+                MIT license.
+            </p>
+            <a href="https://github.com/drogonframework/drogon" target="_blank" >https://github.com/drogonframework/drogon</a>
+        </div>
+
+        
+
+        <a class="anchorjs-link " name="cpp-tools" aria-label="Anchor" data-anchorjs-icon="#" style="padding-left: 0.375em;"></a>
+        <h1>C++ Tools</h1>
+        
+        <br><br>
+        <div class="card0">
+            <h5 class="card0-title">johnmcfarlane/unformat</h5>
+            <h6 class="card0-subtitle"></h6>
+            <p>Python3 utility to generate a .clang-format file from example code-base.</p>
+            <a href="https://github.com/johnmcfarlane/unformat" target="_blank">https://github.com/johnmcfarlane/unformat</a>
+        </div>
+        <br><br>
+        <div class="card0">
+            <h5 class="card0-title">CMakeRC</h5>
+            <h6 class="card0-subtitle"></h6>
+            <p>CMakeRC - A Standalone CMake-Based C++ Resource Compiler</p>
+            <a href="https://github.com/vector-of-bool/cmrc" target="_blank">https://github.com/vector-of-bool/cmrc</a>
+        </div>
+        <br><br>
+        <div class="card0">
+            <h5 class="card0-title">INCBIN</h5>
+            <h6 class="card0-subtitle"></h6>
+            <p>INCBIN is a single-file header-only library which allows embedding files in executables with the compiler's inline assembler.</p>
+            <a href="https://github.com/graphitemaster/incbin/" target="_blank">https://github.com/graphitemaster/incbin/</a>
+        </div>
+        <br><br>
+        <div class="card0">
+            <h5 class="card0-title">xxd tool (Byte-array)</h5>
+            <h6 class="card0-subtitle"></h6>
+            <p>unix tool</p>
+            <p>$ xxd -i somefile.txt</p>
+            <a href="https://www.opennet.ru/man.shtml?topic=xxd&category=1&russian=0" target="_blank">https://www.opennet.ru/man.shtml?topic=xxd&category=1&russian=0</a>
+        </div>
+        <br><br>
+        
+
+        <a class="anchorjs-link " name="cpp-other" aria-label="Anchor" data-anchorjs-icon="#" style="padding-left: 0.375em;"></a>
+        <h1>C++ Other</h1>
+        
+        <br><br>
+        <div class="card0">
+            <h5 class="card0-title">Meeting C++ 2021</h5>
+            <h6 class="card0-subtitle"></h6>
+            <p>Meeting C++ 2021</p>
+            <a href="https://meetingcpp.com/2021/" target="_blank">https://meetingcpp.com/2021/</a>
+        </div>
+        <br><br>
+        <div class="card0">
+            <h5 class="card0-title">C++ Notes</h5>
+            <h6 class="card0-subtitle"></h6>
+            <p>C++ Notes by caiorss</p>
+            <a href="https://caiorss.github.io/C-Cpp-Notes/" target="_blank">https://caiorss.github.io/C-Cpp-Notes/</a>
+        </div>
+        <br><br>
+    </div>
+    
+    <div class="container" id="content_packages">
+        <h1>Packages</h1>
+        <div class="warn">
+            Not complete of the list. Please search compatible packages on github, gitlab, bibucket and etc..
+        </div>
+        <br>
+        <input type="text" id="search_package" placeholder="Search">
+        <small id="found_packages"></small> <small>/</small> <small id="all_packages"></small> 
+        <br>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name / Description</th>
+                    <th>Link</th>
+                </tr>
+            </thead>
+            <tbody id="packages_list">
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript" >
+        if (window.location.hostname == "wsjcpp.org") {
+            (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+            m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+            (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+        
+            ym(67011880, "init", {
+                clickmap:true,
+                trackLinks:true,
+                accurateTrackBounce:true
+            });
+        }
+        
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/67011880" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+</body>
+</html>

@@ -1,0 +1,32 @@
+/* Highlithing */
+
+.wsjcpp-hightlight-code {
+    display: block;
+    color: #fff;
+    background-color: #222;
+    padding: 10px;
+    border-radius: 2px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    white-space: pre;
+    font-family: monospace;
+    border-left: 5px solid #c5b700;
+    border-radius: 5px;
+}
+
+.wsjcpp-hightlight-code whc {
+    display: inline;
+}
+
+whc.blue {
+    color: #54def4;
+}
+
+whc.green {
+    color: #25d825;
+}
+
+whc.string {
+    color: #e8ab16;
+}
+

@@ -1,0 +1,248 @@
+[
+    {
+        "name": "ReneNyffenegger/cpp-base64",
+        "description": "Base64 encoding and decoding with c++",
+        "command": "wsjcpp install https://github.com/ReneNyffenegger/cpp-base64:master",
+        "links": [
+            {
+                "url": "https://github.com/ReneNyffenegger/cpp-base64",
+                "title": "GitHub"
+            }
+        ]
+    },
+    {
+        "name": "leethomason/tinyxml2",
+        "description": "TinyXML-2 is a simple, small, efficient, C++ XML parser that can be easily integrated into other programs.",
+        "command": "wsjcpp install https://github.com/wsjcpp/tinyxml2:master",
+        "links": [
+            {
+                "url": "https://github.com/wsjcpp/tinyxml2",
+                "title": "GitHub"
+            }
+        ]
+    },
+    {
+        "name": "wsjcpp-parse-conf",
+        "description": "Primitive parser for *.conf files",
+        "command": "wsjcpp install https://github.com/wsjcpp/wsjcpp-parse-conf:master",
+        "links": [
+            {
+                "url": "https://github.com/wsjcpp/wsjcpp-parse-conf",
+                "title": "GitHub"
+            }
+        ]
+    },
+    {
+        "name": "wsjcpp-light-web-server",
+        "description": "С++ Light Web Server",
+        "command": "wsjcpp install https://github.com/wsjcpp/wsjcpp-light-web-server:master",
+        "links": [
+            {
+                "url": "https://github.com/wsjcpp/wsjcpp-light-web-server",
+                "title": "GitHub"
+            }
+        ]
+    },
+    {
+        "name": "wsjcpp-yaml",
+        "description": "C++ Write/Reader yaml files",
+        "command": "wsjcpp install https://github.com/wsjcpp/wsjcpp-yaml:master",
+        "links": [
+            {
+                "url": "https://github.com/wsjcpp/wsjcpp-yaml",
+                "title": "GitHub"
+            }
+        ]
+    },
+    {
+        "name": "fast-cpp-csv-parser",
+        "description": "This is a small, easy-to-use and fast header-only library for reading comma separated value (CSV) files.",
+        "command": "wsjcpp install https://github.com/wsjcpp/fast-cpp-csv-parser:master",
+        "links": [
+            {
+                "url": "https://github.com/wsjcpp/fast-cpp-csv-parser",
+                "title": "GitHub"
+            }
+        ]
+    },
+    {
+        "name": "wsjcpp-diff-text",
+        "description": "Algorithm for like a diff texts",
+        "command": "wsjcpp install https://github.com/wsjcpp/wsjcpp-diff-text:master",
+        "links": [
+            {
+                "url": "https://github.com/wsjcpp/wsjcpp-diff-text",
+                "title": "GitHub"
+            }
+        ]
+    },
+    {
+        "name": "fast-fourier-transform",
+        "description": "C++ fast-fourier-transform (package for wsjcpp)",
+        "command": "wsjcpp install https://github.com/wsjcpp/fast-fourier-transform:master",
+        "links": [
+            {
+                "url": "https://github.com/wsjcpp/fast-fourier-transform",
+                "title": "GitHub"
+            }
+        ]
+    },
+    {
+        "name": "wsjcpp-levenshtein",
+        "description": "Calculation Of Levenshtein Distance",
+        "command": "wsjcpp install https://github.com/wsjcpp/wsjcpp-levenshtein:master",
+        "links": [
+            {
+                "url": "https://github.com/wsjcpp/wsjcpp-levenshtein",
+                "title": "GitHub"
+            }
+        ]
+    },
+    {
+        "name": "wsjcpp-geoip",
+        "description": "C++. Call request to another services for get location coordinates by IP-address",
+        "command": "wsjcpp install https://github.com/wsjcpp/wsjcpp-geoip:master",
+        "links": [
+            {
+                "url": "https://github.com/wsjcpp/wsjcpp-geoip",
+                "title": "GitHub"
+            }
+        ]
+    },
+    {
+        "name": "wsjcpp-print-tree",
+        "description": "Helper class for print tree like a for filesystems",
+        "command": "wsjcpp install https://github.com/wsjcpp/wsjcpp-print-tree:master",
+        "links": [
+            {
+                "url": "https://github.com/wsjcpp/wsjcpp-print-tree",
+                "title": "GitHub"
+            }
+        ]
+    },
+    {
+        "name": "wsjcpp-validators",
+        "description": "Classes for data validation",
+        "command": "wsjcpp install https://github.com/wsjcpp/wsjcpp-validators:master",
+        "links": [
+            {
+                "url": "https://github.com/wsjcpp/wsjcpp-validators",
+                "title": "GitHub"
+            }
+        ]
+    },
+    {
+        "name": "wsjcpp-arguments",
+        "description": "Parsing and handling for application arguments",
+        "command": "wsjcpp install https://github.com/wsjcpp/wsjcpp-arguments:master",
+        "links": [
+            {
+                "url": "https://github.com/wsjcpp/wsjcpp-arguments",
+                "title": "GitHub"
+            }
+        ]
+    },
+    {
+        "name": "wsjcpp-safe-scripting",
+        "description": "Light script language for integration to your project on C++",
+        "command": "wsjcpp install https://github.com/wsjcpp/wsjcpp-safe-scripting:master",
+        "links": [
+            {
+                "url": "https://github.com/wsjcpp/wsjcpp-safe-scripting",
+                "title": "GitHub"
+            }
+        ]
+    },
+    {
+        "name": "wsjcpp-hashes",
+        "description": "sha1 and md5 hashes",
+        "command": "wsjcpp install https://github.com/wsjcpp/wsjcpp-hashes:master",
+        "links": [
+            {
+                "url": "https://github.com/wsjcpp/wsjcpp-hashes",
+                "title": "GitHub"
+            }
+        ]
+    },
+    {
+        "name": "wsjcpp-docker-api",
+        "description": "C++ wrapper for docker-api (used curl inside)",
+        "command": "wsjcpp install https://github.com/wsjcpp/wsjcpp-docker-api:master",
+        "links": [
+            {
+                "url": "https://github.com/wsjcpp/wsjcpp-docker-api",
+                "title": "GitHub"
+            }
+        ]
+    },
+    {
+        "name": "wsjcpp-async-jobs-pool",
+        "description": "Multithreading jobs pool (asyncron tasks) ",
+        "command": "wsjcpp install https://github.com/wsjcpp/wsjcpp-async-jobs-pool:master",
+        "links": [
+            {
+                "url": "https://github.com/wsjcpp/wsjcpp-async-jobs-pool",
+                "title": "GitHub"
+            }
+        ]
+    },
+    {
+        "name": "wsjcpp-dto",
+        "description": "Helper classes for create C++ Data Transfer Object",
+        "command": "wsjcpp install https://github.com/wsjcpp/wsjcpp-dto:master",
+        "links": [
+            {
+                "url": "https://github.com/wsjcpp/wsjcpp-dto",
+                "title": "GitHub"
+            }
+        ]
+    },
+    {
+        "name": "example-wsjcpp-package-https",
+        "description": "Example package wsjcpp",
+        "command": "wsjcpp install https://wsjcpp.org/packages/example-wsjcpp-package-https/v0.0.1/",
+        "links": [
+            {
+                "url": "https://wsjcpp.org/packages/example-wsjcpp-package-https/v0.0.1/wsjcpp.yml",
+                "title": "wsjcpp.yml"
+            }
+        ]
+    },
+    {
+        "name": "example-wsjcpp-package-gitlab",
+        "description": "Example package wsjcpp",
+        "command": "wsjcpp install https://gitlab.com/wsjcpp/example-wsjcpp-package-gitlab:master",
+        "links": [
+            {
+                "url": "https://gitlab.com/wsjcpp/example-wsjcpp-package-gitlab",
+                "title": "GitLab"
+            }
+        ]
+    },
+    {
+        "name": "example-wsjcpp-package-bitbucket",
+        "description": "Example package wsjcpp",
+        "command": "wsjcpp install https://bitbucket.org/wsjcpp/example-wsjcpp-package-bitbucket:master",
+        "links": [
+            {
+                "url": "https://bitbucket.org/wsjcpp/example-wsjcpp-package-bitbucket/",
+                "title": "Bitbucket"
+            }
+        ]
+    },
+    {
+        "name": "wsjcpp/nlohmann_json (fork)",
+        "description": "JSON for Modern C++ (now author don't want support official wsjcpp)",
+        "command": "wsjcpp install https://github.com/wsjcpp/nlohmann_json:wsjcpp-copy-version",
+        "links": [
+            {
+                "url": "https://github.com/wsjcpp/nlohmann_json",
+                "title": "Github"
+            }, 
+            {
+                "url": "https://nlohmann.github.io/json/",
+                "title": "Web Site"
+            }
+        ]
+    }
+]
